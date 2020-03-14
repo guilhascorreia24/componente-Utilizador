@@ -1,0 +1,139 @@
+{% extends "homepage.html" %}
+{% block content %}
+<div class="navbar-menu">
+    <div class="navbar-end">
+        <div data-v-a67fe1ba="" class="navbar-item">
+            <div data-v-a67fe1ba="" class="dropdown is-bottom-left is-mobile-modal">
+            </div><a href="../register"><button data-v-a67fe1ba="" type="button" class="button"><span
+                        class="icon is-small"><i class="mdi mdi-logout-variant"></i></span> <span> Register </span>
+                    <!----></button></a>
+        </div>
+    </div>
+</div>
+</nav>
+<div data-v-8716d23a="" id="top-hero" class="hero is-primary is-bold">
+    <div data-v-8716d23a="" id="top-hero-body" class="hero-body"></div>
+</div>
+<div data-v-8716d23a="" id="page-content">
+    <div data-v-8716d23a="" class="card">
+        <div data-v-8716d23a="" class="card-content">
+            <div data-v-8716d23a="" id="top">
+                <nav aria-label="breadcrumbs" class="breadcrumb" style="background-color:white">
+                    <ul>
+                        <li><a href="/" class="router-link-active">Início</a></li>
+                        <li class="is-active"><a href=".." class="router-link-exact-active router-link-active">Login</a>
+                        </li>
+                    </ul>
+                </nav>
+                <div style="padding: 3rem 2vw 1rem;">
+                    <div class="b-steps">
+                        <nav class="steps is-success">
+                            <ul class="step-items">
+                                <li class="step-item is-success is-active"><a class="step-link">
+                                        <div class="step-marker"><span class="icon"><i
+                                                    class="mdi mdi-book mdi-24px"></i></span></div>
+                                        <div class="step-details"><span class="step-title">Login</span>
+                                        </div>
+                                    </a></li>
+                            </ul>
+                        </nav>
+                        <section class="step-content">
+                            <div class="step-item" style="">
+                                <div style="padding: 1rem 2vw 0px;">
+                                    <hr>
+                                    <form method="POST">
+                                        {% csrf_token %}
+                                        {% if messages %}
+                                        {% for message in messages %}
+                                        <p>{{message}}</p>
+                                        {% endfor %}
+                                        {% endif %}
+                                        <div class="column is-offset-3 is-6">
+                                            {% if form.email.errors %}
+                                            <div class="field"><label class=""
+                                                    for={{form.email.id_for_label}}>Email</label>
+                                                <div class="control has-icons-right"><input type="email" name="email"
+                                                        id={{form.email.id_for_label}} autocomplete="on"
+                                                        class="input is-danger">
+                                                    <!----> <span class="icon is-right has-text-danger"><i
+                                                            class="mdi mdi-alert-circle mdi-24px"></i></span>
+                                                    <!---->
+                                                </div>
+                                                <p class="help is-danger">Preencha este campo.</p>
+                                                {% else %}
+                                                <div class="field"><label class=""
+                                                        for={{form.email.id_for_label}}>Email</label>
+                                                    <div class="control is-clearfix"><input type="email" name="email"
+                                                            id={{form.email.id_for_label}} class="input">
+                                                    </div>
+                                                </div>
+                                                {% endif %}
+                                                {% if form.password1.errors %}
+                                                <div class="field"><label class=""
+                                                        for={{form.password.id_for_label}}>Password</label>
+                                                    <div class="control has-icons-right"><input type="password"
+                                                         id={{form.password.id_for_label}} name="password"
+                                                            autocomplete="on" class="input is-danger">
+                                                        <!----> <span class="icon is-right has-text-danger"><i
+                                                                class="mdi mdi-alert-circle mdi-24px"></i></span>
+                                                        <!---->
+                                                    </div>
+                                                    {% if error2 %}
+                                                    <p class="help is-danger">{{error2}}</p>
+                                                    {% endif %}
+                                                    <p class="help is-danger">Preencha este campo.</p>
+                                                    {% else %}
+                                                    <div class="field"><label class=""
+                                                            for={{form.password.id_for_label}}>Password</label>
+                                                        <div class="control is-clearfix"><input type="password"
+                                                                id={{form.password.id_for_label}} name="password"
+                                                                class="input">
+                                                        </div>
+                                                    </div>
+                                                    {% endif %}
+                                                </div>
+                                                <hr>
+                                            </div>
+                                        </div>
+                        </section>
+                        <div class="column is-8 is-offset-2">
+                            <div class="level">
+                                <div class="level-left"><a href=".." class="button is-outlined" type="button">
+                                        <!----> <span> Cancelar </span>
+                                        <!----></a></div>
+                                <div class="level-right"><button type="button"
+                                        class="button is-large is-success is-outlined" data-toggle="modal"
+                                        data-target="#exampleModal">
+                                        <!----> <span> Submeter </span>
+                                        <!----></button></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="dialog modal" id="exampleModal">
+                <div class="modal-background"></div>
+                <br><br><br><br><br><br><br><br><br><br><br><br>
+                <div class="modal-card animation" style="max-width:360px">
+                    <!---->
+                    <section class="modal-card-body is-titleless">
+                        <div class="media">
+                            <!---->
+                            <div class="media-content">
+                                <p>Tem a certeza que quer inscrever-se no site?</p>
+                                <!---->
+                            </div>
+                        </div>
+                    </section>
+                    <footer class="modal-card-foot"><button class="button" data-dismiss="modal">
+                            Cancelar
+                        </button> <button class="button is-success" type="submit">
+                            Confirmar
+                        </button></footer>
+                </div>
+            </div>
+            </form>
+
+        </div>
+    </div>
+    {% endblock content %}
