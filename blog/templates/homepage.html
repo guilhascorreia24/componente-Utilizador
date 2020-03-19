@@ -174,11 +174,17 @@
             <div data-v-8716d23a="" style="margin: auto; width: max-content;"> Dia Aberto </div>
         </footer>
     </div>
+    {% if messages %}
+    {% for message in messages %}
+    {% if message.tags == 'success' %}
     <div class="notices is-top">
-        <div role="alert" class="toast is-dark is-top" aria-hidden="true" style="opacity:1">
-            <div>Transporte adicionado!</div>
+        <div role="alert" class="toast is-dark is-top" aria-hidden="true" style="">
+            <div>{{message}}</div>
         </div>
     </div>
+    {% endif %}
+    {% endfor %}
+    {% endif %}
     <div class="notices is-bottom">
 </body>
 
