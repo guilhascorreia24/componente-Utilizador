@@ -10,7 +10,7 @@ NONE = 0
 #um dos campos acima, caso o user não exista retorna 0
 
 def getCurrentUser(_id):
-    if _id == None:
+    if _id == 0:
         return 0
 
     user = Utilizador.objects.get(idutilizador = _id)
@@ -41,5 +41,14 @@ def getCurrentUser(_id):
     user.type = NONE
     return user
     
+
+def getLoggedUser(request):
+    print("TESTE\n\n")
+    if request.session.is_empty():
+        print("EROOOOOOO\n\n")
+        return getCurrentUser(request.session['user_id'])
+
+    print("LEAVING\n")
+    return 0
     
 
