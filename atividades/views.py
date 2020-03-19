@@ -1,11 +1,13 @@
 from django.shortcuts import render, redirect
-from .models import Atividade
+from atividades import models
 from django.contrib.auth import authenticate, login, logout
 from blog import userValidation
 
 # Main Views.
 def atividades_show(request):
-    user = userValidation.getCurrentUser(request)
+
+    print(request.session['user_id'])
+    user = userValidation.getCurrentUser(request.session['user_id'])
 
     #Error user non existent
     if user == 0:

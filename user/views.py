@@ -53,14 +53,25 @@ def logout_request(request):
 
 def delete_user(request):
     username = Utilizador.objects.get(request.session['user_id'])
-    Utilizador.delete()
+    Utilizador.delete(username)
     messages.success(request,"User deleted")
 
-    if not Utilizador.objects.get(request.session['user_id']).exists():
-        messages.error(request, "User doesnot exist")    
+    if not Utilizador.objects.get(username).exists():
+        messages.error(request, "User does not exist")    
         return render(request, 'blog-home.html')
     
     return render(request, 'blog-home.html')
     
        
-#def modify_user(request):
+def modify_user(request):
+
+    #username
+    username = Utilizador.objects.get(request.session['user_id'])
+    Utilizador.username = newusername
+    username.save()
+    #email
+    #telefone
+    #password
+    #nome
+
+
