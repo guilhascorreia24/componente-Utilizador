@@ -53,7 +53,7 @@ def logout_request(request):
 
 def delete_user(request):
     username = Utilizador.objects.get(request.session['user_id'])
-    Utilizador.delete(self.idutilizador)
+    Utilizador.delete()
     messages.success(request,"User deleted")
 
     if not Utilizador.objects.get(request.session['user_id']).exists():
@@ -62,8 +62,5 @@ def delete_user(request):
     
     return render(request, 'blog-home.html')
     
-    
-
-
-    
+       
 #def modify_user(request):
