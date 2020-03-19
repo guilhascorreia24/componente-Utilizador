@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from .forms import UserRegisterForm, AuthenticationForm
 from .models import Utilizador
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 
 
 def register(request):
@@ -34,6 +34,8 @@ def login_request(request):
             if Utilizador.objects.filter(email=request.POST['email'],password=request.POST['password']).exists():
                 user=authenticate(email=request.POST['email'],password=request.POST['password'])
                # print(Utilizador.objects.get(email=request.POST['email']).idutilizador)
+                username=Utilizador.objects.get(email=request.POST['email']).username
+                messages.success(request, f"Bem-vindo {username}")
                 request.session['user_id']=Utilizador.objects.get(email=request.POST['email']).idutilizador
                 return redirect('blog-home')
             else:
@@ -43,3 +45,8 @@ def login_request(request):
     else:
         form=AuthenticationForm()
     return render(request = request,template_name = "login.html",context={"form":form})
+
+def logout_request(request):
+    request.session['user_id']=None
+    messages.info(request, "Logged out successfully!")
+    return redirect("blog-home")

@@ -34,9 +34,9 @@
         rel="script">
     <link href="{% static "js/chunk-1823af82.4d78cc6e.js" %}" rel="script">
     <link href="{% static "js/colaboradores.03a794e1.js" %}" rel="script">
-    <link
+    <script charset="utf-8"
         href="{% static "js/colaboradores~departamentoatividades~inscricao~proporatividade~tarefas~transportes.38d827a4.js" %}"
-        rel="script">
+        ></script>
     <link href="{% static "js/configuracao.dddc62e3.js" %}" rel="script">
     <link href="{% static "js/departamentoatividades.8a11ada1.js" %}" rel="script">
     <link href="{% static "js/inscricao.689ad7a7.js" %}" rel="script">
@@ -52,7 +52,6 @@
     <link href="{% static "css/chunk-vendors.b3e8792f.css" %}" rel="stylesheet">
     <link href="{% static "css/app.1e506e7f.css" %}" rel="stylesheet">
     <script charset="utf-8" src="{% static "js/chunk-1823af82.4d78cc6e.js" %}"></script>
-
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
@@ -121,9 +120,10 @@
                                                 class="mdi mdi-account-circle mdi-24px"></i></span></span>
                                     <!----></button></div>
                             <div aria-hidden="true" class="background" style="display: none;"></div>
-                        </div><button data-v-a67fe1ba="" type="button" class="button"><span class="icon is-small"><i
-                                    class="mdi mdi-logout-variant"></i></span> <span> Sair </span>
-                            <!----></button>
+                        </div><a href="logout"><button data-v-a67fe1ba="" type="button" class="button"><span
+                                    class="icon is-small"><i class="mdi mdi-logout-variant"></i></span> <span> Sair
+                                </span>
+                                <!----></button></a>
                     </div>
                     {% endif %}
                 </div>
@@ -174,6 +174,12 @@
             <div data-v-8716d23a="" style="margin: auto; width: max-content;"> Dia Aberto </div>
         </footer>
     </div>
+    <div class="notices is-top">
+        <div role="alert" class="toast is-dark is-top" aria-hidden="true" style="opacity:1">
+            <div>Transporte adicionado!</div>
+        </div>
+    </div>
+    <div class="notices is-bottom">
 </body>
 
 </html>
