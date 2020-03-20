@@ -187,7 +187,7 @@ class DiaAberto(models.Model):
         db_table = 'dia aberto'
 
     def __str__(self):
-        return self.ano;
+        return self.ano
 
 
 class Escola(models.Model):

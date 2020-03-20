@@ -4,6 +4,8 @@ from django.contrib.auth import authenticate, login, logout
 from blog import userValidation
 
 # Main Views.
+def test(request):
+    return render(request,'atividades_participante_show.html')
 def atividades_show(request):
     user = userValidation.getLoggedUser(request)
 

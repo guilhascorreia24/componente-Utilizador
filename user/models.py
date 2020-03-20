@@ -69,3 +69,49 @@ class Colaborador(models.Model):
     
     def __str__(self):
         return self.utilizador_idutilizador
+
+class DiaAberto(models.Model):
+    ano = models.TextField(primary_key=True)  # This field type is a guess.
+    descricao = models.CharField(max_length=120, blank=True, null=True)
+    datainscricao = models.DateField()
+    emaildiaaberto = models.CharField(db_column='emailDiaAberto', max_length=120)  # Field name made lowercase.
+    enderecopaginaweb = models.CharField(db_column='enderecoPaginaWeb', max_length=60)  # Field name made lowercase.
+    datadiainscricaoatividadesinicio = models.DateField(db_column='dataDiainscricaoAtividadesInicio')  # Field name made lowercase.
+    datadiaabertoinicio = models.DateField(db_column='dataDiaAbertoInicio')  # Field name made lowercase.
+    datainscricaoatividadesfim = models.DateField(db_column='dataInscricaoAtividadesfim')  # Field name made lowercase.
+    datadiaabertofim = models.DateField(db_column='dataDiaAbertofim')  # Field name made lowercase.
+    datapropostaatividadeinicio = models.DateField(db_column='dataPropostaAtividadeInicio')  # Field name made lowercase.
+    datapropostaatividadesfim = models.DateField(db_column='dataPropostaAtividadesFim')  # Field name made lowercase.
+    utilizador_idutilizador = models.ForeignKey('Utilizador', models.DO_NOTHING, db_column='Utilizador_idutilizador')  # Field name made lowercase.
+    administrador_utilizador_idutilizador = models.ForeignKey(Administrador, models.DO_NOTHING, db_column='Administrador_Utilizador_idutilizador')  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'dia aberto'
+
+    def __str__(self):
+        return self.ano
+
+class Campus(models.Model):
+    idcampus = models.AutoField(db_column='idCampus', primary_key=True)  # Field name made lowercase.
+    nome = models.CharField(max_length=45)
+
+    class Meta:
+        managed = False
+        db_table = 'campus'
+    
+    def __str__(self):
+        return self.idcampus
+        
+class UnidadeOrganica(models.Model):
+    iduo = models.IntegerField(db_column='idUO', primary_key=True)  # Field name made lowercase.
+    sigla = models.CharField(max_length=5)
+    campus_idcampus = models.ForeignKey(Campus, models.DO_NOTHING, db_column='Campus_idCampus')  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'unidade organica'
+    
+    def __str__(self):
+        return self.iduo
+
