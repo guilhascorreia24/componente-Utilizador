@@ -5,17 +5,17 @@ from blog import userValidation
 
 # Main Views.
 def atividades_show(request):
-
-    print(request.session['user_id'])
-    user = userValidation.getCurrentUser(request.session['user_id'])
+    user = userValidation.getLoggedUser(request)
 
     #Error user non existent
     if user == 0:
-        return 0
+        error = "Erro, não tem sessão iniciada"
+        return render(request, 'error.html',{'message':error})
 
     #Error user has no type
     if user.type == userValidation.NONE:
-        return 0
+        error = "Erro, utilizador não pertence a nenhum grupo de utilizadores"
+        return render(request, 'error.html',{'message':error})
 
     if user.type == userValidation.PARTICIPANTE:
         return atividade_participante_show(request)
