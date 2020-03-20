@@ -3,7 +3,7 @@ from django.shortcuts import render
 
 
 def home(request):
-    if request.session['user_id']:
+    if 'user_id' in request.session:
         id=request.session['user_id']
     else:
         id=None

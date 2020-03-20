@@ -23,5 +23,6 @@ urlpatterns = [
     path('login/',user_views.login_request,name='login'),
     path('logout/',user_views.logout_request,name='logout'),
     path('atividades/',include('atividades.urls')),
+    path('profile/',user_views.profile,name="profile"),
     path('', include("blog.urls"))
 ]
