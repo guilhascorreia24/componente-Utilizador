@@ -1,0 +1,9 @@
+DB
+
+Atividade:
+    unidade organica e departamento desnecessario
+
+Estrututra de utilizadores estranha
+
+Sessao:
+    vagas ou nr de inscritos inutil

@@ -3,6 +3,7 @@ ADMINISTRADOR = 1
 COORDENADOR = 2
 PARTICIPANTE = 3
 PROFESSOR_UNIVERSITARIO = 4
+COLABORADOR = 5
 
 NONE = 0
 
@@ -13,42 +14,44 @@ def getCurrentUser(_id):
     if _id == 0:
         return 0
 
-    user = Utilizador.objects.get(idutilizador = _id)
+    user = Utilizador.objects.filter(idutilizador = _id).first()
 
-    if user == 0:
+    if user == None:
         return 0
 
-    part = Participante.objects.get(utilizador_idutilizador = _id)
-    if part != 0:
+    part = Participante.objects.select_related().filter(utilizador_idutilizador = _id).first()
+    if part != None:
         part.type = PARTICIPANTE 
-        return user
+        return part
     
-    coord = Coordenador.objects.get(utilizador_idutilizador = _id)
-    if coord != 0:
+    coord = Coordenador.objects.select_related().filter(utilizador_idutilizador = _id).first()
+    if coord != None:
         coord.type = COORDENADOR 
-        return user
+        return coord
 
-    prof = ProfessorUniversitario.objects.get(utilizador_idutilizador = _id)
-    if prof != 0:
-        user.type = PROFESSOR_UNIVERSITARIO 
-        return user
+    prof = ProfessorUniversitario.objects.select_related().filter(utilizador_idutilizador = _id).first()
+    if prof != None:
+        prof.type = PROFESSOR_UNIVERSITARIO 
+        return prof
 
-    admin = Administrador.objects.get(utilizador_idutilizador = _id)
-    if admin != 0:
-        user.type = ADMINISTRADOR 
-        return user
+    admin = Administrador.objects.select_related().filter(utilizador_idutilizador = _id).first()
+    if admin != None:
+        admin.type = ADMINISTRADOR 
+        return admin
+    
+    colab = Colaborador.objects.select_related().filter(utilizador_idutilizador = _id).first()
+    if colab != None:
+        colab.type = COLABORADOR
+        return colab
 
     user.type = NONE
     return user
     
 
 def getLoggedUser(request):
-    print("TESTE\n\n")
     if request.session.is_empty():
-        print("EROOOOOOO\n\n")
-        return getCurrentUser(request.session['user_id'])
-
-    print("LEAVING\n")
-    return 0
+        return 0
+    return getCurrentUser(request.session['user_id'])
+    
     
 

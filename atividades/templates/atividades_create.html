@@ -1,0 +1,55 @@
+{% extends "homepage.html" %}
+{% block content %}
+<div class="navbar-menu">
+    <div class="navbar-end">
+        <div data-v-a67fe1ba="" class="navbar-item">
+            <div data-v-a67fe1ba="" class="dropdown is-bottom-left is-mobile-modal">
+            </div><a href="../login"><button data-v-a67fe1ba="" type="button" class="button"><span class="icon is-small"><i
+                        class="mdi mdi-logout-variant"></i></span> <span> Login </span>
+                <!----></button></a>
+        </div>
+    </div>
+</div>
+</nav>
+<div data-v-8716d23a="" id="top-hero" class="hero is-primary is-bold">
+    <div data-v-8716d23a="" id="top-hero-body" class="hero-body"></div>
+</div>
+<div data-v-8716d23a="" id="page-content">
+    <div data-v-8716d23a="" class="card">
+        <div data-v-8716d23a="" class="card-content">
+            <div data-v-8716d23a="" id="top">
+                <form method="POST">
+                    {% csrf_token %}
+                    {{ form_atividade }}
+                    <input type="submit" value="Post">
+                </form>
+                
+
+
+            </div>
+            <div class="dialog modal" id="exampleModal">
+                <div class="modal-background"></div>
+                <br><br><br><br><br><br><br><br><br><br><br><br>
+                <div class="modal-card animation" style="max-width:360px">
+                    <!---->
+                    <section class="modal-card-body is-titleless">
+                        <div class="media">
+                            <!---->
+                            <div class="media-content">
+                                <p>Tem a certeza que quer inscrever-se no site?</p>
+                                <!---->
+                            </div>
+                        </div>
+                    </section>
+                    <footer class="modal-card-foot"><button class="button" data-dismiss="modal">
+                            Cancelar
+                        </button> <button class="button is-success" type="submit">
+                            Confirmar
+                        </button></footer>
+                </div>
+            </div>
+            </form>
+
+        </div>
+    </div>
+    {% endblock content %}
