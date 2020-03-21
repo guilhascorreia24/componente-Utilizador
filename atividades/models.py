@@ -408,10 +408,21 @@ class Utilizador(models.Model):
     telefone = models.CharField(unique=True, max_length=45)
     password = models.CharField(max_length=45)
     username = models.CharField(db_column='userName', max_length=45)  # Field name made lowercase.
+    validada = models.IntegerField()
 
     class Meta:
         managed = False
         db_table = 'utilizador'
+
+
+class UtilizadorHasNotificacao(models.Model):
+    utilizador_idutilizador = models.OneToOneField(Utilizador, models.DO_NOTHING, db_column='Utilizador_idutilizador', primary_key=True)  # Field name made lowercase.
+    notificacao = models.ForeignKey(Notificacao, models.DO_NOTHING)
+
+    class Meta:
+        managed = False
+        db_table = 'utilizador_has_notificacao'
+        unique_together = (('utilizador_idutilizador', 'notificacao'),)
 
 
 class UtilizadorHasNotificacao(models.Model):

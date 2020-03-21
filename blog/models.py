@@ -408,6 +408,7 @@ class Utilizador(models.Model):
     telefone = models.CharField(unique=True, max_length=45)
     password = models.CharField(max_length=45)
     username = models.CharField(db_column='userName', max_length=45)  # Field name made lowercase.
+    validada = models.IntegerField()
 
     class Meta:
         managed = False
