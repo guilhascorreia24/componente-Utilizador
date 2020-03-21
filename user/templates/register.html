@@ -4,9 +4,9 @@
     <div class="navbar-end">
         <div data-v-a67fe1ba="" class="navbar-item">
             <div data-v-a67fe1ba="" class="dropdown is-bottom-left is-mobile-modal">
-            </div><a href="../login"><button data-v-a67fe1ba="" type="button" class="button"><span class="icon is-small"><i
-                        class="mdi mdi-logout-variant"></i></span> <span> Login </span>
-                <!----></button></a>
+            </div><a href="../login"><button data-v-a67fe1ba="" type="button" class="button"><span
+                        class="icon is-small"><i class="mdi mdi-logout-variant"></i></span> <span> Login </span>
+                    <!----></button></a>
         </div>
     </div>
 </div>
@@ -45,123 +45,165 @@
                                         {% csrf_token %}
                                         <div class="column is-offset-3 is-6">
                                             {% if form.name.errors %}
-                                            <div class="field"><label class="" for={{form.name.id_for_label}}>Name</label>
-                                                <div class="control has-icons-right"><input type="text"  name="name" id={{form.name.id_for_label}}
-                                                        autocomplete="on"  class="input is-danger">
-                                                    <!----> <span class="icon is-right has-text-danger"><i
-                                                            class="mdi mdi-alert-circle mdi-24px"></i></span>
-                                                    <!---->
-                                                </div>
-                                                <p class="help is-danger">Preencha este campo.</p>
-                                            {% else %}
-                                            <div class="field"><label class="" for={{form.name.id_for_label}}
-                                                aria-label="breadcrumbs">Nome</label>
-                                            <div class="control is-clearfix"><input type="text" name="name" id={{form.name.id_for_label}}
-                                                    class="input">
-                                            </div>
-                                        </div>
-                                            {% endif %}
-                                            {% if form.username.errors %}
-                                            <div class="field"><label class="" for={{form.username.id_for_label}}>Username</label>
-                                                <div class="control has-icons-right"><input type="text"  name="username" id={{form.username.id_for_label}}
-                                                        autocomplete="on"  class="input is-danger">
-                                                    <!----> <span class="icon is-right has-text-danger"><i
-                                                            class="mdi mdi-alert-circle mdi-24px"></i></span>
-                                                    <!---->
-                                                </div>
-                                                <p class="help is-danger">Preencha este campo.</p>
-                                            {% else %}
                                             <div class="field"><label class=""
-                                                    for={{form.username.id_for_label}}>Username</label>
-                                                <div class="control is-clearfix"><input type="text" name="username" id={{form.username.id_for_label}}
-                                                        class="input">
-                                                </div>
-                                            </div>
-                                            {% endif %}
-                                            {% if form.email.errors %}
-                                            <div class="field"><label class="" for={{form.email.id_for_label}}>Email</label>
-                                                <div class="control has-icons-right"><input type="email"  name="email" id={{form.email.id_for_label}}
-                                                        autocomplete="on"  class="input is-danger">
+                                                    for={{form.name.id_for_label}}>Name</label>
+                                                <div class="control has-icons-right"><input type="text" name="name"
+                                                        id={{form.name.id_for_label}} autocomplete="on"
+                                                        class="input is-danger">
                                                     <!----> <span class="icon is-right has-text-danger"><i
                                                             class="mdi mdi-alert-circle mdi-24px"></i></span>
                                                     <!---->
                                                 </div>
                                                 <p class="help is-danger">Preencha este campo.</p>
-                                            {% else %}
-                                            <div class="field"><label class=""
-                                                    for={{form.email.id_for_label}}>Email</label>
-                                                <div class="control is-clearfix"><input type="email" name="email" id={{form.email.id_for_label}}
-                                                        class="input">
+                                                {% else %}
+                                                <div class="field"><label class="" for={{form.name.id_for_label}}
+                                                        aria-label="breadcrumbs">Nome</label>
+                                                    <div class="control is-clearfix"><input type="text" name="name"
+                                                            id={{form.name.id_for_label}} class="input">
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            {% endif %}
-                                            {% if form.telefone.errors %}
-                                            <div class="field"><label class="" for={{form.telefone.id_for_label}}>Telefone/Telemovel</label>
-                                                <div class="control has-icons-right"><input type="text"  name="telefone" id={{form.telefone.id_for_label}}
-                                                        autocomplete="on"  class="input is-danger" pattern="[0-9]{3}[0-9]{3}[0-9]{3}">
-                                                    <!----> <span class="icon is-right has-text-danger"><i
-                                                            class="mdi mdi-alert-circle mdi-24px"></i></span>
-                                                    <!---->
-                                                </div>
-                                                {% if error1 %}
-                                                <p class="help is-danger">{{error1}}</p>
                                                 {% endif %}
-                                                <p class="help is-danger">Preencha este campo.</p>
-                                            {% else %}
-                                            <div class="field"><label class=""
-                                                    for={{form.telefone.id_for_label}}>Telefone/Telemovel</label>
-                                                <div class="control is-clearfix"><input type="tel" 
-                                                        id={{form.telefone.id_for_label}} name="telefone" class="input"
-                                                        pattern="[0-9]{3}[0-9]{3}[0-9]{3}">
-                                                </div>
-                                            </div>
-                                            {% endif %}
-                                            {% if form.password1.errors %}
-                                            <div class="field"><label class="" for={{form.password1.id_for_label}}>Password</label>
-                                                <div class="control has-icons-right"><input type="password"  name="password1" id={{form.password1.id_for_label}}
-                                                        autocomplete="on"  class="input is-danger">
-                                                    <!----> <span class="icon is-right has-text-danger"><i
-                                                            class="mdi mdi-alert-circle mdi-24px"></i></span>
-                                                    <!---->
-                                                </div>
-                                                {% if error2 %}
-                                                <p class="help is-danger">{{error2}}</p>
-                                                {% endif %}
-                                                <p class="help is-danger">Preencha este campo.</p>
-                                            {% else %}
-                                            <div class="field"><label class=""
-                                                    for={{form.password1.id_for_label}}>Password</label>
-                                                <div class="control is-clearfix"><input type="password" 
-                                                        id={{form.password1.id_for_label}} name="password1"
-                                                        class="input">
-                                                </div>
-                                            </div>
-                                            {% endif %}
-                                            {% if form.password2.errors %}
-                                            <div class="field"><label class="" for={{form.password1.id_for_label}}>Password Confirm</label>
-                                                <div class="control has-icons-right"><input type="password"  name="password2" id={{form.password2.id_for_label}}
-                                                        autocomplete="on" class="input is-danger" >
-                                                    <!----> <span class="icon is-right has-text-danger"><i
-                                                            class="mdi mdi-alert-circle mdi-24px"></i></span>
-                                                    <!----> </div>
-                                                    {% if error3 %}
-                                                    <p class="help is-danger">{{error3}}</p>
-                                                    {% endif %}
+                                                {% if form.username.errors %}
+                                                <div class="field"><label class=""
+                                                        for={{form.username.id_for_label}}>Username</label>
+                                                    <div class="control has-icons-right"><input type="text"
+                                                            name="username" id={{form.username.id_for_label}}
+                                                            autocomplete="on" class="input is-danger">
+                                                        <!----> <span class="icon is-right has-text-danger"><i
+                                                                class="mdi mdi-alert-circle mdi-24px"></i></span>
+                                                        <!---->
+                                                    </div>
                                                     <p class="help is-danger">Preencha este campo.</p>
-                                            {% else %}
-                                            <div class="field"><label class=""
-                                                    for={{form.password2.id_for_label}}>Password Confirm</label>
-                                                <div class="control is-clearfix"><input type="password" 
-                                                        id={{form.password2.id_for_label}} name="password2"
-                                                        class="input">
-                                                </div>
-                                            </div>
-                                            {% endif %}
-                                        </div>
-                                        <hr>
-                                </div>
-                            </div>
+                                                    {% else %}
+                                                    <div class="field"><label class=""
+                                                            for={{form.username.id_for_label}}>Username</label>
+                                                        <div class="control is-clearfix"><input type="text"
+                                                                name="username" id={{form.username.id_for_label}}
+                                                                class="input">
+                                                        </div>
+                                                    </div>
+                                                    {% endif %}
+                                                    {% if form.email.errors %}
+                                                    <div class="field"><label class=""
+                                                            for={{form.email.id_for_label}}>Email</label>
+                                                        <div class="control has-icons-right"><input type="email"
+                                                                name="email" id={{form.email.id_for_label}}
+                                                                autocomplete="on" class="input is-danger">
+                                                            <!----> <span class="icon is-right has-text-danger"><i
+                                                                    class="mdi mdi-alert-circle mdi-24px"></i></span>
+                                                            <!---->
+                                                        </div>
+                                                        <p class="help is-danger">Preencha este campo.</p>
+                                                        {% else %}
+                                                        <div class="field"><label class=""
+                                                                for={{form.email.id_for_label}}>Email</label>
+                                                            <div class="control is-clearfix"><input type="email"
+                                                                    name="email" id={{form.email.id_for_label}}
+                                                                    class="input">
+                                                            </div>
+                                                        </div>
+                                                        {% endif %}
+                                                        {% if form.telefone.errors %}
+                                                        <div class="field"><label class=""
+                                                                for={{form.telefone.id_for_label}}>Telefone/Telemovel</label>
+                                                            <div class="control has-icons-right"><input type="text"
+                                                                    name="telefone" id={{form.telefone.id_for_label}}
+                                                                    autocomplete="on" class="input is-danger"
+                                                                    pattern="[0-9]{3}[0-9]{3}[0-9]{3}">
+                                                                <!----> <span class="icon is-right has-text-danger"><i
+                                                                        class="mdi mdi-alert-circle mdi-24px"></i></span>
+                                                                <!---->
+                                                            </div>
+                                                            {% if error1 %}
+                                                            <p class="help is-danger">{{error1}}</p>
+                                                            {% endif %}
+                                                            <p class="help is-danger">Preencha este campo.</p>
+                                                            {% else %}
+                                                            <div class="field"><label class=""
+                                                                    for={{form.telefone.id_for_label}}>Telefone/Telemovel</label>
+                                                                <div class="control is-clearfix"><input type="tel"
+                                                                        id={{form.telefone.id_for_label}}
+                                                                        name="telefone" class="input"
+                                                                        pattern="[0-9]{3}[0-9]{3}[0-9]{3}">
+                                                                </div>
+                                                            </div>
+                                                            {% endif %}
+                                                            {% if form.password1.errors %}
+                                                            <div class="field"><label class=""
+                                                                    for={{form.password1.id_for_label}}>Password</label>
+                                                                <div class="control has-icons-right"><input
+                                                                        type="password" name="password1"
+                                                                        id={{form.password1.id_for_label}}
+                                                                        autocomplete="on" class="input is-danger">
+                                                                    <!----> <span
+                                                                        class="icon is-right has-text-danger"><i
+                                                                            class="mdi mdi-alert-circle mdi-24px"></i></span>
+                                                                    <!---->
+                                                                </div>
+                                                                {% if error2 %}
+                                                                <p class="help is-danger">{{error2}}</p>
+                                                                {% endif %}
+                                                                <p class="help is-danger">Preencha este campo.</p>
+                                                                {% else %}
+                                                                <div class="field"><label class=""
+                                                                        for={{form.password1.id_for_label}}>Password</label>
+                                                                    <div class="control is-clearfix"><input
+                                                                            type="password"
+                                                                            id={{form.password1.id_for_label}}
+                                                                            name="password1" class="input">
+                                                                    </div>
+                                                                </div>
+                                                                {% endif %}
+                                                                {% if form.password2.errors %}
+                                                                <div class="field"><label class=""
+                                                                        for={{form.password1.id_for_label}}>Password
+                                                                        Confirm</label>
+                                                                    <div class="control has-icons-right"><input
+                                                                            type="password" name="password2"
+                                                                            id={{form.password2.id_for_label}}
+                                                                            autocomplete="on" class="input is-danger">
+                                                                        <!----> <span
+                                                                            class="icon is-right has-text-danger"><i
+                                                                                class="mdi mdi-alert-circle mdi-24px"></i></span>
+                                                                        <!---->
+                                                                    </div>
+                                                                    {% if error3 %}
+                                                                    <p class="help is-danger">{{error3}}</p>
+                                                                    {% endif %}
+                                                                    <p class="help is-danger">Preencha este campo.</p>
+                                                                    {% else %}
+                                                                    <div class="field"><label class=""
+                                                                            for={{form.password2.id_for_label}}>Password
+                                                                            Confirm</label>
+                                                                        <div class="control is-clearfix"><input
+                                                                                type="password"
+                                                                                id={{form.password2.id_for_label}}
+                                                                                name="password2" class="input">
+                                                                        </div>
+                                                                    </div>
+                                                                    {% endif %}
+                                                                    <div class="field"><label class="">Funçao</label>
+                                                                        <div class="control is-expanded"><span
+                                                                                class="select is-empty"><select>
+                                                                                    <!---->
+                                                                                    <option value="universidade">Colaborador
+                                                                                    </option>
+                                                                                    <option value="comboio">Coordenador
+                                                                                    </option>
+                                                                                    <option value="autocarroProprio">
+                                                                                        Docente Universitario</option>
+                                                                                    <option value="outrosMeios">Participante</option>
+                                                                                </select></span>
+                                                                            <!---->
+                                                                        </div>
+                                                                        <!---->
+                                                                    </div>
+                                                                </div>
+                                                                <hr>
+                                                            </div>
+                                                        </div>
                         </section>
+
                         <div class="column is-8 is-offset-2">
                             <div class="level">
                                 <div class="level-left"><a href=".." class="button is-outlined" type="button">

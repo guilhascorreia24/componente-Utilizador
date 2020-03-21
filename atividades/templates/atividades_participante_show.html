@@ -7,6 +7,7 @@
     <meta content="width=device-width,initial-scale=1" name="viewport">
     <link href="{% static "img/favicon.ico" %}" rel="icon">
     <link rel="stylesheet" href="//cdn.materialdesignicons.com/4.9.95/css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <title>Dia Aberto</title>
     <style>
         body,
@@ -66,13 +67,15 @@
     <script charset="utf-8" src="{% static "js/proporatividade.46ad7021.js" %}"></script>
     <link rel="stylesheet" type="text" {% static "css" href=""{% static "css/inscricao.1e7f0088.css" %}">
     <script charset="utf-8" src="{% static "js/inscricao.689ad7a7.js" %}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
 
 <body><noscript><strong>We're sorry but dia_aberto_frontend doesn't work properly without JavaScript enabled. Please
             enable it to continue.</strong></noscript>
     <div data-v-8716d23a="" id="app">
-        <nav data-v-a67fe1ba="" data-v-8716d23a="" role="navigation" aria-label="main navigation" class="navbar">
-            <div class="navbar-brand"><a data-v-a67fe1ba="" href="/" class="navbar-item logo router-link-active"><img
+        <nav data-v-a67fe1ba="" data-v-8716d23a="" role="navigation" aria-label="main navigation" class="navbar" style="margin:0%"> 
+            <div class="navbar-brand" style="padding:0%"><a data-v-a67fe1ba="" href="/" class="navbar-item logo router-link-active"><img
                         data-v-a67fe1ba="" alt="Dia Aberto" src="{% static "img/logo-navbar.1a946f02.png" %}"></a><a
                     role="button" aria-label="menu" class="navbar-burger burger"><span aria-hidden="true"></span> <span
                         aria-hidden="true"></span> <span aria-hidden="true"></span></a></div>
@@ -83,15 +86,16 @@
                 <div class="navbar-end">
                     <div data-v-a67fe1ba="" class="navbar-item">
                         <div data-v-a67fe1ba="" class="dropdown is-bottom-left is-mobile-modal">
+                            <a class="dropdown-toggle" role="button" data-toggle="dropdown">
                             <div role="button" aria-haspopup="true" class="dropdown-trigger"><span data-v-a67fe1ba=""
                                     role="button"><button data-v-a67fe1ba="" type="button" data-badge="0"
                                         class="button has-badge-rounded has-badge-warning is-text"
                                         style="margin-right: 0.9rem;">
                                         <!----> <span><span data-v-a67fe1ba="" class="icon"><i
                                                     class="mdi mdi-bell mdi-24px"></i></span></span>
-                                        <!----></button></span></div>
+                                        <!----></button></span></div></a>
                             <div aria-hidden="true" class="background" style="display: none;"></div>
-                            <div aria-hidden="true" class="dropdown-menu" style="display: none;">
+                            <div class="dropdown-menu">
                                 <div role="menu" class="dropdown-content">
                                     <div data-v-a67fe1ba="" role="menuitem" tabindex="0" class="dropdown-item"><strong
                                             data-v-a67fe1ba="">Notificações</strong></div>
@@ -151,7 +155,7 @@
                                 <nav class="steps is-success">
                                     <ul class="step-items">
                                         <li class="step-item is-success"><a class="step-link">
-                                                <div class="step"><span class="icon"><i
+                                                <div class="step-marker"><span class="icon"><i
                                                             class="mdi mdi-account mdi-24px"></i></span></div>
                                                 <div class="step-details"><span class="step-title">Responsáveis</span>
                                                 </div>
@@ -3146,7 +3150,7 @@
                                                                                 </tr>
                                                                                 <!---->
                                                                                 <!---->
-                                                                                <tr draggable="false" class="">
+                                                                                <tr class="dropdown-toggle" role="button" data-toggle="dropdown">
                                                                                     <td class="chevron-cell"><a
                                                                                             role="button"><span
                                                                                                 class="icon"><i
@@ -3165,9 +3169,120 @@
                                                                                     </td>
                                                                                     <!---->
                                                                                 </tr>
+                                                                                <tr class="dropdown-menu detail">
+                                                                                    <td colspan="6">
+                                                                                        <div class="detail-container dropdown-item">
+                                                                                            <div class="content">
+                                                                                                <div style="font-size: 15px;">
+                                                                                                    <p>Conceitos físicos
+                                                                                                        demonstrados em
+                                                                                                        tarefas do dia a
+                                                                                                        dia</p>
+                                                                                                    <p><strong>Responsável:</strong>
+                                                                                                        João Barreiros
+                                                                                                    </p>
+                                                                                                    <div class="b-table">
+                                                                                                        <!---->
+                                                                                                        <!---->
+                                                                                                        <div class="table-wrapper">
+                                                                                                            <table class="table has-mobile-cards">
+                                                                                                                <thead>
+                                                                                                                    <tr>
+                                                                                                                        <!---->
+                                                                                                                        <!---->
+                                                                                                                        <th class="">
+                                                                                                                            <div class="th-wrap">
+                                                                                                                                Hora
+                                                                                                                                <span class="icon is-small" style="display: none;"><i class="mdi mdi-arrow-up"></i></span>
+                                                                                                                            </div>
+                                                                                                                        </th>
+                                                                                                                        <th class="">
+                                                                                                                            <div class="th-wrap">
+                                                                                                                                Duração
+                                                                                                                                <span class="icon is-small" style="display: none;"><i class="mdi mdi-arrow-up"></i></span>
+                                                                                                                            </div>
+                                                                                                                        </th>
+                                                                                                                        <th class="">
+                                                                                                                            <div class="th-wrap">
+                                                                                                                                Vagas
+                                                                                                                                <span class="icon is-small" style="display: none;"><i class="mdi mdi-arrow-up"></i></span>
+                                                                                                                            </div>
+                                                                                                                        </th>
+                                                                                                                        <th class="">
+                                                                                                                            <div class="th-wrap">
+                                                                                                                                Espaço
+                                                                                                                                <span class="icon is-small" style="display: none;"><i class="mdi mdi-arrow-up"></i></span>
+                                                                                                                            </div>
+                                                                                                                        </th>
+                                                                                                                        <th class="">
+                                                                                                                            <div class="th-wrap">
+                                                                                                                                Inscrever
+                                                                                                                                <span class="icon is-small" style="display: none;"><i class="mdi mdi-arrow-up"></i></span>
+                                                                                                                            </div>
+                                                                                                                        </th>
+                                                                                                                        <!---->
+                                                                                                                    </tr>
+                                                                                                                    <!---->
+                                                                                                                    <!---->
+                                                                                                                </thead>
+                                                                                                                <tbody>
+                                                                                                                    <tr draggable="false" class="">
+                                                                                                                        <!---->
+                                                                                                                        <!---->
+                                                                                                                        <td data-label="Hora" class="">
+                                                                                                                            14:00
+                                                                                                                        </td>
+                                                                                                                        <td data-label="Duração" class="">
+                                                                                                                            60
+                                                                                                                            min
+                                                                                                                        </td>
+                                                                                                                        <td data-label="Vagas" class="">
+                                                                                                                            35
+                                                                                                                        </td>
+                                                                                                                        <td data-label="Espaço" class="">
+                                                                                                                            Ed.2
+                                                                                                                            Sala
+                                                                                                                            2.12
+                                                                                                                        </td>
+                                                                                                                        <td data-label="Inscrever" class="">
+                                                                                                                            <div class="field has-numberinput has-numberinput-compact">
+                                                                                                                                <!---->
+                                                                                                                                <div class="b-numberinput field no-margin-bottom has-addons" style="width: 7rem; margin-bottom: 0px;">
+                                                                                                                                    <p class="control">
+                                                                                                                                        <button type="button" class="button is-primary"><span class="icon"><i class="mdi mdi-minus mdi-24px"></i></span></button>
+                                                                                                                                    </p>
+                                                                                                                                    <div class="control is-clearfix">
+                                                                                                                                        <input type="number" autocomplete="on" step="1" min="0" class="input">
+                                                                                                                                        <!---->
+                                                                                                                                        <!---->
+                                                                                                                                        <!---->
+                                                                                                                                    </div>
+                                                                                                                                    <p class="control">
+                                                                                                                                        <button type="button" class="button is-primary"><span class="icon"><i class="mdi mdi-plus mdi-24px"></i></span></button>
+                                                                                                                                    </p>
+                                                                                                                                </div>
+                                                                                                                                <!---->
+                                                                                                                            </div>
+                                                                                                                        </td>
+                                                                                                                        <!---->
+                                                                                                                    </tr>
+                                                                                                                    <!---->
+                                                                                                                    <!---->
+                                                                                                                </tbody>
+                                                                                                                <!---->
+                                                                                                            </table>
+                                                                                                        </div>
+                                                                                                        <!---->
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </td>
+                                                                                </tr>
                                                                                 <!---->
                                                                                 <!---->
-                                                                                <tr draggable="false" class="">
+                                
+                                                                                <tr class="dropdown-toggle" role="button" data-toggle="dropdown">
                                                                                     <td class="chevron-cell"><a
                                                                                             role="button"><span
                                                                                                 class="icon"><i
@@ -3185,6 +3300,169 @@
                                                                                     <td data-label="Dep." class=""> BST
                                                                                     </td>
                                                                                     <!---->
+                                                                                </tr>
+                                                                                <tr class="dropdown-menu detail">
+                                                                                    <td colspan="6">
+                                                                                        <div class="detail-container dropdown-item">
+                                                                                            <div class="content">
+                                                                                                <div
+                                                                                                    style="font-size: 15px;">
+                                                                                                    <p>Conceitos físicos
+                                                                                                        demonstrados em
+                                                                                                        tarefas do dia a
+                                                                                                        dia</p>
+                                                                                                    <p><strong>Responsável:</strong>
+                                                                                                        João Barreiros
+                                                                                                    </p>
+                                                                                                    <div
+                                                                                                        class="b-table">
+                                                                                                        <!---->
+                                                                                                        <!---->
+                                                                                                        <div
+                                                                                                            class="table-wrapper">
+                                                                                                            <table
+                                                                                                                class="table has-mobile-cards">
+                                                                                                                <thead>
+                                                                                                                    <tr>
+                                                                                                                        <!---->
+                                                                                                                        <!---->
+                                                                                                                        <th
+                                                                                                                            class="">
+                                                                                                                            <div
+                                                                                                                                class="th-wrap">
+                                                                                                                                Hora
+                                                                                                                                <span
+                                                                                                                                    class="icon is-small"
+                                                                                                                                    style="display: none;"><i
+                                                                                                                                        class="mdi mdi-arrow-up"></i></span>
+                                                                                                                            </div>
+                                                                                                                        </th>
+                                                                                                                        <th
+                                                                                                                            class="">
+                                                                                                                            <div
+                                                                                                                                class="th-wrap">
+                                                                                                                                Duração
+                                                                                                                                <span
+                                                                                                                                    class="icon is-small"
+                                                                                                                                    style="display: none;"><i
+                                                                                                                                        class="mdi mdi-arrow-up"></i></span>
+                                                                                                                            </div>
+                                                                                                                        </th>
+                                                                                                                        <th
+                                                                                                                            class="">
+                                                                                                                            <div
+                                                                                                                                class="th-wrap">
+                                                                                                                                Vagas
+                                                                                                                                <span
+                                                                                                                                    class="icon is-small"
+                                                                                                                                    style="display: none;"><i
+                                                                                                                                        class="mdi mdi-arrow-up"></i></span>
+                                                                                                                            </div>
+                                                                                                                        </th>
+                                                                                                                        <th
+                                                                                                                            class="">
+                                                                                                                            <div
+                                                                                                                                class="th-wrap">
+                                                                                                                                Espaço
+                                                                                                                                <span
+                                                                                                                                    class="icon is-small"
+                                                                                                                                    style="display: none;"><i
+                                                                                                                                        class="mdi mdi-arrow-up"></i></span>
+                                                                                                                            </div>
+                                                                                                                        </th>
+                                                                                                                        <th
+                                                                                                                            class="">
+                                                                                                                            <div
+                                                                                                                                class="th-wrap">
+                                                                                                                                Inscrever
+                                                                                                                                <span
+                                                                                                                                    class="icon is-small"
+                                                                                                                                    style="display: none;"><i
+                                                                                                                                        class="mdi mdi-arrow-up"></i></span>
+                                                                                                                            </div>
+                                                                                                                        </th>
+                                                                                                                        <!---->
+                                                                                                                    </tr>
+                                                                                                                    <!---->
+                                                                                                                    <!---->
+                                                                                                                </thead>
+                                                                                                                <tbody>
+                                                                                                                    <tr draggable="false"
+                                                                                                                        class="">
+                                                                                                                        <!---->
+                                                                                                                        <!---->
+                                                                                                                        <td data-label="Hora"
+                                                                                                                            class="">
+                                                                                                                            14:00
+                                                                                                                        </td>
+                                                                                                                        <td data-label="Duração"
+                                                                                                                            class="">
+                                                                                                                            60
+                                                                                                                            min
+                                                                                                                        </td>
+                                                                                                                        <td data-label="Vagas"
+                                                                                                                            class="">
+                                                                                                                            35
+                                                                                                                        </td>
+                                                                                                                        <td data-label="Espaço"
+                                                                                                                            class="">
+                                                                                                                            Ed.2
+                                                                                                                            Sala
+                                                                                                                            2.12
+                                                                                                                        </td>
+                                                                                                                        <td data-label="Inscrever"
+                                                                                                                            class="">
+                                                                                                                            <div
+                                                                                                                                class="field has-numberinput has-numberinput-compact">
+                                                                                                                                <!---->
+                                                                                                                                <div class="b-numberinput field no-margin-bottom has-addons"
+                                                                                                                                    style="width: 7rem; margin-bottom: 0px;">
+                                                                                                                                    <p
+                                                                                                                                        class="control">
+                                                                                                                                        <button
+                                                                                                                                            type="button"
+                                                                                                                                            class="button is-primary"><span
+                                                                                                                                                class="icon"><i
+                                                                                                                                                    class="mdi mdi-minus mdi-24px"></i></span></button>
+                                                                                                                                    </p>
+                                                                                                                                    <div
+                                                                                                                                        class="control is-clearfix">
+                                                                                                                                        <input
+                                                                                                                                            type="number"
+                                                                                                                                            autocomplete="on"
+                                                                                                                                            step="1"
+                                                                                                                                            min="0"
+                                                                                                                                            class="input">
+                                                                                                                                        <!---->
+                                                                                                                                        <!---->
+                                                                                                                                        <!---->
+                                                                                                                                    </div>
+                                                                                                                                    <p
+                                                                                                                                        class="control">
+                                                                                                                                        <button
+                                                                                                                                            type="button"
+                                                                                                                                            class="button is-primary"><span
+                                                                                                                                                class="icon"><i
+                                                                                                                                                    class="mdi mdi-plus mdi-24px"></i></span></button>
+                                                                                                                                    </p>
+                                                                                                                                </div>
+                                                                                                                                <!---->
+                                                                                                                            </div>
+                                                                                                                        </td>
+                                                                                                                        <!---->
+                                                                                                                    </tr>
+                                                                                                                    <!---->
+                                                                                                                    <!---->
+                                                                                                                </tbody>
+                                                                                                                <!---->
+                                                                                                            </table>
+                                                                                                        </div>
+                                                                                                        <!---->
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </td>
                                                                                 </tr>
                                                                                 <!---->
                                                                                 <!---->
@@ -3273,17 +3551,21 @@
                                 <div class="column is-8 is-offset-2">
                                     <div class="level">
                                         <div class="level-left"><a href="/"
-                                                class="button router-link-active is-outlined" type="button" id="prevBtn" onclick="nextPrev(-1)">
+                                                class="button router-link-active is-outlined" type="button" id="prevBtn"
+                                                onclick="nextPrev(-1)">
                                                 <!----> <span> Cancelar </span>
                                                 <!----></a></div>
                                         <div class="level-right"><button type="button"
-                                                class="button is-large is-success is-outlined" id="nextBtn" onclick="nextPrev(1)">
+                                                class="button is-large is-success is-outlined" id="nextBtn"
+                                                onclick="nextPrev(1)">
                                                 <!----> <span> Próximo </span> <span class="icon is-medium"><i
                                                         class="mdi mdi-forward mdi-36px"></i></span></button></div>
                                     </div>
                                 </div>
                                 <!-- Circles which indicates the steps of the form: -->
                                 <div style="text-align:center;margin-top:40px;">
+                                    <span class="step"></span>
+                                    <span class="step"></span>
                                     <span class="step"></span>
                                     <span class="step"></span>
                                     <span class="step"></span>
@@ -3302,7 +3584,7 @@
                                         if (n == 0) {
                                             document.getElementById("prevBtn").style.display = "Cancel";
                                         } else {
-                                            document.getElementById("prevBtn").style.display = "Anetrior";
+                                            document.getElementById("prevBtn").style.display = "Anterior";
                                         }
                                         if (n == (x.length - 1)) {
                                             document.getElementById("nextBtn").innerHTML = "Submeter";
