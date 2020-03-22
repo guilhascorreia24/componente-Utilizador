@@ -45,7 +45,7 @@
                                         {% csrf_token %}
                                         {% if messages %}
                                         {% for message in messages %}
-                                        <p class="text-center">{{message}}</p>
+                                        <h1 class="help is-danger" style="text-align: center;">{{message}}</h1>
                                         {% endfor %}
                                         {% endif %}
                                         <div class="column is-offset-3 is-6">
@@ -68,7 +68,7 @@
                                                     </div>
                                                 </div>
                                                 {% endif %}
-                                                {% if form.password1.errors %}
+                                                {% if form.password.errors %}
                                                 <div class="field"><label class=""
                                                         for={{form.password.id_for_label}}>Password</label>
                                                     <div class="control has-icons-right"><input type="password"
@@ -78,9 +78,6 @@
                                                                 class="mdi mdi-alert-circle mdi-24px"></i></span>
                                                         <!---->
                                                     </div>
-                                                    {% if error2 %}
-                                                    <p class="help is-danger">{{error2}}</p>
-                                                    {% endif %}
                                                     <p class="help is-danger">Preencha este campo.</p>
                                                     {% else %}
                                                     <div class="field"><label class=""

@@ -20,7 +20,7 @@ class UserRegisterForm(forms.Form):
     def save(self):
         data = self.cleaned_data
         user=Utilizador(nome=data['name'],username=data['username'],
-            email=data['email'],telefone=data['telefone'],password=data['password1'])
+            email=data['email'],telefone=data['telefone'],password=data['password1'],validada=False)
         user.save()
     
     def clean_password(self):

@@ -83,7 +83,7 @@
                                                         </div>
                                                     </div>
                                                     {% endif %}
-                                                    {% if form.email.errors %}
+                                                    {% if form.email.errors or error1%}
                                                     <div class="field"><label class=""
                                                             for={{form.email.id_for_label}}>Email</label>
                                                         <div class="control has-icons-right"><input type="email"
@@ -93,7 +93,7 @@
                                                                     class="mdi mdi-alert-circle mdi-24px"></i></span>
                                                             <!---->
                                                         </div>
-                                                        <p class="help is-danger">Preencha este campo.</p>
+                                                            <p class="help is-danger">{{error1}}</p>
                                                         {% else %}
                                                         <div class="field"><label class=""
                                                                 for={{form.email.id_for_label}}>Email</label>
@@ -103,7 +103,7 @@
                                                             </div>
                                                         </div>
                                                         {% endif %}
-                                                        {% if form.telefone.errors %}
+                                                        {% if form.telefone.errors  or error4%}
                                                         <div class="field"><label class=""
                                                                 for={{form.telefone.id_for_label}}>Telefone/Telemovel</label>
                                                             <div class="control has-icons-right"><input type="text"
@@ -114,10 +114,7 @@
                                                                         class="mdi mdi-alert-circle mdi-24px"></i></span>
                                                                 <!---->
                                                             </div>
-                                                            {% if error1 %}
-                                                            <p class="help is-danger">{{error1}}</p>
-                                                            {% endif %}
-                                                            <p class="help is-danger">Preencha este campo.</p>
+                                                            <p class="help is-danger">{{error4}}</p>
                                                             {% else %}
                                                             <div class="field"><label class=""
                                                                     for={{form.telefone.id_for_label}}>Telefone/Telemovel</label>
@@ -128,7 +125,7 @@
                                                                 </div>
                                                             </div>
                                                             {% endif %}
-                                                            {% if form.password1.errors %}
+                                                            {% if form.password1.errors or error2 %}
                                                             <div class="field"><label class=""
                                                                     for={{form.password1.id_for_label}}>Password</label>
                                                                 <div class="control has-icons-right"><input
@@ -140,10 +137,7 @@
                                                                             class="mdi mdi-alert-circle mdi-24px"></i></span>
                                                                     <!---->
                                                                 </div>
-                                                                {% if error2 %}
                                                                 <p class="help is-danger">{{error2}}</p>
-                                                                {% endif %}
-                                                                <p class="help is-danger">Preencha este campo.</p>
                                                                 {% else %}
                                                                 <div class="field"><label class=""
                                                                         for={{form.password1.id_for_label}}>Password</label>
@@ -154,7 +148,7 @@
                                                                     </div>
                                                                 </div>
                                                                 {% endif %}
-                                                                {% if form.password2.errors %}
+                                                                {% if form.password2.errors or error3 %}
                                                                 <div class="field"><label class=""
                                                                         for={{form.password1.id_for_label}}>Password
                                                                         Confirm</label>
@@ -167,10 +161,7 @@
                                                                                 class="mdi mdi-alert-circle mdi-24px"></i></span>
                                                                         <!---->
                                                                     </div>
-                                                                    {% if error3 %}
                                                                     <p class="help is-danger">{{error3}}</p>
-                                                                    {% endif %}
-                                                                    <p class="help is-danger">Preencha este campo.</p>
                                                                     {% else %}
                                                                     <div class="field"><label class=""
                                                                             for={{form.password2.id_for_label}}>Password
@@ -211,7 +202,7 @@
                                         <!----></a></div>
                                 <div class="level-right"><button type="button"
                                         class="button is-large is-success is-outlined" data-toggle="modal"
-                                        data-target="#exampleModal">
+                                        data-target="#exampleModal" data-backdrop="false">
                                         <!----> <span> Submeter </span>
                                         <!----></button></div>
                             </div>
