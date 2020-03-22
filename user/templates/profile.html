@@ -5,14 +5,15 @@
         <div data-v-a67fe1ba="" class="navbar-item">
             <div data-v-a67fe1ba="" class="is-bottom-left is-mobile-modal dropdown ">
                 <a class="dropdown-toggle" role="button" data-toggle="dropdown">
-                <div role="button" aria-haspopup="true" class="dropdown-trigger"><span data-v-a67fe1ba=""
-                        role="button"><button data-v-a67fe1ba="" type="button" data-badge="0"
-                            class="button has-badge-rounded has-badge-warning is-text"
-                            style="margin-right: 0.9rem;">
-                            <!----> <span><span data-v-a67fe1ba="" class="icon"><i
-                                        class="mdi mdi-bell mdi-24px"></i></span></span>
-                            <!----></button></span></div></a>
-                <div  class="dropdown-menu" >
+                    <div role="button" aria-haspopup="true" class="dropdown-trigger"><span data-v-a67fe1ba=""
+                            role="button"><button data-v-a67fe1ba="" type="button" data-badge="0"
+                                class="button has-badge-rounded has-badge-warning is-text"
+                                style="margin-right: 0.9rem;">
+                                <!----> <span><span data-v-a67fe1ba="" class="icon"><i
+                                            class="mdi mdi-bell mdi-24px"></i></span></span>
+                                <!----></button></span></div>
+                </a>
+                <div class="dropdown-menu">
                     <div role="menu" class="dropdown-content">
                         <div data-v-a67fe1ba="" role="menuitem" tabindex="0" class="dropdown-item"><strong
                                 data-v-a67fe1ba="">Notificações</strong></div>
@@ -23,17 +24,17 @@
                                 </div>
                             </div>
                             <hr data-v-a67fe1ba="" class="dropdown-divider">
-                        </div><a data-v-a67fe1ba="" tabindex="0" class="dropdown-item"><u
-                                data-v-a67fe1ba="">Ver todas as notificações</u></a>
+                        </div><a data-v-a67fe1ba="" tabindex="0" class="dropdown-item"><u data-v-a67fe1ba="">Ver todas
+                                as notificações</u></a>
                     </div>
                 </div>
             </div>
             <div data-v-a67fe1ba="" class="dropdown is-bottom-left is-mobile-modal">
-                <div role="button" aria-haspopup="true" class="dropdown-trigger"><a href="profile"><button data-v-a67fe1ba=""
-                        type="button" class="button is-text" style="margin-right: 0.9rem;">
-                        <!----> <span><span data-v-a67fe1ba="" class="icon"><i
-                                    class="mdi mdi-account-circle mdi-24px"></i></span></span>
-                        <!----></button></a></div>
+                <div role="button" aria-haspopup="true" class="dropdown-trigger"><a href="profile"><button
+                            data-v-a67fe1ba="" type="button" class="button is-text" style="margin-right: 0.9rem;">
+                            <!----> <span><span data-v-a67fe1ba="" class="icon"><i
+                                        class="mdi mdi-account-circle mdi-24px"></i></span></span>
+                            <!----></button></a></div>
                 <div aria-hidden="true" class="background" style="display: none;"></div>
             </div><a href="logout"><button data-v-a67fe1ba="" type="button" class="button"><span
                         class="icon is-small"><i class="mdi mdi-logout-variant"></i></span> <span> Sair
@@ -75,43 +76,37 @@
                                     <hr>
                                     <form method="POST">
                                         <div class="column is-offset-3 is-6">
+                                            <div class="page-context-header">
+                                                <div class="page-header-image"><a
+                                                        href=""><img
+                                                            src="https://tutoria.ualg.pt/2019/theme/image.php/boostualg/core/1582535563/u/f1"
+                                                            class="userpicture defaultuserpic" width="100" height="100"
+                                                            alt="Fotografia de {{nome}}"
+                                                            title="Fotografia de {{nome}}"></a></div>
+                                            </div>  
                                             <div class="field"><label class="" for={{form.name.id_for_label}}
-                                                aria-label="breadcrumbs">Nome</label>
-                                            <div class="control is-clearfix"><input type="text" name="name" id={{form.name.id_for_label}}
-                                                    class="input" value=>
+                                                    aria-label="breadcrumbs">Nome</label>
+                                                <div class="control is-clearfix"><input type="text" name="name"
+                                                        id={{form.name.id_for_label}} class="input" value={{nome}}>
+                                                </div>
                                             </div>
-                                        </div>
                                             <div class="field"><label class=""
                                                     for={{form.username.id_for_label}}>Username</label>
-                                                <div class="control is-clearfix"><input type="text" name="username" id={{form.username.id_for_label}}
-                                                        class="input">
+                                                <div class="control is-clearfix"><input type="text" name="username"
+                                                        id={{form.username.id_for_label}} class="input" value={{nome}}>
                                                 </div>
                                             </div>
                                             <div class="field"><label class=""
                                                     for={{form.email.id_for_label}}>Email</label>
-                                                <div class="control is-clearfix"><input type="email" name="email" id={{form.email.id_for_label}}
-                                                        class="input">
+                                                <div class="control is-clearfix"><input type="email" name="email"
+                                                        id={{form.email.id_for_label}} class="input" value="{{email}}">
                                                 </div>
                                             </div>
                                             <div class="field"><label class=""
                                                     for={{form.telefone.id_for_label}}>Telefone/Telemovel</label>
-                                                <div class="control is-clearfix"><input type="tel" 
+                                                <div class=" control is-clearfix"><input type="tel"
                                                         id={{form.telefone.id_for_label}} name="telefone" class="input"
-                                                        pattern="[0-9]{3}[0-9]{3}[0-9]{3}">
-                                                </div>
-                                            </div>
-                                            <div class="field"><label class=""
-                                                    for={{form.password1.id_for_label}}>Password</label>
-                                                <div class="control is-clearfix"><input type="password" 
-                                                        id={{form.password1.id_for_label}} name="password1"
-                                                        class="input">
-                                                </div>
-                                            </div>
-                                            <div class="field"><label class=""
-                                                    for={{form.password2.id_for_label}}>Password Confirm</label>
-                                                <div class="control is-clearfix"><input type="password" 
-                                                        id={{form.password2.id_for_label}} name="password2"
-                                                        class="input">
+                                                        pattern="[0-9]{3}[0-9]{3}[0-9]{3}" value={{telefone}}>
                                                 </div>
                                             </div>
                                         </div>
@@ -126,8 +121,8 @@
                                         <!----></a></div>
                                 <div class="level-right"><button type="button"
                                         class="button is-large is-success is-outlined" data-toggle="modal"
-                                        data-target="#exampleModal">
-                                        <!----> <span> Submeter </span>
+                                        data-target="">
+                                        <!----> <span>Personalizar pagina</span>
                                         <!----></button></div>
                             </div>
                         </div>
@@ -143,7 +138,7 @@
                         <div class="media">
                             <!---->
                             <div class="media-content">
-                                <p>Tem a certeza que quer inscrever-se no site?</p>
+                                <p>Tem a certeza que quer realizar a alteração?</p>
                                 <!---->
                             </div>
                         </div>

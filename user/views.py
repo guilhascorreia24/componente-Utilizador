@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from .forms import UserRegisterForm, AuthenticationForm
+from .forms import UserRegisterForm, AuthenticationForm, ModifyForm
 from .models import Utilizador, Participante, ProfessorUniversitario, Administrador, Coordenador, Colaborador
 from django.contrib.auth import authenticate, login
 
@@ -90,25 +90,26 @@ def profile(request):
     name=Utilizador.objects.get(idutilizador=id).nome
     email=Utilizador.objects.get(idutilizador=id).email
     telefone=Utilizador.objects.get(idutilizador=id).telefone
+    form=ModifyForm()
     if Participante.objects.filter(utilizador_idutilizador=id).exists():
         funcao="Participante"
-        return render(request,'profile.html',{'nome':name,'email':email,'telefone':telefone,'funcao':funcao})
+        return render(request,'profile.html',{"form":form,'nome':name,'email':email,'telefone':telefone,'funcao':funcao})
     elif ProfessorUniversitario.objects.filter(utilizador_idutilizador=id).exists():
         funcao ="docente Univesitario"
         IDUO=ProfessorUniversitario.objects.get(utilizador_utilizadorid=id).unidade_organica_iduo
-        return render(request,'profile.html',{'nome':name,'email':email,'telefone':telefone,'funcao':funcao,'Iduo':IDUO})
+        return render(request,'profile.html',{"form":form,'nome':name,'email':email,'telefone':telefone,'funcao':funcao,'Iduo':IDUO})
     elif Administrador.objects.filter(utilizador_utilizadorid=id).exists():
         funcao="administardor"
-        return render(request,'profile.html',{'nome':name,'email':email,'telefone':telefone,'funcao':funcao})
+        return render(request,'profile.html',{"form":form,'nome':name,'email':email,'telefone':telefone,'funcao':funcao})
     elif Coordenador.objects.filter(utilizador_utilizadorid=id).exists():
         funcao="Coordenador"
         idUO=Coordenador.objects.get(utilizador_utilizadorid=id).unidade_organica_iduo
-        return render(request,'profile.html',{'nome':name,'email':email,'telefone':telefone,'funcao':funcao,'Iduo':IDUO})
+        return render(request,'profile.html',{"form":form,'nome':name,'email':email,'telefone':telefone,'funcao':funcao,'Iduo':IDUO})
     elif Colaborador.objects.filter(utilizador_utilizadorid=id).exists():
         ano=Colaborador.objects.get(utilizador_utilizadorid=id).dia_aberto_ano
         funcao="Colaborador"
         curso=Colaborador.objects.get(utilizador_utilizadorid=id).curso
-        return render(request,'profile.html',{'nome':name,'email':email,'telefone':telefone,'funcao':funcao,'ano':ano,'curso':curso})
+        return render(request,'profile.html',{"form":form,'nome':name,'email':email,'telefone':telefone,'funcao':funcao,'ano':ano,'curso':curso})
 
 
 

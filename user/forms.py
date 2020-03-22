@@ -36,6 +36,18 @@ class AuthenticationForm(forms.Form):
     class Meta:
         model=Utilizador
         fields=['email','password']
+
+class ModifyForm(forms.Form):
+    name=forms.CharField(max_length=45,label="Nome")
+    username=forms.CharField(max_length=45,label="username")
+    email = forms.EmailField(max_length=45,label="Email")
+    telefone=forms.CharField(max_length=45,label="Telefone/Telemovel")
+    UO=forms.CharField(max_length=45,label="uo")
+    curso=forms.CharField(max_length=45,label="curso")
+
+    class Meta:
+        model=Utilizador
+        fields=['name','username','email','telefone','UO','curso']
     
     
 
