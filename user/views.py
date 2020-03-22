@@ -22,20 +22,14 @@ def register(request):
             error2='Preencha este campo.'
             if  Utilizador.objects.filter(email=request.POST['email']).exists():
                 error="Email ja existe"
-            else:
-                error=False
             if Utilizador.objects.filter(telefone=request.POST['telefone']).exists():
                 error3="telefone ja existe"
-            else:
-                error3=False
+
             if 1<len(request.POST['password1'])<6:
                 error1="password muito curta"
-            else:
-                error1=False
+
             if request.POST['password1']!=request.POST['password2']:
                 error2="Passwords nao coincidem"
-            else:
-                error2=False
             return render(request,'register.html',{'form':form,'error1':error,'error2':error1,'error3':error2,'error4':error3})
     form = UserRegisterForm()
     return render(request, 'register.html',{'form':form})

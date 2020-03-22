@@ -3,10 +3,42 @@
 <div class="navbar-menu">
     <div class="navbar-end">
         <div data-v-a67fe1ba="" class="navbar-item">
+            <div data-v-a67fe1ba="" class="is-bottom-left is-mobile-modal dropdown ">
+                <a class="dropdown-toggle" role="button" data-toggle="dropdown">
+                <div role="button" aria-haspopup="true" class="dropdown-trigger"><span data-v-a67fe1ba=""
+                        role="button"><button data-v-a67fe1ba="" type="button" data-badge="0"
+                            class="button has-badge-rounded has-badge-warning is-text"
+                            style="margin-right: 0.9rem;">
+                            <!----> <span><span data-v-a67fe1ba="" class="icon"><i
+                                        class="mdi mdi-bell mdi-24px"></i></span></span>
+                            <!----></button></span></div></a>
+                <div  class="dropdown-menu" >
+                    <div role="menu" class="dropdown-content">
+                        <div data-v-a67fe1ba="" role="menuitem" tabindex="0" class="dropdown-item"><strong
+                                data-v-a67fe1ba="">Notificações</strong></div>
+                        <hr data-v-a67fe1ba="" class="dropdown-divider">
+                        <div data-v-a67fe1ba="">
+                            <div data-v-a67fe1ba="" tabindex="0" class="dropdown-item">
+                                <div data-v-a67fe1ba="" class="has-text-grey"> Não tem novas notificações!
+                                </div>
+                            </div>
+                            <hr data-v-a67fe1ba="" class="dropdown-divider">
+                        </div><a data-v-a67fe1ba="" tabindex="0" class="dropdown-item"><u
+                                data-v-a67fe1ba="">Ver todas as notificações</u></a>
+                    </div>
+                </div>
+            </div>
             <div data-v-a67fe1ba="" class="dropdown is-bottom-left is-mobile-modal">
-            </div><a href="../login"><button data-v-a67fe1ba="" type="button" class="button"><span class="icon is-small"><i
-                        class="mdi mdi-logout-variant"></i></span> <span> Login </span>
-                <!----></button></a>
+                <div role="button" aria-haspopup="true" class="dropdown-trigger"><a href="profile"><button data-v-a67fe1ba=""
+                        type="button" class="button is-text" style="margin-right: 0.9rem;">
+                        <!----> <span><span data-v-a67fe1ba="" class="icon"><i
+                                    class="mdi mdi-account-circle mdi-24px"></i></span></span>
+                        <!----></button></a></div>
+                <div aria-hidden="true" class="background" style="display: none;"></div>
+            </div><a href="logout"><button data-v-a67fe1ba="" type="button" class="button"><span
+                        class="icon is-small"><i class="mdi mdi-logout-variant"></i></span> <span> Sair
+                    </span>
+                    <!----></button></a>
         </div>
     </div>
 </div>
@@ -22,7 +54,7 @@
                     <ul>
                         <li><a href="/" class="router-link-active">Início</a></li>
                         <li class="is-active"><a href=".."
-                                class="router-link-exact-active router-link-active">Register</a></li>
+                                class="router-link-exact-active router-link-active">Profile</a></li>
                     </ul>
                 </nav>
                 <div style="padding: 3rem 2vw 1rem;">
@@ -32,7 +64,7 @@
                                 <li class="step-item is-success is-active"><a class="step-link">
                                         <div class="step-marker"><span class="icon"><i
                                                     class="mdi mdi-book mdi-24px"></i></span></div>
-                                        <div class="step-details"><span class="step-title">Register</span>
+                                        <div class="step-details"><span class="step-title">Profile</span>
                                         </div>
                                     </a></li>
                             </ul>
@@ -42,72 +74,25 @@
                                 <div style="padding: 1rem 2vw 0px;">
                                     <hr>
                                     <form method="POST">
-                                        {% csrf_token %}
                                         <div class="column is-offset-3 is-6">
-                                            {% if form.name.errors %}
-                                            <div class="field"><label class="" for={{form.name.id_for_label}}>Name</label>
-                                                <div class="control has-icons-right"><input type="text"  name="name" id={{form.name.id_for_label}}
-                                                        autocomplete="on"  class="input is-danger">
-                                                    <!----> <span class="icon is-right has-text-danger"><i
-                                                            class="mdi mdi-alert-circle mdi-24px"></i></span>
-                                                    <!---->
-                                                </div>
-                                                <p class="help is-danger">Preencha este campo.</p>
-                                            {% else %}
                                             <div class="field"><label class="" for={{form.name.id_for_label}}
                                                 aria-label="breadcrumbs">Nome</label>
                                             <div class="control is-clearfix"><input type="text" name="name" id={{form.name.id_for_label}}
-                                                    class="input">
+                                                    class="input" value=>
                                             </div>
                                         </div>
-                                            {% endif %}
-                                            {% if form.username.errors %}
-                                            <div class="field"><label class="" for={{form.username.id_for_label}}>Username</label>
-                                                <div class="control has-icons-right"><input type="text"  name="username" id={{form.username.id_for_label}}
-                                                        autocomplete="on"  class="input is-danger">
-                                                    <!----> <span class="icon is-right has-text-danger"><i
-                                                            class="mdi mdi-alert-circle mdi-24px"></i></span>
-                                                    <!---->
-                                                </div>
-                                                <p class="help is-danger">Preencha este campo.</p>
-                                            {% else %}
                                             <div class="field"><label class=""
                                                     for={{form.username.id_for_label}}>Username</label>
                                                 <div class="control is-clearfix"><input type="text" name="username" id={{form.username.id_for_label}}
                                                         class="input">
                                                 </div>
                                             </div>
-                                            {% endif %}
-                                            {% if form.email.errors %}
-                                            <div class="field"><label class="" for={{form.email.id_for_label}}>Email</label>
-                                                <div class="control has-icons-right"><input type="email"  name="email" id={{form.email.id_for_label}}
-                                                        autocomplete="on"  class="input is-danger">
-                                                    <!----> <span class="icon is-right has-text-danger"><i
-                                                            class="mdi mdi-alert-circle mdi-24px"></i></span>
-                                                    <!---->
-                                                </div>
-                                                <p class="help is-danger">Preencha este campo.</p>
-                                            {% else %}
                                             <div class="field"><label class=""
                                                     for={{form.email.id_for_label}}>Email</label>
                                                 <div class="control is-clearfix"><input type="email" name="email" id={{form.email.id_for_label}}
                                                         class="input">
                                                 </div>
                                             </div>
-                                            {% endif %}
-                                            {% if form.telefone.errors %}
-                                            <div class="field"><label class="" for={{form.telefone.id_for_label}}>Telefone/Telemovel</label>
-                                                <div class="control has-icons-right"><input type="text"  name="telefone" id={{form.telefone.id_for_label}}
-                                                        autocomplete="on"  class="input is-danger" pattern="[0-9]{3}[0-9]{3}[0-9]{3}">
-                                                    <!----> <span class="icon is-right has-text-danger"><i
-                                                            class="mdi mdi-alert-circle mdi-24px"></i></span>
-                                                    <!---->
-                                                </div>
-                                                {% if error1 %}
-                                                <p class="help is-danger">{{error1}}</p>
-                                                {% endif %}
-                                                <p class="help is-danger">Preencha este campo.</p>
-                                            {% else %}
                                             <div class="field"><label class=""
                                                     for={{form.telefone.id_for_label}}>Telefone/Telemovel</label>
                                                 <div class="control is-clearfix"><input type="tel" 
@@ -115,20 +100,6 @@
                                                         pattern="[0-9]{3}[0-9]{3}[0-9]{3}">
                                                 </div>
                                             </div>
-                                            {% endif %}
-                                            {% if form.password1.errors %}
-                                            <div class="field"><label class="" for={{form.password1.id_for_label}}>Password</label>
-                                                <div class="control has-icons-right"><input type="password"  name="password1" id={{form.password1.id_for_label}}
-                                                        autocomplete="on"  class="input is-danger">
-                                                    <!----> <span class="icon is-right has-text-danger"><i
-                                                            class="mdi mdi-alert-circle mdi-24px"></i></span>
-                                                    <!---->
-                                                </div>
-                                                {% if error2 %}
-                                                <p class="help is-danger">{{error2}}</p>
-                                                {% endif %}
-                                                <p class="help is-danger">Preencha este campo.</p>
-                                            {% else %}
                                             <div class="field"><label class=""
                                                     for={{form.password1.id_for_label}}>Password</label>
                                                 <div class="control is-clearfix"><input type="password" 
@@ -136,19 +107,6 @@
                                                         class="input">
                                                 </div>
                                             </div>
-                                            {% endif %}
-                                            {% if form.password2.errors %}
-                                            <div class="field"><label class="" for={{form.password1.id_for_label}}>Password Confirm</label>
-                                                <div class="control has-icons-right"><input type="password"  name="password2" id={{form.password2.id_for_label}}
-                                                        autocomplete="on" class="input is-danger" >
-                                                    <!----> <span class="icon is-right has-text-danger"><i
-                                                            class="mdi mdi-alert-circle mdi-24px"></i></span>
-                                                    <!----> </div>
-                                                    {% if error3 %}
-                                                    <p class="help is-danger">{{error3}}</p>
-                                                    {% endif %}
-                                                    <p class="help is-danger">Preencha este campo.</p>
-                                            {% else %}
                                             <div class="field"><label class=""
                                                     for={{form.password2.id_for_label}}>Password Confirm</label>
                                                 <div class="control is-clearfix"><input type="password" 
@@ -156,7 +114,6 @@
                                                         class="input">
                                                 </div>
                                             </div>
-                                            {% endif %}
                                         </div>
                                         <hr>
                                 </div>
