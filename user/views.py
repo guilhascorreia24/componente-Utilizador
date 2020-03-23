@@ -42,8 +42,8 @@ def login_request(request):
                 messages.success(request, f"Bem-vindo {username}")
                 request.session['user_id']=Utilizador.objects.get(email=request.POST['email']).idutilizador
                 r= redirect('blog-home')
-                if request.POST['check']==1 :
-                    r.session.set_test_cookie()
+                if 'check' in request.POST and request.POST['check']=='1' :
+                   r.set_cookie('cookie_id',request.session['user_id'],7 * 24 * 60 * 60)
                 return r
             else:
                 messages.error(request, "Invalid username or password.")
@@ -52,10 +52,12 @@ def login_request(request):
     return render(request = request,template_name = "login.html",context={"form":form})
 
 def logout_request(request):
+    r=redirect("blog-home")
     del request.session['user_id']
-    request.session.delete_test_cookie()
+    if 'cookie_id' in request.COOKIES :
+        r.delete_cookie('cookie_id')
     messages.info(request, "Logged out successfully!")
-    return redirect("blog-home")
+    return r
 
 def delete_user(request):
     username = Utilizador.objects.get(request.session['user_id'])
