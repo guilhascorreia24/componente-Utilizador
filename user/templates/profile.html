@@ -36,7 +36,7 @@
                                         class="mdi mdi-account-circle mdi-24px"></i></span></span>
                             <!----></button></a></div>
                 <div aria-hidden="true" class="background" style="display: none;"></div>
-            </div><a href="logout"><button data-v-a67fe1ba="" type="button" class="button"><span
+            </div><a href="../logout"><button data-v-a67fe1ba="" type="button" class="button"><span
                         class="icon is-small"><i class="mdi mdi-logout-variant"></i></span> <span> Sair
                     </span>
                     <!----></button></a>
@@ -87,28 +87,29 @@
                                             <div class="field"><label class="" for={{form.name.id_for_label}}
                                                     aria-label="breadcrumbs">Nome</label>
                                                 <div class="control is-clearfix"><input type="text" name="name"
-                                                        id={{form.name.id_for_label}} class="input" value={{nome}}>
+                                                        id={{form.name.id_for_label}} class="input" value={{nome}} disabled>
                                                 </div>
                                             </div>
                                             <div class="field"><label class=""
                                                     for={{form.username.id_for_label}}>Username</label>
                                                 <div class="control is-clearfix"><input type="text" name="username"
-                                                        id={{form.username.id_for_label}} class="input" value={{nome}}>
+                                                        id={{form.username.id_for_label}} class="input" value={{username}} disabled>
                                                 </div>
                                             </div>
                                             <div class="field"><label class=""
                                                     for={{form.email.id_for_label}}>Email</label>
                                                 <div class="control is-clearfix"><input type="email" name="email"
-                                                        id={{form.email.id_for_label}} class="input" value="{{email}}">
+                                                        id={{form.email.id_for_label}} class="input" value="{{email}}" disabled>
                                                 </div>
                                             </div>
                                             <div class="field"><label class=""
                                                     for={{form.telefone.id_for_label}}>Telefone/Telemovel</label>
                                                 <div class=" control is-clearfix"><input type="tel"
                                                         id={{form.telefone.id_for_label}} name="telefone" class="input"
-                                                        pattern="[0-9]{3}[0-9]{3}[0-9]{3}" value={{telefone}}>
+                                                        pattern="[0-9]{3}[0-9]{3}[0-9]{3}" value={{telefone}} disabled>
                                                 </div>
                                             </div>
+                                            {% if }
                                         </div>
                                         <hr>
                                 </div>

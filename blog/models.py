@@ -62,6 +62,72 @@ class AtividadeHasMaterial(models.Model):
         unique_together = (('atividade_idatividade', 'material_idmaterial'),)
 
 
+class AuthGroup(models.Model):
+    name = models.CharField(unique=True, max_length=150)
+
+    class Meta:
+        managed = False
+        db_table = 'auth_group'
+
+
+class AuthGroupPermissions(models.Model):
+    group = models.ForeignKey(AuthGroup, models.DO_NOTHING)
+    permission = models.ForeignKey('AuthPermission', models.DO_NOTHING)
+
+    class Meta:
+        managed = False
+        db_table = 'auth_group_permissions'
+        unique_together = (('group', 'permission'),)
+
+
+class AuthPermission(models.Model):
+    name = models.CharField(max_length=255)
+    content_type = models.ForeignKey('DjangoContentType', models.DO_NOTHING)
+    codename = models.CharField(max_length=100)
+
+    class Meta:
+        managed = False
+        db_table = 'auth_permission'
+        unique_together = (('content_type', 'codename'),)
+
+
+class AuthUser(models.Model):
+    password = models.CharField(max_length=128)
+    last_login = models.DateTimeField(blank=True, null=True)
+    is_superuser = models.IntegerField()
+    username = models.CharField(unique=True, max_length=150)
+    first_name = models.CharField(max_length=30)
+    last_name = models.CharField(max_length=150)
+    email = models.CharField(max_length=254)
+    is_staff = models.IntegerField()
+    is_active = models.IntegerField()
+    date_joined = models.DateTimeField()
+
+    class Meta:
+        managed = False
+        db_table = 'auth_user'
+
+
+class AuthUserGroups(models.Model):
+    user = models.ForeignKey(AuthUser, models.DO_NOTHING)
+    group = models.ForeignKey(AuthGroup, models.DO_NOTHING)
+
+    class Meta:
+        managed = False
+        db_table = 'auth_user_groups'
+        unique_together = (('user', 'group'),)
+
+
+class AuthUserUserPermissions(models.Model):
+    user = models.ForeignKey(AuthUser, models.DO_NOTHING)
+    permission = models.ForeignKey(AuthPermission, models.DO_NOTHING)
+
+    class Meta:
+        managed = False
+        db_table = 'auth_user_user_permissions'
+        unique_together = (('user', 'permission'),)
+
+
 class Campus(models.Model):
     idcampus = models.AutoField(db_column='idCampus', primary_key=True)  # Field name made lowercase.
     nome = models.CharField(max_length=45)
@@ -83,23 +149,21 @@ class Colaborador(models.Model):
 
 
 class ColaboradorHasHorario(models.Model):
-    colaborador_utilizador_idutilizador = models.OneToOneField(Colaborador, models.DO_NOTHING, db_column='colaborador_Utilizador_idutilizador', primary_key=True)  # Field name made lowercase.
+    colaborador_utilizador_idutilizador = models.ForeignKey(Colaborador, models.DO_NOTHING, db_column='colaborador_Utilizador_idutilizador')  # Field name made lowercase.
     horario_horainicio = models.ForeignKey('Horario', models.DO_NOTHING, db_column='Horario_horainicio')  # Field name made lowercase.
 
     class Meta:
         managed = False
         db_table = 'colaborador_has_horario'
-        unique_together = (('colaborador_utilizador_idutilizador', 'horario_horainicio'),)
 
 
 class ColaboradorHasUnidadeOrganica(models.Model):
-    colaborador_utilizador_idutilizador = models.OneToOneField(Colaborador, models.DO_NOTHING, db_column='colaborador_Utilizador_idutilizador', primary_key=True)  # Field name made lowercase.
+    colaborador_utilizador_idutilizador = models.ForeignKey(Colaborador, models.DO_NOTHING, db_column='colaborador_Utilizador_idutilizador')  # Field name made lowercase.
     unidade_organica_iduo = models.ForeignKey('UnidadeOrganica', models.DO_NOTHING, db_column='unidade_organica_idUO')  # Field name made lowercase.
 
     class Meta:
         managed = False
         db_table = 'colaborador_has_unidade_organica'
-        unique_together = (('colaborador_utilizador_idutilizador', 'unidade_organica_iduo'),)
 
 
 class Coordenador(models.Model):
@@ -149,6 +213,50 @@ class DiaAberto(models.Model):
     class Meta:
         managed = False
         db_table = 'dia_aberto'
+
+
+class DjangoAdminLog(models.Model):
+    action_time = models.DateTimeField()
+    object_id = models.TextField(blank=True, null=True)
+    object_repr = models.CharField(max_length=200)
+    action_flag = models.PositiveSmallIntegerField()
+    change_message = models.TextField()
+    content_type = models.ForeignKey('DjangoContentType', models.DO_NOTHING, blank=True, null=True)
+    user = models.ForeignKey(AuthUser, models.DO_NOTHING)
+
+    class Meta:
+        managed = False
+        db_table = 'django_admin_log'
+
+
+class DjangoContentType(models.Model):
+    app_label = models.CharField(max_length=100)
+    model = models.CharField(max_length=100)
+
+    class Meta:
+        managed = False
+        db_table = 'django_content_type'
+        unique_together = (('app_label', 'model'),)
+
+
+class DjangoMigrations(models.Model):
+    app = models.CharField(max_length=255)
+    name = models.CharField(max_length=255)
+    applied = models.DateTimeField()
+
+    class Meta:
+        managed = False
+        db_table = 'django_migrations'
+
+
+class DjangoSession(models.Model):
+    session_key = models.CharField(primary_key=True, max_length=40)
+    session_data = models.TextField()
+    expire_date = models.DateTimeField()
+
+    class Meta:
+        managed = False
+        db_table = 'django_session'
 
 
 class Escola(models.Model):
@@ -214,23 +322,21 @@ class InscricaoColetiva(models.Model):
 
 
 class InscricaoHasPrato(models.Model):
-    inscricao_idinscricao = models.OneToOneField(Inscricao, models.DO_NOTHING, db_column='inscricao_idinscricao', primary_key=True)
+    inscricao_idinscricao = models.ForeignKey(Inscricao, models.DO_NOTHING, db_column='inscricao_idinscricao')
     prato_idprato = models.ForeignKey('Prato', models.DO_NOTHING, db_column='Prato_idPrato')  # Field name made lowercase.
 
     class Meta:
         managed = False
         db_table = 'inscricao_has_prato'
-        unique_together = (('inscricao_idinscricao', 'prato_idprato'),)
 
 
 class InscricaoHasSessao(models.Model):
-    inscricao_idinscricao = models.OneToOneField(Inscricao, models.DO_NOTHING, db_column='inscricao_idinscricao', primary_key=True)
+    inscricao_idinscricao = models.ForeignKey(Inscricao, models.DO_NOTHING, db_column='inscricao_idinscricao')
     sessao_idsessao = models.ForeignKey('Sessao', models.DO_NOTHING, db_column='sessao_idsessao')
 
     class Meta:
         managed = False
         db_table = 'inscricao_has_sessao'
-        unique_together = (('inscricao_idinscricao', 'sessao_idsessao'),)
 
 
 class InscricaoIndividual(models.Model):
@@ -306,6 +412,17 @@ class ProfessorUniversitario(models.Model):
         db_table = 'professor_universitario'
 
 
+class Responsaveis(models.Model):
+    idresponsavel = models.AutoField(primary_key=True)
+    nome = models.CharField(max_length=45)
+    email = models.CharField(max_length=45)
+    idinscricao = models.ForeignKey(Inscricao, models.DO_NOTHING, db_column='idInscricao')  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'responsaveis'
+
+
 class Sala(models.Model):
     edificio = models.CharField(max_length=45)
     andar = models.CharField(max_length=45)
@@ -355,13 +472,12 @@ class Transporte(models.Model):
 
 
 class TransporteHasHorario(models.Model):
-    transporte_idtransporte = models.OneToOneField(Transporte, models.DO_NOTHING, db_column='transporte_idtransporte', primary_key=True)
+    transporte_idtransporte = models.ForeignKey(Transporte, models.DO_NOTHING, db_column='transporte_idtransporte')
     horario_horainicio = models.ForeignKey(Horario, models.DO_NOTHING, db_column='Horario_horainicio')  # Field name made lowercase.
 
     class Meta:
         managed = False
         db_table = 'transporte_has_horario'
-        unique_together = (('transporte_idtransporte', 'horario_horainicio'),)
 
 
 class TransporteHasInscricao(models.Model):
@@ -416,10 +532,9 @@ class Utilizador(models.Model):
 
 
 class UtilizadorHasNotificacao(models.Model):
-    utilizador_idutilizador = models.OneToOneField(Utilizador, models.DO_NOTHING, db_column='Utilizador_idutilizador', primary_key=True)  # Field name made lowercase.
+    utilizador_idutilizador = models.ForeignKey(Utilizador, models.DO_NOTHING, db_column='Utilizador_idutilizador')  # Field name made lowercase.
     notificacao = models.ForeignKey(Notificacao, models.DO_NOTHING)
 
     class Meta:
         managed = False
         db_table = 'utilizador_has_notificacao'
-        unique_together = (('utilizador_idutilizador', 'notificacao'),)

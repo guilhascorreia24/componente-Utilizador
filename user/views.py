@@ -1,8 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from .forms import UserRegisterForm, AuthenticationForm, ModifyForm
-from .models import Utilizador, Participante, ProfessorUniversitario, Administrador, Coordenador, Colaborador
-from django.contrib.auth import authenticate, login
+from .forms import UserRegisterForm, AuthenticationForm, ModifyForm, Recoveryform
+from .models import Utilizador, Participante, ProfessorUniversitario, Administrador, Coordenador, Colaborador, DjangoSession
 
 
 def register(request):
@@ -39,12 +38,13 @@ def login_request(request):
         form=AuthenticationForm(request.POST)
         if request.POST['email'] != '' and request.POST['password'] != '':
             if Utilizador.objects.filter(email=request.POST['email'],password=request.POST['password']).exists():
-                user=authenticate(email=request.POST['email'],password=request.POST['password'])
-               # print(Utilizador.objects.get(email=request.POST['email']).idutilizador)
                 username=Utilizador.objects.get(email=request.POST['email']).username
                 messages.success(request, f"Bem-vindo {username}")
                 request.session['user_id']=Utilizador.objects.get(email=request.POST['email']).idutilizador
-                return redirect('blog-home')
+                r= redirect('blog-home')
+                if request.POST['check']==1 :
+                    r.session.set_test_cookie()
+                return r
             else:
                 messages.error(request, "Invalid username or password.")
     else:
@@ -53,12 +53,13 @@ def login_request(request):
 
 def logout_request(request):
     del request.session['user_id']
+    request.session.delete_test_cookie()
     messages.info(request, "Logged out successfully!")
     return redirect("blog-home")
 
 def delete_user(request):
     username = Utilizador.objects.get(request.session['user_id'])
-    Utilizador.delete(username)
+    username.delete()
     messages.success(request,"User deleted")
 
     if not Utilizador.objects.get(username).exists():
@@ -67,7 +68,12 @@ def delete_user(request):
     
     return render(request, 'blog-home.html')
     
-
+def recovery_request(request):
+    #if request.method=="POST":
+      #  if Utilizador.objects.filter(email=request.POST['email']).exists():
+            
+    form=Recoveryform()
+    return render(request,"reset.html",{"form":form})
 
 def modify_user(request):
     if not Participante.objects.filter(request.session['user_id']).name.exist():
@@ -77,7 +83,7 @@ def modify_user(request):
         messages.error(request,"Username already taken")
         return render(request,'profile.html')
     
-      # anda discord
+     
     #email
     
     #telefone
@@ -88,12 +94,16 @@ def modify_user(request):
 def profile(request):
     id=request.session['user_id']
     name=Utilizador.objects.get(idutilizador=id).nome
+    if Utilizador.objects.get(idutilizador=id).username == '':
+        username=Utilizador.objects.get(idutilizador=id).nome
+    else:
+        username=Utilizador.objects.get(idutilizador=id).username
     email=Utilizador.objects.get(idutilizador=id).email
     telefone=Utilizador.objects.get(idutilizador=id).telefone
     form=ModifyForm()
     if Participante.objects.filter(utilizador_idutilizador=id).exists():
         funcao="Participante"
-        return render(request,'profile.html',{"form":form,'nome':name,'email':email,'telefone':telefone,'funcao':funcao})
+        return render(request,'profile.html',{"form":form,'nome':name,'username':username,'email':email,'telefone':telefone,'funcao':funcao})
     elif ProfessorUniversitario.objects.filter(utilizador_idutilizador=id).exists():
         funcao ="docente Univesitario"
         IDUO=ProfessorUniversitario.objects.get(utilizador_utilizadorid=id).unidade_organica_iduo

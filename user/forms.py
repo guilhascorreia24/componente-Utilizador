@@ -48,6 +48,16 @@ class ModifyForm(forms.Form):
     class Meta:
         model=Utilizador
         fields=['name','username','email','telefone','UO','curso']
+
+class Recoveryform(forms.Form):
+    email = forms.EmailField(max_length=45,label="Email")
+    password1=forms.CharField(max_length=45,label="Password",widget=forms.PasswordInput(),
+                                validators = [validators.MinLengthValidator(6)])
+    password2=forms.CharField(max_length=45,label="Password Confirm",widget=forms.PasswordInput())
+
+    class Meta:
+        model=Utilizador
+        fields=['email','password1','password2']
     
     
 
