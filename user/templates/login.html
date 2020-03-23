@@ -21,6 +21,7 @@
                 <nav aria-label="breadcrumbs" class="breadcrumb" style="background-color:white">
                     <ul>
                         <li><a href="/" class="router-link-active">Início</a></li>
+                        {% block content2 %}
                         <li class="is-active"><a href=".." class="router-link-exact-active router-link-active">Login</a>
                         </li>
                     </ul>
@@ -40,7 +41,7 @@
                         <section class="step-content">
                             <div class="step-item" style="">
                                 <div style="padding: 1rem 2vw 0px;">
-                                    <hr>
+                                    <hr> 
                                     <form method="POST">
                                         {% csrf_token %}
                                         {% if messages %}
@@ -88,6 +89,10 @@
                                                         </div>
                                                     </div>
                                                     {% endif %}
+                                                    <br>
+                                                    <input type="checkbox" name="check" value="1">
+                                                    <label for="check"> Lembar de mim</label><br>
+                                                    <br><a href="../password_reset">Recuperar Password</a>
                                                 </div>
                                                 <hr>
                                             </div>
@@ -130,6 +135,7 @@
                 </div>
             </div>
             </form>
+            {% endblock content2 %}
 
         </div>
 </div>
