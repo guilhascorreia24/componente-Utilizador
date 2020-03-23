@@ -4,10 +4,12 @@ from django.contrib.auth import authenticate, login, logout
 from blog import userValidation
 from atividades import forms
 from django.forms import formset_factory
+from atividades import inscricao
 
 # Main Views.
 def test(request):
-    return render(request,'atividades_participante_show.html')
+    return inscricao.showForm(request)
+    
 def atividades_show(request):
     user = userValidation.getLoggedUser(request)
 
