@@ -173,17 +173,18 @@
                                                                         </div>
                                                                     </div>
                                                                     {% endif %}
-                                                                    <div class="field"><label class="">Funçao</label>
+                                                                    <div class="field"><label class="" for={{form.validada.id_for_label}}>Funçao</label>
                                                                         <div class="control is-expanded"><span
-                                                                                class="select is-empty"><select>
+                                                                                class="select is-empty"><select id={{form.validada.id_for_label}} name="funcao">
                                                                                     <!---->
-                                                                                    <option value="universidade">Colaborador
+                                                                                    <option  value=0>
                                                                                     </option>
-                                                                                    <option value="comboio">Coordenador
+                                                                                    <option  value=1>Colaborador
                                                                                     </option>
-                                                                                    <option value="autocarroProprio">
+                                                                                    <option value=2>Coordenador
+                                                                                    </option>
+                                                                                    <option  value=3>
                                                                                         Docente Universitario</option>
-                                                                                    <option value="outrosMeios">Participante</option>
                                                                                 </select></span>
                                                                             <!---->
                                                                         </div>
