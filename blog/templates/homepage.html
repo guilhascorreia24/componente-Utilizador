@@ -71,6 +71,15 @@
                         aria-hidden="true"></span> <span aria-hidden="true"></span></a></div>
             {% block content %}
             <div class="navbar-menu">
+                {% if funcao == "coord" %}
+                {% include "navbar-coord.html" %}
+                {% elif funcao == "admin" %}
+                {% include "navabar-admin.html" %}
+                {% elif funcao == "dc" %}
+                {% include "navabar-dc.hmtl"}
+                {% elif funcao == "part" %}
+                {% include "navabar-part.html" %}
+                {% endif %}
                 <div class="navbar-end">
                     {% if id == None %}
                     <div data-v-a67fe1ba="" class="navbar-item">

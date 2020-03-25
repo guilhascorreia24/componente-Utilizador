@@ -39,13 +39,14 @@ class Atividade(models.Model):
     idatividade = models.AutoField(db_column='idAtividade', primary_key=True)  # Field name made lowercase.
     titulo = models.CharField(max_length=45)
     capacidade = models.IntegerField()
+    publico_alvo = models.CharField(max_length=45)
     duracao = models.FloatField()
     descricao = models.CharField(max_length=250)
     validada = models.IntegerField()
     professor_universitario_utilizador_idutilizador = models.ForeignKey('ProfessorUniversitario', models.DO_NOTHING, db_column='professor_universitario_Utilizador_idutilizador')  # Field name made lowercase.
     unidade_organica_iduo = models.ForeignKey('UnidadeOrganica', models.DO_NOTHING, db_column='unidade_organica_idUO')  # Field name made lowercase.
     departamento_iddepartamento = models.ForeignKey('Departamento', models.DO_NOTHING, db_column='Departamento_idDepartamento')  # Field name made lowercase.
-    espaco_idespaco = models.ForeignKey('Espaco', models.DO_NOTHING, db_column='espaco_idespaco')
+    espaco_idespaco = models.ForeignKey('Espaco', models.DO_NOTHING, db_column='espaco_idespaco', blank=True, null=True)
 
     class Meta:
         managed = False
@@ -150,7 +151,7 @@ class Colaborador(models.Model):
 
 class ColaboradorHasHorario(models.Model):
     colaborador_utilizador_idutilizador = models.ForeignKey(Colaborador, models.DO_NOTHING, db_column='colaborador_Utilizador_idutilizador')  # Field name made lowercase.
-    horario_horainicio = models.ForeignKey('Horario', models.DO_NOTHING, db_column='Horario_horainicio')  # Field name made lowercase.
+    horario_has_dia_id_dia_hora = models.ForeignKey('HorarioHasDia', models.DO_NOTHING, db_column='horario_has_dia_id_dia_hora')
 
     class Meta:
         managed = False
@@ -193,6 +194,14 @@ class Departamento(models.Model):
     class Meta:
         managed = False
         db_table = 'departamento'
+
+
+class Dia(models.Model):
+    dia = models.DateField(primary_key=True)
+
+    class Meta:
+        managed = False
+        db_table = 'dia'
 
 
 class DiaAberto(models.Model):
@@ -281,11 +290,21 @@ class Espaco(models.Model):
 
 
 class Horario(models.Model):
-    horainicio = models.DateTimeField(primary_key=True)
+    hora = models.TimeField(primary_key=True)
 
     class Meta:
         managed = False
         db_table = 'horario'
+
+
+class HorarioHasDia(models.Model):
+    horario_hora = models.ForeignKey(Horario, models.DO_NOTHING, db_column='horario_hora')
+    dia_dia = models.ForeignKey(Dia, models.DO_NOTHING, db_column='Dia_dia')  # Field name made lowercase.
+    id_dia_hora = models.IntegerField(primary_key=True)
+
+    class Meta:
+        managed = False
+        db_table = 'horario_has_dia'
 
 
 class Idioma(models.Model):
@@ -366,7 +385,7 @@ class Menu(models.Model):
     menu = models.CharField(max_length=45)
     administrador_utilizador_idutilizador = models.ForeignKey(Administrador, models.DO_NOTHING, db_column='Administrador_Utilizador_idutilizador')  # Field name made lowercase.
     campus_idcampus = models.ForeignKey(Campus, models.DO_NOTHING, db_column='Campus_idCampus')  # Field name made lowercase.
-    horario_idhorario = models.ForeignKey(Horario, models.DO_NOTHING, db_column='Horario_idhorario')  # Field name made lowercase.
+    horario_has_dia_id_dia_hora = models.ForeignKey(HorarioHasDia, models.DO_NOTHING, db_column='horario_has_dia_id_dia_hora')
 
     class Meta:
         managed = False
@@ -439,7 +458,7 @@ class Sessao(models.Model):
     nrinscritos = models.IntegerField()
     vagas = models.IntegerField()
     atividade_idatividade = models.ForeignKey(Atividade, models.DO_NOTHING, db_column='Atividade_idAtividade')  # Field name made lowercase.
-    horario_horainicio = models.ForeignKey(Horario, models.DO_NOTHING, db_column='Horario_horainicio')  # Field name made lowercase.
+    horario_has_dia_id_dia_hora = models.ForeignKey(HorarioHasDia, models.DO_NOTHING, db_column='horario_has_dia_id_dia_hora')
 
     class Meta:
         managed = False
@@ -453,7 +472,6 @@ class Tarefa(models.Model):
     coordenador_utilizador_idutilizador = models.ForeignKey(Coordenador, models.DO_NOTHING, db_column='Coordenador_Utilizador_idutilizador')  # Field name made lowercase.
     colaborador_utilizador_idutilizador = models.ForeignKey(Colaborador, models.DO_NOTHING, db_column='colaborador_Utilizador_idutilizador')  # Field name made lowercase.
     atividade_idatividade = models.ForeignKey(Atividade, models.DO_NOTHING, db_column='Atividade_idAtividade')  # Field name made lowercase.
-    horario_horainicio = models.ForeignKey(Horario, models.DO_NOTHING, db_column='Horario_horainicio')  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -473,7 +491,7 @@ class Transporte(models.Model):
 
 class TransporteHasHorario(models.Model):
     transporte_idtransporte = models.ForeignKey(Transporte, models.DO_NOTHING, db_column='transporte_idtransporte')
-    horario_horainicio = models.ForeignKey(Horario, models.DO_NOTHING, db_column='Horario_horainicio')  # Field name made lowercase.
+    horario_has_dia_id_dia_hora = models.ForeignKey(HorarioHasDia, models.DO_NOTHING, db_column='horario_has_dia_id_dia_hora')
 
     class Meta:
         managed = False

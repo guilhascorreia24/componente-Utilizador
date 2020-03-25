@@ -12,11 +12,11 @@ class UserRegisterForm(forms.Form):
     password1=forms.CharField(max_length=45,label="Password",widget=forms.PasswordInput(),
                                 validators = [validators.MinLengthValidator(6)])
     password2=forms.CharField(max_length=45,label="Password Confirm",widget=forms.PasswordInput())
-    funcao=forms.IntegerField(label="validada")
+    funcao=forms.IntegerField(label="funcao")
 
     class Meta:
         model=Utilizador
-        fields=['idutilizador','nome','email','telefone','password','username','validada']
+        fields=['idutilizador','nome','email','telefone','password','username','funcao']
     
     def save(self):
         data = self.cleaned_data

@@ -93,12 +93,6 @@ def modify_user(request):
         messages.error(request, "Username already taken")
         return render(request, 'profile.html')
 
-    # email
-
-    # telefone
-    # password
-    # nome
-
 
 def profile(request):
     id = request.session['user_id']
