@@ -1,0 +1,23 @@
+<html>
+    <body>
+        <form method = "POST">
+            {% csrf_token %}
+            Escola
+            {{form.escola}}
+            <br><br>
+            <div>
+
+            Inscricao<br>
+            {{form.inscricao}}</div>
+
+            <br>
+            <div>
+
+            Responsaveis<br>
+            {{form.responsaveis}}</div>
+
+            <input type = "submit">
+        </form>
+    </body>
+</html>
+

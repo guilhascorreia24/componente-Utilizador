@@ -96,3 +96,5 @@ def atividade_administrador_show(request):
 
 
 
+def test1(request):
+    return inscricao.show(request)

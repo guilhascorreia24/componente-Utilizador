@@ -190,7 +190,7 @@
                                     </ul>
                                 </nav>
                                 <section class="step-content">
-                                    <form method="POST">
+                                    <form id = "regForm" method="POST">
                                         {% csrf_token %}
                                         <div class="tab">
                                             <div style="padding: 1rem 2vw 0px;">
@@ -201,7 +201,7 @@
                                                     <div class="column">
                                                         <div class="field"><label class="label">Nome</label>
                                                             <div class="control is-clearfix"><input type="text"
-                                                                    autocomplete="on" required="required" id={{ responsaveis.nome.id_for_label }}  class="input">
+                                                                    autocomplete="on" required="required" id={{responsaveis.nome.id}}  class="input">
                                                                 <!---->
                                                                 <!---->
                                                                 <!---->
@@ -211,7 +211,7 @@
                                                     </div>
                                                     <div class="column">
                                                         <div class="field"><label class="label">E-mail</label>
-                                                            <div class="control is-clearfix"><input type="email" id={{responsaveis.email.id_for_label}}
+                                                            <div class="control is-clearfix"><input type="email" id={{escola.email.id}}
                                                                     autocomplete="on" required="required" class="input">
                                                                 <!---->
                                                                 <!---->
@@ -223,7 +223,7 @@
                                                     <div class="column">
                                                         <div class="field"><label
                                                                 class="label">Telemóvel/Telefone</label>
-                                                            <div class="control is-clearfix"><input type="tel" id={{escola.telefone.id_for_label}}
+                                                            <div class="control is-clearfix"><input type="tel" id={{escola.telefone.id}}
                                                                     autocomplete="on" required="required" class="input">
                                                                 <!---->
                                                                 <!---->
@@ -247,7 +247,7 @@
                                                 <div class="columns">
                                                     <div class="column">
                                                         <div class="field"><label class="label">Nome da escola</label>
-                                                            <div class="control is-clearfix"><input type="text" id={{escola.nome.id_for_label}}
+                                                            <div class="control is-clearfix"><input type="text" id={{escola.nome.id}}
                                                                     autocomplete="on" required="required" class="input">
                                                                 <!---->
                                                                 <!---->
@@ -258,7 +258,7 @@
                                                     </div>
                                                     <div class="column">
                                                         <div class="field"><label class="label">Localidade</label>
-                                                            <div class="control is-clearfix"><input type="text" id={{escola.local.id_for_label}}
+                                                            <div class="control is-clearfix"><input type="text" id={{escola.local.id}}
                                                                     autocomplete="on" required="required" class="input">
                                                                 <!---->
                                                                 <!---->
@@ -274,7 +274,7 @@
                                                 <div class="columns">
                                                     <div class="column">
                                                         <div class="field"><label class="label">Ano</label>
-                                                            <div class="control is-clearfix"><input type="number" id={{inscricao.ano.id_for_label}}
+                                                            <div class="control is-clearfix"><input type="number" id={{inscricao.ano.id}}
                                                                     autocomplete="on" required="required" class="input">
                                                                 <!---->
                                                                 <!---->
@@ -285,7 +285,7 @@
                                                     </div>
                                                     <div class="column">
                                                         <div class="field"><label class="label">Turma</label>
-                                                            <div class="control is-clearfix"><input type="text" id={{insColetiva.turma.id_for_label}}
+                                                            <div class="control is-clearfix"><input type="text" id={{insColetiva.turma.id}}
                                                                     autocomplete="on" required="required" class="input">
                                                                 <!---->
                                                                 <!---->
@@ -318,7 +318,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="field"><label class="label">Área científica</label>
-                                                    <div class="control is-clearfix"><input type="text" id={{inscricao.areacientifica.id_for_label}}
+                                                    <div class="control is-clearfix"><input type="text" id={{inscricao.areacientifica.id}}
                                                             autocomplete="on" required="required" class="input">
                                                         <!---->
                                                         <!---->
@@ -3600,7 +3600,7 @@
                                         // This function will figure out which tab to display
                                         var x = document.getElementsByClassName("tab");
                                         // Exit the function if any field in the current tab is invalid:
-                                        if (n == 1 && !validateForm()) return false;
+                                        if (n == 99) return false;
                                         // Hide the current tab:
                                         x[currentTab].style.display = "none";
                                         // Increase or decrease the current tab by 1:
