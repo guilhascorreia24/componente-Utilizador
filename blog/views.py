@@ -13,11 +13,11 @@ def home(request):
             funcao = "part"
         elif ProfessorUniversitario.objects.filter(utilizador_idutilizador=id).exists():
             funcao = "dc"
-        elif Administrador.objects.filter(utilizador_utilizadorid=id).exists():
+        elif Administrador.objects.filter(utilizador_idutilizador=id).exists():
             funcao = "admin"
-        elif Coordenador.objects.filter(utilizador_utilizadorid=id).exists():
+        elif Coordenador.objects.filter(utilizador_idutilizador=id).exists():
             funcao = "coord"
-        elif Colaborador.objects.filter(utilizador_utilizadorid=id).exists():
+        elif Colaborador.objects.filter(utilizador_idutilizador=id).exists():
             funcao = "colab"
         return render(request, 'homepage.html', context={'id':id,'funcao':funcao})
     else:

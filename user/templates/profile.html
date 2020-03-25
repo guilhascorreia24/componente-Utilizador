@@ -20,7 +20,7 @@
         <div class="field"><label class=""
                 for={{form.username.id_for_label}}>Username</label>
             <div class="control is-clearfix"><input type="text" name="username"
-                    id={{form.username.id_for_label}} class="input" value={{username}} disabled>
+                    id={{form.username.id_for_label}} class="input" value="{{username}}" disabled>
             </div>
         </div>
         <div class="field"><label class=""
@@ -36,6 +36,15 @@
                     pattern="[0-9]{3}[0-9]{3}[0-9]{3}" value={{telefone}} disabled>
             </div>
         </div>
+        {% if funcao %}
+        <div class="field"><label class=""
+            for={{form.funcao.id_for_label}}>Função</label>
+        <div class=" control is-clearfix"><input type="tel"
+                id={{form.funcao.id_for_label}} name="funcao" class="input"
+                 value={{funcao}} disabled>
+        </div>
+    </div>
+    {% endif %}
     </div>
     <hr>
 </div>

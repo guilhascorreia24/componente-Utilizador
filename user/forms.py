@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from .models import Utilizador
 from django.core import validators
+from django.core.exceptions import ValidationError
 
 
 class UserRegisterForm(forms.Form):
@@ -9,8 +10,7 @@ class UserRegisterForm(forms.Form):
     username=forms.CharField(max_length=45,label="username")
     email = forms.EmailField(max_length=45,label="Email")
     telefone=forms.CharField(max_length=45,label="Telefone/Telemovel")
-    password1=forms.CharField(max_length=45,label="Password",widget=forms.PasswordInput(),
-                                validators = [validators.MinLengthValidator(6)])
+    password1=forms.CharField(max_length=45,label="Password",widget=forms.PasswordInput())
     password2=forms.CharField(max_length=45,label="Password Confirm",widget=forms.PasswordInput())
     funcao=forms.IntegerField(label="funcao")
 
@@ -21,14 +21,9 @@ class UserRegisterForm(forms.Form):
     def save(self):
         data = self.cleaned_data
         user=Utilizador(nome=data['name'],username=data['username'],
-            email=data['email'],telefone=data['telefone'],password=data['password1'],validada=data['funcao'])
+            email=data['email'],telefone=data['telefone'],password=data['password2'],validada=data['funcao'])
         user.save()
     
-    def clean_password(self):
-        password = self.cleaned_data['password']
-        if len(password) < 4:
-            raise forms.ValidationError("password is too short")
-        return password
 
 class AuthenticationForm(forms.Form):
     email = forms.EmailField(max_length=45,label="email")
@@ -49,16 +44,20 @@ class ModifyForm(forms.Form):
     class Meta:
         model=Utilizador
         fields=['name','username','email','telefone','UO','curso']
-
-class Recoveryform(forms.Form):
-    email = forms.EmailField(max_length=45,label="Email")
-    password1=forms.CharField(max_length=45,label="Password",widget=forms.PasswordInput(),
-                                validators = [validators.MinLengthValidator(6)])
-    password2=forms.CharField(max_length=45,label="Password Confirm",widget=forms.PasswordInput())
+    
+class PasswordChangeForm(forms.Form):
+    password = forms.CharField(widget=forms.PasswordInput, required=False,max_length=45,label="Password1")
+    confirm_password = forms.CharField(widget=forms.PasswordInput, required=False,max_length=45,label="Password2")
 
     class Meta:
         model=Utilizador
-        fields=['email','password1','password2']
-    
-    
+        fields=['password','confirm_password']
+
+class EmailSender(forms.Form):
+        email = forms.EmailField(max_length=45,label="Email")
+        
+        class Meta:
+            model=Utilizador
+            fields=['email']
+
 

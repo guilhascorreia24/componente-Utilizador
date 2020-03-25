@@ -1,4 +1,5 @@
 from django.db import models
+
 class Utilizador(models.Model):
     idutilizador = models.AutoField(primary_key=True)
     nome = models.CharField(max_length=45)
@@ -21,6 +22,15 @@ class DjangoSession(models.Model):
         managed = False
         db_table = 'django_session'
 
+class Departamento(models.Model):
+    iddepartamento = models.AutoField(db_column='idDepartamento', primary_key=True)  # Field name made lowercase.
+    nome = models.CharField(max_length=45)
+    unidade_organica_iduo = models.ForeignKey('UnidadeOrganica', models.DO_NOTHING, db_column='unidade_organica_idUO')  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'departamento'
+
 
 class Participante(models.Model):
     utilizador_idutilizador = models.OneToOneField('Utilizador', models.DO_NOTHING, db_column='Utilizador_idutilizador', primary_key=True)  # Field name made lowercase.
@@ -34,11 +44,11 @@ class Participante(models.Model):
 
 class ProfessorUniversitario(models.Model):
     utilizador_idutilizador = models.OneToOneField('Utilizador', models.DO_NOTHING, db_column='Utilizador_idutilizador', primary_key=True)  # Field name made lowercase.
-    unidade_organica_iduo = models.ForeignKey('UnidadeOrganica', models.DO_NOTHING, db_column='unidade Organica_idUO')  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    departamento_iddepartamento = models.ForeignKey(Departamento, models.DO_NOTHING, db_column='departamento_idDepartamento')  # Field name made lowercase.
 
     class Meta:
         managed = False
-        db_table = 'professor universitario'
+        db_table = 'professor_universitario'
     
     def __str__(self):
         return self.utilizador_idutilizador
