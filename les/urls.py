@@ -27,7 +27,7 @@ urlpatterns = [
     path('login/recuperacao_password/<str:id>/',user_views.change_password,name="reset"),
     path('atividades/',include('atividades.urls')),
     path('profile/',user_views.profile,name="profile"),
-    path('notificacao/',notificacao_views.Todo,name="notificacao"),
+   # path('notificacao/',notificacao_views.Todo,name="notificacao"),
     path('validacoes/',user_views.validacoes,name="validacoes"),
     path('', include("blog.urls"))
 ]

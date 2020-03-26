@@ -126,30 +126,26 @@ def modify_data(request):
     t.email=email
     t.telefone=telefone
     t.save()
-    if Participante.objects.filter(pk=)
+
 
 
 
 def modify_user(request,form,name,username,email,telefone):
     if Participante.objects.filter(utilizador_idutilizador=id).exists():
         funcao = "Participante"
-        return render(request, 'profile_modify.html', {"form": form, 'nome': name, 'username': username, 'email': email, 'telefone': telefone, 'funcao': funcao})
     elif Administrador.objects.filter(utilizador_idutilizador=id).exists():
         funcao = "administardor"
-        return render(request, 'profile_modify.html', {"form": form, 'nome': name, 'email': email, 'telefone': telefone, 'funcao': funcao})
     elif ProfessorUniversitario.objects.filter(utilizador_idutilizador=id).exists():
         funcao = "docente Univesitario"
         IDUO = ProfessorUniversitario.objects.get(utilizador_utilizadorid=id).unidade_organica_iduo
-        return render(request, 'profile_modify.html', {"form": form, 'nome': name, 'email': email, 'telefone': telefone, 'funcao': funcao, 'Iduo': IDUO})
     elif Coordenador.objects.filter(utilizador_idutilizador=id).exists():
         funcao = "Coordenador"
-        idUO = Coordenador.objects.get(utilizador_utilizadorid=id).unidade_organica_iduo
-        return render(request, 'profile_modify.html', {"form": form, 'nome': name, 'email': email, 'telefone': telefone, 'funcao': funcao, 'Iduo': IDUO})
+        IDUO = Coordenador.objects.get(utilizador_utilizadorid=id).unidade_organica_iduo
     elif Colaborador.objects.filter(utilizador_idutilizador=id).exists():
         ano = Colaborador.objects.get(utilizador_utilizadorid=id).dia_aberto_ano
         funcao = "Colaborador"
         curso = Colaborador.objects.get(utilizador_utilizadorid=id).curso
-        return render(request, 'profile_modify.html', {"form": form, 'nome': name, 'email': email, 'telefone': telefone, 'funcao': funcao, 'ano': ano, 'curso': curso})
+    return render(request, 'profile_modify.html', {"form": form, 'nome': name, 'email': email, 'telefone': telefone, 'funcao': funcao, 'ano': ano, 'curso': curso,'iduo':IDUO})
 
 
 def profile(request):
@@ -169,27 +165,24 @@ def profile(request):
             return modify_data()
     else:
         form = ModifyForm()
+    idUO=False
+    ano=False
+    curso=False
     if Participante.objects.filter(utilizador_idutilizador=id).exists():
         funcao = "Participante"
-        return render(request, 'profile.html', {"form": form, 'nome': name, 'username': username, 'email': email, 'telefone': telefone, 'funcao': funcao})
     elif Administrador.objects.filter(utilizador_idutilizador=id).exists():
         funcao = "administardor"
-        return render(request, 'profile.html', {"form": form, 'nome': name, 'email': email, 'telefone': telefone, 'funcao': funcao})
     elif ProfessorUniversitario.objects.filter(utilizador_idutilizador=id).exists():
         funcao = "docente Univesitario"
-        IDUO = ProfessorUniversitario.objects.get(
-            utilizador_idutilizador=id).unidade_organica_iduo
-        return render(request, 'profile.html', {"form": form, 'nome': name, 'email': email, 'telefone': telefone, 'funcao': funcao, 'Iduo': IDUO})
+        idUO = ProfessorUniversitario.objects.get( utilizador_idutilizador=id).unidade_organica_iduo
     elif Coordenador.objects.filter(utilizador_idutilizador=id).exists():
         funcao = "Coordenador"
-        idUO = Coordenador.objects.get(
-            utilizador_utilizadorid=id).unidade_organica_iduo
-        return render(request, 'profile.html', {"form": form, 'nome': name, 'email': email, 'telefone': telefone, 'funcao': funcao, 'Iduo': IDUO})
+        idUO = Coordenador.objects.get( utilizador_utilizadorid=id).unidade_organica_iduo
     elif Colaborador.objects.filter(utilizador_idutilizador=id).exists():
         ano = Colaborador.objects.get(utilizador_utilizadorid=id).dia_aberto_ano
         funcao = "Colaborador"
         curso = Colaborador.objects.get(utilizador_idutilizador=id).curso
-        return render(request, 'profile.html', {"form": form, 'nome': name, 'email': email, 'telefone': telefone, 'funcao': funcao, 'ano': ano, 'curso': curso})
+    return render(request, 'profile.html', {"form": form, 'nome': name,'UO':idUO,'username': username, 'email': email, 'telefone': telefone, 'funcao': funcao, 'ano': ano, 'curso': curso})
 
 #--------------------------------------------recuperaçao de password---------------------------------
 def change_password(request, id):
