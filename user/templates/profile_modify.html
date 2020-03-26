@@ -111,6 +111,16 @@
                                                         pattern="[0-9]{3}[0-9]{3}[0-9]{3}" value={{telefone}} >
                                                 </div>
                                             </div>
+                                            {% if funcao %}
+                                            <div class="field"><label class=""
+                                                for={{form.funcao.id_for_label}}>Função</label>
+                                            <div class=" control is-clearfix"><input type="tel"
+                                                    id={{form.funcao.id_for_label}} name="funcao" class="input"
+                                                     value={{funcao}} disabled>
+                                            </div>
+                                        </div>
+                                        {% endif %}
+                                        {% if }
                                         </div>
                                         <hr>
                                 </div>

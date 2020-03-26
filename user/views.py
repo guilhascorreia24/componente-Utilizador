@@ -113,13 +113,43 @@ def delete_user(request):
     return render(request, 'blog-home.html')
 
 #--------------------------------------alterar user---------------------------------------------
-def modify_user(request):
-    if not Participante.objects.filter(request.session['user_id']).name.exist():
-        username = Utilizador.objects.get(request.session['user_id'])
-        Utilizador.username = username
-    elif Participante.objects.filter(request.session['user_id']).exist():
-        messages.error(request, "Username already taken")
-        return render(request, 'profile.html')
+def modify_data(request):
+    id = request.session['user_id']
+    name = request.POST['name']
+    username = request.POST['username']
+    email = request.POST['email']
+    telefone = request.POST['telefone']
+    funcao=request.POST['funcao']
+    t=Utilizador.objects.get(pk=id)
+    t.nome=name
+    t.username=username
+    t.email=email
+    t.telefone=telefone
+    t.save()
+    if Participante.objects.filter(pk=)
+
+
+
+def modify_user(request,form,name,username,email,telefone):
+    if Participante.objects.filter(utilizador_idutilizador=id).exists():
+        funcao = "Participante"
+        return render(request, 'profile_modify.html', {"form": form, 'nome': name, 'username': username, 'email': email, 'telefone': telefone, 'funcao': funcao})
+    elif Administrador.objects.filter(utilizador_idutilizador=id).exists():
+        funcao = "administardor"
+        return render(request, 'profile_modify.html', {"form": form, 'nome': name, 'email': email, 'telefone': telefone, 'funcao': funcao})
+    elif ProfessorUniversitario.objects.filter(utilizador_idutilizador=id).exists():
+        funcao = "docente Univesitario"
+        IDUO = ProfessorUniversitario.objects.get(utilizador_utilizadorid=id).unidade_organica_iduo
+        return render(request, 'profile_modify.html', {"form": form, 'nome': name, 'email': email, 'telefone': telefone, 'funcao': funcao, 'Iduo': IDUO})
+    elif Coordenador.objects.filter(utilizador_idutilizador=id).exists():
+        funcao = "Coordenador"
+        idUO = Coordenador.objects.get(utilizador_utilizadorid=id).unidade_organica_iduo
+        return render(request, 'profile_modify.html', {"form": form, 'nome': name, 'email': email, 'telefone': telefone, 'funcao': funcao, 'Iduo': IDUO})
+    elif Colaborador.objects.filter(utilizador_idutilizador=id).exists():
+        ano = Colaborador.objects.get(utilizador_utilizadorid=id).dia_aberto_ano
+        funcao = "Colaborador"
+        curso = Colaborador.objects.get(utilizador_utilizadorid=id).curso
+        return render(request, 'profile_modify.html', {"form": form, 'nome': name, 'email': email, 'telefone': telefone, 'funcao': funcao, 'ano': ano, 'curso': curso})
 
 
 def profile(request):
@@ -131,32 +161,14 @@ def profile(request):
         username = Utilizador.objects.get(idutilizador=id).username
     email = Utilizador.objects.get(idutilizador=id).email
     telefone = Utilizador.objects.get(idutilizador=id).telefone
-    form = ModifyForm()
     if request.method == 'POST':
+        form = ModifyForm(request.POST)
         if request.POST['persona'] == "1":
-            if Participante.objects.filter(utilizador_idutilizador=id).exists():
-                funcao = "Participante"
-                return render(request, 'profile_modify.html', {"form": form, 'nome': name, 'username': username, 'email': email, 'telefone': telefone, 'funcao': funcao})
-            elif Administrador.objects.filter(utilizador_idutilizador=id).exists():
-                funcao = "administardor"
-                return render(request, 'profile_modify.html', {"form": form, 'nome': name, 'email': email, 'telefone': telefone, 'funcao': funcao})
-            elif ProfessorUniversitario.objects.filter(utilizador_idutilizador=id).exists():
-                funcao = "docente Univesitario"
-                IDUO = ProfessorUniversitario.objects.get(
-                    utilizador_utilizadorid=id).unidade_organica_iduo
-                return render(request, 'profile_modify.html', {"form": form, 'nome': name, 'email': email, 'telefone': telefone, 'funcao': funcao, 'Iduo': IDUO})
-            elif Coordenador.objects.filter(utilizador_idutilizador=id).exists():
-                funcao = "Coordenador"
-                idUO = Coordenador.objects.get(
-                    utilizador_utilizadorid=id).unidade_organica_iduo
-                return render(request, 'profile_modify.html', {"form": form, 'nome': name, 'email': email, 'telefone': telefone, 'funcao': funcao, 'Iduo': IDUO})
-            elif Colaborador.objects.filter(utilizador_idutilizador=id).exists():
-                ano = Colaborador.objects.get(
-                    utilizador_utilizadorid=id).dia_aberto_ano
-                funcao = "Colaborador"
-                curso = Colaborador.objects.get(
-                    utilizador_utilizadorid=id).curso
-                return render(request, 'profile_modify.html', {"form": form, 'nome': name, 'email': email, 'telefone': telefone, 'funcao': funcao, 'ano': ano, 'curso': curso})
+            return modify_user(request)
+        else:
+            return modify_data()
+    else:
+        form = ModifyForm()
     if Participante.objects.filter(utilizador_idutilizador=id).exists():
         funcao = "Participante"
         return render(request, 'profile.html', {"form": form, 'nome': name, 'username': username, 'email': email, 'telefone': telefone, 'funcao': funcao})
@@ -174,8 +186,7 @@ def profile(request):
             utilizador_utilizadorid=id).unidade_organica_iduo
         return render(request, 'profile.html', {"form": form, 'nome': name, 'email': email, 'telefone': telefone, 'funcao': funcao, 'Iduo': IDUO})
     elif Colaborador.objects.filter(utilizador_idutilizador=id).exists():
-        ano = Colaborador.objects.get(
-            utilizador_utilizadorid=id).dia_aberto_ano
+        ano = Colaborador.objects.get(utilizador_utilizadorid=id).dia_aberto_ano
         funcao = "Colaborador"
         curso = Colaborador.objects.get(utilizador_idutilizador=id).curso
         return render(request, 'profile.html', {"form": form, 'nome': name, 'email': email, 'telefone': telefone, 'funcao': funcao, 'ano': ano, 'curso': curso})
