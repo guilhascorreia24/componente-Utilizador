@@ -3,9 +3,10 @@ from django.contrib import messages
 from .forms import UserRegisterForm, AuthenticationForm, ModifyForm, PasswordChangeForm, EmailSender
 from django.core.mail import send_mail
 from django.contrib.auth.hashers import make_password
+from django.core import signing
 from .models import Utilizador, Participante, ProfessorUniversitario, Administrador, Coordenador, Colaborador, DjangoSession
 
-
+#----------------------------------------------registo user--------------------------------
 def password_check(passwd):   
     SpecialSym =['$', '@', '#', '%'] 
     val = True
@@ -45,7 +46,6 @@ def register(request):
             messages.success(request, f'Registo feito com Sucesso!')
             return redirect('blog-home')
         else:
-            print(str(form.is_valid()) +" "+ str(Utilizador.objects.filter(email=request.POST['email']).exists()) +" "+  str(Utilizador.objects.filter(telefone=request.POST['telefone']).exists()) +" "+ str(password_check(request.POST['password1'])))
             error=False
             error3=False
             error2=False
@@ -69,7 +69,7 @@ def register(request):
     form = UserRegisterForm()
     return render(request, 'register.html', {'form': form})
 
-
+#*----------------------------------------------------------login---------------------------------------
 def login_request(request):
     if request.method == 'POST':
         form = AuthenticationForm(request.POST)
@@ -100,7 +100,7 @@ def logout_request(request):
     messages.info(request, "saiste com sucesso")
     return r
 
-
+#----------------------------------------------remover user-----------------------------------
 def delete_user(request):
     username = Utilizador.objects.get(request.session['user_id'])
     username.delete()
@@ -112,7 +112,7 @@ def delete_user(request):
 
     return render(request, 'blog-home.html')
 
-
+#--------------------------------------alterar user---------------------------------------------
 def modify_user(request):
     if not Participante.objects.filter(request.session['user_id']).name.exist():
         username = Utilizador.objects.get(request.session['user_id'])
@@ -180,22 +180,27 @@ def profile(request):
         curso = Colaborador.objects.get(utilizador_idutilizador=id).curso
         return render(request, 'profile.html', {"form": form, 'nome': name, 'email': email, 'telefone': telefone, 'funcao': funcao, 'ano': ano, 'curso': curso})
 
-
+#--------------------------------------------recuperaçao de password---------------------------------
 def change_password(request, id):
-    if request.method == 'POST':
-        form = PasswordChangeForm(request.user, request.POST)
-        if form.is_valid():
-            user = form.save()
-            update_session_auth_hash(request, user)  # Important!
-            messages.success(request, 'Palavra atualizada co sucesso')
-            return redirect('')
+    id_deccryp=signing.loads(id)
+    if request.method=='POST':
+        form=PasswordChangeForm(request.POST)
+        passwd=request.POST['password']
+        if form.is_valid and password_check(passwd) is True:
+            t=Utilizador.objects.get(pk=id_deccryp)
+            t.password=passwd
+            t.save()
+            messages.success(request, f'Password alterada com sucesso')
+            return redirect('blog-home')
         else:
-            messages.error(request, 'Please correct the error below.')
+            print(password_check(passwd))
+            messages.error(request,password_check(passwd))
+            if request.POST['confirm_password']!=passwd:
+                error=True
+                return render(request,"reset_password.html",{"form":form,"error":error})
     else:
-        form = PasswordChangeForm(request.user)
-    return render(request, 'accounts/change_password.html', {
-        'form': form
-    })
+        form=PasswordChangeForm()
+    return render(request,"reset_password.html",{"form":form})
 
 
 def reset(request):
@@ -205,21 +210,16 @@ def reset(request):
         recepient = request.POST['email']
         if Utilizador.objects.filter(email=recepient).exists():
             subject = 'Recuperação da Palavra-Passe'
-            id = make_password(
-                str(Utilizador.objects.get(email=recepient).idutilizador))
-            message = 'Para recuperar a sua palavra-passe re-introduza uma palavra-passe nova, no seguinte link: <a href=http://127.0.0.1:8000/' + \
-                id+'>http://127.0.0.1:8000/'+id+'</a>'
-            send_mail(subject, message, 'a61098@ualg.pt', [recepient],fail_silently=False)
+            p=Utilizador.objects.get(email=recepient).idutilizador
+            id = signing.dumps(p)
+            message = 'Para recuperar a sua palavra-passe re-introduza uma palavra-passe nova, no seguinte link:http://127.0.0.1:8000/login/recuperacao_password/'+id+'/'
+            send_mail(subject, message, 'a61098@ualg.pt', [recepient])
             messages.success(request, f'Verifique o seu email')
             return render(request, 'reset.html', {'form': sub})
         else:
-            message.error(request, f'Email incorreto')
+            messages.error(request, f'Email incorreto')
     return render(request, 'reset.html', {'form': sub})
-
-def change_pass(request):
-    form=
-
-
+#-------------------------------------------------validacoes---------------------------------------------------------------
 def validacoes(request):
     if request.POST == 'POST':
         if Coordenador.objects.filter(utilizador_utilizadorid=request.session['user_id']).exists():

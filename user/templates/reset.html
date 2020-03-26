@@ -20,14 +20,9 @@
             <div class="step-item" style="">
                 <div style="padding: 1rem 2vw 0px;">
                     <hr>
-                    {% block content %}
+                    {% block content3 %}
                     <form method="POST">
                         {% csrf_token %}
-                        {% if messages %}
-                        {% for message in messages %}
-                        <h1 class="help is-danger" style="text-align: center;">{{message}}</h1>
-                        {% endfor %}
-                        {% endif %}
                         <div class="column is-offset-3 is-6">
                             {% if form.email.errors %}
                             <div class="field"><label class="" for={{form.email.id_for_label}}>Email</label>
@@ -37,7 +32,11 @@
                                             class="mdi mdi-alert-circle mdi-24px"></i></span>
                                     <!---->
                                 </div>
-                                <p class="help is-danger">Preencha este campo.</p>
+                                {% for message in messages %}
+                                {% if message.tags == "error" %}
+                                <p class="help is-danger">{{message}}</p>
+                                {% endif %}
+                                {% endfor %}
                                 {% else %}
                                 <div class="field"><label class="" for={{form.email.id_for_label}}>Email</label>
                                     <div class="control is-clearfix"><input type="email" name="email"
@@ -86,5 +85,5 @@
     </div>
 </div>
 </form>
-{% endblock content %}
+{% endblock content3 %}
 {% endblock content2 %}
