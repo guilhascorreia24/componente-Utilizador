@@ -114,13 +114,26 @@
                                             {% if funcao %}
                                             <div class="field"><label class=""
                                                 for={{form.funcao.id_for_label}}>Função</label>
-                                            <div class=" control is-clearfix"><input type="tel"
+                                            <div class=" control is-clearfix"><input type="text"
                                                     id={{form.funcao.id_for_label}} name="funcao" class="input"
                                                      value={{funcao}} disabled>
                                             </div>
                                         </div>
                                         {% endif %}
-                                        {% if }
+                                        {% if UO %}
+                                        <div class="field"><label class="" for={{form.UO.id_for_label}}>Unidade</label>
+                                            <div class=" control is-clearfix"><input type="text" id={{form.UO.id_for_label}} name="UO" class="input"
+                                                    value={{UO}} >
+                                            </div>
+                                        </div>
+                                        {% endif %}
+                                        {% if curso %}
+                                        <div class="field"><label class="" for={{form.curso.id_for_label}}>Função</label>
+                                            <div class=" control is-clearfix"><input type="text" id={{form.curso.id_for_label}} name="curso" class="input"
+                                                    value={{curso}} >
+                                            </div>
+                                        </div>
+                                        {% endif %}
                                         </div>
                                         <hr>
                                 </div>
@@ -133,7 +146,7 @@
                                         <!----></a></div>
                                 <div class="level-right"><button type="button"
                                         class="button is-large is-success is-outlined" data-toggle="modal"
-                                        data-target="">
+                                        data-target="#exampleModal">
                                         <!----> <span>Submeter</span>
                                         <!----></button></div>
                             </div>

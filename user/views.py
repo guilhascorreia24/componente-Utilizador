@@ -4,7 +4,7 @@ from .forms import UserRegisterForm, AuthenticationForm, ModifyForm, PasswordCha
 from django.core.mail import send_mail
 from django.contrib.auth.hashers import make_password
 from django.core import signing
-from .models import Utilizador, Participante, ProfessorUniversitario, Administrador, Coordenador, Colaborador, DjangoSession
+from .models import Departamento, Utilizador, Participante, ProfessorUniversitario, Administrador, Coordenador, Colaborador, DjangoSession
 
 #----------------------------------------------registo user--------------------------------
 def password_check(passwd):   
@@ -64,7 +64,8 @@ def register(request):
                 error3 = "telefone ja existe"
             if request.POST['password1'] != request.POST['password2']:
                 error2 = "Passwords nao coincidem"
-            error1 = password_check(request.POST['password1'])
+            if password_check(request.POST['password1']):
+                error1 = password_check(request.POST['password1'])
             return render(request, 'register.html', {'form': form, 'error1': error, 'error2': error1, 'error3': error2, 'error4': error3})
     form = UserRegisterForm()
     return render(request, 'register.html', {'form': form})
@@ -119,32 +120,42 @@ def modify_data(request):
     username = request.POST['username']
     email = request.POST['email']
     telefone = request.POST['telefone']
-    funcao=request.POST['funcao']
     t=Utilizador.objects.get(pk=id)
     t.nome=name
     t.username=username
     t.email=email
     t.telefone=telefone
     t.save()
+    if ProfessorUniversitario.objects.filter(pk=id).exists():
+        IDUO = ProfessorUniversitario.objects.get(pk=id).unidade_organica_iduo
+    elif Coordenador.objects.filter(pk=id).exists():
+        IDUO = Coordenador.objects.get(pk=id).unidade_organica_iduo
+    elif Colaborador.objects.filter(pk=id).exists():
+        ano = Colaborador.objects.get(pk=id).dia_aberto_ano
+        curso = Colaborador.objects.get(pk=id).curso
+    
 
 
 
 
-def modify_user(request,form,name,username,email,telefone):
-    if Participante.objects.filter(utilizador_idutilizador=id).exists():
+def modify_user(request,form,name,username,email,telefone,id):
+    IDUO=False
+    ano=False
+    curso=False
+    if Participante.objects.filter(pk=id).exists():
         funcao = "Participante"
-    elif Administrador.objects.filter(utilizador_idutilizador=id).exists():
+    elif Administrador.objects.filter(pk=id).exists():
         funcao = "administardor"
-    elif ProfessorUniversitario.objects.filter(utilizador_idutilizador=id).exists():
+    elif ProfessorUniversitario.objects.filter(pk=id).exists():
         funcao = "docente Univesitario"
-        IDUO = ProfessorUniversitario.objects.get(utilizador_utilizadorid=id).unidade_organica_iduo
-    elif Coordenador.objects.filter(utilizador_idutilizador=id).exists():
+        IDUO = ProfessorUniversitario.objects.get(pk=id).unidade_organica_iduo
+    elif Coordenador.objects.filter(pk=id).exists():
         funcao = "Coordenador"
-        IDUO = Coordenador.objects.get(utilizador_utilizadorid=id).unidade_organica_iduo
-    elif Colaborador.objects.filter(utilizador_idutilizador=id).exists():
-        ano = Colaborador.objects.get(utilizador_utilizadorid=id).dia_aberto_ano
+        IDUO = Coordenador.objects.get(pk=id).unidade_organica_iduo
+    elif Colaborador.objects.filter(pk=id).exists():
+        ano = Colaborador.objects.get(pk=id).dia_aberto_ano
         funcao = "Colaborador"
-        curso = Colaborador.objects.get(utilizador_utilizadorid=id).curso
+        curso = Colaborador.objects.get(pk=id).curso
     return render(request, 'profile_modify.html', {"form": form, 'nome': name, 'email': email, 'telefone': telefone, 'funcao': funcao, 'ano': ano, 'curso': curso,'iduo':IDUO})
 
 
@@ -159,10 +170,10 @@ def profile(request):
     telefone = Utilizador.objects.get(idutilizador=id).telefone
     if request.method == 'POST':
         form = ModifyForm(request.POST)
-        if request.POST['persona'] == "1":
-            return modify_user(request)
+        if "persona" in request.POST:
+            return modify_user(request,form,name,username,email,telefone,id)
         else:
-            return modify_data()
+            return modify_data(request)
     else:
         form = ModifyForm()
     idUO=False
@@ -174,7 +185,8 @@ def profile(request):
         funcao = "administardor"
     elif ProfessorUniversitario.objects.filter(utilizador_idutilizador=id).exists():
         funcao = "docente Univesitario"
-        idUO = ProfessorUniversitario.objects.get( utilizador_idutilizador=id).unidade_organica_iduo
+        depid = ProfessorUniversitario.objects.get( utilizador_idutilizador=id).departamento_iddepartamento
+        dep= Departamento.ocjects.get(pk=depid).nome
     elif Coordenador.objects.filter(utilizador_idutilizador=id).exists():
         funcao = "Coordenador"
         idUO = Coordenador.objects.get( utilizador_utilizadorid=id).unidade_organica_iduo
