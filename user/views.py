@@ -2,10 +2,23 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from .forms import UserRegisterForm, AuthenticationForm, ModifyForm, PasswordChangeForm, EmailSender
 from django.core.mail import send_mail
-from django.contrib.auth.hashers import make_password
 from django.core import signing
-from .models import Departamento, Utilizador, Participante, ProfessorUniversitario, Administrador, Coordenador, Colaborador, DjangoSession
+from .models import UnidadeOrganica, Departamento, Utilizador, Participante, ProfessorUniversitario, Administrador, Coordenador, Colaborador, DjangoSession
 
+def user(request):
+    id1=request.session['user_id']
+    if Participante.objects.filter(utilizador_idutilizador=id1).exists():
+        funcao = ""
+    elif ProfessorUniversitario.objects.filter(utilizador_idutilizador=id1).exists():
+        funcao = "docente Univesitario"
+    elif Administrador.objects.filter(utilizador_idutilizador=id1).exists():
+        funcao = "administardor"
+    elif Coordenador.objects.filter(utilizador_idutilizador=id1).exists():
+        funcao = "Coordenador"
+    elif Colaborador.objects.filter(utilizador_idutilizador=id1).exists():
+        funcao = "colab"
+    id=signing.dumps(id1)
+    return funcao
 #----------------------------------------------registo user--------------------------------
 def password_check(passwd):   
     SpecialSym =['$', '@', '#', '%'] 
@@ -36,8 +49,7 @@ def password_check(passwd):
 def register(request):
     if request.method == 'POST':
         form = UserRegisterForm(request.POST)
-        print(request.POST)
-        if form.is_valid() and not Utilizador.objects.filter(email=request.POST['email']).exists() and  not Utilizador.objects.filter(telefone=request.POST['telefone']).exists() and password_check(request.POST['password1']) is True:
+        if form.is_valid() and request.POST['password1']==request.POST['password2'] and not Utilizador.objects.filter(email=request.POST['email']).exists() and  not Utilizador.objects.filter(telefone=request.POST['telefone']).exists() and password_check(request.POST['password1']) is True:
             form.save()
             part = Participante(pk=Utilizador.objects.get(
                 email=request.POST['email']).idutilizador)
@@ -50,13 +62,13 @@ def register(request):
             error3=False
             error2=False
             error1=False
-            if request.POST['email'] is None:
+            if request.POST['email']=="":
                 error = 'Preencha este campo.'
-            if request.POST['telefone'] is None:    
+            if request.POST['telefone']=="":    
                 error3 = 'Preencha este campo.'
-            if request.POST['password1'] is None:
+            if request.POST['password1']=="":
                 error1 = 'Preencha este campo.'
-            if request.POST['password2'] is None:
+            if request.POST['password2'] =="":
                 error2 = 'Preencha este campo.'
             if Utilizador.objects.filter(email=request.POST['email']).exists():
                 error = "Email ja existe"
@@ -64,7 +76,7 @@ def register(request):
                 error3 = "telefone ja existe"
             if request.POST['password1'] != request.POST['password2']:
                 error2 = "Passwords nao coincidem"
-            if password_check(request.POST['password1']):
+            if not password_check(request.POST['password1']):
                 error1 = password_check(request.POST['password1'])
             return render(request, 'register.html', {'form': form, 'error1': error, 'error2': error1, 'error3': error2, 'error4': error3})
     form = UserRegisterForm()
@@ -114,74 +126,54 @@ def delete_user(request):
     return render(request, 'blog-home.html')
 
 #--------------------------------------alterar user---------------------------------------------
-def modify_data(request):
-    id = request.session['user_id']
-    name = request.POST['name']
-    username = request.POST['username']
-    email = request.POST['email']
-    telefone = request.POST['telefone']
-    t=Utilizador.objects.get(pk=id)
-    t.nome=name
-    t.username=username
-    t.email=email
-    t.telefone=telefone
-    t.save()
-    if ProfessorUniversitario.objects.filter(pk=id).exists():
-        IDUO = ProfessorUniversitario.objects.get(pk=id).unidade_organica_iduo
-    elif Coordenador.objects.filter(pk=id).exists():
-        IDUO = Coordenador.objects.get(pk=id).unidade_organica_iduo
-    elif Colaborador.objects.filter(pk=id).exists():
-        ano = Colaborador.objects.get(pk=id).dia_aberto_ano
-        curso = Colaborador.objects.get(pk=id).curso
-    
 
-
-
-
-def modify_user(request,form,name,username,email,telefone,id):
-    IDUO=False
-    ano=False
-    curso=False
-    if Participante.objects.filter(pk=id).exists():
-        funcao = "Participante"
-    elif Administrador.objects.filter(pk=id).exists():
-        funcao = "administardor"
-    elif ProfessorUniversitario.objects.filter(pk=id).exists():
-        funcao = "docente Univesitario"
-        IDUO = ProfessorUniversitario.objects.get(pk=id).unidade_organica_iduo
-    elif Coordenador.objects.filter(pk=id).exists():
-        funcao = "Coordenador"
-        IDUO = Coordenador.objects.get(pk=id).unidade_organica_iduo
-    elif Colaborador.objects.filter(pk=id).exists():
-        ano = Colaborador.objects.get(pk=id).dia_aberto_ano
-        funcao = "Colaborador"
-        curso = Colaborador.objects.get(pk=id).curso
-    return render(request, 'profile_modify.html', {"form": form, 'nome': name, 'email': email, 'telefone': telefone, 'funcao': funcao, 'ano': ano, 'curso': curso,'iduo':IDUO})
-
-
-def profile(request):
-    id = request.session['user_id']
-    name = Utilizador.objects.get(idutilizador=id).nome
-    if Utilizador.objects.get(idutilizador=id).username == '':
-        username = Utilizador.objects.get(idutilizador=id).nome
-    else:
-        username = Utilizador.objects.get(idutilizador=id).username
-    email = Utilizador.objects.get(idutilizador=id).email
-    telefone = Utilizador.objects.get(idutilizador=id).telefone
-    if request.method == 'POST':
-        form = ModifyForm(request.POST)
-        if "persona" in request.POST:
-            return modify_user(request,form,name,username,email,telefone,id)
+def profile(request,id):
+    id=signing.loads(id)
+    if request.method=='POST' and 'sub' in request.POST:
+        form=ModifyForm(request.POST)
+        if form.is_valid and request.POST['name']!="" and request.POST['username']!="" and request.POST['email']!="" and request.POST['telefone']!="":
+            t=Utilizador.objects.get(pk=id)
+            t.name=request.POST['name']
+            t.username=request.POST['username']
+            t.email=request.POST['email']
+            t.telefone=request.POST['telefone']
+            t.save()
+            return redirect('blog-home')
         else:
-            return modify_data(request)
+            error=False
+            error3=False
+            error2=False
+            if request.POST['username']=="":
+                error2 = 'Preencha este campo.'
+            if request.POST['email']=="":
+                error = 'Preencha este campo.'
+            if request.POST['telefone']=="":    
+                error3 = 'Preencha este campo.'
+            if Utilizador.objects.filter(email=request.POST['email']).exists() and Utilizador.objects.get(email=request.POST['email']).idutilizador!=id:
+                error = "Email ja existe"
+            if Utilizador.objects.filter(telefone=request.POST['telefone']).exists() and Utilizador.objects.get(telefone=request.POST['telefone']).idutilizador!=id:
+                error3 = "telefone ja existe"
+            if Utilizador.objects.filter(username=request.POST['username']).exists() and Utilizador.objects.get(username=request.POST['username']).idutilizador!=id:
+                error2 = "Username ja existe"
+            return render(request, 'profile_modify.html', {"form": form,'error4':error3,"error1":error,"error":error2})
+    elif request.method == 'POST':
+        form = ModifyForm(request.POST)
+        return   render(request, 'profile_modify.html', {"form": form})
     else:
         form = ModifyForm()
-    idUO=False
+        name = Utilizador.objects.get(idutilizador=id).nome
+        if Utilizador.objects.get(idutilizador=id).username == '':
+            username = Utilizador.objects.get(idutilizador=id).nome
+        else:
+            username = Utilizador.objects.get(idutilizador=id).username
+        email = Utilizador.objects.get(idutilizador=id).email
+        telefone = Utilizador.objects.get(idutilizador=id).telefone
+    UO=False
+    dep=False
     ano=False
     curso=False
-    if Participante.objects.filter(utilizador_idutilizador=id).exists():
-        funcao = "Participante"
-    elif Administrador.objects.filter(utilizador_idutilizador=id).exists():
+    funcao=False
+    if Administrador.objects.filter(utilizador_idutilizador=id).exists():
         funcao = "administardor"
     elif ProfessorUniversitario.objects.filter(utilizador_idutilizador=id).exists():
         funcao = "docente Univesitario"
@@ -189,13 +181,19 @@ def profile(request):
         dep= Departamento.ocjects.get(pk=depid).nome
     elif Coordenador.objects.filter(utilizador_idutilizador=id).exists():
         funcao = "Coordenador"
-        idUO = Coordenador.objects.get( utilizador_utilizadorid=id).unidade_organica_iduo
+        IDUO = Coordenador.objects.get(pk=id).unidade_organica_iduo
+        UO=UnidadeOrganica.objects.get(pk=IDUO).sigla
     elif Colaborador.objects.filter(utilizador_idutilizador=id).exists():
         ano = Colaborador.objects.get(utilizador_utilizadorid=id).dia_aberto_ano
         funcao = "Colaborador"
         curso = Colaborador.objects.get(utilizador_idutilizador=id).curso
-    return render(request, 'profile.html', {"form": form, 'nome': name,'UO':idUO,'username': username, 'email': email, 'telefone': telefone, 'funcao': funcao, 'ano': ano, 'curso': curso})
+    return render(request, 'profile.html', {"form": form, 'nome': name,'UO':UO,'username': username, 'email': email, 'telefone': telefone, 'funcao': funcao, 'ano': ano, 'curso': curso,'dep':dep})
 
+def profile_list(request):
+    funcao=user(request)
+    users=Utilizador.objects.all()
+    print(users)
+    return render(request,"list_users.html",{"users":users,"funcao":funcao})
 #--------------------------------------------recuperaçao de password---------------------------------
 def change_password(request, id):
     id_deccryp=signing.loads(id)
@@ -240,4 +238,4 @@ def validacoes(request):
     if request.POST == 'POST':
         if Coordenador.objects.filter(utilizador_utilizadorid=request.session['user_id']).exists():
             user = Utilizador.objects.get(validada=1)
-    return render(request, "validacoes.html", {"users": user})
+    return render(request, "validacoes.html", {"users": user,"id":request.session['user_id'],"funcao":user(request)})

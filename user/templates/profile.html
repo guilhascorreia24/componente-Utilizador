@@ -11,35 +11,49 @@
         </div>
         <div class="field"><label class="" for={{form.name.id_for_label}} aria-label="breadcrumbs">Nome</label>
             <div class="control is-clearfix"><input type="text" name="name" id={{form.name.id_for_label}} class="input"
-                    value={{nome}} disabled>
+                    value={{nome}} disabled><input type="hidden" name="name" id={{form.name.id_for_label}} class="input"
+                    value={{nome}} >
             </div>
         </div>
         <div class="field"><label class="" for={{form.username.id_for_label}}>Username</label>
             <div class="control is-clearfix"><input type="text" name="username" id={{form.username.id_for_label}}
-                    class="input" value="{{username}}" disabled>
+                    class="input" value="{{username}}" disabled><input type="hidden" name="username" id={{form.username.id_for_label}}
+                    class="input" value="{{username}}" >
             </div>
         </div>
         <div class="field"><label class="" for={{form.email.id_for_label}}>Email</label>
             <div class="control is-clearfix"><input type="email" name="email" id={{form.email.id_for_label}}
-                    class="input" value="{{email}}" disabled>
+                    class="input" value="{{email}}" disabled><input type="hidden" name="email" id={{form.email.id_for_label}}
+                    class="input" value="{{email}}" >
             </div>
         </div>
         <div class="field"><label class="" for={{form.telefone.id_for_label}}>Telefone/Telemovel</label>
             <div class=" control is-clearfix"><input type="tel" id={{form.telefone.id_for_label}} name="telefone"
-                    class="input" pattern="[0-9]{3}[0-9]{3}[0-9]{3}" value={{telefone}} disabled>
+                    class="input" pattern="[0-9]{3}[0-9]{3}[0-9]{3}" value={{telefone}} disabled><input type="hidden" id={{form.telefone.id_for_label}} name="telefone"
+                    class="input" pattern="[0-9]{3}[0-9]{3}[0-9]{3}" value={{telefone}} >
             </div>
         </div>
         {% if funcao %}
         <div class="field"><label class="" for={{form.funcao.id_for_label}}>Função</label>
             <div class=" control is-clearfix"><input type="text" id={{form.funcao.id_for_label}} name="funcao"
-                    class="input" value={{funcao}} disabled>
+                    class="input" value={{funcao}} disabled><input type="hidden" id={{form.funcao.id_for_label}} name="funcao"
+                    class="input" value={{funcao}}>
+            </div>
+        </div>
+        {% endif %}
+        {% if dep %}
+        <div class="field"><label class="" for={{form.dep.id_for_label}}>Departamento</label>
+            <div class=" control is-clearfix"><input type="text" id={{form.dep.id_for_label}} name="dep" class="input"
+                    value={{dep}} disabled><input type="hidden" id={{form.dep.id_for_label}} name="dep" class="input"
+                    value={{dep}} >
             </div>
         </div>
         {% endif %}
         {% if UO %}
-        <div class="field"><label class="" for={{form.UO.id_for_label}}>Função</label>
+        <div class="field"><label class="" for={{form.UO.id_for_label}}>Unidade Organica</label>
             <div class=" control is-clearfix"><input type="text" id={{form.UO.id_for_label}} name="UO" class="input"
-                    value={{UO}} disabled>
+                    value={{UO}} disabled><input type="hidden" id={{form.UO.id_for_label}} name="UO" class="input"
+                    value={{UO}} >
             </div>
         </div>
         {% endif %}
@@ -47,6 +61,8 @@
         <div class="field"><label class="" for={{form.curso.id_for_label}}>Função</label>
             <div class=" control is-clearfix"><input type="text" id={{form.curso.id_for_label}} name="curso" class="input"
                     value={{curso}} disabled>
+                    <input type="hidden" id={{form.curso.id_for_label}} name="curso" class="input"
+                    value={{curso}} >
             </div>
         </div>
         {% endif %}
@@ -60,8 +76,7 @@
             <div class="level-left"><a href=".." class="button is-outlined" type="button">
                     <!----> <span> Cancelar </span>
                     <!----></a></div>
-            <div class="level-right"><button type="submit" class="button is-large is-success is-outlined" name="persona"
-                    value=1>
+            <div class="level-right"><button type="submit" class="button is-large is-success is-outlined"
                     <!----> <span>Personalizar pagina</span>
                     <!----></button></div>
         </div>

@@ -2,7 +2,7 @@ from django.db import models
 
 class Utilizador(models.Model):
     idutilizador = models.AutoField(primary_key=True)
-    nome = models.CharField(max_length=45)
+    nome = models.CharField(max_length=45,unique=True)
     email = models.CharField(unique=True, max_length=45)
     telefone = models.CharField(unique=True, max_length=45)
     password = models.CharField(max_length=45)

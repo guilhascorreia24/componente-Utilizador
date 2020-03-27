@@ -40,11 +40,18 @@ class ModifyForm(forms.Form):
     telefone=forms.CharField(max_length=45,label="Telefone/Telemovel")
     funcao=forms.CharField(max_length=45,label="funcao")
     UO=forms.CharField(max_length=45,label="uo")
+    dep=forms.CharField(max_length=45,label="dep")
     curso=forms.CharField(max_length=45,label="curso")
 
     class Meta:
         model=Utilizador
-        fields=['name','username','email','telefone','funcao','UO','curso']
+        fields=['name','username','email','telefone','funcao','UO','curso','dep']
+    
+    def save(self):
+        data = self.cleaned_data
+        user=Utilizador(nome=data['name'],username=data['username'],
+            email=data['email'],telefone=data['telefone'],validada=data['funcao'])
+        user.save()
     
 class PasswordChangeForm(forms.Form):
     password = forms.CharField(widget=forms.PasswordInput, required=False,max_length=45,label="Password1")

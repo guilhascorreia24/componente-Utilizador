@@ -7,3 +7,11 @@ Estrututra de utilizadores estranha
 
 Sessao:
     vagas ou nr de inscritos inutil
+
+
+    0=Particpante
+    1=Colaborador
+    2=Coordenador
+    3=DC
+    4=ADmin
+    
