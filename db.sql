@@ -726,6 +726,7 @@ CREATE TABLE IF NOT EXISTS `les`.`inscricao_coletiva` (
   `Participante_Utilizador_idutilizador` INT NOT NULL,
   `escola_idescola` INT NOT NULL,
   `inscricao_idinscricao` INT NOT NULL,
+  `telefone` INT NOT NULL,
   PRIMARY KEY (`inscricao_idinscricao`),
   INDEX `fk_inscricao_coletiva_Participante_id` (`Participante_Utilizador_idutilizador` ASC) VISIBLE,
   INDEX `fk_inscricao_coletiva_escola_id` (`escola_idescola` ASC) VISIBLE,
