@@ -436,6 +436,7 @@ class Responsaveis(models.Model):
     idresponsavel = models.AutoField(primary_key=True)
     nome = models.CharField(max_length=45)
     email = models.CharField(max_length=45)
+    telefone = models.CharField(unique=True, max_length=45)
     idinscricao = models.ForeignKey(Inscricao, models.DO_NOTHING, db_column='idInscricao')  # Field name made lowercase.
 
     class Meta:

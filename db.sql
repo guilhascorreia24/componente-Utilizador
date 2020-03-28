@@ -928,6 +928,7 @@ CREATE TABLE IF NOT EXISTS `les`.`responsaveis` (
   `idresponsavel` INT NOT NULL AUTO_INCREMENT,
   `nome` VARCHAR(45) NOT NULL,
   `email` VARCHAR(45) NOT NULL,
+  `telefone` VARCHAR(45) NOT NULL,
   `idInscricao` INT NOT NULL,
   PRIMARY KEY (`idresponsavel`),
   INDEX `fk_Responsáveis_Inscricao` (`idInscricao` ASC) VISIBLE,
