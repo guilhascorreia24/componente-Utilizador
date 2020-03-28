@@ -322,6 +322,7 @@ class Inscricao(models.Model):
     ano = models.TextField()  # This field type is a guess.
     local = models.CharField(max_length=45)
     areacientifica = models.CharField(max_length=45)
+    nparticipantes = models.IntegerField()
 
     class Meta:
         managed = False
