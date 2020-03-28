@@ -694,6 +694,7 @@ CREATE TABLE IF NOT EXISTS `les`.`inscricao` (
   `idinscricao` INT NOT NULL AUTO_INCREMENT,
   `ano` YEAR NOT NULL,
   `local` VARCHAR(45) NOT NULL,
+  'npartici+antes' INT NOT NULL,
   `areacientifica` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`idinscricao`))
 ENGINE = InnoDB
