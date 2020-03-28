@@ -51,8 +51,8 @@
                                         {% endif %}
                                         <div class="column is-offset-3 is-6">
                                             {% if form.email.errors %}
-                                            <div class="field"><label class=""
-                                                    for={{form.email.id_for_label}}>Email</label>
+                                            <div class="field"><p class=""
+                                                    for={{form.email.id_for_label}}>Email</p>
                                                 <div class="control has-icons-right"><input type="email" name="email"
                                                         id={{form.email.id_for_label}} autocomplete="on"
                                                         class="input is-danger">
@@ -62,16 +62,16 @@
                                                 </div>
                                                 <p class="help is-danger">Preencha este campo.</p>
                                                 {% else %}
-                                                <div class="field"><label class=""
-                                                        for={{form.email.id_for_label}}>Email</label>
+                                                <div class="field"><p class=""
+                                                        for={{form.email.id_for_label}}>Email</p>
                                                     <div class="control is-clearfix"><input type="email" name="email"
                                                             id={{form.email.id_for_label}} class="input">
                                                     </div>
                                                 </div>
                                                 {% endif %}
                                                 {% if form.password.errors %}
-                                                <div class="field"><label class=""
-                                                        for={{form.password.id_for_label}}>Password</label>
+                                                <div class="field"><p class=""
+                                                        for={{form.password.id_for_label}}>Password</p>
                                                     <div class="control has-icons-right"><input type="password"
                                                          id={{form.password.id_for_label}} name="password"
                                                             autocomplete="on" class="input is-danger">
@@ -81,8 +81,8 @@
                                                     </div>
                                                     <p class="help is-danger">Preencha este campo.</p>
                                                     {% else %}
-                                                    <div class="field"><label class=""
-                                                            for={{form.password.id_for_label}}>Password</label>
+                                                    <div class="field"><p class=""
+                                                            for={{form.password.id_for_label}}>Password</p>
                                                         <div class="control is-clearfix"><input type="password"
                                                                 id={{form.password.id_for_label}} name="password"
                                                                 class="input">
@@ -90,8 +90,7 @@
                                                     </div>
                                                     {% endif %}
                                                     <br>
-                                                    <input type="checkbox" name="check" value="1">
-                                                    <label for="check"> Lembar de mim</label><br>
+                                                    <span><input type="checkbox" name="check" value="1"> Lembar de mim<br></span>
                                                     <br><a href="recuperacao_password">Recuperar Password</a>
                                                 </div>
                                                 <hr>

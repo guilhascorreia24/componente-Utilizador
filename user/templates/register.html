@@ -46,7 +46,7 @@
                                         <div class="column is-offset-3 is-6">
                                             {% if form.name.errors %}
                                             <div class="field"><label class=""
-                                                    for={{form.name.id_for_label}}>Name</label>
+                                                    for={{form.name.id_for_label}}>Nome</label>
                                                 <div class="control has-icons-right"><input type="text" name="name"
                                                         id={{form.name.id_for_label}} autocomplete="on" 
                                                         class="input is-danger">
@@ -56,16 +56,16 @@
                                                 </div>
                                                 <p class="help is-danger">Preencha este campo.</p>
                                                 {% else %}
-                                                <div class="field"><label class="" for={{form.name.id_for_label}}
-                                                        aria-label="breadcrumbs">Nome</label>
+                                                <div class="field"><p class="" for={{form.name.id_for_label}}
+                                                        aria-label="breadcrumbs">Nome</p>
                                                     <div class="control is-clearfix"><input type="text" name="name" value="{{form.name.value|default_if_none:""}}"
                                                             id={{form.name.id_for_label}} class="input">
                                                     </div>
                                                 </div>
                                                 {% endif %}
                                                 {% if form.username.errors %}
-                                                <div class="field"><label class=""
-                                                        for={{form.username.id_for_label}}>Username</label>
+                                                <div class="field"><p class=""
+                                                        for={{form.username.id_for_label}}>Username</p>
                                                     <div class="control has-icons-right"><input type="text"
                                                             name="username" id={{form.username.id_for_label}}
                                                             autocomplete="on" class="input is-danger">
@@ -75,8 +75,8 @@
                                                     </div>
                                                     <p class="help is-danger">Preencha este campo.</p>
                                                     {% else %}
-                                                    <div class="field"><label class=""
-                                                            for={{form.username.id_for_label}}>Username</label>
+                                                    <div class="field"><p class=""
+                                                            for={{form.username.id_for_label}}>Username</p>
                                                         <div class="control is-clearfix"><input type="text"
                                                                 name="username" id={{form.username.id_for_label}} value="{{form.username.value|default_if_none:""}}"
                                                                 class="input">
@@ -84,8 +84,8 @@
                                                     </div>
                                                     {% endif %}
                                                     {% if form.email.errors or error1 %}
-                                                    <div class="field"><label class=""
-                                                            for={{form.email.id_for_label}}>Email</label>
+                                                    <div class="field"><p class=""
+                                                            for={{form.email.id_for_label}}>Email</p>
                                                         <div class="control has-icons-right"><input type="email"
                                                                 name="email" id={{form.email.id_for_label}}
                                                                 autocomplete="on" class="input is-danger">
@@ -95,8 +95,8 @@
                                                         </div>
                                                             <p class="help is-danger">{{error1}}</p>
                                                         {% else %}
-                                                        <div class="field"><label class=""
-                                                                for={{form.email.id_for_label}}>Email</label>
+                                                        <div class="field"><p class=""
+                                                                for={{form.email.id_for_label}}>Email</p>
                                                             <div class="control is-clearfix"><input type="email"
                                                                     name="email" id={{form.email.id_for_label}} value="{{form.email.value|default_if_none:""}}"
                                                                     class="input">
@@ -104,8 +104,8 @@
                                                         </div>
                                                         {% endif %}
                                                         {% if form.telefone.errors  or error4 %}
-                                                        <div class="field"><label class=""
-                                                                for={{form.telefone.id_for_label}}>Telefone/Telemovel</label>
+                                                        <div class="field"><p class=""
+                                                                for={{form.telefone.id_for_label}}>Telefone/Telemovel</p>
                                                             <div class="control has-icons-right"><input type="text"
                                                                     name="telefone" id={{form.telefone.id_for_label}}
                                                                     autocomplete="on" class="input is-danger"
@@ -116,8 +116,8 @@
                                                             </div>
                                                             <p class="help is-danger">{{error4}}</p>
                                                             {% else %}
-                                                            <div class="field"><label class=""
-                                                                    for={{form.telefone.id_for_label}}>Telefone/Telemovel</label>
+                                                            <div class="field"><p class=""
+                                                                    for={{form.telefone.id_for_label}}>Telefone/Telemovel</p>
                                                                 <div class="control is-clearfix"><input type="tel"
                                                                         id={{form.telefone.id_for_label}}
                                                                         name="telefone" class="input" value="{{form.telefone.value|default_if_none:""}}"
@@ -126,8 +126,8 @@
                                                             </div>
                                                             {% endif %}
                                                             {% if form.password1.errors or error2 %}
-                                                            <div class="field"><label class=""
-                                                                    for={{form.password1.id_for_label}}>Password</label>
+                                                            <div class="field"><p class=""
+                                                                    for={{form.password1.id_for_label}}>Password</p>
                                                                 <div class="control has-icons-right"><input
                                                                         type="password" name="password1"
                                                                         id={{form.password1.id_for_label}}
@@ -139,8 +139,8 @@
                                                                 </div>
                                                                 <p class="help is-danger">{{error2}}</p>
                                                                 {% else %}
-                                                                <div class="field"><label class=""
-                                                                        for={{form.password1.id_for_label}}>Password</label>
+                                                                <div class="field"><p class=""
+                                                                        for={{form.password1.id_for_label}}>Password</p>
                                                                     <div class="control is-clearfix"><input
                                                                             type="password"
                                                                             id={{form.password1.id_for_label}}
@@ -149,9 +149,9 @@
                                                                 </div>
                                                                 {% endif %}
                                                                 {% if form.password2.errors or error3 %}
-                                                                <div class="field"><label class=""
+                                                                <div class="field"><p class=""
                                                                         for={{form.password1.id_for_label}}>Password
-                                                                        Confirm</label>
+                                                                        Confirm</p>
                                                                     <div class="control has-icons-right"><input
                                                                             type="password" name="password2"
                                                                             id={{form.password2.id_for_label}}
@@ -163,9 +163,9 @@
                                                                     </div>
                                                                     <p class="help is-danger">{{error3}}</p>
                                                                     {% else %}
-                                                                    <div class="field"><label class=""
+                                                                    <div class="field"><p class=""
                                                                             for={{form.password2.id_for_label}}>Password
-                                                                            Confirm</label>
+                                                                            Confirm</p>
                                                                         <div class="control is-clearfix"><input
                                                                                 type="password"
                                                                                 id={{form.password2.id_for_label}}
@@ -173,7 +173,7 @@
                                                                         </div>
                                                                     </div>
                                                                     {% endif %}
-                                                                    <div class="field"><label class="" for={{form.funcao.id_for_label}}>Funçao</label>
+                                                                    <div class="field"><p class="" for={{form.funcao.id_for_label}}>Funçao</p>
                                                                         <div class="control is-expanded"><span
                                                                                 class="select is-empty"><select id={{form.funcao.id_for_label}} name="funcao" value="{{form.funcao.value}}">
                                                                                     <!---->
