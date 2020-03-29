@@ -28,6 +28,7 @@ urlpatterns = [
     path('atividades/',include('atividades.urls')),
     path('profile/<str:id>',user_views.profile,name="profile"),
     path('profiles_list/',user_views.profile_list,name='profile_list'),
+    path("profiles_list/<str:id>/",user_views.profile,name="profile_user"),
    # path('notificacao/',notificacao_views.Todo,name="notificacao"),
     path('validacoes/',user_views.validacoes,name="validacoes"),
     path('', include("blog.urls"))

@@ -192,8 +192,10 @@ def profile(request,id):
 def profile_list(request):
     funcao=user(request)
     users=Utilizador.objects.all()
-    print(users)
-    return render(request,"list_users.html",{"users":users,"funcao":funcao})
+    for u in users:
+        u.idutilizador=signing.dumps(u.idutilizador)
+    id=signing.dumps(request.session['user_id'])
+    return render(request,"list_users.html",{"users":users,"funcao":funcao,"id":id})
 #--------------------------------------------recuperaçao de password---------------------------------
 def change_password(request, id):
     id_deccryp=signing.loads(id)

@@ -1,3 +1,4 @@
+
 {% extends "homepage.html" %}
 {% block content %}
 <div class="navbar-menu">
@@ -39,7 +40,7 @@
                 </div>
             </div>
             <div data-v-a67fe1ba="" class="dropdown is-bottom-left is-mobile-modal">
-                <div role="button" aria-haspopup="true" class="dropdown-trigger"><a href=""><button data-v-a67fe1ba=""
+                <div role="button" aria-haspopup="true" class="dropdown-trigger"><a href="../profile/{{ id }}"><button data-v-a67fe1ba=""
                             type="button" class="button is-text" style="margin-right: 0.9rem;">
                             <!----> <span><span data-v-a67fe1ba="" class="icon"><i
                                         class="mdi mdi-account-circle mdi-24px"></i></span></span>
@@ -206,7 +207,12 @@
                                             {% endif %}
                                             <td data-label="Ações" class="has-text-centered"><a><span
                                                         class="icon has-text-danger"><i
-                                                            class="mdi mdi-close-box mdi-24px"></i></span></a></td>
+                                                            class="mdi mdi-close-box mdi-24px"></i></span></a>
+                                                            
+                                                            <a href="{% url "profile_user" user.idutilizador %}">
+                                                                <span
+                                                                class="icon has-text-success"><i
+                                                                    class="mdi mdi-account-search mdi-24px"></i></span></a></td>
                                             <!---->
                                         </tr>
                                         <!---->

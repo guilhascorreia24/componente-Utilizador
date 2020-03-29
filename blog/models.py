@@ -549,6 +549,7 @@ class Utilizador(models.Model):
     class Meta:
         managed = False
         db_table = 'utilizador'
+    
 
 
 class UtilizadorHasNotificacao(models.Model):
