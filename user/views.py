@@ -193,9 +193,10 @@ def profile(request,id):
 
 def profile_list(request):
     funcao=user(request)
-    users=Utilizador.objects.raw("SELECT a.*, CASE WHEN a.idutilizador= b.utilizador_idutilizador THEN 'Administrador' WHEN a.idutilizador=c.utilizador_idutilizador THEN 'Coordenador' "+
-                                     "WHEN a.idutilizador=d.utilizador_idutilizador THEN 'Colaborador' WHEN  a.idutilizador=e.utilizador_idutilizador THEN 'Docente Universitario' ELSE '0' END AS cargo FROM Utilizador a,Administrador b,"+
-                                     "Coordenador c,Colaborador d,professor_universitario e;")
+    users=Utilizador.objects.all()
+    #users=Utilizador.objects.raw("SELECT a.*, CASE WHEN a.idutilizador= b.utilizador_idutilizador THEN 'Administrador' WHEN a.idutilizador=c.utilizador_idutilizador THEN 'Coordenador' "+
+     #                                "WHEN a.idutilizador=d.utilizador_idutilizador THEN 'Colaborador' WHEN  a.idutilizador=e.utilizador_idutilizador THEN 'Docente Universitario' ELSE '0' END AS cargo FROM Utilizador a,Administrador b,"+
+      #                               "Coordenador c,Colaborador d,professor_universitario e;")
     for u in users:
         u.idutilizador=signing.dumps(u.idutilizador)
     id=signing.dumps(request.session['user_id'])
@@ -213,7 +214,6 @@ def change_password(request, id):
             messages.success(request, f'Password alterada com sucesso')
             return redirect('blog-home')
         else:
-            print(password_check(passwd))
             messages.error(request,password_check(passwd))
             if request.POST['confirm_password']!=passwd:
                 error=True

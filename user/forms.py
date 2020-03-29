@@ -6,12 +6,12 @@ from django.core.exceptions import ValidationError
 
 
 class UserRegisterForm(forms.Form):
-    name=forms.CharField(max_length=45,label="Nome")
-    username=forms.CharField(max_length=45,label="username")
-    email = forms.EmailField(max_length=45,label="Email")
-    telefone=forms.CharField(max_length=45,label="Telefone/Telemovel")
-    password1=forms.CharField(max_length=45,label="Password",widget=forms.PasswordInput())
-    password2=forms.CharField(max_length=45,label="Password Confirm",widget=forms.PasswordInput())
+    name=forms.CharField(max_length=255,label="Nome")
+    username=forms.CharField(max_length=255,label="username")
+    email = forms.EmailField(max_length=255,label="Email")
+    telefone=forms.CharField(max_length=255,label="Telefone/Telemovel")
+    password1=forms.CharField(max_length=255,label="Password",widget=forms.PasswordInput())
+    password2=forms.CharField(max_length=255,label="Password Confirm",widget=forms.PasswordInput())
     funcao=forms.IntegerField(label="funcao")
 
     class Meta:
@@ -26,18 +26,18 @@ class UserRegisterForm(forms.Form):
     
 
 class AuthenticationForm(forms.Form):
-    email = forms.EmailField(max_length=45,label="email")
-    password=forms.CharField(max_length=45,label="password",widget=forms.PasswordInput())
+    email = forms.EmailField(max_length=255,label="email")
+    password=forms.CharField(max_length=255,label="password",widget=forms.PasswordInput())
 
     class Meta:
         model=Utilizador
         fields=['email','password']
 
 class ModifyForm(forms.Form):
-    name=forms.CharField(max_length=45,label="Nome")
-    username=forms.CharField(max_length=45,label="username")
-    email = forms.EmailField(max_length=45,label="Email")
-    telefone=forms.CharField(max_length=45,label="Telefone/Telemovel")
+    name=forms.CharField(max_length=255,label="Nome")
+    username=forms.CharField(max_length=255,label="username")
+    email = forms.EmailField(max_length=255,label="Email")
+    telefone=forms.CharField(max_length=255,label="Telefone/Telemovel")
     funcao=forms.CharField(max_length=45,label="funcao")
     UO=forms.CharField(max_length=45,label="uo")
     dep=forms.CharField(max_length=45,label="dep")
@@ -54,8 +54,8 @@ class ModifyForm(forms.Form):
         user.save()
     
 class PasswordChangeForm(forms.Form):
-    password = forms.CharField(widget=forms.PasswordInput, required=False,max_length=45,label="Password1")
-    confirm_password = forms.CharField(widget=forms.PasswordInput, required=False,max_length=45,label="Password2")
+    password = forms.CharField(widget=forms.PasswordInput, required=False,max_length=255,label="Password1")
+    confirm_password = forms.CharField(widget=forms.PasswordInput, required=False,max_length=255,label="Password2")
 
     class Meta:
         model=Utilizador

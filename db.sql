@@ -22,11 +22,11 @@ USE `les` ;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `les`.`utilizador` (
   `idutilizador` INT NOT NULL AUTO_INCREMENT,
-  `nome` VARCHAR(45) NOT NULL,
-  `email` VARCHAR(45) NOT NULL,
+  `nome` VARCHAR(255) NOT NULL,
+  `email` VARCHAR(255) NOT NULL,
   `telefone` VARCHAR(45) NOT NULL,
-  `password` VARCHAR(45) NOT NULL,
-  `userName` VARCHAR(45) NOT NULL,
+  `password` VARCHAR(255) NOT NULL,
+  `userName` VARCHAR(255) NOT NULL,
   `validada` TINYINT NOT NULL DEFAULT '0',
   PRIMARY KEY (`idutilizador`),
   UNIQUE INDEX `email_UNIQUE` (`email` ASC) VISIBLE,
@@ -58,7 +58,7 @@ COLLATE = utf8mb4_0900_ai_ci;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `les`.`campus` (
   `idCampus` INT NOT NULL AUTO_INCREMENT,
-  `nome` VARCHAR(45) NOT NULL,
+  `nome` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`idCampus`))
 ENGINE = InnoDB
 AUTO_INCREMENT = 3
@@ -71,7 +71,7 @@ COLLATE = utf8mb4_0900_ai_ci;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `les`.`espaco` (
   `idespaco` INT NOT NULL AUTO_INCREMENT,
-  `nome` VARCHAR(45) NOT NULL,
+  `nome` VARCHAR(255) NOT NULL,
   `campus_idCampus` INT NOT NULL,
   PRIMARY KEY (`idespaco`),
   INDEX `fk_espaco_campus1_idx` (`campus_idCampus` ASC) VISIBLE,
@@ -109,7 +109,7 @@ COLLATE = utf8mb4_0900_ai_ci;
 -- Table `les`.`arlivre`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `les`.`arlivre` (
-  `descricao` VARCHAR(45) NOT NULL,
+  `descricao` VARCHAR(255) NOT NULL,
   `espaco_idespaco` INT NOT NULL,
   PRIMARY KEY (`espaco_idespaco`),
   INDEX `fk_arlivre_espaco_id` (`espaco_idespaco` ASC) VISIBLE,
@@ -148,7 +148,7 @@ COLLATE = utf8mb4_0900_ai_ci;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `les`.`departamento` (
   `idDepartamento` INT NOT NULL AUTO_INCREMENT,
-  `nome` VARCHAR(45) NOT NULL,
+  `nome` VARCHAR(255) NOT NULL,
   `unidade_organica_idUO` INT NOT NULL,
   PRIMARY KEY (`idDepartamento`),
   INDEX `fk_Departamento_unidade_organica_id` (`unidade_organica_idUO` ASC) VISIBLE,
@@ -236,7 +236,7 @@ COLLATE = utf8mb4_0900_ai_ci;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `les`.`material` (
   `idMaterial` INT NOT NULL AUTO_INCREMENT,
-  `descricao` VARCHAR(45) NOT NULL,
+  `descricao` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`idMaterial`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
@@ -438,7 +438,7 @@ COLLATE = utf8mb4_0900_ai_ci;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `les`.`colaborador` (
   `curso` VARCHAR(45) NOT NULL,
-  `preferencia` VARCHAR(45) NULL DEFAULT NULL,
+  `preferencia` VARCHAR(255) NULL DEFAULT NULL,
   `Utilizador_idutilizador` INT NOT NULL,
   `dia_aberto_ano` YEAR NOT NULL,
   PRIMARY KEY (`Utilizador_idutilizador`),
@@ -669,10 +669,10 @@ COLLATE = utf8mb4_0900_ai_ci;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `les`.`escola` (
   `idescola` INT NOT NULL AUTO_INCREMENT,
-  `nome` VARCHAR(45) NOT NULL,
+  `nome` VARCHAR(255) NOT NULL,
   `local` VARCHAR(45) NOT NULL,
   `telefone` VARCHAR(45) NOT NULL,
-  `email` VARCHAR(45) NULL DEFAULT NULL,
+  `email` VARCHAR(255) NULL DEFAULT NULL,
   PRIMARY KEY (`idescola`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
@@ -683,7 +683,7 @@ COLLATE = utf8mb4_0900_ai_ci;
 -- Table `les`.`idioma`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `les`.`idioma` (
-  `nome` VARCHAR(24) NOT NULL,
+  `nome` VARCHAR(255) NOT NULL,
   `sigla` VARCHAR(45) NOT NULL,
   `Administrador_Utilizador_idutilizador` INT NOT NULL,
   PRIMARY KEY (`nome`),
@@ -705,9 +705,9 @@ COLLATE = utf8mb4_0900_ai_ci;
 CREATE TABLE IF NOT EXISTS `les`.`inscricao` (
   `idinscricao` INT NOT NULL AUTO_INCREMENT,
   `ano` YEAR NOT NULL,
-  `local` VARCHAR(45) NOT NULL,
+  `local` VARCHAR(255) NOT NULL,
   `nparticipantes` INT NOT NULL,
-  `areacientifica` VARCHAR(45) NOT NULL,
+  `areacientifica` VARCHAR(255) NOT NULL,
   `transporte` TINYINT NOT NULL DEFAULT 0,
   PRIMARY KEY (`idinscricao`))
 ENGINE = InnoDB
@@ -924,7 +924,7 @@ COLLATE = utf8mb4_0900_ai_ci;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `les`.`notificacao` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `descricao` VARCHAR(45) NOT NULL,
+  `descricao` VARCHAR(255) NOT NULL,
   `criadoem` DATETIME(6) NOT NULL,
   `idutilizadorenvia` INT NOT NULL,
   `utilizadorrecebe` INT NOT NULL,
@@ -939,8 +939,8 @@ COLLATE = utf8mb4_0900_ai_ci;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `les`.`responsaveis` (
   `idresponsavel` INT NOT NULL AUTO_INCREMENT,
-  `nome` VARCHAR(45) NOT NULL,
-  `email` VARCHAR(45) NOT NULL,
+  `nome` VARCHAR(255) NOT NULL,
+  `email` VARCHAR(255) NOT NULL,
   `telefone` VARCHAR(45) NOT NULL,
   `idInscricao` INT NOT NULL,
   PRIMARY KEY (`idresponsavel`),
@@ -978,7 +978,7 @@ COLLATE = utf8mb4_0900_ai_ci;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `les`.`tarefa` (
   `idtarefa` INT NOT NULL AUTO_INCREMENT,
-  `nome` VARCHAR(45) NOT NULL,
+  `nome` VARCHAR(255) NOT NULL,
   `concluida` TINYINT NOT NULL,
   `Coordenador_Utilizador_idutilizador` INT NOT NULL,
   `colaborador_Utilizador_idutilizador` INT NOT NULL,
@@ -1013,7 +1013,7 @@ COLLATE = utf8mb4_0900_ai_ci;
 CREATE TABLE IF NOT EXISTS `les`.`transporte` (
   `idtransporte` INT NOT NULL AUTO_INCREMENT,
   `capacidade` INT NOT NULL,
-  `identificacao` VARCHAR(45) NOT NULL,
+  `identificacao` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`idtransporte`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
