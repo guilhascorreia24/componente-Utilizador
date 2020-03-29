@@ -1,6 +1,15 @@
 {% extends "homepage.html" %}
 {% block content %}
 <div class="navbar-menu">
+    {% if funcao == "Coordenador" %}
+    {% include "navbar-coord.html" %}
+    {% elif funcao == "administardor" %}
+    {% include "navabar-admin.html" %}
+    {% elif funcao == "docente Univesitario" %}
+    {% include "navabar-dc.hmtl"}
+    {% elif funcao == None %}
+    {% include "navabar-part.html" %}
+    {% endif %}
     <div class="navbar-end">
         <div data-v-a67fe1ba="" class="navbar-item">
             <div data-v-a67fe1ba="" class="is-bottom-left is-mobile-modal dropdown ">
@@ -30,7 +39,7 @@
                 </div>
             </div>
             <div data-v-a67fe1ba="" class="dropdown is-bottom-left is-mobile-modal">
-                <div role="button" aria-haspopup="true" class="dropdown-trigger"><a href="profile"><button
+                <div role="button" aria-haspopup="true" class="dropdown-trigger"><a href=""><button
                             data-v-a67fe1ba="" type="button" class="button is-text" style="margin-right: 0.9rem;">
                             <!----> <span><span data-v-a67fe1ba="" class="icon"><i
                                         class="mdi mdi-account-circle mdi-24px"></i></span></span>
@@ -53,6 +62,7 @@
             <div data-v-8716d23a="" id="top">
                 <nav aria-label="breadcrumbs" class="breadcrumb" style="background-color:white">
                     <ul>
+                     
                         <li><a href="/" class="router-link-active">Início</a></li>
                         <li class="is-active"><a href=".."
                                 class="router-link-exact-active router-link-active">Profile</a></li>
@@ -86,31 +96,118 @@
                                                             alt="Fotografia de {{nome}}"
                                                             title="Fotografia de {{nome}}"></a></div>
                                             </div>  
-                                            <div class="field"><label class="" for={{form.name.id_for_label}}
-                                                    aria-label="breadcrumbs">Nome</label>
-                                                <div class="control is-clearfix"><input type="text" name="name"
-                                                        id={{form.name.id_for_label}} class="input" value={{nome}} >
-                                                </div>
-                                            </div>
+                                            {% if form.name.errors %}
                                             <div class="field"><label class=""
-                                                    for={{form.username.id_for_label}}>Username</label>
-                                                <div class="control is-clearfix"><input type="text" name="username"
-                                                        id={{form.username.id_for_label}} class="input" value={{username}} >
+                                                    for={{form.name.id_for_label}}>Nome</label>
+                                                <div class="control has-icons-right"><input type="text" name="name"
+                                                        id={{form.name.id_for_label}} autocomplete="on" 
+                                                        class="input is-danger">
+                                                    <!----> <span class="icon is-right has-text-danger"><i
+                                                            class="mdi mdi-alert-circle mdi-24px"></i></span>
+                                                    <!---->
                                                 </div>
-                                            </div>
+                                                <p class="help is-danger">Preencha este campo.</p>
+                                                {% else %}
+                                                <div class="field"><label class="" for={{form.name.id_for_label}}
+                                                        aria-label="breadcrumbs">Nome</label>
+                                                    <div class="control is-clearfix"><input type="text" name="name" value="{{form.name.value|default_if_none:""}}"
+                                                            id={{form.name.id_for_label}} class="input">
+                                                    </div>
+                                                </div>
+                                                {% endif %}
+                                                {% if form.username.errors or error%}
+                                                <div class="field"><label class=""
+                                                        for={{form.username.id_for_label}}>Username</label>
+                                                    <div class="control has-icons-right"><input type="text"
+                                                            name="username" id={{form.username.id_for_label}}
+                                                            autocomplete="on" class="input is-danger">
+                                                        <!----> <span class="icon is-right has-text-danger"><i
+                                                                class="mdi mdi-alert-circle mdi-24px"></i></span>
+                                                        <!---->
+                                                    </div>
+                                                    <p class="help is-danger">Preencha este campo.</p>
+                                                    {% else %}
+                                                    <div class="field"><label class=""
+                                                            for={{form.username.id_for_label}}>Username</label>
+                                                        <div class="control is-clearfix"><input type="text"
+                                                                name="username" id={{form.username.id_for_label}} value="{{form.username.value|default_if_none:""}}"
+                                                                class="input">
+                                                        </div>
+                                                    </div>
+                                                    {% endif %}
+                                                    {% if form.email.errors or error1 %}
+                                                    <div class="field"><label class=""
+                                                            for={{form.email.id_for_label}}>Email</label>
+                                                        <div class="control has-icons-right"><input type="email"
+                                                                name="email" id={{form.email.id_for_label}}
+                                                                autocomplete="on" class="input is-danger">
+                                                            <!----> <span class="icon is-right has-text-danger"><i
+                                                                    class="mdi mdi-alert-circle mdi-24px"></i></span>
+                                                            <!---->
+                                                        </div>
+                                                            <p class="help is-danger">{{error1}}</p>
+                                                        {% else %}
+                                                        <div class="field"><label class=""
+                                                                for={{form.email.id_for_label}}>Email</label>
+                                                            <div class="control is-clearfix"><input type="email"
+                                                                    name="email" id={{form.email.id_for_label}} value="{{form.email.value|default_if_none:""}}"
+                                                                    class="input">
+                                                            </div>
+                                                        </div>
+                                                        {% endif %}
+                                                        {% if form.telefone.errors  or error4 %}
+                                                        <div class="field"><label class=""
+                                                                for={{form.telefone.id_for_label}}>Telefone/Telemovel</label>
+                                                            <div class="control has-icons-right"><input type="text"
+                                                                    name="telefone" id={{form.telefone.id_for_label}}
+                                                                    autocomplete="on" class="input is-danger"
+                                                                    pattern="[0-9]{3}[0-9]{3}[0-9]{3}">
+                                                                <!----> <span class="icon is-right has-text-danger"><i
+                                                                        class="mdi mdi-alert-circle mdi-24px"></i></span>
+                                                                <!---->
+                                                            </div>
+                                                            <p class="help is-danger">{{error4}}</p>
+                                                            {% else %}
+                                                            <div class="field"><label class=""
+                                                                    for={{form.telefone.id_for_label}}>Telefone/Telemovel</label>
+                                                                <div class="control is-clearfix"><input type="tel"
+                                                                        id={{form.telefone.id_for_label}}
+                                                                        name="telefone" class="input" value="{{form.telefone.value|default_if_none:""}}"
+                                                                        pattern="[0-9]{3}[0-9]{3}[0-9]{3}">
+                                                                </div>
+                                                            </div>
+                                                            {% endif %}
+                                            {% if form.funcao.value %}
                                             <div class="field"><label class=""
-                                                    for={{form.email.id_for_label}}>Email</label>
-                                                <div class="control is-clearfix"><input type="email" name="email"
-                                                        id={{form.email.id_for_label}} class="input" value="{{email}}" >
-                                                </div>
+                                                for={{form.funcao.id_for_label}}>Função</label>
+                                            <div class=" control is-clearfix"><input type="text"
+                                                    id={{form.funcao.id_for_label}} name="funcao" class="input" value="{{form.funcao.value|default_if_none:""}}" disabled>
+                                                    <input type="hidden"
+                                                    id={{form.funcao.id_for_label}} name="funcao" class="input" value="{{form.funcao.value|default_if_none:""}}" >
                                             </div>
-                                            <div class="field"><label class=""
-                                                    for={{form.telefone.id_for_label}}>Telefone/Telemovel</label>
-                                                <div class=" control is-clearfix"><input type="tel"
-                                                        id={{form.telefone.id_for_label}} name="telefone" class="input"
-                                                        pattern="[0-9]{3}[0-9]{3}[0-9]{3}" value={{telefone}} >
-                                                </div>
+                                        </div>
+                                        {% endif %}
+                                        {% if form.dep.value %}
+                                        <div class="field"><label class="" for={{form.dep.id_for_label}}>Departamento</label>
+                                            <div class=" control is-clearfix"><input type="text" id={{form.dep.id_for_label}} name="dep" class="input"
+                                                    value={{form.dep.value}} >
                                             </div>
+                                        </div>
+                                        {% endif %}
+                                        {% if form.UO.value %}
+                                        <div class="field"><label class="" for={{form.UO.id_for_label}}>Unidade Organica</label>
+                                            <div class=" control is-clearfix"><input type="text" id={{form.UO.id_for_label}} name="UO" class="input"
+                                                    value="{{form.UO.value|default_if_none:""}}" >
+                                            </div>
+                                        </div>
+                                        {% endif %}
+                                        {% if form.curso.value %}
+                                        <div class="field"><label class="" for={{form.curso.id_for_label}}>Curso</label>
+                                            <div class=" control is-clearfix"><input type="text" id={{form.curso.id_for_label}} name="curso" class="input"
+                                                    value="{{form.curso.value|default_if_none:""}}">
+                                            </div>
+                                        </div>
+                                        {% endif %}
                                         </div>
                                         <hr>
                                 </div>
@@ -122,8 +219,8 @@
                                         <!----> <span> Cancelar </span>
                                         <!----></a></div>
                                 <div class="level-right"><button type="button"
-                                        class="button is-large is-success is-outlined" data-toggle="modal"
-                                        data-target="">
+                                        class="button is-large is-success is-outlined" data-toggle="modal" 
+                                        data-target="#exampleModal" >
                                         <!----> <span>Submeter</span>
                                         <!----></button></div>
                             </div>
@@ -147,7 +244,7 @@
                     </section>
                     <footer class="modal-card-foot"><button class="button" data-dismiss="modal">
                             Cancelar
-                        </button> <button class="button is-success" type="submit">
+                        </button> <button class="button is-success" type="submit" name="sub" value="1"> 
                             Confirmar
                         </button></footer>
                 </div>

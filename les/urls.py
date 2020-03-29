@@ -16,15 +16,20 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path,include
 from user import views as user_views
+from notificacao import views as notificacao_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('register/', user_views.register, name='register'),
     path('login/',user_views.login_request,name='login'),
     path('logout/',user_views.logout_request,name='logout'),
-    path('password_reset/',user_views.recovery_request,name="Reset"),
+    path('login/recuperacao_password/',user_views.reset,name="recuperacao_password"),
+    path('login/recuperacao_password/<str:id>/',user_views.change_password,name="reset"),
     path('atividades/',include('atividades.urls')),
-    path('profile/',user_views.profile,name="profile"),
+    path('profile/<str:id>',user_views.profile,name="profile"),
+    path('profiles_list/',user_views.profile_list,name='profile_list'),
+    path("profiles_list/<str:id>/",user_views.profile,name="profile_user"),
+   # path('notificacao/',notificacao_views.Todo,name="notificacao"),
     path('validacoes/',user_views.validacoes,name="validacoes"),
     path('', include("blog.urls"))
 ]

@@ -4,55 +4,84 @@
     {% csrf_token %}
     <div class="column is-offset-3 is-6">
         <div class="page-context-header">
-            <div class="page-header-image"><a
-                    href=""><img
+            <div class="page-header-image"><a href=""><img
                         src="https://tutoria.ualg.pt/2019/theme/image.php/boostualg/core/1582535563/u/f1"
-                        class="userpicture defaultuserpic" width="100" height="100"
-                        alt="Fotografia de {{nome}}"
+                        class="userpicture defaultuserpic" width="100" height="100" alt="Fotografia de {{nome}}"
                         title="Fotografia de {{nome}}"></a></div>
-        </div>  
-        <div class="field"><label class="" for={{form.name.id_for_label}}
-                aria-label="breadcrumbs">Nome</label>
-            <div class="control is-clearfix"><input type="text" name="name"
-                    id={{form.name.id_for_label}} class="input" value={{nome}} disabled>
+        </div>
+        <div class="field"><label class="" for={{form.name.id_for_label}} aria-label="breadcrumbs">Nome</label>
+            <div class="control is-clearfix"><input type="text" name="name" id={{form.name.id_for_label}} class="input"
+                    value={{nome}} disabled><input type="hidden" name="name" id={{form.name.id_for_label}} class="input"
+                    value={{nome}} >
             </div>
         </div>
-        <div class="field"><label class=""
-                for={{form.username.id_for_label}}>Username</label>
-            <div class="control is-clearfix"><input type="text" name="username"
-                    id={{form.username.id_for_label}} class="input" value={{username}} disabled>
+        <div class="field"><label class="" for={{form.username.id_for_label}}>Username</label>
+            <div class="control is-clearfix"><input type="text" name="username" id={{form.username.id_for_label}}
+                    class="input" value="{{username}}" disabled><input type="hidden" name="username" id={{form.username.id_for_label}}
+                    class="input" value="{{username}}" >
             </div>
         </div>
-        <div class="field"><label class=""
-                for={{form.email.id_for_label}}>Email</label>
-            <div class="control is-clearfix"><input type="email" name="email"
-                    id={{form.email.id_for_label}} class="input" value="{{email}}" disabled>
+        <div class="field"><label class="" for={{form.email.id_for_label}}>Email</label>
+            <div class="control is-clearfix"><input type="email" name="email" id={{form.email.id_for_label}}
+                    class="input" value="{{email}}" disabled><input type="hidden" name="email" id={{form.email.id_for_label}}
+                    class="input" value="{{email}}" >
             </div>
         </div>
-        <div class="field"><label class=""
-                for={{form.telefone.id_for_label}}>Telefone/Telemovel</label>
-            <div class=" control is-clearfix"><input type="tel"
-                    id={{form.telefone.id_for_label}} name="telefone" class="input"
-                    pattern="[0-9]{3}[0-9]{3}[0-9]{3}" value={{telefone}} disabled>
+        <div class="field"><label class="" for={{form.telefone.id_for_label}}>Telefone/Telemovel</label>
+            <div class=" control is-clearfix"><input type="tel" id={{form.telefone.id_for_label}} name="telefone"
+                    class="input" pattern="[0-9]{3}[0-9]{3}[0-9]{3}" value={{telefone}} disabled><input type="hidden" id={{form.telefone.id_for_label}} name="telefone"
+                    class="input" pattern="[0-9]{3}[0-9]{3}[0-9]{3}" value={{telefone}} >
             </div>
         </div>
+        {% if funcao %}
+        <div class="field"><label class="" for={{form.funcao.id_for_label}}>Função</label>
+            <div class=" control is-clearfix"><input type="text" id={{form.funcao.id_for_label}} name="funcao"
+                    class="input" value={{funcao}} disabled><input type="hidden" id={{form.funcao.id_for_label}} name="funcao"
+                    class="input" value={{funcao}}>
+            </div>
+        </div>
+        {% endif %}
+        {% if dep %}
+        <div class="field"><label class="" for={{form.dep.id_for_label}}>Departamento</label>
+            <div class=" control is-clearfix"><input type="text" id={{form.dep.id_for_label}} name="dep" class="input"
+                    value={{dep}} disabled><input type="hidden" id={{form.dep.id_for_label}} name="dep" class="input"
+                    value={{dep}} >
+            </div>
+        </div>
+        {% endif %}
+        {% if UO %}
+        <div class="field"><label class="" for={{form.UO.id_for_label}}>Unidade Organica</label>
+            <div class=" control is-clearfix"><input type="text" id={{form.UO.id_for_label}} name="UO" class="input"
+                    value={{UO}} disabled><input type="hidden" id={{form.UO.id_for_label}} name="UO" class="input"
+                    value={{UO}} >
+            </div>
+        </div>
+        {% endif %}
+        {% if curso %}
+        <div class="field"><label class="" for={{form.curso.id_for_label}}>Função</label>
+            <div class=" control is-clearfix"><input type="text" id={{form.curso.id_for_label}} name="curso" class="input"
+                    value={{curso}} disabled>
+                    <input type="hidden" id={{form.curso.id_for_label}} name="curso" class="input"
+                    value={{curso}} >
+            </div>
+        </div>
+        {% endif %}
     </div>
     <hr>
-</div>
-</div>
-</section>
-<div class="column is-8 is-offset-2">
-<div class="level">
-<div class="level-left"><a href=".." class="button is-outlined" type="button">
-    <!----> <span> Cancelar </span>
-    <!----></a></div>
-<div class="level-right"><button type="submit"
-    class="button is-large is-success is-outlined" name="persona" value=1>
-    <!----> <span>Personalizar pagina</span>
-    <!----></button></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-{% endblock content2 %}
+    </div>
+    </div>
+    </section>
+    <div class="column is-8 is-offset-2">
+        <div class="level">
+            <div class="level-left"><a href=".." class="button is-outlined" type="button">
+                    <!----> <span> Cancelar </span>
+                    <!----></a></div>
+            <div class="level-right"><button type="submit" class="button is-large is-success is-outlined"
+                    <!----> <span>Personalizar pagina</span>
+                    <!----></button></div>
+        </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    {% endblock content2 %}

@@ -6,8 +6,8 @@
     <meta content="IE=edge" http-equiv="X-UA-Compatible">
     <meta content="width=device-width,initial-scale=1" name="viewport">
     <link href="{% static "img/favicon.ico" %}" rel="icon">
-    <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"> faz o dropdown -->
     <link rel="stylesheet" href="//cdn.materialdesignicons.com/4.9.95/css/materialdesignicons.min.css">
+ <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <title>Dia Aberto</title>
     <style>
         body,
@@ -20,6 +20,9 @@
         * {
             outline: none;
         }
+        .modal-backdrop {
+  z-index: -1;
+}
     </style>
     <link href="{% static "css/atividades.320507fe.css" %}" rel="stylesheet">
     <link href="{% static "css/colaboradores.2c4c9dc5.css" %}" rel="stylesheet">
@@ -36,8 +39,7 @@
     <link href="{% static "js/chunk-1823af82.4d78cc6e.js" %}" rel="script">
     <link href="{% static "js/colaboradores.03a794e1.js" %}" rel="script">
     <script charset="utf-8"
-        href="{% static "js/colaboradores~departamentoatividades~inscricao~proporatividade~tarefas~transportes.38d827a4.js" %}"
-        ></script>
+        href="{% static "js/colaboradores~departamentoatividades~inscricao~proporatividade~tarefas~transportes.38d827a4.js" %}"></script>
     <link href="{% static "js/configuracao.dddc62e3.js" %}" rel="script">
     <link href="{% static "js/departamentoatividades.8a11ada1.js" %}" rel="script">
     <link href="{% static "js/inscricao.689ad7a7.js" %}" rel="script">
@@ -55,7 +57,9 @@
     <script charset="utf-8" src="{% static "js/chunk-1823af82.4d78cc6e.js" %}"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-
+    <link rel="stylesheet" href="http://cdn.datatables.net/1.10.2/css/jquery.dataTables.min.css"></style>
+    <script type="text/javascript"  src="http://cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js"></script>
+   
 </head>
 
 <body>
@@ -71,19 +75,28 @@
                         aria-hidden="true"></span> <span aria-hidden="true"></span></a></div>
             {% block content %}
             <div class="navbar-menu">
+                {% if funcao == "coord" %}
+                {% include "navbar-coord.html" %}
+                {% elif funcao == "admin" %}
+                {% include "navabar-admin.html" %}
+                {% elif funcao == "dc" %}
+                {% include "navabar-dc.hmtl"}
+                {% elif funcao == "part" %}
+                {% include "navabar-part.html" %}
+                {% endif %}
                 <div class="navbar-end">
                     {% if id == None %}
                     <div data-v-a67fe1ba="" class="navbar-item">
                         <div data-v-a67fe1ba="" class="dropdown is-bottom-left is-mobile-modal">
                         </div><a href="register"><button data-v-a67fe1ba="" type="button" class="button"><span
-                                    class="icon is-small"><i class="mdi mdi-logout-variant"></i></span> <span> Register
+                                    class="icon is-small"><i class="mdi mdi-logout-variant"></i></span> <span> Registo
                                 </span>
                                 <!----></button></a>
                     </div>
                     <div data-v-a67fe1ba="" class="navbar-item">
                         <div data-v-a67fe1ba="" class="dropdown is-bottom-left is-mobile-modal">
                         </div><a href="login"><button data-v-a67fe1ba="" type="button" class="button"><span
-                                    class="icon is-small"><i class="mdi mdi-logout-variant"></i></span> <span> Login
+                                    class="icon is-small"><i class="mdi mdi-logout-variant"></i></span> <span> Entrar
                                 </span>
                                 <!----></button></a>
                     </div>
@@ -91,14 +104,15 @@
                     <div data-v-a67fe1ba="" class="navbar-item">
                         <div data-v-a67fe1ba="" class="is-bottom-left is-mobile-modal dropdown ">
                             <a class="dropdown-toggle" role="button" data-toggle="dropdown">
-                            <div role="button" aria-haspopup="true" class="dropdown-trigger"><span data-v-a67fe1ba=""
-                                    role="button"><button data-v-a67fe1ba="" type="button" data-badge="0"
-                                        class="button has-badge-rounded has-badge-warning is-text"
-                                        style="margin-right: 0.9rem;">
-                                        <!----> <span><span data-v-a67fe1ba="" class="icon"><i
-                                                    class="mdi mdi-bell mdi-24px"></i></span></span>
-                                        <!----></button></span></div></a>
-                            <div  class="dropdown-menu" >
+                                <div role="button" aria-haspopup="true" class="dropdown-trigger"><span
+                                        data-v-a67fe1ba="" role="button"><button data-v-a67fe1ba="" type="button"
+                                            data-badge="0" class="button has-badge-rounded has-badge-warning is-text"
+                                            style="margin-right: 0.9rem;">
+                                            <!----> <span><span data-v-a67fe1ba="" class="icon"><i
+                                                        class="mdi mdi-bell mdi-24px"></i></span></span>
+                                            <!----></button></span></div>
+                            </a>
+                            <div class="dropdown-menu">
                                 <div role="menu" class="dropdown-content">
                                     <div data-v-a67fe1ba="" role="menuitem" tabindex="0" class="dropdown-item"><strong
                                             data-v-a67fe1ba="">Notificações</strong></div>
@@ -115,11 +129,12 @@
                             </div>
                         </div>
                         <div data-v-a67fe1ba="" class="dropdown is-bottom-left is-mobile-modal">
-                            <div role="button" aria-haspopup="true" class="dropdown-trigger"><a href="profile"><button data-v-a67fe1ba=""
-                                    type="button" class="button is-text" style="margin-right: 0.9rem;">
-                                    <!----> <span><span data-v-a67fe1ba="" class="icon"><i
-                                                class="mdi mdi-account-circle mdi-24px"></i></span></span>
-                                    <!----></button></a></div>
+                            <div role="button" aria-haspopup="true" class="dropdown-trigger"><a
+                                    href="profile/{{id}}"><button data-v-a67fe1ba="" type="button"
+                                        class="button is-text" style="margin-right: 0.9rem;">
+                                        <!----> <span><span data-v-a67fe1ba="" class="icon"><i
+                                                    class="mdi mdi-account-circle mdi-24px"></i></span></span>
+                                        <!----></button></a></div>
                             <div aria-hidden="true" class="background" style="display: none;"></div>
                         </div><a href="logout"><button data-v-a67fe1ba="" type="button" class="button"><span
                                     class="icon is-small"><i class="mdi mdi-logout-variant"></i></span> <span> Sair
@@ -134,7 +149,6 @@
             <div data-v-8716d23a="" id="top-hero-body" class="hero-body"></div>
         </div>
         <div data-v-8716d23a="" id="page-content">
-
             <div data-v-8716d23a="" class="card">
                 <div data-v-8716d23a="" class="card-content">
                     <div data-v-8716d23a="">
@@ -166,7 +180,7 @@
                     </div>
                 </div>
             </div>
-            {% endblock %}
+            {% endblock content %}
         </div>
 
         <footer data-v-8716d23a="" class="footer">
@@ -174,17 +188,17 @@
             <div data-v-8716d23a="" style="float: right;"> Designed by Grupo 9 </div>
             <div data-v-8716d23a="" style="margin: auto; width: max-content;"> Dia Aberto </div>
         </footer>
-    </div>    
+    </div>
     <div class="notices is-top">
-    {% if messages %}
-    {% for message in messages %}
-    {% if message.tags == 'success' %}
+        {% if messages %}
+        {% for message in messages %}
+        {% if message.tags == 'success' %}
         <div role="alert" class="toast is-dark is-top" aria-hidden="true" style="">
             <div>{{message}}</div>
         </div>
-    {% endif %}
-    {% endfor %}
-    {% endif %}
+        {% endif %}
+        {% endfor %}
+        {% endif %}
     </div>
     <div class="notices is-bottom"></div>
     <script src="/js/chunk-vendors.63f37e79.js"></script>

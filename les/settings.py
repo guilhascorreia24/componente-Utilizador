@@ -46,7 +46,8 @@ INSTALLED_APPS = [
     'blog.apps.BlogConfig',
     'crispy_forms',
     'user.apps.UserConfig',
-    'atividades.apps.AtividadesConfig'
+    'atividades.apps.AtividadesConfig',
+    'notificacao.apps.NotificacaoConfig'
 ]
 
 MIDDLEWARE = [
@@ -136,3 +137,11 @@ STATIC_URL = '/static/'
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE=True
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.office365.com'
+EMAIL_PORT = 25
+EMAIL_HOST_USER = 'a61098@ualg.pt'
+EMAIL_HOST_PASSWORD = '*****'
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
