@@ -501,7 +501,6 @@ class Tarefa(models.Model):
 class Transporte(models.Model):
     idtransporte = models.AutoField(primary_key=True)
     capacidade = models.IntegerField()
-    administrador_utilizador_idutilizador = models.ForeignKey(Administrador, models.DO_NOTHING, db_column='Administrador_Utilizador_idutilizador')  # Field name made lowercase.
     identificacao = models.CharField(max_length=45)
 
     class Meta:
