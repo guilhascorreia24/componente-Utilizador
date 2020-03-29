@@ -1,4 +1,4 @@
-from django.forms import ModelForm,modelformset_factory
+from django.forms import ModelForm,modelformset_factory,Form
 from atividades import models
 
 
@@ -29,8 +29,6 @@ class Form_Inscricao(ModelForm):
         fields = ['ano','local','areacientifica']
 
 class Form_InscricaoColetiva(ModelForm):
-
-    
     def save(self, idUtilizador, idEscola, idInscricao):
         base = super(Form_InscricaoColetiva, self).save(commit=False)
         base.participante_utilizador_idutilizador= idUtilizador
@@ -46,6 +44,16 @@ class Form_Escola(ModelForm):
     class Meta:
         model = models.Escola
         fields = ['nome','local','telefone','email']
+
+class Form_TransportesHasInscricao(ModelForm):
+
+    def save(self, inscricao):
+        base = super(Form_Transportes, self).save(commit=False)
+        base.inscricao_idinscricao = inscricao
+        return base.save()
+    class Meta:
+        mode = models
+        fields = ['transporte_has_horario_id_transporte_has_horario']
 
 
 class CustomForm:
@@ -67,11 +75,9 @@ class CustomForm:
     def save(self):
         escola = self.escola.save()
         inscricao = self.inscricao.save()
-        #self.responsaveis.save()
         
         for each in self.responsaveis:
             each.save(inscricao)
-        #self.inscricao_coletiva.save(user,escola,inscricao)
         return self
 
 
