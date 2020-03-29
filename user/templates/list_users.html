@@ -1,4 +1,3 @@
-
 {% extends "homepage.html" %}
 {% block content %}
 <div class="navbar-menu">
@@ -40,8 +39,8 @@
                 </div>
             </div>
             <div data-v-a67fe1ba="" class="dropdown is-bottom-left is-mobile-modal">
-                <div role="button" aria-haspopup="true" class="dropdown-trigger"><a href="../profile/{{ id }}"><button data-v-a67fe1ba=""
-                            type="button" class="button is-text" style="margin-right: 0.9rem;">
+                <div role="button" aria-haspopup="true" class="dropdown-trigger"><a href="../profile/{{ id }}"><button
+                            data-v-a67fe1ba="" type="button" class="button is-text" style="margin-right: 0.9rem;">
                             <!----> <span><span data-v-a67fe1ba="" class="icon"><i
                                         class="mdi mdi-account-circle mdi-24px"></i></span></span>
                             <!----></button></a></div>
@@ -69,18 +68,12 @@
                                 <div data-v-1513178e="" class="field">
                                     <!---->
                                     <div data-v-1513178e="" class="autocomplete control">
-                                        <div class="control has-icons-left is-clearfix"><input type="text"
-                                                autocomplete="off" placeholder="Nome do Colaborador" class="input">
+                                        <div class="control has-icons-left is-clearfix"><input type="text" id="myInput"
+                                                onkeyup="myFunction()" autocomplete="off"
+                                                placeholder="Nome do Utilizador" class="input">
                                             <span class="icon is-left"><i class="mdi mdi-magnify mdi-24px"></i></span>
                                             <!---->
                                             <!---->
-                                        </div>
-                                        <div class="dropdown-menu" style="display: none;">
-                                            <div class="dropdown-content" style="display: none;">
-                                                <!---->
-                                                <div class="dropdown-item is-disabled">Utilizador não encontrado</div>
-                                                <!---->
-                                            </div>
                                         </div>
                                     </div>
                                     <!---->
@@ -88,19 +81,43 @@
                                 <div data-v-1513178e="" class="field">
                                     <!---->
                                     <div data-v-1513178e="" class="autocomplete control">
-                                        <div class="control has-icons-left is-clearfix"><input type="text"
-                                                autocomplete="off" placeholder="Código do Colaborador" class="input">
+                                        <div class="control has-icons-left is-clearfix"><input type="text" id="myInput2"
+                                                onkeyup="myFunction2()" autocomplete="off"
+                                                placeholder="Email do Utilizador" class="input">
                                             <span class="icon is-left"><i class="mdi mdi-magnify mdi-24px"></i></span>
                                             <!---->
                                             <!---->
                                         </div>
-                                        <div class="dropdown-menu" style="display: none;">
-                                            <div class="dropdown-content" style="display: none;">
-                                                <!---->
-                                                <div class="dropdown-item is-disabled">Utilizador não encontrado</div>
-                                                <!---->
-                                            </div>
+                                    </div>
+                                    <!---->
+                                </div>
+                                <div data-v-1513178e="" class="field">
+                                    <!---->
+                                    <div data-v-1513178e="" class="autocomplete control">
+                                        <div class="control has-icons-left is-clearfix"><input type="text" id="myInput3"
+                                                onkeyup="myFunction3()" autocomplete="off"
+                                                placeholder="Telefone do Utilizador" class="input">
+                                            <span class="icon is-left"><i class="mdi mdi-magnify mdi-24px"></i></span>
+                                            <!---->
+                                            <!---->
                                         </div>
+                                    </div>
+                                    <!---->
+                                </div>
+                                <div class="field">
+                                    <!---->
+                                    <div class="control is-expanded"><span class="select is-fullwidth is-empty"><select id="myInput4"
+                                        onkeyup="myFunction4()" placeholder="Cargo do Utilizador">
+                                                <option  hidden value=""> Cargo do Utilizador
+                                                </option>
+                                                <option value="1">Administardor </option>
+                                                <option value="2">Coordenador </option>
+                                                <option value="3">Participante </option>
+                                                <option value="4">Colaborador </option>
+                                                <option value="5">Docente Univesitario
+                                                     </option>
+                                            </select></span>
+                                        <!---->
                                     </div>
                                     <!---->
                                 </div>
@@ -148,7 +165,7 @@
                                         <tr>
                                             <!---->
                                             <th class="is-sortable">
-                                                <div class="th-wrap th-sm" >Nome <span class="icon is-small"
+                                                <div class="th-wrap th-sm">Nome <span class="icon is-small"
                                                         style="display: none;"><i class="mdi mdi-menu-up"></i></span>
                                                 </div>
                                             </th>
@@ -177,8 +194,8 @@
                                         <!---->
                                         <!---->
                                     </thead>
-                                    
-                                    
+
+
                                     <tbody>
                                         {% for user in users %}
                                         <tr draggable="false" class="" scope="row">
@@ -192,27 +209,26 @@
                                             {% if user.validada == 0 %}
                                             <td data-label="Nome" class=""> Participante
                                             </td>
-                                            {% elif user.validada == 1 %}
+                                            {% elif user.cargo == 1 %}
                                             <td data-label="Nome" class=""> Colaborador
                                             </td>
-                                            {% elif user.validada == 2 %}
+                                            {% elif user.cargo == 2 %}
                                             <td data-label="Nome" class=""> Coordenador
                                             </td>
-                                            {% elif user.validada == 3 %}
+                                            {% elif user.cargo == 3 %}
                                             <td data-label="Nome" class=""> Docente Univesitario
                                             </td>
-                                            {% elif user.validada == 4 %}
+                                            {% elif user.cargo == 4 %}
                                             <td data-label="Nome" class=""> Administardor
                                             </td>
                                             {% endif %}
                                             <td data-label="Ações" class="has-text-centered"><a><span
                                                         class="icon has-text-danger"><i
                                                             class="mdi mdi-close-box mdi-24px"></i></span></a>
-                                                            
-                                                            <a href="{% url "profile_user" user.idutilizador %}">
-                                                                <span
-                                                                class="icon has-text-success"><i
-                                                                    class="mdi mdi-account-search mdi-24px"></i></span></a></td>
+
+                                                <a href="{% url "profile_user" user.idutilizador %}">
+                                                    <span class="icon has-text-success"><i
+                                                            class="mdi mdi-account-search mdi-24px"></i></span></a></td>
                                             <!---->
                                         </tr>
                                         <!---->
@@ -220,6 +236,7 @@
                                         <!---->
                                         <!---->
                                         {% endfor %}
+
                                     </tbody>
                                     <!---->
                                 </table>
@@ -256,12 +273,86 @@
         </div>
     </div>
     <script>
-$(document).ready(function() {
-    $('#myTable').DataTable( {
-        "paging":   false,
-        "info":     false,
-        "searching": false
-    } );
-} );
-        </script>
+        $(document).ready(function () {
+            $('#myTable').DataTable({
+                "paging": false,
+                "info": false,
+                "searching": false
+            });
+        });
+    </script>
+    <script>
+        function myFunction() {
+            var input, filter, table, tr, td, i, txtValue;
+            input = document.getElementById("myInput");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("myTable");
+            tr = table.getElementsByTagName("tr");
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[1];
+                if (td) {
+                    txtValue = td.textContent || td.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
+        function myFunction2() {
+            var input, filter, table, tr, td, i, txtValue;
+            input = document.getElementById("myInput2");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("myTable");
+            tr = table.getElementsByTagName("tr");
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[1];
+                if (td) {
+                    txtValue = td.textContent || td.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
+        function myFunction3() {
+            var input, filter, table, tr, td, i, txtValue;
+            input = document.getElementById("myInput3");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("myTable");
+            tr = table.getElementsByTagName("tr");
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[2];
+                if (td) {
+                    txtValue = td.textContent || td.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
+        function myFunction4() {
+            var input, filter, table, tr, td, i, txtValue;
+            input = document.getElementById("myInput4");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("myTable");
+            tr = table.getElementsByTagName("tr");
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[3];
+                if (td) {
+                    txtValue = td.textContent || td.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
+    </script>
     {% endblock content %}

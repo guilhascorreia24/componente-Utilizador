@@ -196,6 +196,14 @@ class Departamento(models.Model):
         db_table = 'departamento'
 
 
+class Destino(models.Model):
+    destino = models.IntegerField(primary_key=True)
+
+    class Meta:
+        managed = False
+        db_table = 'destino'
+
+
 class Dia(models.Model):
     dia = models.DateField(primary_key=True)
 
@@ -283,6 +291,7 @@ class Escola(models.Model):
 class Espaco(models.Model):
     idespaco = models.AutoField(primary_key=True)
     nome = models.CharField(max_length=45)
+    campus_idcampus = models.ForeignKey(Campus, models.DO_NOTHING, db_column='campus_idCampus')  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -321,8 +330,8 @@ class Inscricao(models.Model):
     idinscricao = models.AutoField(primary_key=True)
     ano = models.TextField()  # This field type is a guess.
     local = models.CharField(max_length=45)
-    areacientifica = models.CharField(max_length=45)
     nparticipantes = models.IntegerField()
+    areacientifica = models.CharField(max_length=45)
 
     class Meta:
         managed = False
@@ -335,6 +344,7 @@ class InscricaoColetiva(models.Model):
     participante_utilizador_idutilizador = models.ForeignKey('Participante', models.DO_NOTHING, db_column='Participante_Utilizador_idutilizador')  # Field name made lowercase.
     escola_idescola = models.ForeignKey(Escola, models.DO_NOTHING, db_column='escola_idescola')
     inscricao_idinscricao = models.OneToOneField(Inscricao, models.DO_NOTHING, db_column='inscricao_idinscricao', primary_key=True)
+    telefone = models.IntegerField()
 
     class Meta:
         managed = False
@@ -404,6 +414,14 @@ class Notificacao(models.Model):
         db_table = 'notificacao'
 
 
+class Origem(models.Model):
+    origem = models.IntegerField(primary_key=True)
+
+    class Meta:
+        managed = False
+        db_table = 'origem'
+
+
 class Participante(models.Model):
     utilizador_idutilizador = models.OneToOneField('Utilizador', models.DO_NOTHING, db_column='Utilizador_idutilizador', primary_key=True)  # Field name made lowercase.
 
@@ -436,7 +454,7 @@ class Responsaveis(models.Model):
     idresponsavel = models.AutoField(primary_key=True)
     nome = models.CharField(max_length=45)
     email = models.CharField(max_length=45)
-    telefone = models.CharField(unique=True, max_length=45)
+    telefone = models.CharField(max_length=45)
     idinscricao = models.ForeignKey(Inscricao, models.DO_NOTHING, db_column='idInscricao')  # Field name made lowercase.
 
     class Meta:
@@ -483,7 +501,6 @@ class Tarefa(models.Model):
 class Transporte(models.Model):
     idtransporte = models.AutoField(primary_key=True)
     capacidade = models.IntegerField()
-    administrador_utilizador_idutilizador = models.ForeignKey(Administrador, models.DO_NOTHING, db_column='Administrador_Utilizador_idutilizador')  # Field name made lowercase.
     identificacao = models.CharField(max_length=45)
 
     class Meta:
@@ -494,6 +511,10 @@ class Transporte(models.Model):
 class TransporteHasHorario(models.Model):
     transporte_idtransporte = models.ForeignKey(Transporte, models.DO_NOTHING, db_column='transporte_idtransporte')
     horario_has_dia_id_dia_hora = models.ForeignKey(HorarioHasDia, models.DO_NOTHING, db_column='horario_has_dia_id_dia_hora')
+    vagas = models.IntegerField()
+    id_transporte_has_horario = models.IntegerField(primary_key=True)
+    table1_origem = models.ForeignKey(Origem, models.DO_NOTHING, db_column='table1_origem')
+    destino_destino = models.ForeignKey(Destino, models.DO_NOTHING, db_column='destino_destino')
 
     class Meta:
         managed = False
@@ -501,13 +522,12 @@ class TransporteHasHorario(models.Model):
 
 
 class TransporteHasInscricao(models.Model):
-    transporte_idtransporte = models.OneToOneField(Transporte, models.DO_NOTHING, db_column='transporte_idtransporte', primary_key=True)
     inscricao_idinscricao = models.ForeignKey(Inscricao, models.DO_NOTHING, db_column='inscricao_idinscricao')
+    transporte_has_horario_id_transporte_has_horario = models.ForeignKey(TransporteHasHorario, models.DO_NOTHING, db_column='transporte_has_horario_id_transporte_has_horario')
 
     class Meta:
         managed = False
         db_table = 'transporte_has_inscricao'
-        unique_together = (('transporte_idtransporte', 'inscricao_idinscricao'),)
 
 
 class TransportePessoal(models.Model):
@@ -549,7 +569,6 @@ class Utilizador(models.Model):
     class Meta:
         managed = False
         db_table = 'utilizador'
-    
 
 
 class UtilizadorHasNotificacao(models.Model):
