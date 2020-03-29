@@ -129,6 +129,8 @@ def delete_user(request):
 
 def profile(request,id):
     id=signing.loads(id)
+    name = Utilizador.objects.get(idutilizador=id).nome
+    me=request.session['user_id']
     if request.method=='POST' and 'sub' in request.POST:
         form=ModifyForm(request.POST)
         if form.is_valid and request.POST['name']!="" and request.POST['username']!="" and request.POST['email']!="" and request.POST['telefone']!="":
@@ -155,13 +157,12 @@ def profile(request,id):
                 error3 = "telefone ja existe"
             if Utilizador.objects.filter(username=request.POST['username']).exists() and Utilizador.objects.get(username=request.POST['username']).idutilizador!=id:
                 error2 = "Username ja existe"
-            return render(request, 'profile_modify.html', {"form": form,'error4':error3,"error1":error,"error":error2})
+            return render(request, 'profile_modify.html', {"form": form,'error4':error3,"error1":error,"error":error2,'me':signing.dumps(me),'id':signing.dumps(id)})
     elif request.method == 'POST':
         form = ModifyForm(request.POST)
-        return   render(request, 'profile_modify.html', {"form": form})
+        return   render(request, 'profile_modify.html', {"form": form,"me":signing.dumsp(me),'id':signing.dumps(id)})
     else:
         form = ModifyForm()
-        name = Utilizador.objects.get(idutilizador=id).nome
         if Utilizador.objects.get(idutilizador=id).username == '':
             username = Utilizador.objects.get(idutilizador=id).nome
         else:
@@ -187,11 +188,14 @@ def profile(request,id):
         ano = Colaborador.objects.get(utilizador_utilizadorid=id).dia_aberto_ano
         funcao = "Colaborador"
         curso = Colaborador.objects.get(utilizador_idutilizador=id).curso
-    return render(request, 'profile.html', {"form": form, 'nome': name,'UO':UO,'username': username, 'email': email, 'telefone': telefone, 'funcao': funcao, 'ano': ano, 'curso': curso,'dep':dep})
+    return render(request, 'profile.html', {"form": form, 'nome': name,'UO':UO,'username': username, 'email': email, 
+                    'telefone': telefone, 'funcao': funcao, 'ano': ano, 'curso': curso,'dep':dep,"me":signing.dumps(me),'id':signing.dumps(id)})
 
 def profile_list(request):
     funcao=user(request)
-    users=Utilizador.objects.all()
+    users=Utilizador.objects.raw("SELECT a.*, CASE WHEN a.idutilizador= b.utilizador_idutilizador THEN 'Administrador' WHEN a.idutilizador=c.utilizador_idutilizador THEN 'Coordenador' "+
+                                     "WHEN a.idutilizador=d.utilizador_idutilizador THEN 'Colaborador' WHEN  a.idutilizador=e.utilizador_idutilizador THEN 'Docente Universitario' ELSE '0' END AS cargo FROM Utilizador a,Administrador b,"+
+                                     "Coordenador c,Colaborador d,professor_universitario e;")
     for u in users:
         u.idutilizador=signing.dumps(u.idutilizador)
     id=signing.dumps(request.session['user_id'])

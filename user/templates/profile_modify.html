@@ -39,7 +39,7 @@
                 </div>
             </div>
             <div data-v-a67fe1ba="" class="dropdown is-bottom-left is-mobile-modal">
-                <div role="button" aria-haspopup="true" class="dropdown-trigger"><a href=""><button
+                <div role="button" aria-haspopup="true" class="dropdown-trigger"><a href="{% url "profile" me %}"><button
                             data-v-a67fe1ba="" type="button" class="button is-text" style="margin-right: 0.9rem;">
                             <!----> <span><span data-v-a67fe1ba="" class="icon"><i
                                         class="mdi mdi-account-circle mdi-24px"></i></span></span>
@@ -62,10 +62,17 @@
             <div data-v-8716d23a="" id="top">
                 <nav aria-label="breadcrumbs" class="breadcrumb" style="background-color:white">
                     <ul>
-                     
-                        <li><a href="/" class="router-link-active">Início</a></li>
+                        {% if me == id %}
+                        <li><a href=".." class="router-link-active">Início</a></li>
                         <li class="is-active"><a href=".."
                                 class="router-link-exact-active router-link-active">Profile</a></li>
+                        {% else %}
+                        <li><a href="../.." class="router-link-active">Início</a></li>
+                        <li><a href=".."
+                                class="router-link-exact-active router-link-active">Utilizadores</a></li>
+                        <li class="is-active"><a href=""
+                                    class="router-link-exact-active router-link-active">{{nome}}</a></li>
+                        {% endif %}
                     </ul>
                 </nav>
                 <div style="padding: 3rem 2vw 1rem;">
