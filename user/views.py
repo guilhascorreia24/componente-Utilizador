@@ -114,16 +114,13 @@ def logout_request(request):
     return r
 
 #----------------------------------------------remover user-----------------------------------
-def delete_user(request):
-    username = Utilizador.objects.get(request.session['user_id'])
-    username.delete()
-    messages.success(request, "User deleted")
-
-    if not Utilizador.objects.get(username).exists():
-        messages.error(request, "Utilizador nao existe")
-        return render(request, 'blog-home.html')
-
-    return render(request, 'blog-home.html')
+def delete_user(id):
+    Utilizador.ocjects.filter(pk=id).delete()
+    Participante.objects.filter(pk=id).delete()
+    Administrador.objects.filter(pk=id).delete()
+    Coordenador.objects.filter(pk=id).delete()
+    Colaborador.objects.filter(pk=id).delete()
+    ProfessorUniversitario.objects.filter(pk=id).delete()
 
 #--------------------------------------alterar user---------------------------------------------
 
@@ -192,6 +189,8 @@ def profile(request,id):
                     'telefone': telefone, 'funcao': funcao, 'ano': ano, 'curso': curso,'dep':dep,"me":signing.dumps(me),'id':signing.dumps(id)})
 
 def profile_list(request):
+    if request.method=="POST":
+        delete_user(request.POST['userid'])
     funcao=user(request)
     users=Utilizador.objects.all()
     #users=Utilizador.objects.raw("SELECT a.*, CASE WHEN a.idutilizador= b.utilizador_idutilizador THEN 'Administrador' WHEN a.idutilizador=c.utilizador_idutilizador THEN 'Coordenador' "+
