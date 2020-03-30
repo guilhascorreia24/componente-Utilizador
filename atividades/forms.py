@@ -1,4 +1,5 @@
 from django.forms import ModelForm,modelformset_factory,Form
+from django import forms
 from atividades import models
 
 
@@ -45,7 +46,11 @@ class Form_Escola(ModelForm):
         model = models.Escola
         fields = ['nome','local','telefone','email']
 
-class Form_TransportesHasInscricao(ModelForm):
+class Form_Transportes(Form):
+    numero_transportes_penha=forms.IntegerField(label="Penha Numero de Passageiros")
+    numero_transportes_gambleas = forms.IntegerField(label="Gambelas Numero de Passageiros")
+    partida = forms.ModelChoiceField(queryset=models.HorarioHasDia.objects.all())
+    chegada = forms.ModelChoiceField(queryset=models.HorarioHasDia.objects.all())
 
     def save(self, inscricao):
         base = super(Form_Transportes, self).save(commit=False)
