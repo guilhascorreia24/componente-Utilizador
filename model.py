@@ -517,8 +517,8 @@ class TransporteHasHorario(models.Model):
     horario_has_dia_id_dia_hora = models.ForeignKey(HorarioHasDia, models.DO_NOTHING, db_column='horario_has_dia_id_dia_hora')
     npessoas = models.IntegerField(db_column='nPessoas')  # Field name made lowercase.
     id_transporte_has_horario = models.IntegerField(primary_key=True)
-    destino = models.ForeignKey(Paragem, models.DO_NOTHING, db_column='destino',  related_name="dest")
-    origem = models.ForeignKey(Paragem, models.DO_NOTHING, db_column='origem',  related_name="orig")
+    destino = models.ForeignKey(Paragem, models.DO_NOTHING, db_column='destino')
+    origem = models.ForeignKey(Paragem, models.DO_NOTHING, db_column='origem')
 
     class Meta:
         managed = False
@@ -527,8 +527,8 @@ class TransporteHasHorario(models.Model):
 
 class TransporteHasInscricao(models.Model):
     inscricao_idinscricao = models.ForeignKey(Inscricao, models.DO_NOTHING, db_column='inscricao_idinscricao')
-    partida = models.ForeignKey(TransporteHasHorario, models.DO_NOTHING, db_column='partida',  related_name="partida")
-    chegada = models.ForeignKey(TransporteHasHorario, models.DO_NOTHING, db_column='chegada',  related_name="chegada")
+    partida = models.ForeignKey(TransporteHasHorario, models.DO_NOTHING, db_column='partida')
+    chegada = models.ForeignKey(TransporteHasHorario, models.DO_NOTHING, db_column='chegada')
 
     class Meta:
         managed = False

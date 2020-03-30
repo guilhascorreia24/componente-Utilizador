@@ -91,7 +91,7 @@ class Form_Almocos_Per_Campus:
     
 #Save method doesn't return
 class Form_Almoco:
-    def __init__(self,request):
+    def __init__(self,request=0):
         campus = models.Campus.objects.all()
         self.campus = list()
         for camp in campus:
@@ -128,13 +128,18 @@ class Form_Prato(ModelForm):
 
 class Form_Sessao(ModelForm):
 
+    def save(self,inscricao):
+        base = super(Form_Sessao, self).save(commit=False)
+        base.inscricao_idinscricao = inscricao
+        return base.save()
     class Meta:
-        model = models.Prato
+        model = models.InscricaoHasSessao
         fields = ['sessao_idsessao','inscritos']
 
 ###################################################END SESSOES#############################################
 class CustomForm:
     def __init__(self,request = 0):
+        self.sessao = modelformset_factory(models.InscricaoHasSessao,form = Form_Sessao, extra=2)
         self.responsaveis = modelformset_factory(models.Responsaveis,form = Form_Responsaveis,extra=2)
         self.almoco = Form_Almoco(request)
         if request != 0 and request.method == 'POST':
@@ -142,18 +147,24 @@ class CustomForm:
             self.inscricao = Form_Inscricao(request.POST,prefix="inscricao")
             self.inscricao_coletiva = Form_InscricaoColetiva(request.POST,prefix="coletivo")
             self.responsaveis = self.responsaveis(request.POST)
+            self.sessao = modelformset_factory(request.POST)
         else:
             self.escola = Form_Escola(prefix="escola")
             self.inscricao = Form_Inscricao(prefix="inscricao")
             self.inscricao_coletiva = Form_InscricaoColetiva(prefix="coletivo")
     
     def is_valid(self):
-        return all([self.escola.is_valid(), self.inscricao.is_valid(), self.responsaveis.is_valid(), self.almoco.is_valid()])#self.inscricao_coletiva.is_valid())
+        return all([self.escola.is_valid(), self.inscricao.is_valid(), self.responsaveis.is_valid(), self.almoco.is_valid()],self.sessao.is_valid(),self.inscricao_coletiva.is_valid())
 
     def save(self):
         escola = self.escola.save()
         inscricao = self.inscricao.save()
-        self.almoco.save(inscrciao)
+        self.almoco.save(inscricao)
+        self.sessao.save(inscricao)
+
+        for each in self.sessao:
+            each.save(inscricao)
+        
         
         for each in self.responsaveis:
             each.save(inscricao)
