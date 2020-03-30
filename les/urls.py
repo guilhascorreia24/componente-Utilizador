@@ -29,7 +29,8 @@ urlpatterns = [
     path('profile/<str:id>',user_views.profile,name="profile"),
     path('profiles_list/',user_views.profile_list,name='profile_list'),
     path("profiles_list/<str:id>/",user_views.profile,name="profile_user"),
-   # path('notificacao/',notificacao_views.Todo,name="notificacao"),
+    path("profiles_list/delete/<str:id>/",user_views.delete_user,name="delete"),
+    path("notificacao/",notificacao_views.checknot,name="not-search"),
     path('validacoes/',user_views.validacoes,name="validacoes"),
     path('', include("blog.urls"))
 ]
