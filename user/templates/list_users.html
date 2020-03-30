@@ -209,16 +209,16 @@
                                             {% if user.validada == 0 %}
                                             <td data-label="Nome" class=""> Participante
                                             </td>
-                                            {% elif user.cargo == 1 %}
+                                            {% elif user.validada == 1 %}
                                             <td data-label="Nome" class=""> Colaborador
                                             </td>
-                                            {% elif user.cargo == 2 %}
+                                            {% elif user.validada == 2 %}
                                             <td data-label="Nome" class=""> Coordenador
                                             </td>
-                                            {% elif user.cargo == 3 %}
+                                            {% elif user.validada == 3 %}
                                             <td data-label="Nome" class=""> Docente Univesitario
                                             </td>
-                                            {% elif user.cargo == 4 %}
+                                            {% elif user.validada == 4 %}
                                             <td data-label="Nome" class=""> Administardor
                                             </td>
                                             {% endif %}
