@@ -506,8 +506,8 @@ class TransporteHasHorario(models.Model):
     horario_has_dia_id_dia_hora = models.ForeignKey(HorarioHasDia, models.DO_NOTHING, db_column='horario_has_dia_id_dia_hora')
     npessoas = models.IntegerField(db_column='nPessoas')  # Field name made lowercase.
     id_transporte_has_horario = models.IntegerField(primary_key=True)
-    #destino = models.ForeignKey(Paragem, models.DO_NOTHING, db_column='destino')
-    #origem = models.ForeignKey(Paragem, models.DO_NOTHING, db_column='origem')
+    destino = models.ForeignKey(Paragem, models.DO_NOTHING, db_column='destino')
+    origem = models.ForeignKey(Paragem, models.DO_NOTHING, db_column='origem')
 
     class Meta:
         managed = False
