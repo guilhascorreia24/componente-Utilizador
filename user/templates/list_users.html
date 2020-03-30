@@ -106,21 +106,22 @@
                                 </div>
                                 <div class="field">
                                     <!---->
-                                    <div class="control is-expanded"><span class="select is-fullwidth is-empty"><select id="myInput4"
-                                        onkeyup="myFunction4()" placeholder="Cargo do Utilizador">
-                                                <option  hidden value=""> Cargo do Utilizador
+                                    <div class="control is-expanded"><span class="select is-fullwidth is-empty"><select
+                                                id="myInput4" onchange="myFunction4()">
+                                                <option hidden value=""> Cargo do Utilizador
                                                 </option>
-                                                <option value="1">Administardor </option>
-                                                <option value="2">Coordenador </option>
-                                                <option value="3">Participante </option>
-                                                <option value="4">Colaborador </option>
-                                                <option value="5">Docente Univesitario
-                                                     </option>
+                                                <option value="Administrador">Administrador</option>
+                                                <option value="Coordenador">Coordenador</option>
+                                                <option value="Participante">Participante</option>
+                                                <option value="Colaborador">Colaborador</option>
+                                                <option value="Docente Univesitario">Docente Univesitario
+                                                </option>
                                             </select></span>
                                         <!---->
                                     </div>
                                     <!---->
                                 </div>
+
                             </ul>
                         </div>
                     </div>
@@ -133,7 +134,6 @@
                                     class="router-link-exact-active router-link-active">Utilizadores</a></li>
                         </ul>
                     </nav>
-                    <div>
                         <div class="b-table">
                             <div class="field table-mobile-sort">
                                 <div class="field has-addons">
@@ -207,20 +207,15 @@
                                             <td data-label="Nome" class=""> {{user.telefone}}
                                             </td>
                                             {% if user.validada == 0 %}
-                                            <td data-label="Nome" class=""> Participante
-                                            </td>
+                                            <td data-label="Nome" class="">Participante</td>
                                             {% elif user.validada == 1 %}
-                                            <td data-label="Nome" class=""> Colaborador
-                                            </td>
+                                            <td data-label="Nome" class="">Colaborador</td>
                                             {% elif user.validada == 2 %}
-                                            <td data-label="Nome" class=""> Coordenador
-                                            </td>
+                                            <td data-label="Nome" class="">Coordenador</td>
                                             {% elif user.validada == 3 %}
-                                            <td data-label="Nome" class=""> Docente Univesitario
-                                            </td>
+                                            <td data-label="Nome" class="">Docente Univesitario</td>
                                             {% elif user.validada == 4 %}
-                                            <td data-label="Nome" class=""> Administardor
-                                            </td>
+                                            <td data-label="Nome" class="">Administrador</td>
                                             {% endif %}
                                             <td data-label="Ações" class="has-text-centered"><a><span
                                                         class="icon has-text-danger"><i

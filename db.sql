@@ -1020,7 +1020,7 @@ COLLATE = utf8mb4_0900_ai_ci;
 CREATE TABLE IF NOT EXISTS `les`.`transporte_has_horario` (
   `transporte_idtransporte` INT NOT NULL,
   `horario_has_dia_id_dia_hora` INT NOT NULL,
-  `vagas` INT NOT NULL,
+  `nPessoas` INT NOT NULL,
   `id_transporte_has_horario` INT NOT NULL,
   `destino` VARCHAR(45) NOT NULL,
   `origem` VARCHAR(45) NOT NULL,
@@ -1034,21 +1034,17 @@ CREATE TABLE IF NOT EXISTS `les`.`transporte_has_horario` (
     REFERENCES `les`.`horario_has_dia` (`id_dia_hora`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
+  CONSTRAINT `fk_transporte_has_horario_paragem1`
+    FOREIGN KEY (`destino`)
+    REFERENCES `les`.`paragem` (`paragem`),
+  CONSTRAINT `fk_transporte_has_horario_paragem2`
+    FOREIGN KEY (`origem`)
+    REFERENCES `les`.`paragem` (`paragem`),
   CONSTRAINT `fk_transporte_has_Horario_transporte`
     FOREIGN KEY (`transporte_idtransporte`)
     REFERENCES `les`.`transporte` (`idtransporte`)
     ON DELETE CASCADE
-    ON UPDATE CASCADE,
-  CONSTRAINT `fk_transporte_has_horario_paragem1`
-    FOREIGN KEY (`destino`)
-    REFERENCES `les`.`paragem` (`paragem`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_transporte_has_horario_paragem2`
-    FOREIGN KEY (`origem`)
-    REFERENCES `les`.`paragem` (`paragem`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON UPDATE CASCADE)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
@@ -1060,10 +1056,8 @@ COLLATE = utf8mb4_0900_ai_ci;
 CREATE TABLE IF NOT EXISTS `les`.`transporte_has_inscricao` (
   `inscricao_idinscricao` INT NOT NULL,
   `partida` INT NOT NULL,
-  `chegada` INT NOT NULL,
   INDEX `fk_transporte_has_inscricao_inscricao_id` (`inscricao_idinscricao` ASC) VISIBLE,
   INDEX `fk_transporte_has_inscricao_transporte_has_horario1_idx` (`partida` ASC) VISIBLE,
-  INDEX `fk_transporte_has_inscricao_transporte_has_horario2_idx` (`chegada` ASC) VISIBLE,
   CONSTRAINT `fk_transporte_has_inscricao_inscricao`
     FOREIGN KEY (`inscricao_idinscricao`)
     REFERENCES `les`.`inscricao` (`idinscricao`)
@@ -1071,11 +1065,6 @@ CREATE TABLE IF NOT EXISTS `les`.`transporte_has_inscricao` (
     ON UPDATE CASCADE,
   CONSTRAINT `fk_transporte_has_inscricao_transporte_has_horario1`
     FOREIGN KEY (`partida`)
-    REFERENCES `les`.`transporte_has_horario` (`id_transporte_has_horario`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE,
-  CONSTRAINT `fk_transporte_has_inscricao_transporte_has_horario2`
-    FOREIGN KEY (`chegada`)
     REFERENCES `les`.`transporte_has_horario` (`id_transporte_has_horario`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
