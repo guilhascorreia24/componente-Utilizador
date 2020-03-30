@@ -197,7 +197,9 @@
 
 
                                     <tbody>
+                                        
                                         {% for user in users %}
+                                        
                                         <tr draggable="false" class="" scope="row">
                                             <!---->
                                             <td data-label="Nome" class=""> {{user.nome}}
@@ -217,22 +219,22 @@
                                             {% elif user.validada == 4 %}
                                             <td data-label="Nome" class="">Administrador</td>
                                             {% endif %}
-                                            <form method="POST">
-                                                {% csrf_token %}
-                                            <td data-label="Ações" class="has-text-centered"><a role="button" role="submit" name="iduser" value="{{user.idutilizador}}"><span
+                                            <td data-label="Ações" class="has-text-centered"><a role="button" data-toggle="modal"
+                                                data-target="#{{ forloop.counter }}"><span
                                                         class="icon has-text-danger"><i
                                                             class="mdi mdi-close-box mdi-24px"></i></span></a>
-                                                            </form>
+                                                            
                                                 <a href="{% url "profile_user" user.idutilizador %}">
                                                     <span class="icon has-text-success"><i
                                                             class="mdi mdi-account-search mdi-24px"></i></span></a></td>
                                             <!---->
-                                        </tr>
+                                                    </tr>
                                         <!---->
                                         <!---->
                                         <!---->
                                         <!---->
                                         {% endfor %}
+                                        
 
                                     </tbody>
                                     <!---->
@@ -286,7 +288,7 @@
             table = document.getElementById("myTable");
             tr = table.getElementsByTagName("tr");
             for (i = 0; i < tr.length; i++) {
-                td = tr[i].getElementsByTagName("td")[1];
+                td = tr[i].getElementsByTagName("td")[0];
                 if (td) {
                     txtValue = td.textContent || td.innerText;
                     if (txtValue.toUpperCase().indexOf(filter) > -1) {
@@ -352,4 +354,28 @@
             }
         }
     </script>
+    {% for user in users %}
+    <div class="dialog modal" id="{{ forloop.counter }}">
+        <div class="modal-background"></div>
+        <br><br><br><br><br><br><br><br><br><br><br><br>
+        <div class="modal-card animation" style="max-width:360px">
+            <!---->
+            <section class="modal-card-body is-titleless">
+                <div class="media">
+                    <!---->
+                    <div class="media-content">
+                        <p>Tem a certeza que quer eliminar o utilizador {{user.nome}}?</p>
+                        <!---->
+                    </div>
+                </div>
+            </section>
+            <footer class="modal-card-foot"><button class="button" data-dismiss="modal">
+                    Cancelar
+                </button><a href="delete/{{user.idutilizador}}" style="text-decoration: none;"> <button class="button is-success" type="submit">
+                    Confirmar
+                </button></a></footer>
+        </div>
+    </div>
+</form>
+{% endfor %}
     {% endblock content %}

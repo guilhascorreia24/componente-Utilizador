@@ -6,6 +6,7 @@ from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 
+
 def createnot(request):
 
 	if request.method == 'POST':
@@ -18,16 +19,7 @@ def createnot(request):
 
 	return render(request,'notification.html',{'form':form})
 
-'''def checknot(request):
+def checknot(request):
+	id=request.session['user_id']
 
-	if request.method == 'POST':
-		form = UserCheckForm(request.POST)
-		if form.is_valid():
-			take = request.user
-			for notif in Notificacao.objects.raw('SELECT * FROM notificacao WHERE idutilizadorenvia == 312'):
-				print(notif)
-
-	else:
-		form = UserCheckForm()
-
-	return render(request,'check.html',{'form':form})'''
+	return render(request,'check.html')

@@ -1,5 +1,13 @@
 {% extends "homepage.html" %}
 {% block content %}
+<head><style>.count1
+    {
+    font-size:22px;
+    margin:30px;
+    text-align:center;
+    font-weight:bold;
+    color:#ff8400;
+    }</style></head>
 <div class="navbar-menu">
     <div class="navbar-end">
         <div data-v-a67fe1ba="" class="navbar-item">
@@ -30,7 +38,7 @@
                     <div class="b-steps">
                         <nav class="steps is-success">
                             <ul class="step-items">
-                                <li class="step-item is-success is-active"><a class="step-link">
+                                <li class="step-item is-success is-active"><a class="step-link" >
                                         <div class="step-marker"><span class="icon"><i
                                                     class="mdi mdi-book mdi-24px"></i></span></div>
                                         <div class="step-details"><span class="step-title">Entrar</span>
@@ -43,11 +51,16 @@
                                 <div style="padding: 1rem 2vw 0px;">
                                     <hr> 
                                     <form method="POST">
+                                        <input type="hidden" name="tentatives" value="{{tentatives}}">
                                         {% csrf_token %}
                                         {% if messages %}
                                         {% for message in messages %}
+                                        <input type="hidden" name="tentatives" value={{tentatives}}>
                                         <h1 class="help is-danger" style="text-align: center;">{{message}}</h1>
                                         {% endfor %}
+                                        {% endif %}
+                                        {% if tentatives == 0 %}
+                                        <h1 class="help is-danger count1" style="text-align: center;"></h1>
                                         {% endif %}
                                         <div class="column is-offset-3 is-6">
                                             {% if form.email.errors %}
@@ -55,7 +68,7 @@
                                                     for={{form.email.id_for_label}}>Email</p>
                                                 <div class="control has-icons-right"><input type="email" name="email"
                                                         id={{form.email.id_for_label}} autocomplete="on"
-                                                        class="input is-danger">
+                                                        class="input is-danger" {% if tentatives == 0 %} disabled {% endif %}>
                                                     <!----> <span class="icon is-right has-text-danger"><i
                                                             class="mdi mdi-alert-circle mdi-24px"></i></span>
                                                     <!---->
@@ -65,7 +78,7 @@
                                                 <div class="field"><p class=""
                                                         for={{form.email.id_for_label}}>Email</p>
                                                     <div class="control is-clearfix"><input type="email" name="email"
-                                                            id={{form.email.id_for_label}} class="input">
+                                                            id={{form.email.id_for_label}} class="input"{% if tentatives == 0 %} disabled {% endif %}>
                                                     </div>
                                                 </div>
                                                 {% endif %}
@@ -74,7 +87,7 @@
                                                         for={{form.password.id_for_label}}>Password</p>
                                                     <div class="control has-icons-right"><input type="password"
                                                          id={{form.password.id_for_label}} name="password"
-                                                            autocomplete="on" class="input is-danger">
+                                                            autocomplete="on" class="input is-danger" {% if tentatives == 0 %} disabled {% endif %}>
                                                         <!----> <span class="icon is-right has-text-danger"><i
                                                                 class="mdi mdi-alert-circle mdi-24px"></i></span>
                                                         <!---->
@@ -85,7 +98,7 @@
                                                             for={{form.password.id_for_label}}>Password</p>
                                                         <div class="control is-clearfix"><input type="password"
                                                                 id={{form.password.id_for_label}} name="password"
-                                                                class="input">
+                                                                class="input" {% if tentatives == 0 %} disabled {% endif %}>
                                                         </div>
                                                     </div>
                                                     {% endif %}
@@ -104,7 +117,7 @@
                                         <!----></a></div>
                                 <div class="level-right"><button type="button"
                                         class="button is-large is-success is-outlined" data-toggle="modal"
-                                        data-target="#exampleModal">
+                                        data-target="#exampleModal" {% if tentatives == 0 %} disabled {% endif %}>
                                         <!----> <span> Submeter </span>
                                         <!----></button></div>
                             </div>
@@ -138,4 +151,13 @@
 
         </div>
 </div>
+<script>
+    $(document).ready(function () {
+    var nowPlus30Seconds = moment().add('300', 'seconds').format('YYYY/MM/DD HH:mm:ss');
+    
+    $('.count1').countdown(nowPlus30Seconds)
+    .on('update.countdown', function (event) { $(this).html(event.strftime('%Y : %D : %H : %M : %S')); })
+    .on('finish.countdown', function () { $('#exp_div').hide(); });
+    });
+    </script>
 {% endblock content %}

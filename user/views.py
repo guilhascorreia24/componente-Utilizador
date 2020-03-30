@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from .forms import UserRegisterForm, AuthenticationForm, ModifyForm, PasswordChangeForm, EmailSender
+from .forms import UserRegisterForm, AuthenticationForm, ModifyForm, PasswordChangeForm, EmailSender, DeleteUser
 from django.core.mail import send_mail
 from django.core import signing
 from .models import UnidadeOrganica, Departamento, Utilizador, Participante, ProfessorUniversitario, Administrador, Coordenador, Colaborador, DjangoSession
@@ -86,6 +86,7 @@ def register(request):
 def login_request(request):
     if request.method == 'POST':
         form = AuthenticationForm(request.POST)
+        tentatives=int(request.POST['tentatives'])
         if request.POST['email'] != '' and request.POST['password'] != '':
             if Utilizador.objects.filter(email=request.POST['email'], password=request.POST['password']).exists():
                 username = Utilizador.objects.get(
@@ -99,10 +100,15 @@ def login_request(request):
                         'cookie_id', request.session['user_id'], 7 * 24 * 60 * 60)
                 return r
             else:
-                messages.error(request, "Username e/ou palavra-passe")
+                tentatives-=1
+                messages.error(request, f"Username e/ou palavra-passe. Tem mais {tentatives} tentativas")
+        else:
+            tentatives-=1
+            messages.error(request, f"Username e/ou palavra-passe. Tem mais {tentatives} tentativas")
     else:
+        tentatives=5
         form = AuthenticationForm()
-    return render(request=request, template_name="login.html", context={"form": form})
+    return render(request=request, template_name="login.html", context={"form": form,"tentatives":tentatives})
 
 
 def logout_request(request):
@@ -114,13 +120,15 @@ def logout_request(request):
     return r
 
 #----------------------------------------------remover user-----------------------------------
-def delete_user(id):
-    Utilizador.ocjects.filter(pk=id).delete()
+def delete_user(request,id):
+    id=signing.loads(id)
+    Utilizador.objects.filter(pk=id).delete()
     Participante.objects.filter(pk=id).delete()
     Administrador.objects.filter(pk=id).delete()
     Coordenador.objects.filter(pk=id).delete()
     Colaborador.objects.filter(pk=id).delete()
     ProfessorUniversitario.objects.filter(pk=id).delete()
+    return redirect("profile_list")
 
 #--------------------------------------alterar user---------------------------------------------
 
@@ -132,7 +140,7 @@ def profile(request,id):
         form=ModifyForm(request.POST)
         if form.is_valid and request.POST['name']!="" and request.POST['username']!="" and request.POST['email']!="" and request.POST['telefone']!="":
             t=Utilizador.objects.get(pk=id)
-            t.name=request.POST['name']
+            t.nome=request.POST['name']
             t.username=request.POST['username']
             t.email=request.POST['email']
             t.telefone=request.POST['telefone']
@@ -189,8 +197,6 @@ def profile(request,id):
                     'telefone': telefone, 'funcao': funcao, 'ano': ano, 'curso': curso,'dep':dep,"me":signing.dumps(me),'id':signing.dumps(id)})
 
 def profile_list(request):
-    if request.method=="POST":
-        delete_user(request.POST['userid'])
     funcao=user(request)
     users=Utilizador.objects.all()
     #users=Utilizador.objects.raw("SELECT a.*, CASE WHEN a.idutilizador= b.utilizador_idutilizador THEN 'Administrador' WHEN a.idutilizador=c.utilizador_idutilizador THEN 'Coordenador' "+
