@@ -160,7 +160,7 @@ def profile(request,id):
             return render(request, 'profile_modify.html', {"form": form,'error4':error3,"error1":error,"error":error2,'me':signing.dumps(me),'id':signing.dumps(id)})
     elif request.method == 'POST':
         form = ModifyForm(request.POST)
-        return   render(request, 'profile_modify.html', {"form": form,"me":signing.dumsp(me),'id':signing.dumps(id)})
+        return   render(request, 'profile_modify.html', {"form": form,"me":signing.dumps(me),'id':signing.dumps(id)})
     else:
         form = ModifyForm()
         if Utilizador.objects.get(idutilizador=id).username == '':
