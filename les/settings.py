@@ -47,7 +47,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'user.apps.UserConfig',
     'atividades.apps.AtividadesConfig',
-    'notificacao.apps.NotificacaoConfig'
+    'Notification.apps.NotificationConfig'
 ]
 
 MIDDLEWARE = [

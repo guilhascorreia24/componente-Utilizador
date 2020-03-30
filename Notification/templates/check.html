@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+  <h2>Check Notification</h2>
+
+  <form method = "POST">
+    {% csrf_token %}
+    {{ form }}
+    <p></p>
+    <input type="submit" value="Submit">
+  </form>
+</body>
+</html>

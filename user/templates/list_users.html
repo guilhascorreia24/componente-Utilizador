@@ -217,10 +217,12 @@
                                             {% elif user.validada == 4 %}
                                             <td data-label="Nome" class="">Administrador</td>
                                             {% endif %}
-                                            <td data-label="Ações" class="has-text-centered"><a><span
+                                            <form method="POST">
+                                                {% csrf_token %}
+                                            <td data-label="Ações" class="has-text-centered"><a role="button" role="submit" name="iduser" value="{{user.idutilizador}}"><span
                                                         class="icon has-text-danger"><i
                                                             class="mdi mdi-close-box mdi-24px"></i></span></a>
-
+                                                            </form>
                                                 <a href="{% url "profile_user" user.idutilizador %}">
                                                     <span class="icon has-text-success"><i
                                                             class="mdi mdi-account-search mdi-24px"></i></span></a></td>

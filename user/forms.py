@@ -68,4 +68,11 @@ class EmailSender(forms.Form):
             model=Utilizador
             fields=['email']
 
+class DeleteUser(forms.Form):
+    iduser=forms.IntegerField()
+    
+    class Meta:
+        model=Utilizador
+        fields=['iduser']
+
 

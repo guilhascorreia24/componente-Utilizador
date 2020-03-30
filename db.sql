@@ -1056,8 +1056,10 @@ COLLATE = utf8mb4_0900_ai_ci;
 CREATE TABLE IF NOT EXISTS `les`.`transporte_has_inscricao` (
   `inscricao_idinscricao` INT NOT NULL,
   `partida` INT NOT NULL,
+  `chegada` INT NOT NULL,
   INDEX `fk_transporte_has_inscricao_inscricao_id` (`inscricao_idinscricao` ASC) VISIBLE,
   INDEX `fk_transporte_has_inscricao_transporte_has_horario1_idx` (`partida` ASC) VISIBLE,
+  INDEX `fk_transporte_has_inscricao_transporte_has_horario2_idx` (`chegada` ASC) VISIBLE,
   CONSTRAINT `fk_transporte_has_inscricao_inscricao`
     FOREIGN KEY (`inscricao_idinscricao`)
     REFERENCES `les`.`inscricao` (`idinscricao`)
@@ -1065,6 +1067,11 @@ CREATE TABLE IF NOT EXISTS `les`.`transporte_has_inscricao` (
     ON UPDATE CASCADE,
   CONSTRAINT `fk_transporte_has_inscricao_transporte_has_horario1`
     FOREIGN KEY (`partida`)
+    REFERENCES `les`.`transporte_has_horario` (`id_transporte_has_horario`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_transporte_has_inscricao_transporte_has_horario2`
+    FOREIGN KEY (`chegada`)
     REFERENCES `les`.`transporte_has_horario` (`id_transporte_has_horario`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
@@ -1122,6 +1129,29 @@ CREATE TABLE IF NOT EXISTS `les`.`utilizador_has_notificacao` (
   CONSTRAINT `fk_Utilizador_has_notificacao_Utilizador`
     FOREIGN KEY (`Utilizador_idutilizador`)
     REFERENCES `les`.`utilizador` (`idutilizador`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `les`.`sessao_has_horario_has_dia`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `les`.`sessao_has_horario_has_dia` (
+  `sessao_idsessao` INT NOT NULL,
+  `horario_has_dia_id_dia_hora` INT NOT NULL,
+  INDEX `fk_sessao_has_horario_has_dia_horario_has_dia1_idx` (`horario_has_dia_id_dia_hora` ASC) VISIBLE,
+  INDEX `fk_sessao_has_horario_has_dia_sessao1_idx` (`sessao_idsessao` ASC) VISIBLE,
+  CONSTRAINT `fk_sessao_has_horario_has_dia_sessao1`
+    FOREIGN KEY (`sessao_idsessao`)
+    REFERENCES `les`.`sessao` (`idsessao`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_sessao_has_horario_has_dia_horario_has_dia1`
+    FOREIGN KEY (`horario_has_dia_id_dia_hora`)
+    REFERENCES `les`.`horario_has_dia` (`id_dia_hora`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
