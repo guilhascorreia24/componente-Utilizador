@@ -127,7 +127,7 @@ class Form_Prato(ModelForm):
 ###################################################SESSOES#############################################
 
 class Form_Sessao(ModelForm):
-
+    
     class Meta:
         model = models.Prato
         fields = ['sessao_idsessao','inscritos']
