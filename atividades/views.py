@@ -8,7 +8,9 @@ from atividades import inscricao
 
 # Main Views.
 def test(request):
-    return inscricao.showForm(request)
+    #return inscricao.showForm(request)
+    form = forms.test(request)
+    return render(request,'test2.html',{'form': form})
     
 def atividades_show(request):
     user = userValidation.getLoggedUser(request)

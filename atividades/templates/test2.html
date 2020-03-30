@@ -1,20 +1,8 @@
 <html>
     <body>
-        <form method = 'POST'>
+        <form method = "POST">
             {% csrf_token %}
-            Escola<br>
-            {{form.escola}}
-            <br><br><br>
-
-            Inscricao<br>
-            {{form.inscricao}}
-            <br><br><br>
-
-            Responsaveis<br>
-            {{form.responsaveis}}
-            <br><br><br>
-            Almoço<br>
-            {% for camp in form.almoco.campus%}
+            {% for camp in form.campus%}
                 <br>
                 {{camp.nome}}
                 <br>
