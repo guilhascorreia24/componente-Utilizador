@@ -7,6 +7,8 @@ def show(request):
         if form.is_valid():
             form.save()
             return HttpResponse("<html>Sucess</html>")
+        else:
+            return render(request,'test.html',{'form': form})
         
         
     else:

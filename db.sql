@@ -695,9 +695,8 @@ CREATE TABLE IF NOT EXISTS `les`.`inscricao` (
   `idinscricao` INT NOT NULL AUTO_INCREMENT,
   `ano` YEAR NOT NULL,
   `local` VARCHAR(255) NOT NULL,
-  `nparticipantes` INT NOT NULL,
   `areacientifica` VARCHAR(255) NOT NULL,
-  `transporte` TINYINT NOT NULL DEFAULT '0',
+  `transporte` BOOLEAN NOT NULL DEFAULT 0,
   PRIMARY KEY (`idinscricao`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
@@ -728,8 +727,8 @@ CREATE TABLE IF NOT EXISTS `les`.`inscricao_coletiva` (
   `turma` CHAR(1) NOT NULL,
   `Participante_Utilizador_idutilizador` INT NOT NULL,
   `escola_idescola` INT NOT NULL,
+  `nparticipantes` INT NOT NULL DEFAULT 1,
   `inscricao_idinscricao` INT NOT NULL,
-  `telefone` INT NOT NULL,
   PRIMARY KEY (`inscricao_idinscricao`),
   INDEX `fk_inscricao_coletiva_Participante_id` (`Participante_Utilizador_idutilizador` ASC) VISIBLE,
   INDEX `fk_inscricao_coletiva_escola_id` (`escola_idescola` ASC) VISIBLE,
@@ -887,6 +886,7 @@ CREATE TABLE IF NOT EXISTS `les`.`inscricao_individual` (
   `nracompanhades` INT(10) UNSIGNED ZEROFILL NOT NULL,
   `Participante_Utilizador_idutilizador` INT NOT NULL,
   `inscricao_idinscricao` INT NOT NULL,
+  `telefone` INT NOT NULL,
   PRIMARY KEY (`inscricao_idinscricao`),
   INDEX `fk_inscricao_individual_Participante_id` (`Participante_Utilizador_idutilizador` ASC) VISIBLE,
   INDEX `fk_inscricao_individual_inscricao_id` (`inscricao_idinscricao` ASC) VISIBLE,

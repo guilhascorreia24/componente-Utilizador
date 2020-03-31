@@ -27,6 +27,12 @@
             Sessao:<br>
             {{form.sessao}}
             <br><br><br>
+             Transportes:<br><br>
+            {% for transporte in form.transportes.campus %}
+                {{transporte.nome}}<br> {{transporte}}
+                    <br><br>
+            {% endfor %}
+            <br><br><br>
             <input type = "submit">
         </form>
     </body>
