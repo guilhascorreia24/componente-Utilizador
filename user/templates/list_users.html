@@ -106,8 +106,9 @@
                                 </div>
                                 <div class="field">
                                     <!---->
-                                    <div class="control is-expanded"><span class="select is-fullwidth is-empty"><select
-                                                id="myInput4" onchange="myFunction4()">
+                                    <div class="control is-expanded has-icons-left"><span
+                                            class="select is-fullwidth is-empty"><select id="myInput4"
+                                                onchange="myFunction4()">
                                                 <option hidden value=""> Cargo do Utilizador
                                                 </option>
                                                 <option value="Administrador">Administrador</option>
@@ -119,6 +120,20 @@
                                             </select></span>
                                         <!---->
                                     </div>
+                                    <!---->
+                                </div>
+                                <div class="field">
+                                    <!---->
+                                    <div class="control is-expanded has-icons-left"><span
+                                            class="select is-fullwidth is-empty"><select id="Input5"
+                                                onchange="myFunction5()">
+                                                <option hidden value="">
+                                                    Estado
+                                                </option>
+                                                <option value="A">Validado</option>
+                                                <option value="P">Pendente</option>
+                                            </select></span> <span class="icon is-left"><i
+                                                class="mdi mdi-magnify mdi-24px"></i></span></div>
                                     <!---->
                                 </div>
 
@@ -164,6 +179,7 @@
                                 <thead>
                                     <tr>
                                         <!---->
+                                        
                                         <th class="is-sortable">
                                             <div class="th-wrap th-sm">Nome <span class="icon is-small"
                                                     style="display: none;"><i class="mdi mdi-menu-up"></i></span>
@@ -204,9 +220,8 @@
                                 <tbody>
 
                                     {% for user in users %}
-
-                                    <tr draggable="false" class="" scope="row">
-                                        <!---->
+                                    {% if user.validada != me.validada %}
+                                    <tr class="" scope="row" >
                                         <td data-label="Nome" class=""> {{user.nome}}
                                         </td>
                                         <td data-label="Nome" class=""> {{user.email}}
@@ -215,16 +230,40 @@
                                         </td>
                                         <td data-label="Nome" class="">{{user.cargo}}</td>
 
-                                        {% if user.validada != me.validada %}
-                            
-                                        <td data-label="Estado" class=""><span class="tag text is-warning"
+
+
+                                        <td data-label="Estado" class=""><span
+                                                {% if user.estado == 'Validado' %}class="tag text is-success"
+                                                {% else %}class="tag text is-warning" {% endif %}
                                                 style="width: 7rem; font-size: small;"> {{user.estado}}</span></td>
-                                        {% endif %}
+
                                         <td data-label="Ações" class="has-text-centered"><a role="button"
                                                 data-toggle="modal" data-target="#{{ forloop.counter }}"><span
                                                     class="icon has-text-danger"><i
                                                         class="mdi mdi-close-box mdi-24px"></i></span></a>
-                                            <!---->
+                                            <a role="button" href="{% url "profile_user" user.idutilizador %}"><span
+                                                    class="icon has-text-success"><i
+                                                        class="mdi mdi-account-search mdi-24px"></i></span></a></td>
+                                        {% endif %}
+                                    <!--<tr class="detail dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <td colspan="5" class="dropdown-item">
+                                            <div class="detail-container">
+                                                <div class="content">
+                                                    <div style="margin-top: 13px;"><button type="button"
+                                                            class="button is-success" style="margin-right: 10px;"><span
+                                                                class="icon is-small"><i
+                                                                    class="mdi mdi-check"></i></span>
+                                                            <span>Aceitar</span>
+                                                            </button><button type="button"
+                                                            class="button is-danger"><span class="icon is-small"><i
+                                                                    class="mdi mdi-delete"></i></span>
+                                                            <span>Rejeitar</span>
+                                                            </button></div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                -->
                                     </tr>
                                     <!---->
                                     <!---->
@@ -296,14 +335,32 @@
             }
         }
     }
-    function myFunction2() {
+    function myFunction() {
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("myInput");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("myTable");
+        tr = table.getElementsByTagName("tr");
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[0];
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+    function myFunction5() {
         var input, filter, table, tr, td, i, txtValue;
         input = document.getElementById("myInput2");
         filter = input.value.toUpperCase();
         table = document.getElementById("myTable");
         tr = table.getElementsByTagName("tr");
         for (i = 0; i < tr.length; i++) {
-            td = tr[i].getElementsByTagName("td")[1];
+            td = tr[i].getElementsByTagName("td")[4];
             if (td) {
                 txtValue = td.textContent || td.innerText;
                 if (txtValue.toUpperCase().indexOf(filter) > -1) {

@@ -31,6 +31,6 @@ urlpatterns = [
     path("profiles_list/<str:id>/",user_views.profile,name="profile_user"),
     path("profiles_list/delete/<str:id>/",user_views.delete_user,name="delete"),
     path("notificacao/",notificacao_views.checknot,name="not-search"),
-    path('validacoes/',user_views.validacoes,name="validacoes"),
+    path('validacoes/<str:id>',user_views.validacoes,name="validacoes"),
     path('', include("blog.urls"))
 ]

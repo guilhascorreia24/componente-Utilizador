@@ -197,6 +197,7 @@ CREATE TABLE IF NOT EXISTS `les`.`atividade` (
   `duracao` FLOAT NOT NULL,
   `descricao` VARCHAR(250) NOT NULL,
   `validada` TINYINT NOT NULL DEFAULT '0',
+  'nrColaborador' INT,
   `professor_universitario_Utilizador_idutilizador` INT NOT NULL,
   `unidade_organica_idUO` INT NOT NULL,
   `Departamento_idDepartamento` INT NOT NULL,

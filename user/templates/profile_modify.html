@@ -1,13 +1,13 @@
 {% extends "homepage.html" %}
 {% block content %}
 <div class="navbar-menu">
-    {% if funcao == "Coordenador" %}
+    {% if func == "Coordenador" %}
     {% include "navbar-coord.html" %}
-    {% elif funcao == "administardor" %}
+    {% elif func == "administardor" %}
     {% include "navabar-admin.html" %}
-    {% elif funcao == "docente Univesitario" %}
+    {% elif func == "docente Univesitario" %}
     {% include "navabar-dc.hmtl"}
-    {% elif funcao == None %}
+    {% elif func == None %}
     {% include "navabar-part.html" %}
     {% endif %}
     <div class="navbar-end">
