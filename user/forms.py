@@ -13,7 +13,6 @@ class UserRegisterForm(forms.Form):
     password1=forms.CharField(max_length=255,label="Password",widget=forms.PasswordInput())
     password2=forms.CharField(max_length=255,label="Password Confirm",widget=forms.PasswordInput())
     funcao=forms.IntegerField(label="funcao")
-    tenatives=forms.IntegerField()
 
     class Meta:
         model=Utilizador

@@ -148,21 +148,20 @@ class Form_Prato(ModelForm):
 
 ###################################################SESSOES#############################################
 
-class Form_Sessao(ModelForm):
+'''class Form_Sessao(ModelForm):
     
     class Meta:
         model = models.Prato
-        fields = ['sessao_idsessao','inscritos']
+        fields = ['sessao_idsessao','inscritos']'''
 
 ###################################################END SESSOES#############################################
 class CustomForm:
-    def __init__(self,request = 0):
-        self.almoco = Form_Almoco(request)
+    '''def __init__(self,request = 0):
+            self.almoco = Form_Almoco(request)
             self.inscricao = Form_Inscricao(request.POST,prefix="inscricao")
-
         else:
             self.escola = Form_Escola(prefix="escola")
-            self.inscricao = Form_Inscricao(prefix="inscricao")
+            self.inscricao = Form_Inscricao(prefix="inscricao")'''
     
     def is_valid(self):
         return all([self.escola.is_valid(), self.inscricao.is_valid(), self.responsaveis.is_valid(), self.almoco.is_valid(),self.sessao.is_valid(),self.transportes.is_valid()])
