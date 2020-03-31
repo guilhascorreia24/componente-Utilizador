@@ -111,7 +111,7 @@ class Form_Almocos_Per_Campus:
     
 #Save method doesn't return
 class Form_Almoco:
-    def __init__(self,request=0):
+    def __init__(self,request):
         campus = models.Campus.objects.all()
         self.campus = list()
         for camp in campus:
@@ -149,38 +149,24 @@ class Form_Prato(ModelForm):
 ###################################################SESSOES#############################################
 
 class Form_Sessao(ModelForm):
-
-    def save(self,inscricao):
-        base = super(Form_Sessao, self).save(commit=False)
-        base.inscricao_idinscricao = inscricao
-        return base.save()
+    
     class Meta:
-        model = models.InscricaoHasSessao
+        model = models.Prato
         fields = ['sessao_idsessao','inscritos']
 
 ###################################################END SESSOES#############################################
 class CustomForm:
     def __init__(self,request = 0):
-        self.sessao = modelformset_factory(models.InscricaoHasSessao,form = Form_Sessao)
-        self.responsaveis = modelformset_factory(models.Responsaveis,form = Form_Responsaveis)
         self.almoco = Form_Almoco(request)
-        self.transportes = Form_Transportes(request)
-        if request != 0 and request.method == 'POST':
-            self.escola = Form_Escola(request.POST,prefix="escola")
             self.inscricao = Form_Inscricao(request.POST,prefix="inscricao")
-            self.responsaveis = self.responsaveis(request.POST)
-            self.sessao = self.sessao(request.POST)
+
         else:
             self.escola = Form_Escola(prefix="escola")
             self.inscricao = Form_Inscricao(prefix="inscricao")
     
     def is_valid(self):
-        #print(self.inscricao_coletiva.is_valid())
         return all([self.escola.is_valid(), self.inscricao.is_valid(), self.responsaveis.is_valid(), self.almoco.is_valid(),self.sessao.is_valid(),self.transportes.is_valid()])
 
-    def save(self):
-        user = models.Utilizador.objects.get(idutilizador = 2)
-        part = models.Participante.objects.get(utilizador_idutilizador = user)
 
         escola = self.escola.save()
         inscricao = self.inscricao.save(part,escola,len(self.responsaveis))

@@ -356,7 +356,6 @@ class InscricaoHasPrato(models.Model):
 class InscricaoHasSessao(models.Model):
     inscricao_idinscricao = models.ForeignKey(Inscricao, models.DO_NOTHING, db_column='inscricao_idinscricao')
     sessao_idsessao = models.ForeignKey('Sessao', models.DO_NOTHING, db_column='sessao_idsessao')
-    inscritos = models.IntegerField()
 
     class Meta:
         managed = False
@@ -479,15 +478,6 @@ class Sessao(models.Model):
         db_table = 'sessao'
 
 
-class SessaoHasHorarioHasDia(models.Model):
-    sessao_idsessao = models.ForeignKey(Sessao, models.DO_NOTHING, db_column='sessao_idsessao')
-    horario_has_dia_id_dia_hora = models.ForeignKey(HorarioHasDia, models.DO_NOTHING, db_column='horario_has_dia_id_dia_hora')
-
-    class Meta:
-        managed = False
-        db_table = 'sessao_has_horario_has_dia'
-
-
 class Tarefa(models.Model):
     idtarefa = models.AutoField(primary_key=True)
     nome = models.CharField(max_length=255)
@@ -527,7 +517,6 @@ class TransporteHasHorario(models.Model):
 class TransporteHasInscricao(models.Model):
     inscricao_idinscricao = models.ForeignKey(Inscricao, models.DO_NOTHING, db_column='inscricao_idinscricao')
     partida = models.ForeignKey(TransporteHasHorario, models.DO_NOTHING, db_column='partida')
-    chegada = models.ForeignKey(TransporteHasHorario, models.DO_NOTHING, db_column='chegada')
 
     class Meta:
         managed = False
