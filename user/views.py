@@ -218,11 +218,11 @@ def profile_list(request):
             if u.validada==0:
                 u.estado="Validado"
             elif u.validada==1:
-                u.cargo+="->Colaborador"
+                u.cargo="Colaborador"
             elif u.validada==2:
-                u.cargo+="->Coordenador"
+                u.cargo="Coordenador"
             elif u.validada==3:
-                u.cargo+="->Docente Universitario"
+                u.cargo="Docente Universitario"
         u.idutilizador=signing.dumps(u.idutilizador)
     id=signing.dumps(request.session['user_id'])
     return render(request,"list_users.html",{"users":users,"funcao":funcao,"id":id,'me':me})

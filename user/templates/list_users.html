@@ -125,13 +125,13 @@
                                 <div class="field">
                                     <!---->
                                     <div class="control is-expanded has-icons-left"><span
-                                            class="select is-fullwidth is-empty"><select id="Input5"
+                                            class="select is-fullwidth is-empty"><select id="myInput5"
                                                 onchange="myFunction5()">
                                                 <option hidden value="">
                                                     Estado
                                                 </option>
-                                                <option value="A">Validado</option>
-                                                <option value="P">Pendente</option>
+                                                <option value="Validado">Validado</option>
+                                                <option value="Pendente">Pendente</option>
                                             </select></span> <span class="icon is-left"><i
                                                 class="mdi mdi-magnify mdi-24px"></i></span></div>
                                     <!---->
@@ -232,7 +232,7 @@
 
 
 
-                                        <td data-label="Estado" class=""><span
+                                        <td data-label="Estado" class="dropdown "><span
                                                 {% if user.estado == 'Validado' %}class="tag text is-success"
                                                 {% else %}class="tag text is-warning" {% endif %}
                                                 style="width: 7rem; font-size: small;"> {{user.estado}}</span></td>
@@ -335,14 +335,14 @@
             }
         }
     }
-    function myFunction() {
+    function myFunction2() {
         var input, filter, table, tr, td, i, txtValue;
-        input = document.getElementById("myInput");
+        input = document.getElementById("myInput2");
         filter = input.value.toUpperCase();
         table = document.getElementById("myTable");
         tr = table.getElementsByTagName("tr");
         for (i = 0; i < tr.length; i++) {
-            td = tr[i].getElementsByTagName("td")[0];
+            td = tr[i].getElementsByTagName("td")[1];
             if (td) {
                 txtValue = td.textContent || td.innerText;
                 if (txtValue.toUpperCase().indexOf(filter) > -1) {
@@ -355,7 +355,7 @@
     }
     function myFunction5() {
         var input, filter, table, tr, td, i, txtValue;
-        input = document.getElementById("myInput2");
+        input = document.getElementById("myInput5");
         filter = input.value.toUpperCase();
         table = document.getElementById("myTable");
         tr = table.getElementsByTagName("tr");
