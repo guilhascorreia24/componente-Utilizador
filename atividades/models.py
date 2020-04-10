@@ -324,7 +324,7 @@ class Inscricao(models.Model):
     ano = models.TextField()  # This field type is a guess.
     local = models.CharField(max_length=255)
     areacientifica = models.CharField(max_length=255)
-    transporte = models.IntegerField()
+    transporte = models.BooleanField()
 
     class Meta:
         managed = False
@@ -517,8 +517,8 @@ class TransporteHasHorario(models.Model):
     horario_has_dia_id_dia_hora = models.ForeignKey(HorarioHasDia, models.DO_NOTHING, db_column='horario_has_dia_id_dia_hora')
     npessoas = models.IntegerField(db_column='nPessoas')  # Field name made lowercase.
     id_transporte_has_horario = models.AutoField(primary_key=True)
-    destino = models.ForeignKey(Paragem, models.DO_NOTHING, db_column='destino', related_name="dest")
-    origem = models.ForeignKey(Paragem, models.DO_NOTHING, db_column='origem', related_name="orig")
+    destino = models.ForeignKey(Paragem, models.DO_NOTHING, db_column='destino', related_name='dest')
+    origem = models.ForeignKey(Paragem, models.DO_NOTHING, db_column='origem', related_name='orig')
 
     class Meta:
         managed = False
@@ -527,8 +527,8 @@ class TransporteHasHorario(models.Model):
 
 class TransporteHasInscricao(models.Model):
     inscricao_idinscricao = models.ForeignKey(Inscricao, models.DO_NOTHING, db_column='inscricao_idinscricao')
-    partida = models.ForeignKey(TransporteHasHorario, models.DO_NOTHING, db_column='partida', related_name="part")
-    chegada = models.ForeignKey(TransporteHasHorario, models.DO_NOTHING, db_column='chegada', related_name="cheg")
+    partida = models.ForeignKey(TransporteHasHorario, models.DO_NOTHING, db_column='partida', related_name='part')
+    chegada = models.ForeignKey(TransporteHasHorario, models.DO_NOTHING, db_column='chegada', related_name='cheg')
 
     class Meta:
         managed = False
