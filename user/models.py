@@ -65,7 +65,7 @@ class Administrador(models.Model):
 
 class Coordenador(models.Model):
     utilizador_idutilizador = models.OneToOneField('Utilizador', models.DO_NOTHING, db_column='Utilizador_idutilizador', primary_key=True)  # Field name made lowercase.
-    unidade_organica_iduo = models.ForeignKey('UnidadeOrganica', models.DO_NOTHING, db_column='unidade Organica_idUO')  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    unidade_organica_iduo = models.ForeignKey('UnidadeOrganica', models.DO_NOTHING, db_column='unidade_organica_idUO')  # Field name made lowercase. Field renamed to remove unsuitable characters.
 
     class Meta:
         managed = False
@@ -78,7 +78,7 @@ class Colaborador(models.Model):
     curso = models.CharField(max_length=45)
     preferencia = models.CharField(max_length=45, blank=True, null=True)
     utilizador_idutilizador = models.OneToOneField('Utilizador', models.DO_NOTHING, db_column='Utilizador_idutilizador', primary_key=True)  # Field name made lowercase.
-    dia_aberto_ano = models.ForeignKey('DiaAberto', models.DO_NOTHING, db_column='Dia Aberto_ano')  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    dia_aberto_ano = models.ForeignKey('DiaAberto', models.DO_NOTHING, db_column='Dia_Aberto_ano')  # Field name made lowercase. Field renamed to remove unsuitable characters.
 
     class Meta:
         managed = False

@@ -197,6 +197,7 @@ CREATE TABLE IF NOT EXISTS `les`.`atividade` (
   `duracao` FLOAT NOT NULL,
   `descricao` VARCHAR(250) NOT NULL,
   `validada` TINYINT NOT NULL DEFAULT '0',
+  'nrColaborador' INT,
   `professor_universitario_Utilizador_idutilizador` INT NOT NULL,
   `unidade_organica_idUO` INT NOT NULL,
   `Departamento_idDepartamento` INT NOT NULL,
@@ -857,8 +858,11 @@ COLLATE = utf8mb4_0900_ai_ci;
 -- Table `les`.`inscricao_has_sessao`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `les`.`inscricao_has_sessao` (
+  `id_IHS` INT NOT NULL AUTO_INCREMENT,
   `inscricao_idinscricao` INT NOT NULL,
   `sessao_idsessao` INT NOT NULL,
+  `inscritos` INT NOT NULL,
+  PRIMARY KEY (`id_IHS`),
   INDEX `fk_inscricao_has_sessao_sessao_id` (`sessao_idsessao` ASC) VISIBLE,
   INDEX `fk_inscricao_has_sessao_inscricao_id` (`inscricao_idinscricao` ASC) VISIBLE,
   CONSTRAINT `fk_inscricao_has_sessao_inscricao`

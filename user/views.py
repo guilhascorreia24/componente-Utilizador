@@ -4,6 +4,7 @@ from .forms import UserRegisterForm, AuthenticationForm, ModifyForm, PasswordCha
 from django.core.mail import send_mail
 from django.core import signing
 from .models import UnidadeOrganica, Departamento, Utilizador, Participante, ProfessorUniversitario, Administrador, Coordenador, Colaborador, DjangoSession
+from django.db.models import CharField, Value
 
 def user(request):
     id1=request.session['user_id']
@@ -194,18 +195,37 @@ def profile(request,id):
         funcao = "Colaborador"
         curso = Colaborador.objects.get(utilizador_idutilizador=id).curso
     return render(request, 'profile.html', {"form": form, 'nome': name,'UO':UO,'username': username, 'email': email, 
-                    'telefone': telefone, 'funcao': funcao, 'ano': ano, 'curso': curso,'dep':dep,"me":signing.dumps(me),'id':signing.dumps(id)})
+                    'telefone': telefone, 'funcao': funcao, 'ano': ano, 'curso': curso,'dep':dep,"me":signing.dumps(me),'id':signing.dumps(id),'func':user(request)})
 
 def profile_list(request):
     funcao=user(request)
-    users=Utilizador.objects.all()
-    #users=Utilizador.objects.raw("SELECT a.*, CASE WHEN a.idutilizador= b.utilizador_idutilizador THEN 'Administrador' WHEN a.idutilizador=c.utilizador_idutilizador THEN 'Coordenador' "+
-     #                                "WHEN a.idutilizador=d.utilizador_idutilizador THEN 'Colaborador' WHEN  a.idutilizador=e.utilizador_idutilizador THEN 'Docente Universitario' ELSE '0' END AS cargo FROM Utilizador a,Administrador b,"+
-      #                               "Coordenador c,Colaborador d,professor_universitario e;")
+    me=Utilizador.objects.get(pk=request.session['user_id'])
+    users=Utilizador.objects.all().annotate(cargo=Value('Participante',CharField()),estado=Value('Pendente',CharField()))
     for u in users:
+        if Coordenador.objects.filter(pk=u.idutilizador).exists():
+            u.cargo="Coordenador"
+            if u.validada==2:
+                u.estado="Validado"
+        elif Colaborador.objects.filter(pk=u.idutilizador).exists():
+            u.cargo="Colaborador"
+            if u.validada==1:
+                u.estado="Validado"
+        elif ProfessorUniversitario.objects.filter(pk=u.idutilizador).exists():
+            u.cargo="Docente Universitario"
+            if u.validada==3:
+                u.estado="Validado"
+        elif Participante.objects.filter(pk=u.idutilizador):
+            if u.validada==0:
+                u.estado="Validado"
+            elif u.validada==1:
+                u.cargo="Colaborador"
+            elif u.validada==2:
+                u.cargo="Coordenador"
+            elif u.validada==3:
+                u.cargo="Docente Universitario"
         u.idutilizador=signing.dumps(u.idutilizador)
     id=signing.dumps(request.session['user_id'])
-    return render(request,"list_users.html",{"users":users,"funcao":funcao,"id":id})
+    return render(request,"list_users.html",{"users":users,"funcao":funcao,"id":id,'me':me})
 #--------------------------------------------recuperaçao de password---------------------------------
 def change_password(request, id):
     id_deccryp=signing.loads(id)
@@ -245,7 +265,7 @@ def reset(request):
             messages.error(request, f'Email incorreto')
     return render(request, 'reset.html', {'form': sub})
 #-------------------------------------------------validacoes---------------------------------------------------------------
-def validacoes(request):
+def validacoes(request,id):
     if request.POST == 'POST':
         if Coordenador.objects.filter(utilizador_utilizadorid=request.session['user_id']).exists():
             user = Utilizador.objects.get(validada=1)

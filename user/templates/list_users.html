@@ -106,8 +106,9 @@
                                 </div>
                                 <div class="field">
                                     <!---->
-                                    <div class="control is-expanded"><span class="select is-fullwidth is-empty"><select
-                                                id="myInput4" onchange="myFunction4()">
+                                    <div class="control is-expanded has-icons-left"><span
+                                            class="select is-fullwidth is-empty"><select id="myInput4"
+                                                onchange="myFunction4()">
                                                 <option hidden value=""> Cargo do Utilizador
                                                 </option>
                                                 <option value="Administrador">Administrador</option>
@@ -119,6 +120,20 @@
                                             </select></span>
                                         <!---->
                                     </div>
+                                    <!---->
+                                </div>
+                                <div class="field">
+                                    <!---->
+                                    <div class="control is-expanded has-icons-left"><span
+                                            class="select is-fullwidth is-empty"><select id="myInput5"
+                                                onchange="myFunction5()">
+                                                <option hidden value="">
+                                                    Estado
+                                                </option>
+                                                <option value="Validado">Validado</option>
+                                                <option value="Pendente">Pendente</option>
+                                            </select></span> <span class="icon is-left"><i
+                                                class="mdi mdi-magnify mdi-24px"></i></span></div>
                                     <!---->
                                 </div>
 
@@ -134,135 +149,155 @@
                                     class="router-link-exact-active router-link-active">Utilizadores</a></li>
                         </ul>
                     </nav>
-                        <div class="b-table">
-                            <div class="field table-mobile-sort">
-                                <div class="field has-addons">
-                                    <div class="control is-expanded"><span class="select is-fullwidth"><select>
-                                                <!---->
-                                                <!---->
-                                                <option value="[object Object]">
-                                                    Nome
-                                                </option>
-                                                <option value="[object Object]">
-                                                    Tipo
-                                                </option>
-                                                <option value="[object Object]">
-                                                    Estado
-                                                </option>
-                                                <!---->
-                                            </select></span>
-                                        <!---->
-                                    </div>
-                                    <div class="control"><button class="button is-primary"><span
-                                                class="icon is-small"><i class="mdi mdi-menu-up"></i></span></button>
-                                    </div>
+                    <div class="b-table">
+                        <div class="field table-mobile-sort">
+                            <div class="field has-addons">
+                                <div class="control is-expanded"><span class="select is-fullwidth"><select>
+                                            <!---->
+                                            <!---->
+                                            <option value="[object Object]">
+                                                Nome
+                                            </option>
+                                            <option value="[object Object]">
+                                                Tipo
+                                            </option>
+                                            <option value="[object Object]">
+                                                Estado
+                                            </option>
+                                            <!---->
+                                        </select></span>
+                                    <!---->
+                                </div>
+                                <div class="control"><button class="button is-primary"><span class="icon is-small"><i
+                                                class="mdi mdi-menu-up"></i></span></button>
                                 </div>
                             </div>
-                            <!---->
-                            <div class="table-wrapper">
-                                <table id="myTable" class="table table-striped">
-                                    <thead>
-                                        <tr>
-                                            <!---->
-                                            <th class="is-sortable">
-                                                <div class="th-wrap th-sm">Nome <span class="icon is-small"
-                                                        style="display: none;"><i class="mdi mdi-menu-up"></i></span>
-                                                </div>
-                                            </th>
-                                            <th class="is-sortable">
-                                                <div class="th-wrap th-sm">Email<span class="icon is-small"
-                                                        style="display: none;"><i class="mdi mdi-menu-up"></i></span>
-                                                </div>
-                                            </th>
-                                            <th class="is-sortable th-sm">
-                                                <div class="th-wrap th-sm">Telefone <span class="icon is-small"
-                                                        style="display: none;"><i class="mdi mdi-menu-up"></i></span>
-                                                </div>
-                                            </th>
-                                            <th class="is-sortable th-sm">
-                                                <div class="th-wrap">Cargo <span class="icon is-small"
-                                                        style="display: none;"><i class="mdi mdi-menu-up"></i></span>
-                                                </div>
-                                            </th>
-                                            <th class="">
-                                                <div class="th-wrap is-centered">Ações <span class="icon is-small"
-                                                        style="display: none;"><i class="mdi mdi-menu-up"></i></span>
-                                                </div>
-                                            </th>
-                                            <!---->
-                                        </tr>
+                        </div>
+                        <!---->
+                        <div class="table-wrapper">
+                            <table id="myTable" class="table table-striped">
+                                <thead>
+                                    <tr>
                                         <!---->
-                                        <!---->
-                                    </thead>
-
-
-                                    <tbody>
                                         
-                                        {% for user in users %}
-                                        
-                                        <tr draggable="false" class="" scope="row">
-                                            <!---->
-                                            <td data-label="Nome" class=""> {{user.nome}}
-                                            </td>
-                                            <td data-label="Nome" class=""> {{user.email}}
-                                            </td>
-                                            <td data-label="Nome" class=""> {{user.telefone}}
-                                            </td>
-                                            {% if user.validada == 0 %}
-                                            <td data-label="Nome" class="">Participante</td>
-                                            {% elif user.validada == 1 %}
-                                            <td data-label="Nome" class="">Colaborador</td>
-                                            {% elif user.validada == 2 %}
-                                            <td data-label="Nome" class="">Coordenador</td>
-                                            {% elif user.validada == 3 %}
-                                            <td data-label="Nome" class="">Docente Univesitario</td>
-                                            {% elif user.validada == 4 %}
-                                            <td data-label="Nome" class="">Administrador</td>
-                                            {% endif %}
-                                            <td data-label="Ações" class="has-text-centered"><a role="button" data-toggle="modal"
-                                                data-target="#{{ forloop.counter }}"><span
-                                                        class="icon has-text-danger"><i
-                                                            class="mdi mdi-close-box mdi-24px"></i></span></a>
-                                                            
-                                                <a href="{% url "profile_user" user.idutilizador %}">
-                                                    <span class="icon has-text-success"><i
-                                                            class="mdi mdi-account-search mdi-24px"></i></span></a></td>
-                                            <!---->
-                                                    </tr>
+                                        <th class="is-sortable">
+                                            <div class="th-wrap th-sm">Nome <span class="icon is-small"
+                                                    style="display: none;"><i class="mdi mdi-menu-up"></i></span>
+                                            </div>
+                                        </th>
+                                        <th class="is-sortable">
+                                            <div class="th-wrap th-sm">Email<span class="icon is-small"
+                                                    style="display: none;"><i class="mdi mdi-menu-up"></i></span>
+                                            </div>
+                                        </th>
+                                        <th class="is-sortable th-sm">
+                                            <div class="th-wrap th-sm">Telefone <span class="icon is-small"
+                                                    style="display: none;"><i class="mdi mdi-menu-up"></i></span>
+                                            </div>
+                                        </th>
+                                        <th class="is-sortable th-sm">
+                                            <div class="th-wrap">Cargo <span class="icon is-small"
+                                                    style="display: none;"><i class="mdi mdi-menu-up"></i></span>
+                                            </div>
+                                        </th>
+                                        <th class="is-sortable th-sm">
+                                            <div class="th-wrap">Estado <span class="icon is-small"
+                                                    style="display: none;"><i class="mdi mdi-menu-up"></i></span>
+                                            </div>
+                                        </th>
+                                        <th class="">
+                                            <div class="th-wrap is-centered">Ações <span class="icon is-small"
+                                                    style="display: none;"><i class="mdi mdi-menu-up"></i></span>
+                                            </div>
+                                        </th>
                                         <!---->
-                                        <!---->
-                                        <!---->
-                                        <!---->
-                                        {% endfor %}
-                                        
-
-                                    </tbody>
+                                    </tr>
                                     <!---->
-                                </table>
-                            </div>
-                            <div class="level">
-                                <div class="level-left"></div>
-                                <div class="level-right">
-                                    <div class="level-item">
-                                        <nav class="pagination"><a role="button" href="#" disabled="disabled"
-                                                aria-label="Page 0." class="pagination-link pagination-previous"><span
-                                                    class="icon" aria-hidden="true"><i
-                                                        class="mdi mdi-chevron-left mdi-24px"></i></span></a> <a
-                                                role="button" href="#" disabled="disabled" aria-label="Page 2."
-                                                class="pagination-link pagination-next"><span class="icon"
-                                                    aria-hidden="true"><i
-                                                        class="mdi mdi-chevron-right mdi-24px"></i></span></a>
-                                            <ul class="pagination-list">
-                                                <!---->
-                                                <!---->
-                                                <li><a role="button" href="#" aria-label="Current page, Page 1."
-                                                        aria-current="true" class="pagination-link is-current ">1</a>
-                                                </li>
-                                                <!---->
-                                                <!---->
-                                            </ul>
-                                        </nav>
-                                    </div>
+                                    <!---->
+                                </thead>
+
+
+                                <tbody>
+
+                                    {% for user in users %}
+                                    {% if user.validada != me.validada %}
+                                    <tr class="" scope="row" >
+                                        <td data-label="Nome" class=""> {{user.nome}}
+                                        </td>
+                                        <td data-label="Nome" class=""> {{user.email}}
+                                        </td>
+                                        <td data-label="Nome" class=""> {{user.telefone}}
+                                        </td>
+                                        <td data-label="Nome" class="">{{user.cargo}}</td>
+
+
+
+                                        <td data-label="Estado" class="dropdown "><span
+                                                {% if user.estado == 'Validado' %}class="tag text is-success"
+                                                {% else %}class="tag text is-warning" {% endif %}
+                                                style="width: 7rem; font-size: small;"> {{user.estado}}</span></td>
+
+                                        <td data-label="Ações" class="has-text-centered"><a role="button"
+                                                data-toggle="modal" data-target="#{{ forloop.counter }}"><span
+                                                    class="icon has-text-danger"><i
+                                                        class="mdi mdi-close-box mdi-24px"></i></span></a>
+                                            <a role="button" href="{% url "profile_user" user.idutilizador %}"><span
+                                                    class="icon has-text-success"><i
+                                                        class="mdi mdi-account-search mdi-24px"></i></span></a></td>
+                                        {% endif %}
+                                    <!--<tr class="detail dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <td colspan="5" class="dropdown-item">
+                                            <div class="detail-container">
+                                                <div class="content">
+                                                    <div style="margin-top: 13px;"><button type="button"
+                                                            class="button is-success" style="margin-right: 10px;"><span
+                                                                class="icon is-small"><i
+                                                                    class="mdi mdi-check"></i></span>
+                                                            <span>Aceitar</span>
+                                                            </button><button type="button"
+                                                            class="button is-danger"><span class="icon is-small"><i
+                                                                    class="mdi mdi-delete"></i></span>
+                                                            <span>Rejeitar</span>
+                                                            </button></div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                -->
+                                    </tr>
+                                    <!---->
+                                    <!---->
+                                    <!---->
+                                    <!---->
+                                    {% endfor %}
+
+
+                                </tbody>
+                                <!---->
+                            </table>
+                        </div>
+                        <div class="level">
+                            <div class="level-left"></div>
+                            <div class="level-right">
+                                <div class="level-item">
+                                    <nav class="pagination"><a role="button" href="#" disabled="disabled"
+                                            aria-label="Page 0." class="pagination-link pagination-previous"><span
+                                                class="icon" aria-hidden="true"><i
+                                                    class="mdi mdi-chevron-left mdi-24px"></i></span></a> <a
+                                            role="button" href="#" disabled="disabled" aria-label="Page 2."
+                                            class="pagination-link pagination-next"><span class="icon"
+                                                aria-hidden="true"><i
+                                                    class="mdi mdi-chevron-right mdi-24px"></i></span></a>
+                                        <ul class="pagination-list">
+                                            <!---->
+                                            <!---->
+                                            <li><a role="button" href="#" aria-label="Current page, Page 1."
+                                                    aria-current="true" class="pagination-link is-current ">1</a>
+                                            </li>
+                                            <!---->
+                                            <!---->
+                                        </ul>
+                                    </nav>
                                 </div>
                             </div>
                         </div>
@@ -271,111 +306,131 @@
             </div>
         </div>
     </div>
-    <script>
-        $(document).ready(function () {
-            $('#myTable').DataTable({
-                "paging": false,
-                "info": false,
-                "searching": false
-            });
+</div>
+<script>
+    $(document).ready(function () {
+        $('#myTable').DataTable({
+            "paging": false,
+            "info": false,
+            "searching": false
         });
-    </script>
-    <script>
-        function myFunction() {
-            var input, filter, table, tr, td, i, txtValue;
-            input = document.getElementById("myInput");
-            filter = input.value.toUpperCase();
-            table = document.getElementById("myTable");
-            tr = table.getElementsByTagName("tr");
-            for (i = 0; i < tr.length; i++) {
-                td = tr[i].getElementsByTagName("td")[0];
-                if (td) {
-                    txtValue = td.textContent || td.innerText;
-                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                        tr[i].style.display = "";
-                    } else {
-                        tr[i].style.display = "none";
-                    }
+    });
+</script>
+<script>
+    function myFunction() {
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("myInput");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("myTable");
+        tr = table.getElementsByTagName("tr");
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[0];
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
                 }
             }
         }
-        function myFunction2() {
-            var input, filter, table, tr, td, i, txtValue;
-            input = document.getElementById("myInput2");
-            filter = input.value.toUpperCase();
-            table = document.getElementById("myTable");
-            tr = table.getElementsByTagName("tr");
-            for (i = 0; i < tr.length; i++) {
-                td = tr[i].getElementsByTagName("td")[1];
-                if (td) {
-                    txtValue = td.textContent || td.innerText;
-                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                        tr[i].style.display = "";
-                    } else {
-                        tr[i].style.display = "none";
-                    }
+    }
+    function myFunction2() {
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("myInput2");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("myTable");
+        tr = table.getElementsByTagName("tr");
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[1];
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
                 }
             }
         }
-        function myFunction3() {
-            var input, filter, table, tr, td, i, txtValue;
-            input = document.getElementById("myInput3");
-            filter = input.value.toUpperCase();
-            table = document.getElementById("myTable");
-            tr = table.getElementsByTagName("tr");
-            for (i = 0; i < tr.length; i++) {
-                td = tr[i].getElementsByTagName("td")[2];
-                if (td) {
-                    txtValue = td.textContent || td.innerText;
-                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                        tr[i].style.display = "";
-                    } else {
-                        tr[i].style.display = "none";
-                    }
+    }
+    function myFunction5() {
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("myInput5");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("myTable");
+        tr = table.getElementsByTagName("tr");
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[4];
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
                 }
             }
         }
-        function myFunction4() {
-            var input, filter, table, tr, td, i, txtValue;
-            input = document.getElementById("myInput4");
-            filter = input.value.toUpperCase();
-            table = document.getElementById("myTable");
-            tr = table.getElementsByTagName("tr");
-            for (i = 0; i < tr.length; i++) {
-                td = tr[i].getElementsByTagName("td")[3];
-                if (td) {
-                    txtValue = td.textContent || td.innerText;
-                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                        tr[i].style.display = "";
-                    } else {
-                        tr[i].style.display = "none";
-                    }
+    }
+    function myFunction3() {
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("myInput3");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("myTable");
+        tr = table.getElementsByTagName("tr");
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[2];
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
                 }
             }
         }
-    </script>
-    {% for user in users %}
-    <div class="dialog modal" id="{{ forloop.counter }}">
-        <div class="modal-background"></div>
-        <br><br><br><br><br><br><br><br><br><br><br><br>
-        <div class="modal-card animation" style="max-width:360px">
-            <!---->
-            <section class="modal-card-body is-titleless">
-                <div class="media">
+    }
+    function myFunction4() {
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("myInput4");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("myTable");
+        tr = table.getElementsByTagName("tr");
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[3];
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+</script>
+{% for user in users %}
+<div class="dialog modal" id="{{ forloop.counter }}">
+    <div class="modal-background"></div>
+    <br><br><br><br><br><br><br><br><br><br><br><br>
+    <div class="modal-card animation" style="max-width:360px">
+        <!---->
+        <section class="modal-card-body is-titleless">
+            <div class="media">
+                <!---->
+                <div class="media-content">
+                    <p>Tem a certeza que quer eliminar o utilizador {{user.nome}}?</p>
                     <!---->
-                    <div class="media-content">
-                        <p>Tem a certeza que quer eliminar o utilizador {{user.nome}}?</p>
-                        <!---->
-                    </div>
                 </div>
-            </section>
-            <footer class="modal-card-foot"><button class="button" data-dismiss="modal">
-                    Cancelar
-                </button><a href="delete/{{user.idutilizador}}" style="text-decoration: none;"> <button class="button is-success" type="submit">
+            </div>
+        </section>
+        <footer class="modal-card-foot"><button class="button" data-dismiss="modal">
+                Cancelar
+            </button><a href="delete/{{user.idutilizador}}" style="text-decoration: none;"> <button
+                    class="button is-success" type="submit">
                     Confirmar
                 </button></a></footer>
-        </div>
     </div>
+</div>
 </form>
 {% endfor %}
-    {% endblock content %}
+{% endblock content %}

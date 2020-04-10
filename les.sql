@@ -873,7 +873,7 @@ CREATE TABLE `transporte_has_horario` (
   `transporte_idtransporte` int DEFAULT NULL,
   `horario_has_dia_id_dia_hora` int NOT NULL,
   `nPessoas` int NOT NULL,
-  `id_transporte_has_horario` int NOT NULL,
+  `id_transporte_has_horario` int NOT NULLAUTO_INCREMENT,
   `destino` varchar(45) NOT NULL,
   `origem` varchar(45) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -1364,9 +1364,8 @@ ALTER TABLE `utilizador_has_notificacao`
 --
 -- AUTO_INCREMENT for dumped tables
 --
-ALTER TABLE `transporte_has_horario`
-  MODIFY `id_transporte_has_horario` int NOT NULL AUTO_INCREMENT;
 
+--
 -- AUTO_INCREMENT for table `atividade`
 --
 ALTER TABLE `atividade`
