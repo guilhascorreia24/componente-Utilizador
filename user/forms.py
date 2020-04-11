@@ -13,6 +13,11 @@ class UserRegisterForm(forms.Form):
     password1=forms.CharField(max_length=255,label="Password",widget=forms.PasswordInput())
     password2=forms.CharField(max_length=255,label="Password Confirm",widget=forms.PasswordInput())
     funcao=forms.IntegerField(label="funcao")
+    curso=forms.IntegerField(label="curso",required=False)
+    Perferencias=forms.CharField(max_length=45,label="perferencia",widget=forms.Textarea)
+    UO=forms.IntegerField(label="UO",required=False)
+    departamento=forms.IntegerField(label="departamento",required=False)
+
 
     class Meta:
         model=Utilizador
@@ -21,7 +26,7 @@ class UserRegisterForm(forms.Form):
     def save(self):
         data = self.cleaned_data
         user=Utilizador(nome=data['name'],username=data['username'],
-            email=data['email'],telefone=data['telefone'],password=data['password2'],validada=data['funcao'])
+            email=data['email'],telefone=data['telefone'],password=data['password1'],validada=0)
         user.save()
     
 
@@ -42,10 +47,11 @@ class ModifyForm(forms.Form):
     UO=forms.CharField(max_length=45,label="uo")
     dep=forms.CharField(max_length=45,label="dep")
     curso=forms.CharField(max_length=45,label="curso")
+    preferencia=forms.CharField(max_length=45,label="preferencia")
 
     class Meta:
         model=Utilizador
-        fields=['name','username','email','telefone','funcao','UO','curso','dep']
+        fields=['name','username','email','telefone','funcao','UO','curso','dep','preferencia']
     
     def save(self):
         data = self.cleaned_data

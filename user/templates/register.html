@@ -1,5 +1,20 @@
 {% extends "homepage.html" %}
 {% block content %}
+<head>
+    <style>
+        #hidden_div {
+            display: none;
+        }
+
+        #hidden_div2 {
+            display: none;
+        }
+
+        #hidden_div3 {
+            display: none;
+        }
+    </style>
+</head>
 <div class="navbar-menu">
     <div class="navbar-end">
         <div data-v-a67fe1ba="" class="navbar-item">
@@ -48,7 +63,7 @@
                                             <div class="field"><label class=""
                                                     for={{form.name.id_for_label}}>Nome</label>
                                                 <div class="control has-icons-right"><input type="text" name="name"
-                                                        id={{form.name.id_for_label}} autocomplete="on" 
+                                                        id={{form.name.id_for_label}} autocomplete="on"
                                                         class="input is-danger">
                                                     <!----> <span class="icon is-right has-text-danger"><i
                                                             class="mdi mdi-alert-circle mdi-24px"></i></span>
@@ -56,16 +71,18 @@
                                                 </div>
                                                 <p class="help is-danger">Preencha este campo.</p>
                                                 {% else %}
-                                                <div class="field"><p class="" for={{form.name.id_for_label}}
-                                                        aria-label="breadcrumbs">Nome</p>
-                                                    <div class="control is-clearfix"><input type="text" name="name" value="{{form.name.value|default_if_none:""}}"
+                                                <div class="field">
+                                                    <p class="" for={{form.name.id_for_label}} aria-label="breadcrumbs">
+                                                        Nome</p>
+                                                    <div class="control is-clearfix"><input type="text" name="name"
+                                                            value="{{form.name.value|default_if_none:""}}"
                                                             id={{form.name.id_for_label}} class="input">
                                                     </div>
                                                 </div>
                                                 {% endif %}
                                                 {% if form.username.errors %}
-                                                <div class="field"><p class=""
-                                                        for={{form.username.id_for_label}}>Username</p>
+                                                <div class="field">
+                                                    <p class="" for={{form.username.id_for_label}}>Username</p>
                                                     <div class="control has-icons-right"><input type="text"
                                                             name="username" id={{form.username.id_for_label}}
                                                             autocomplete="on" class="input is-danger">
@@ -75,17 +92,18 @@
                                                     </div>
                                                     <p class="help is-danger">Preencha este campo.</p>
                                                     {% else %}
-                                                    <div class="field"><p class=""
-                                                            for={{form.username.id_for_label}}>Username</p>
+                                                    <div class="field">
+                                                        <p class="" for={{form.username.id_for_label}}>Username</p>
                                                         <div class="control is-clearfix"><input type="text"
-                                                                name="username" id={{form.username.id_for_label}} value="{{form.username.value|default_if_none:""}}"
+                                                                name="username" id={{form.username.id_for_label}}
+                                                                value="{{form.username.value|default_if_none:""}}"
                                                                 class="input">
                                                         </div>
                                                     </div>
                                                     {% endif %}
                                                     {% if form.email.errors or error1 %}
-                                                    <div class="field"><p class=""
-                                                            for={{form.email.id_for_label}}>Email</p>
+                                                    <div class="field">
+                                                        <p class="" for={{form.email.id_for_label}}>Email</p>
                                                         <div class="control has-icons-right"><input type="email"
                                                                 name="email" id={{form.email.id_for_label}}
                                                                 autocomplete="on" class="input is-danger">
@@ -93,19 +111,21 @@
                                                                     class="mdi mdi-alert-circle mdi-24px"></i></span>
                                                             <!---->
                                                         </div>
-                                                            <p class="help is-danger">{{error1}}</p>
+                                                        <p class="help is-danger">{{error1}}</p>
                                                         {% else %}
-                                                        <div class="field"><p class=""
-                                                                for={{form.email.id_for_label}}>Email</p>
+                                                        <div class="field">
+                                                            <p class="" for={{form.email.id_for_label}}>Email</p>
                                                             <div class="control is-clearfix"><input type="email"
-                                                                    name="email" id={{form.email.id_for_label}} value="{{form.email.value|default_if_none:""}}"
+                                                                    name="email" id={{form.email.id_for_label}}
+                                                                    value="{{form.email.value|default_if_none:""}}"
                                                                     class="input">
                                                             </div>
                                                         </div>
                                                         {% endif %}
                                                         {% if form.telefone.errors  or error4 %}
-                                                        <div class="field"><p class=""
-                                                                for={{form.telefone.id_for_label}}>Telefone/Telemovel</p>
+                                                        <div class="field">
+                                                            <p class="" for={{form.telefone.id_for_label}}>
+                                                                Telefone/Telemovel</p>
                                                             <div class="control has-icons-right"><input type="text"
                                                                     name="telefone" id={{form.telefone.id_for_label}}
                                                                     autocomplete="on" class="input is-danger"
@@ -116,18 +136,21 @@
                                                             </div>
                                                             <p class="help is-danger">{{error4}}</p>
                                                             {% else %}
-                                                            <div class="field"><p class=""
-                                                                    for={{form.telefone.id_for_label}}>Telefone/Telemovel</p>
+                                                            <div class="field">
+                                                                <p class="" for={{form.telefone.id_for_label}}>
+                                                                    Telefone/Telemovel</p>
                                                                 <div class="control is-clearfix"><input type="tel"
                                                                         id={{form.telefone.id_for_label}}
-                                                                        name="telefone" class="input" value="{{form.telefone.value|default_if_none:""}}"
+                                                                        name="telefone" class="input"
+                                                                        value="{{form.telefone.value|default_if_none:""}}"
                                                                         pattern="[0-9]{3}[0-9]{3}[0-9]{3}">
                                                                 </div>
                                                             </div>
                                                             {% endif %}
                                                             {% if form.password1.errors or error2 %}
-                                                            <div class="field"><p class=""
-                                                                    for={{form.password1.id_for_label}}>Password</p>
+                                                            <div class="field">
+                                                                <p class="" for={{form.password1.id_for_label}}>Password
+                                                                </p>
                                                                 <div class="control has-icons-right"><input
                                                                         type="password" name="password1"
                                                                         id={{form.password1.id_for_label}}
@@ -138,9 +161,11 @@
                                                                     <!---->
                                                                 </div>
                                                                 <p class="help is-danger">{{error2}}</p>
+                                                                </div>
                                                                 {% else %}
-                                                                <div class="field"><p class=""
-                                                                        for={{form.password1.id_for_label}}>Password</p>
+                                                                <div class="field">
+                                                                    <p class="" for={{form.password1.id_for_label}}>
+                                                                        Password</p>
                                                                     <div class="control is-clearfix"><input
                                                                             type="password"
                                                                             id={{form.password1.id_for_label}}
@@ -149,8 +174,9 @@
                                                                 </div>
                                                                 {% endif %}
                                                                 {% if form.password2.errors or error3 %}
-                                                                <div class="field"><p class=""
-                                                                        for={{form.password1.id_for_label}}>Password
+                                                                <div class="field">
+                                                                    <p class="" for={{form.password1.id_for_label}}>
+                                                                        Password
                                                                         Confirm</p>
                                                                     <div class="control has-icons-right"><input
                                                                             type="password" name="password2"
@@ -163,8 +189,9 @@
                                                                     </div>
                                                                     <p class="help is-danger">{{error3}}</p>
                                                                     {% else %}
-                                                                    <div class="field"><p class=""
-                                                                            for={{form.password2.id_for_label}}>Password
+                                                                    <div class="field">
+                                                                        <p class="" for={{form.password2.id_for_label}}>
+                                                                            Password
                                                                             Confirm</p>
                                                                         <div class="control is-clearfix"><input
                                                                                 type="password"
@@ -173,18 +200,151 @@
                                                                         </div>
                                                                     </div>
                                                                     {% endif %}
-                                                                    <div class="field"><p class="" for={{form.funcao.id_for_label}}>Funçao</p>
+                                                                    <div id="hidden_div" {% if form.funcao.value == '1' %} style="display:block;" {% endif %}>
+                                                                    {% if error5 == '1' %}
+                                                                        <div class="field">
+                                                                        <p class="" for={{form.curso.id_for_label}}>
+                                                                            Curso</p>
+                                                                        <div class=" control is-clearfix"><input
+                                                                                type="text"
+                                                                                id={{form.curso.id_for_label}}
+                                                                                name="curso" class="input is-danger"><span
+                                                                                class="icon is-right has-text-danger"><i
+                                                                                    class="mdi mdi-alert-circle mdi-24px"></i></span>
+                                                                        </div>
+                                                                        <p class="help is-danger">Indique o seu curso</p>
+                                                                    </div>
+                                                                    {% else %}
+                                                                    <div class="field">
+                                                                        <p class="" for={{form.curso.id_for_label}}>
+                                                                            Curso</p>
+                                                                        <div class=" control is-clearfix"><input
+                                                                                type="text"
+                                                                                id={{form.curso.id_for_label}}
+                                                                                name="curso" class="input" value="{{form.curso.value|default_if_none:""}}">
+                                                                        </div>
+                                                                    </div>
+                                                                    {% endif %}
+                                                                    <div class="field"><p
+                                                                            class="" for="{{form.Perferencias.id_for_label}}">Perferencias</p>
+                                                                        <div class="control is-clearfix"><textarea name="Perferencias" value="{{form.Perferencias.value|default_if_none:""}}" id="{{form.Perferencias.id_for_label}}"
+                                                                                class="textarea"></textarea>
+                                                                            <!---->
+                                                                            <!----> <small
+                                                                                class="help counter is-invisible">
+                                                                                0 / 300
+                                                                            </small></div>
+                                                                        <!---->
+                                                                    </div>
+                                                                    </div>
+                                                                    <div id="hidden_div2" {% if form.funcao.value == '2' %} style="display:block;" {% endif %}>
+                                                                        {% if error5 == 2 %}
+                                                                        <div class="field">
+                                                                            <p class="" for="{{form.UO.id_for_label}}">
+                                                                                Unidade Organica</p>
+                                                                            <div class="control is-expanded"><span
+                                                                                    class="select is-danger"><select
+                                                                                        name="UO" id="{{form.UO.id_for_label}}" value={{form.UO.value}}>
+                                                                                        <!---->
+                                                                                        <option value=0>
+                                                                                        </option>
+                                                                                        {% for UO in UOs %}
+                                                                                        <option value={{UO.pk}} {% if UO.pk == form.UO.value|add:"0" %} selected {% endif %}>{{UO.sigla}}
+                                                                                        </option>
+                                                                                        {% endfor %}
+                                                                                    </select></span>
+                                                                                <!---->
+                                                                            </div>
+                                                                            <p class="help is-danger">Preencha este campo.</p>
+                                                                            <!---->
+                                                                        </div>
+                                                                        {% else %}
+                                                                        <div class="field">
+                                                                            <p class="">
+                                                                                Unidade Organica</p>
+                                                                            <div class="control is-expanded"><span
+                                                                                    class="select "><select
+                                                                                        name="UO" id="{{form.UO.id_for_label}}" value={{form.UO.value}}>
+                                                                                        <!---->
+                                                                                        <option value=0>
+                                                                                        </option>
+                                                                                        {% for UO in UOs %}
+                                                                                        <option value={{UO.pk}} {% if form.UO.value|add:"0" == UO.pk %} selected {% endif %}>{{UO.sigla}}
+                                                                                        </option>
+                                                                                        {% endfor %}
+                                                                                    </select></span>
+                                                                                <!---->
+                                                                            </div>
+                                                                            
+                                                                            <!---->
+                                                                        </div>
+                                                                        {% endif %}
+                                                                    </div>
+                                                                   
+                                                                    <div id="hidden_div3" {% if form.funcao.value == '3' %} style="display:block;" {% endif %}>
+                                                                       {% if error5 == 3 %}
+                                                                        <div class="field">
+                                                                            <p class="" for="{{form.departamento.id_for_label}}">
+                                                                                Departamento</p>
+                                                                            <div class="control is-expanded"><span
+                                                                                    class="select  is-danger"><select
+                                                                                        name="departamento" id="{{form.departamento.id_for_label}}" value={{form.departamento.value}}>
+                                                                                        <!---->
+                                                                                        <option value=0>
+                                                                                        </option>
+                                                                                        {% for departamento in deps %}
+                                                                                        <option value={{departamento.pk}} {% if form.departamento.value|add:"0" == departamento.pk %} selected {% endif %}>{{departamento.nome}}
+                                                                                        </option>
+                                                                                        {% endfor %}
+                                                                                    </select></span>
+                                                                                <!---->
+                                                                            </div>
+                                                                            <p class="help is-danger">Preencha este campo.</p>
+                                                                            <!---->
+                                                                        </div>
+                                                                        {% else %}
+                                                                        <div class="field">
+                                                                            <p class="" for="{{form.departamento.id_for_label}}">
+                                                                                Departamento</p>
+                                                                            <div class="control is-expanded"><span
+                                                                                    class="select"><select
+                                                                                        name="departamento" id="{{form.departamento.id_for_label}}" value="{{form.departamento.value}}">
+                                                                                        <!---->
+                                                                                        <option value=0>
+                                                                                        </option>
+                                                                                        {% for departamento in deps %}
+                                                                                        <option value={{departamento.pk}} {% if form.departamento.value|add:"0" == departamento.pk %} selected {% endif %}>{{departamento.nome}}
+                                                                                        </option>
+                                                                                        {% endfor %}
+                                                                                    </select></span>
+                                                                                <!---->
+                                                                            </div>
+                                                                            
+                                                                            <!---->
+                                                                        </div>
+                                                                        {% endif %}
+                                                                    </div>
+                                                                    <div class="field">
+                                                                        <p class="" for={{form.funcao.id_for_label}}>
+                                                                            Função</p>
                                                                         <div class="control is-expanded"><span
-                                                                                class="select is-empty"><select id={{form.funcao.id_for_label}} name="funcao" value="{{form.funcao.value}}">
+                                                                                class="select"><select
+                                                                                    id={{form.funcao.id_for_label}}
+                                                                                    name="funcao"
+                                                                                    value="{{form.funcao.value}}"
+                                                                                    onchange="yesnoCheck(this);">
                                                                                     <!---->
-                                                                                    <option  value=0>
+                                                                                    
+                                                                                    <option value=0 {% if form.funcao.value == '0' %} selected {% endif %}>Participante
                                                                                     </option>
-                                                                                    <option  value=1>Colaborador
+                                                                                    <option value=1 {% if form.funcao.value == '1' %} selected {% endif %}>Colaborador
                                                                                     </option>
-                                                                                    <option value=2>Coordenador
+                                                                                    <option value=2 {% if form.funcao.value == '2' %} selected {% endif %}>Coordenador
                                                                                     </option>
-                                                                                    <option  value=3>
+                                                                                    <option value=3 {% if form.funcao.value == '3' %} selected {% endif %}>
                                                                                         Docente Universitario</option>
+                                                                                    <option value=4 {% if form.funcao.value == '4' %} selected {% endif %}>Administrador
+                                                                                    </option>
                                                                                 </select></span>
                                                                             <!---->
                                                                         </div>
@@ -236,4 +396,26 @@
 
         </div>
     </div>
+    <script>
+        function yesnoCheck(that) {
+            if (that.value == 1) {
+                document.getElementById('hidden_div2').style.display = 'none';
+                document.getElementById('hidden_div3').style.display = 'none';
+                document.getElementById('hidden_div').style.display = 'block';
+            } else if(that.value==2){
+                document.getElementById('hidden_div').style.display = 'none';
+                document.getElementById('hidden_div3').style.display = 'none';
+                document.getElementById('hidden_div2').style.display = 'block';
+            } else if(that.value==3){
+                document.getElementById('hidden_div').style.display = 'none';
+                document.getElementById('hidden_div2').style.display = 'none';
+                document.getElementById('hidden_div3').style.display = 'block';
+            }
+            else{
+                document.getElementById('hidden_div').style.display = 'none';
+               document.getElementById('hidden_div2').style.display = 'none';
+                document.getElementById('hidden_div3').style.display = 'none'; 
+            }
+}
+    </script>
     {% endblock content %}

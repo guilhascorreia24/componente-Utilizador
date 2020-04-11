@@ -23,7 +23,7 @@ class DjangoSession(models.Model):
         db_table = 'django_session'
 
 class Departamento(models.Model):
-    iddepartamento = models.AutoField(db_column='idDepartamento', primary_key=True)  # Field name made lowercase.
+    iddepartamento = models.AutoField(primary_key=True)  # Field name made lowercase.
     nome = models.CharField(max_length=45)
     unidade_organica_iduo = models.ForeignKey('UnidadeOrganica', models.DO_NOTHING, db_column='unidade_organica_idUO')  # Field name made lowercase.
 
@@ -44,14 +44,11 @@ class Participante(models.Model):
 
 class ProfessorUniversitario(models.Model):
     utilizador_idutilizador = models.OneToOneField('Utilizador', models.DO_NOTHING, db_column='Utilizador_idutilizador', primary_key=True)  # Field name made lowercase.
-    departamento_iddepartamento = models.ForeignKey(Departamento, models.DO_NOTHING, db_column='departamento_idDepartamento')  # Field name made lowercase.
+    departamento_iddepartamento = models.ForeignKey('Departamento', models.DO_NOTHING, db_column='departamento_idDepartamento')  # Field name made lowercase.
 
     class Meta:
         managed = False
         db_table = 'professor_universitario'
-    
-    def __str__(self):
-        return self.utilizador_idutilizador
 
 class Administrador(models.Model):
     utilizador_idutilizador = models.OneToOneField('Utilizador', models.DO_NOTHING, db_column='Utilizador_idutilizador', primary_key=True)  # Field name made lowercase.
@@ -99,12 +96,11 @@ class DiaAberto(models.Model):
     datadiaabertofim = models.DateField(db_column='dataDiaAbertofim')  # Field name made lowercase.
     datapropostaatividadeinicio = models.DateField(db_column='dataPropostaAtividadeInicio')  # Field name made lowercase.
     datapropostaatividadesfim = models.DateField(db_column='dataPropostaAtividadesFim')  # Field name made lowercase.
-    utilizador_idutilizador = models.ForeignKey('Utilizador', models.DO_NOTHING, db_column='Utilizador_idutilizador')  # Field name made lowercase.
     administrador_utilizador_idutilizador = models.ForeignKey(Administrador, models.DO_NOTHING, db_column='Administrador_Utilizador_idutilizador')  # Field name made lowercase.
 
     class Meta:
         managed = False
-        db_table = 'dia aberto'
+        db_table = 'dia_aberto'
 
     def __str__(self):
         return self.ano
@@ -121,13 +117,13 @@ class Campus(models.Model):
         return self.idcampus
         
 class UnidadeOrganica(models.Model):
-    iduo = models.IntegerField(db_column='idUO', primary_key=True)  # Field name made lowercase.
+    iduo = models.AutoField(db_column='idUO', primary_key=True)  # Field name made lowercase.
     sigla = models.CharField(max_length=5)
     campus_idcampus = models.ForeignKey(Campus, models.DO_NOTHING, db_column='Campus_idCampus')  # Field name made lowercase.
 
     class Meta:
         managed = False
-        db_table = 'unidade organica'
+        db_table = 'unidade_organica'
     
     def __str__(self):
         return self.iduo
