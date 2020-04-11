@@ -321,7 +321,7 @@ class Idioma(models.Model):
 
 class Inscricao(models.Model):
     idinscricao = models.AutoField(primary_key=True)
-    ano = models.TextField()  # This field type is a guess.
+    ano = models.IntegerField()  # This field type is a guess.
     local = models.CharField(max_length=255)
     areacientifica = models.CharField(max_length=255)
     transporte = models.BooleanField()

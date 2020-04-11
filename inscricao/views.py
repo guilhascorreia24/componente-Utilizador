@@ -26,5 +26,14 @@ def test1(request):
 
 
 def inscricao_form(request):
-    form = forms.CustomForm(request)
-    return render(request,'inscricao_form.html',{'form' : form})
+    if request.method == 'POST':
+        form = forms.CustomForm(request)
+        if form.is_valid():
+            form.save()
+            return HttpResponse("<html>Sucess</html>")
+        else:
+            return render(request,'inscricao_form.html',{'form': form})
+        
+    else:
+        form = forms.CustomForm()
+        return render(request,'inscricao_form.html',{'form': form})
