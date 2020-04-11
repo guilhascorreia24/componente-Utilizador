@@ -258,7 +258,7 @@ def profile(request,id):
     elif Coordenador.objects.filter(utilizador_idutilizador=id).exists():
         funcao = "Coordenador"
         IDUO = Coordenador.objects.get(pk=id).unidade_organica_iduo
-        UO=UnidadeOrganica.objects.get(pk=IDUO).sigla
+        UO=UnidadeOrganica.objects.get(pk=IDUO.pk).sigla
     elif Colaborador.objects.filter(utilizador_idutilizador=id).exists():
         ano = Colaborador.objects.get(utilizador_utilizadorid=id).dia_aberto_ano
         funcao = "Colaborador"

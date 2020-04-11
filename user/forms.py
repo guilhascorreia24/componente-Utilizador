@@ -47,10 +47,11 @@ class ModifyForm(forms.Form):
     UO=forms.CharField(max_length=45,label="uo")
     dep=forms.CharField(max_length=45,label="dep")
     curso=forms.CharField(max_length=45,label="curso")
+    preferencia=forms.CharField(max_length=45,label="preferencia")
 
     class Meta:
         model=Utilizador
-        fields=['name','username','email','telefone','funcao','UO','curso','dep']
+        fields=['name','username','email','telefone','funcao','UO','curso','dep','preferencia']
     
     def save(self):
         data = self.cleaned_data
