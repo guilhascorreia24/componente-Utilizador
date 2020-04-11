@@ -47,6 +47,8 @@ class Atividade(models.Model):
     unidade_organica_iduo = models.ForeignKey('UnidadeOrganica', models.DO_NOTHING, db_column='unidade_organica_idUO')  # Field name made lowercase.
     departamento_iddepartamento = models.ForeignKey('Departamento', models.DO_NOTHING, db_column='Departamento_idDepartamento')  # Field name made lowercase.
     espaco_idespaco = models.ForeignKey('Espaco', models.DO_NOTHING, db_column='espaco_idespaco', blank=True, null=True)
+    tematica = models.CharField(max_length=250, blank=True, null=True)
+    nrcolaborador = models.CharField(db_column='nrColaborador', max_length=45, blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -216,7 +218,6 @@ class DiaAberto(models.Model):
     datadiaabertofim = models.DateField(db_column='dataDiaAbertofim')  # Field name made lowercase.
     datapropostaatividadeinicio = models.DateField(db_column='dataPropostaAtividadeInicio')  # Field name made lowercase.
     datapropostaatividadesfim = models.DateField(db_column='dataPropostaAtividadesFim')  # Field name made lowercase.
-    utilizador_idutilizador = models.ForeignKey('Utilizador', models.DO_NOTHING, db_column='Utilizador_idutilizador')  # Field name made lowercase.
     administrador_utilizador_idutilizador = models.ForeignKey(Administrador, models.DO_NOTHING, db_column='Administrador_Utilizador_idutilizador')  # Field name made lowercase.
 
     class Meta:
@@ -322,7 +323,6 @@ class Inscricao(models.Model):
     idinscricao = models.AutoField(primary_key=True)
     ano = models.TextField()  # This field type is a guess.
     local = models.CharField(max_length=255)
-    nparticipantes = models.IntegerField()
     areacientifica = models.CharField(max_length=255)
     transporte = models.IntegerField()
 
@@ -336,8 +336,8 @@ class InscricaoColetiva(models.Model):
     turma = models.CharField(max_length=1)
     participante_utilizador_idutilizador = models.ForeignKey('Participante', models.DO_NOTHING, db_column='Participante_Utilizador_idutilizador')  # Field name made lowercase.
     escola_idescola = models.ForeignKey(Escola, models.DO_NOTHING, db_column='escola_idescola')
+    nparticipantes = models.IntegerField()
     inscricao_idinscricao = models.OneToOneField(Inscricao, models.DO_NOTHING, db_column='inscricao_idinscricao', primary_key=True)
-    telefone = models.IntegerField()
 
     class Meta:
         managed = False
@@ -366,6 +366,7 @@ class InscricaoIndividual(models.Model):
     nracompanhades = models.IntegerField()
     participante_utilizador_idutilizador = models.ForeignKey('Participante', models.DO_NOTHING, db_column='Participante_Utilizador_idutilizador')  # Field name made lowercase.
     inscricao_idinscricao = models.OneToOneField(Inscricao, models.DO_NOTHING, db_column='inscricao_idinscricao', primary_key=True)
+    telefone = models.IntegerField()
 
     class Meta:
         managed = False
@@ -478,6 +479,15 @@ class Sessao(models.Model):
         db_table = 'sessao'
 
 
+class SessaoHasHorarioHasDia(models.Model):
+    sessao_idsessao = models.ForeignKey(Sessao, models.DO_NOTHING, db_column='sessao_idsessao')
+    horario_has_dia_id_dia_hora = models.ForeignKey(HorarioHasDia, models.DO_NOTHING, db_column='horario_has_dia_id_dia_hora')
+
+    class Meta:
+        managed = False
+        db_table = 'sessao_has_horario_has_dia'
+
+
 class Tarefa(models.Model):
     idtarefa = models.AutoField(primary_key=True)
     nome = models.CharField(max_length=255)
@@ -506,8 +516,8 @@ class TransporteHasHorario(models.Model):
     horario_has_dia_id_dia_hora = models.ForeignKey(HorarioHasDia, models.DO_NOTHING, db_column='horario_has_dia_id_dia_hora')
     npessoas = models.IntegerField(db_column='nPessoas')  # Field name made lowercase.
     id_transporte_has_horario = models.IntegerField(primary_key=True)
-    destino = models.ForeignKey(Paragem, models.DO_NOTHING, db_column='destino',related_name="Paragem_destino")
-    origem = models.ForeignKey(Paragem, models.DO_NOTHING, db_column='origem',related_name="Paragem_origem")
+    destino = models.ForeignKey(Paragem, models.DO_NOTHING, db_column='destino',related_name='TransporteHasHorario_destino')
+    origem = models.ForeignKey(Paragem, models.DO_NOTHING, db_column='origem',related_name="TransporteHasHorario_origem")
 
     class Meta:
         managed = False
@@ -516,7 +526,8 @@ class TransporteHasHorario(models.Model):
 
 class TransporteHasInscricao(models.Model):
     inscricao_idinscricao = models.ForeignKey(Inscricao, models.DO_NOTHING, db_column='inscricao_idinscricao')
-    partida = models.ForeignKey(TransporteHasHorario, models.DO_NOTHING, db_column='partida')
+    partida = models.ForeignKey(TransporteHasHorario, models.DO_NOTHING, db_column='partida',related_name='TransporteHasInscricao_partida')
+    chegada = models.ForeignKey(TransporteHasHorario, models.DO_NOTHING, db_column='chegada',related_name='TransporteHasInscricao_chegada')
 
     class Meta:
         managed = False
