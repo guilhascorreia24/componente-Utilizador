@@ -46,7 +46,7 @@ INSTALLED_APPS = [
     'blog.apps.BlogConfig',
     'crispy_forms',
     'user.apps.UserConfig',
-    'atividades.apps.AtividadesConfig',
+    'inscricao.apps.InscricaoConfig',
     'Notification.apps.NotificationConfig'
 ]
 
@@ -89,7 +89,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'les',
         'USER': 'root',
-        'PASSWORD': '1999',
+        'PASSWORD': '1234',
         'HOST': 'localhost',
         'PORT': '3306'
     }

@@ -1,6 +1,6 @@
 from django.forms import ModelForm,modelformset_factory,Form,inlineformset_factory
 from django import forms
-from atividades import models
+from inscricao import models
 
 class Form_Responsaveis(ModelForm):
 
@@ -11,7 +11,7 @@ class Form_Responsaveis(ModelForm):
 
     class Meta:
         model = models.Responsaveis
-        fields = ['nome','email']
+        fields = ['nome','email','telefone']
 
 class Form_Inscricao(ModelForm):
     turma = forms.CharField(max_length=1)
@@ -148,24 +148,41 @@ class Form_Prato(ModelForm):
 
 ###################################################SESSOES#############################################
 
-'''class Form_Sessao(ModelForm):
-    
+class Form_Sessao(ModelForm):
+
+    def save(self,inscricao):
+        base = super(Form_Sessao, self).save(commit=False)
+        base.inscricao_idinscricao = inscricao
+        return base.save()
     class Meta:
-        model = models.Prato
-        fields = ['sessao_idsessao','inscritos']'''
+        model = models.InscricaoHasSessao
+        fields = ['sessao_idsessao','inscritos']
 
 ###################################################END SESSOES#############################################
 class CustomForm:
-    '''def __init__(self,request = 0):
-            self.almoco = Form_Almoco(request)
+    def __init__(self,request = 0):
+        Sessao = modelformset_factory(models.InscricaoHasSessao,form = Form_Sessao,extra=1)
+        Responsaveis = modelformset_factory(models.Responsaveis,form = Form_Responsaveis,extra=1)
+        self.almoco = Form_Almoco(request)
+        self.transportes = Form_Transportes(request)
+        if request != 0 and request.method == 'POST':
+            self.escola = Form_Escola(request.POST,prefix="escola")
             self.inscricao = Form_Inscricao(request.POST,prefix="inscricao")
+            self.responsaveis = self.responsaveis(request.POST,prefix='responsaveis_set')
+            self.sessao = self.sessao(request.POST,prefix='sessao_set')
         else:
             self.escola = Form_Escola(prefix="escola")
-            self.inscricao = Form_Inscricao(prefix="inscricao")'''
+            self.inscricao = Form_Inscricao(prefix="inscricao")
+            self.sessao = Sessao(prefix='sessao_set')
+            self.responsaveis = Responsaveis(prefix='responsaveis_set')
     
     def is_valid(self):
+        #print(self.inscricao_coletiva.is_valid())
         return all([self.escola.is_valid(), self.inscricao.is_valid(), self.responsaveis.is_valid(), self.almoco.is_valid(),self.sessao.is_valid(),self.transportes.is_valid()])
 
+    def save(self):
+        user = models.Utilizador.objects.get(idutilizador = 2)
+        part = models.Participante.objects.get(utilizador_idutilizador = user)
 
         escola = self.escola.save()
         inscricao = self.inscricao.save(part,escola,len(self.responsaveis))

@@ -1,4 +1,5 @@
 {% load static %}
+{% load ins_form_tags %}
 <html lang="pt-pt">
 
 <head>
@@ -196,46 +197,88 @@
                                             <div style="padding: 1rem 2vw 0px;">
                                                 <hr>
                                                 <h2 class="title has-text-grey is-uppercase" style="font-size: 0.9rem;">
-                                                    Docente responsável 1 </h2>
+                                                    Docentes responsáveis</h2>
                                                 <div class="columns">
                                                     <div class="column">
                                                         <div class="field"><label class="label">Nome</label>
-                                                            <div class="control is-clearfix"><input type="text"
-                                                                    autocomplete="on" required="required" id={{responsaveis.nome.id}}  class="input">
-                                                                <!---->
-                                                                <!---->
-                                                                <!---->
-                                                            </div>
                                                             <!---->
                                                         </div>
                                                     </div>
                                                     <div class="column">
                                                         <div class="field"><label class="label">E-mail</label>
-                                                            <div class="control is-clearfix"><input type="email" id={{escola.email.id}}
-                                                                    autocomplete="on" required="required" class="input">
-                                                                <!---->
-                                                                <!---->
-                                                                <!---->
-                                                            </div>
                                                             <!---->
                                                         </div>
                                                     </div>
                                                     <div class="column">
                                                         <div class="field"><label
                                                                 class="label">Telemóvel/Telefone</label>
-                                                            <div class="control is-clearfix"><input type="tel" id={{escola.telefone.id}}
-                                                                    autocomplete="on" required="required" class="input">
-                                                                <!---->
-                                                                <!---->
-                                                                <!---->
-                                                            </div>
                                                             <!---->
                                                         </div>
                                                     </div>
-                                                </div><button type="button" class="button"><span
-                                                        class="icon is-small"><i class="mdi mdi-plus"></i></span>
-                                                    <span>Outro docente</span>
-                                                    <!----></button>
+                                                </div>
+                                                <div id="responsavel_form" style="padding-bottom:2%">
+                                                    {% for responsavel in form.responsaveis%}
+                                                    <div class="columns responsavel">
+                                                        <div class="column">
+                                                            <div class="field">
+                                                                <div class="control is-clearfix">{{responsavel.nome|addcss:"input"}}
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                        <div class="column">
+                                                            <div class="field">
+                                                                <div class="control is-clearfix">{{responsavel.email|addcss:"input"}}
+
+                                                                </div>
+                                                                <!---->
+                                                            </div>
+                                                        </div>
+                                                        <div class="column">
+                                                            <div class="field">
+                                                                    <div class="control is-clearfix">{{responsavel.telefone|addcss:"input"}}
+                                                                </div>
+                                                                <!---->
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                {% endfor %}
+                                                </div>
+
+                                                <!--TEMPLATE FOR ADD MORE REPONSAVEIS-->
+                                                <div id="responsavel_template" style="display:none">
+                                                    <div class="columns responsavel">
+                                                        <div class="column">
+                                                            <div class="field">
+                                                                <div class="control is-clearfix">{{form.responsaveis.empty_form.nome|addcss:"input"}}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="column">
+                                                            <div class="field">
+                                                                <div class="control is-clearfix">{{form.responsaveis.empty_form.email|addcss:"input"}}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="column">
+                                                            <div class="field">
+                                                                    <div class="control is-clearfix">{{form.responsaveis.empty_form.telefone|addcss:"input"}}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>    
+                                                </div>     
+                                                <!--END TEMPLATE-->                              
+                                                
+                                                <button type="button" class="button" onclick="add_responsavel()">
+                                                <span class="icon is-small"><i class="mdi mdi-plus"></i></span>
+                                                    <span>Adicionar docente</span>
+                                                </button>
+                                                    
+                                                <span><button type="button" class="button" style="float:right" onclick="delete_responsavel()"><span>Remover docente</span><span
+                                                        class="icon is-small"><i class="mdi mdi-minus"></i></span>
+                                                    
+                                                    <!----></button></span>
                                                 <hr>
                                             </div>
                                         </div>
@@ -3573,7 +3616,20 @@
                                     <span class="step"></span>
                                 </div>
                                 </form>
-                                <script>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer data-v-8716d23a="" class="footer">
+            <div data-v-8716d23a="" style="float: left;"> (c) 2020 </div>
+            <div data-v-8716d23a="" style="float: right;"> Designed by Grupo 9 </div>
+            <div data-v-8716d23a="" style="margin: auto; width: max-content;"> Dia Aberto </div>
+        </footer>
+    </div>
+    <script src="{% static "js/chunk-vendors.63f37e79.js" %}"></script>
+    <script>
                                     var currentTab = 0; // Current tab is set to be the first tab (0)
                                     showTab(currentTab); // Display the current tab
 
@@ -3646,21 +3702,84 @@
                                         //... and adds the "active" class on the current step:
                                         x[n].className += " active";
                                     }
-                                </script>
+                                    function add_responsavel() {
+                                    	var form_idx = $('#responsavel_form').children().length;
+                                    	$('#responsavel_form').append($('#responsavel_template').html().replace(/__prefix__/g, form_idx));
+                                    }
 
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <footer data-v-8716d23a="" class="footer">
-            <div data-v-8716d23a="" style="float: left;"> (c) 2020 </div>
-            <div data-v-8716d23a="" style="float: right;"> Designed by Grupo 9 </div>
-            <div data-v-8716d23a="" style="margin: auto; width: max-content;"> Dia Aberto </div>
-        </footer>
-    </div>
-    <script src="{% static "js/chunk-vendors.63f37e79.js" %}"></script>
+                                    function delete_responsavel() {
+                                        if($('#responsavel_form > .responsavel').length > 1){
+                                    	    $('#responsavel_form > .responsavel').last().remove();
+                                        }
+                                    }
+                                    //ADD END BUTTON RESPONSAVEIS
+                                    /*function updateElementIndex(el, prefix, ndx) {
+                                        var id_regex = new RegExp('(' + prefix + '-\\d+)');
+                                        var replacement = prefix + '-' + ndx;
+                                        if ($(el).attr("for")) $(el).attr("for", $(el).attr("for").replace(id_regex, replacement));
+                                        if (el.id) el.id = el.id.replace(id_regex, replacement);
+                                        if (el.name) el.name = el.name.replace(id_regex, replacement);
+                                    }
+                                    function cloneMore(selector, prefix) {
+                                        var newElement = $(selector).clone(true);
+                                        var total = $('#id_' + prefix + '-TOTAL_FORMS').val();
+                                        newElement.find(':input:not([type=button]):not([type=submit]):not([type=reset])').each(function() {
+                                            var name = $(this).attr('name').replace('-' + (total-1) + '-', '-' + total + '-');
+                                            var id = 'id_' + name;
+                                            $(this).attr({'name': name, 'id': id}).val('').removeAttr('checked');
+                                        });
+                                        newElement.find('label').each(function() {
+                                            var forValue = $(this).attr('for');
+                                            if (forValue) {
+                                              forValue = forValue.replace('-' + (total-1) + '-', '-' + total + '-');
+                                              $(this).attr({'for': forValue});
+                                            }
+                                        });
+                                        total++;
+                                        $('#id_' + prefix + '-TOTAL_FORMS').val(total);
+                                        $(selector).after(newElement);
+                                        return false;
+                                    }
+                                    function deleteForm(prefix, btn) {
+                                        var total = parseInt($('#id_' + prefix + '-TOTAL_FORMS').val());
+                                        if (total > 1){
+                                            btn.closest('.form-row').remove();
+                                            var forms = $('.form-row');
+                                            $('#id_' + prefix + '-TOTAL_FORMS').val(forms.length);
+                                            for (var i=0, formCount=forms.length; i<formCount; i++) {
+                                                $(forms.get(i)).find(':input').each(function() {
+                                                    updateElementIndex(this, prefix, i);
+                                                });
+                                            }
+                                        }
+                                        return false;
+                                    }
+                                    $(document).ready(function() {
+                                        $('#add-responsavel').click(function(ev) {
+                                            ev.preventDefault();
+                                            var count = $('#responsavel').children().length;
+                                            var tmplMarkup = $('#responsavel').html();
+                                            var compiledTmpl = tmplMarkup.replace(/__prefix__/g, count);
+                                            $('div#items-form-container').append(compiledTmpl);
+
+                                            // update form count
+                                            $('#id_item_items-TOTAL_FORMS').attr('value', count+1);
+
+                                            // some animate to scroll to view our new form
+                                            $('html, body').animate({
+                                                    scrollTop: $("#add-item-button").position().top-200
+                                                }, 800);
+                                        });
+                                    });
+
+                                    $(document).on('click', '.remove-form-row', function(e){
+                                        e.preventDefault();
+                                        deleteForm('form', $(this));
+                                        return false;
+                                    });*/
+
+                                    //END ADD REMOVE BUTTON
+                                </script>
 </body>
 
 </html>

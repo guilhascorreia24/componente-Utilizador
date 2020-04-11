@@ -25,7 +25,7 @@ urlpatterns = [
     path('logout/',user_views.logout_request,name='logout'),
     path('login/recuperacao_password/',user_views.reset,name="recuperacao_password"),
     path('login/recuperacao_password/<str:id>/',user_views.change_password,name="reset"),
-    path('atividades/',include('atividades.urls')),
+    path('inscricao/',include('inscricao.urls')),
     path('profile/<str:id>',user_views.profile,name="profile"),
     path('profiles_list/',user_views.profile_list,name='profile_list'),
     path("profiles_list/<str:id>/",user_views.profile,name="profile_user"),

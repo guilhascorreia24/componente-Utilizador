@@ -1,0 +1,25 @@
+<html>
+    <body>
+        <button type = "submit" id="add_responsavel">Sub</button>
+        <form method = "POST">
+            {% csrf_token %}
+            {{form}}
+    
+            <input type = "submit">
+             {{form.telefone.fields}}
+             <label for={{form.telefone.id_for_label}}>{{form.telefone.label}}</label>
+             <input type="tel" name={{form.telefone.html_name}} id={{escola.telefone.id}} autocomplete="on" value="{{field.value}}"required="required" class="input">
+        </form>
+    </body>
+    <script>
+    $(document).ready ( function () {
+    $(document).on ("click", "#add_responsavel", function () {
+        alert("hi");
+    });
+});
+    function func(){
+        window.alert("test");
+    }
+    </script>
+</html>
+
