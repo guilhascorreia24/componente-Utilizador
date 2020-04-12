@@ -178,7 +178,7 @@ def modify_user(request,id):
     me=request.session['user_id']
     if request.method=='POST':
         form=ModifyForm(request.POST)
-        if form.is_valid and request.POST['name']!="" and request.POST['username']!="" and request.POST['email']!="" and request.POST['telefone']!="":
+        if form.is_valid and request.POST['name']!="" and request.POST['username']!="" and request.POST['email']!="" and not Utilizador.objects.filter(email=request.POST['email']).exists() and not Utilizador.objects.filter(telefone=request.POST['telefone']).exists() and request.POST['telefone']!="":
             t=Utilizador.objects.get(pk=id)
             t.nome=request.POST['name']
             t.username=request.POST['username']
@@ -189,9 +189,19 @@ def modify_user(request,id):
         else:
             error=False
             error3=False
-            error2=False
-            if request.POST['username']=="":
-                error2 = 'Preencha este campo.'
+            data=request.POST
+            username=data['username']
+            telefone=data['telefone']
+            funcao=data['funcao']
+            curso=False
+            dep=False
+            UO=False
+            if 'curso' in data:
+                curso=data['curso']
+            if 'dep' in data:
+                dep=data['dep']
+            if 'UO' in data:
+                UO=data['UO']
             if request.POST['email']=="":
                 error = 'Preencha este campo.'
             if request.POST['telefone']=="":    
@@ -200,9 +210,7 @@ def modify_user(request,id):
                 error = "Email ja existe"
             if Utilizador.objects.filter(telefone=request.POST['telefone']).exists() and Utilizador.objects.get(telefone=request.POST['telefone']).idutilizador!=id:
                 error3 = "telefone ja existe"
-            if Utilizador.objects.filter(username=request.POST['username']).exists() and Utilizador.objects.get(username=request.POST['username']).idutilizador!=id:
-                error2 = "Username ja existe"
-            return render(request, 'profile_modify.html', {"form": form,'error4':error3,"error1":error,"error":error2,'me':signing.dumps(me),'id':signing.dumps(id)})
+            return render(request, 'profile_modify.html', {'UO':UO,'username':username,'telefone':telefone,'funcao':funcao,'curso':curso,'dep':dep,"form": form,'error4':error3,"error1":error,'me':signing.dumps(me),'id':signing.dumps(id),'nome':name})
     else:
         form = ModifyForm()
         if Utilizador.objects.get(idutilizador=id).username == '':
@@ -217,7 +225,7 @@ def modify_user(request,id):
     curso=False
     funcao=False
     if Administrador.objects.filter(utilizador_idutilizador=id).exists():
-        funcao = "administardor"
+        funcao = "Administardor"
     elif ProfessorUniversitario.objects.filter(utilizador_idutilizador=id).exists():
         funcao = "Docente Univesitario"
         depid = ProfessorUniversitario.objects.get(utilizador_idutilizador=id).departamento_iddepartamento
@@ -225,7 +233,7 @@ def modify_user(request,id):
     elif Coordenador.objects.filter(utilizador_idutilizador=id).exists():
         funcao = "Coordenador"
         IDUO = Coordenador.objects.get(pk=id).unidade_organica_iduo
-        UO=UnidadeOrganica.objects.get(pk=IDUO).sigla
+        UO=UnidadeOrganica.objects.get(pk=IDUO.pk).sigla
     elif Colaborador.objects.filter(utilizador_idutilizador=id).exists():
         ano = Colaborador.objects.get(utilizador_utilizadorid=id).dia_aberto_ano
         funcao = "Colaborador"
