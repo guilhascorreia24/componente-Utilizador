@@ -6,6 +6,7 @@ from django.core import signing
 from .models import UnidadeOrganica, DiaAberto,Departamento, Utilizador, Participante, ProfessorUniversitario, Administrador, Coordenador, Colaborador, DjangoSession
 from django.db.models import CharField, Value
 import datetime
+import re
 
 def user(request):
     id1=request.session['user_id']
@@ -83,6 +84,10 @@ def type_user(data,user_id):
             return t
     return t
 
+
+def validateEmail(email):
+    return re.search('^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$', email)
+
 def register(request):
     UOs=UnidadeOrganica.objects.all()
     deps=Departamento.objects.all()
@@ -90,7 +95,7 @@ def register(request):
         form = UserRegisterForm(request.POST)
         data=request.POST
         print(form.is_valid())
-        if type_user(data,None) and request.POST['password1']==request.POST['password2'] and not Utilizador.objects.filter(email=request.POST['email']).exists() and  not Utilizador.objects.filter(telefone=request.POST['telefone']).exists() and password_check(request.POST['password1']) is True:
+        if validateEmail(data['email']) and type_user(data,None) and request.POST['password1']==request.POST['password2'] and not Utilizador.objects.filter(email=request.POST['email']).exists() and  not Utilizador.objects.filter(telefone=request.POST['telefone']).exists() and password_check(request.POST['password1']) is True:
             form.save()
             user_id=Utilizador.objects.get(email=request.POST['email']).idutilizador
             type_user(data,user_id)
@@ -113,6 +118,8 @@ def register(request):
                 error2 = 'Preencha este campo.'
             if Utilizador.objects.filter(email=request.POST['email']).exists():
                 error = "Email ja existe"
+            elif not validateEmail(data['email']):
+                error="Formato do email errado."
             if Utilizador.objects.filter(telefone=request.POST['telefone']).exists():
                 error3 = "telefone ja existe"
             if request.POST['password1'] != request.POST['password2']:
@@ -349,12 +356,16 @@ def validacoes(request,acao,id):
     if acao==1:
         if Colaborador.objects.filter(pk=id).exists():
             user.validada=1
+            Participante.objects.filter(pk=id).delete()
         elif Coordenador.objects.filter(pk=id).exists():
             user.validada=2
+            Coordenador.objects.filter(pk=id).delete()
         elif ProfessorUniversitario.objects.filter(pk=id).exists():
             user.validada=3
+            ProfessorUniversitario.objects.filter(pk=id).delete()
         elif Administrador.objects.filter(pk=id).exists():
             user.validada=4
+            Administrador.objects.filter(pk=id).delete()
         user.save()
     else:
         user.validada=5

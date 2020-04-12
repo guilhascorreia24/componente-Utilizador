@@ -95,14 +95,7 @@
                                     <form method="POST">
                                         {% csrf_token %}
                                         <div class="column is-offset-3 is-6">
-                                            <div class="page-context-header">
-                                                <div class="page-header-image"><a
-                                                        href=""><img
-                                                            src="https://tutoria.ualg.pt/2019/theme/image.php/boostualg/core/1582535563/u/f1"
-                                                            class="userpicture defaultuserpic" width="100" height="100"
-                                                            alt="Fotografia de {{nome}}"
-                                                            title="Fotografia de {{nome}}"></a></div>
-                                            </div>  
+                                            <br>
                                             {% if form.name.errors %}
                                             <div class="field"><label class=""
                                                     for={{form.name.id_for_label}}>Nome</label>
