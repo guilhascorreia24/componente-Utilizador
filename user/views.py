@@ -6,6 +6,7 @@ from django.core import signing
 from .models import UnidadeOrganica, DiaAberto,Departamento, Utilizador, Participante, ProfessorUniversitario, Administrador, Coordenador, Colaborador, DjangoSession
 from django.db.models import CharField, Value
 import datetime
+import re
 
 def user(request):
     id1=request.session['user_id']
@@ -83,6 +84,10 @@ def type_user(data,user_id):
             return t
     return t
 
+
+def validateEmail(email):
+    return re.search('^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$', email)
+
 def register(request):
     UOs=UnidadeOrganica.objects.all()
     deps=Departamento.objects.all()
@@ -90,7 +95,7 @@ def register(request):
         form = UserRegisterForm(request.POST)
         data=request.POST
         print(form.is_valid())
-        if type_user(data,None) and request.POST['password1']==request.POST['password2'] and not Utilizador.objects.filter(email=request.POST['email']).exists() and  not Utilizador.objects.filter(telefone=request.POST['telefone']).exists() and password_check(request.POST['password1']) is True:
+        if validateEmail(data['email']) and type_user(data,None) and request.POST['password1']==request.POST['password2'] and not Utilizador.objects.filter(email=request.POST['email']).exists() and  not Utilizador.objects.filter(telefone=request.POST['telefone']).exists() and password_check(request.POST['password1']) is True:
             form.save()
             user_id=Utilizador.objects.get(email=request.POST['email']).idutilizador
             type_user(data,user_id)
@@ -113,6 +118,8 @@ def register(request):
                 error2 = 'Preencha este campo.'
             if Utilizador.objects.filter(email=request.POST['email']).exists():
                 error = "Email ja existe"
+            elif not validateEmail(data['email']):
+                error="Formato do email errado."
             if Utilizador.objects.filter(telefone=request.POST['telefone']).exists():
                 error3 = "telefone ja existe"
             if request.POST['password1'] != request.POST['password2']:
@@ -178,7 +185,7 @@ def modify_user(request,id):
     me=request.session['user_id']
     if request.method=='POST':
         form=ModifyForm(request.POST)
-        if form.is_valid and request.POST['name']!="" and request.POST['username']!="" and request.POST['email']!="" and request.POST['telefone']!="":
+        if form.is_valid and request.POST['name']!="" and request.POST['username']!="" and request.POST['email']!="" and not Utilizador.objects.filter(email=request.POST['email']).exists() and not Utilizador.objects.filter(telefone=request.POST['telefone']).exists() and request.POST['telefone']!="":
             t=Utilizador.objects.get(pk=id)
             t.nome=request.POST['name']
             t.username=request.POST['username']
@@ -189,9 +196,19 @@ def modify_user(request,id):
         else:
             error=False
             error3=False
-            error2=False
-            if request.POST['username']=="":
-                error2 = 'Preencha este campo.'
+            data=request.POST
+            username=data['username']
+            telefone=data['telefone']
+            funcao=data['funcao']
+            curso=False
+            dep=False
+            UO=False
+            if 'curso' in data:
+                curso=data['curso']
+            if 'dep' in data:
+                dep=data['dep']
+            if 'UO' in data:
+                UO=data['UO']
             if request.POST['email']=="":
                 error = 'Preencha este campo.'
             if request.POST['telefone']=="":    
@@ -200,9 +217,7 @@ def modify_user(request,id):
                 error = "Email ja existe"
             if Utilizador.objects.filter(telefone=request.POST['telefone']).exists() and Utilizador.objects.get(telefone=request.POST['telefone']).idutilizador!=id:
                 error3 = "telefone ja existe"
-            if Utilizador.objects.filter(username=request.POST['username']).exists() and Utilizador.objects.get(username=request.POST['username']).idutilizador!=id:
-                error2 = "Username ja existe"
-            return render(request, 'profile_modify.html', {"form": form,'error4':error3,"error1":error,"error":error2,'me':signing.dumps(me),'id':signing.dumps(id)})
+            return render(request, 'profile_modify.html', {'UO':UO,'username':username,'telefone':telefone,'funcao':funcao,'curso':curso,'dep':dep,"form": form,'error4':error3,"error1":error,'me':signing.dumps(me),'id':signing.dumps(id),'nome':name})
     else:
         form = ModifyForm()
         if Utilizador.objects.get(idutilizador=id).username == '':
@@ -217,7 +232,7 @@ def modify_user(request,id):
     curso=False
     funcao=False
     if Administrador.objects.filter(utilizador_idutilizador=id).exists():
-        funcao = "administardor"
+        funcao = "Administardor"
     elif ProfessorUniversitario.objects.filter(utilizador_idutilizador=id).exists():
         funcao = "Docente Univesitario"
         depid = ProfessorUniversitario.objects.get(utilizador_idutilizador=id).departamento_iddepartamento
@@ -225,7 +240,7 @@ def modify_user(request,id):
     elif Coordenador.objects.filter(utilizador_idutilizador=id).exists():
         funcao = "Coordenador"
         IDUO = Coordenador.objects.get(pk=id).unidade_organica_iduo
-        UO=UnidadeOrganica.objects.get(pk=IDUO).sigla
+        UO=UnidadeOrganica.objects.get(pk=IDUO.pk).sigla
     elif Colaborador.objects.filter(utilizador_idutilizador=id).exists():
         ano = Colaborador.objects.get(utilizador_utilizadorid=id).dia_aberto_ano
         funcao = "Colaborador"
@@ -335,8 +350,24 @@ def reset(request):
             messages.error(request, f'Email incorreto')
     return render(request, 'reset.html', {'form': sub})
 #-------------------------------------------------validacoes---------------------------------------------------------------
-def validacoes(request,id):
-    if request.POST == 'POST':
-        if Coordenador.objects.filter(utilizador_utilizadorid=request.session['user_id']).exists():
-            user = Utilizador.objects.get(validada=1)
-    return render(request, "validacoes.html", {"users": user,"id":request.session['user_id'],"funcao":user(request)})
+def validacoes(request,acao,id):
+    id=signing.loads(id)
+    user=Utilizador.objects.get(pk=id)
+    if acao==1:
+        if Colaborador.objects.filter(pk=id).exists():
+            user.validada=1
+            Participante.objects.filter(pk=id).delete()
+        elif Coordenador.objects.filter(pk=id).exists():
+            user.validada=2
+            Coordenador.objects.filter(pk=id).delete()
+        elif ProfessorUniversitario.objects.filter(pk=id).exists():
+            user.validada=3
+            ProfessorUniversitario.objects.filter(pk=id).delete()
+        elif Administrador.objects.filter(pk=id).exists():
+            user.validada=4
+            Administrador.objects.filter(pk=id).delete()
+        user.save()
+    else:
+        user.validada=5
+        user.save()
+    return redirect('profile_list')

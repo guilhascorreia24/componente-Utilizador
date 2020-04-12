@@ -68,7 +68,7 @@
                                 class="router-link-exact-active router-link-active">Profile</a></li>
                         {% else %}
                         <li><a href="../.." class="router-link-active">Início</a></li>
-                        <li><a href=".."
+                        <li><a href="{% url "profile_list" %}"
                                 class="router-link-exact-active router-link-active">Utilizadores</a></li>
                         <li class="is-active"><a href=""
                                     class="router-link-exact-active router-link-active">{{nome}}</a></li>
@@ -95,14 +95,7 @@
                                     <form method="POST">
                                         {% csrf_token %}
                                         <div class="column is-offset-3 is-6">
-                                            <div class="page-context-header">
-                                                <div class="page-header-image"><a
-                                                        href=""><img
-                                                            src="https://tutoria.ualg.pt/2019/theme/image.php/boostualg/core/1582535563/u/f1"
-                                                            class="userpicture defaultuserpic" width="100" height="100"
-                                                            alt="Fotografia de {{nome}}"
-                                                            title="Fotografia de {{nome}}"></a></div>
-                                            </div>  
+                                            <br>
                                             {% if form.name.errors %}
                                             <div class="field"><label class=""
                                                     for={{form.name.id_for_label}}>Nome</label>
@@ -117,12 +110,12 @@
                                                 {% else %}
                                                 <div class="field"><label class="" for={{form.name.id_for_label}}
                                                         aria-label="breadcrumbs">Nome</label>
-                                                    <div class="control is-clearfix"><input type="text" name="name" value="{{form.name.value|default_if_none:""}}"
+                                                    <div class="control is-clearfix"><input type="text" name="name" value="{{form.name.value|default_if_none:nome}}"
                                                             id={{form.name.id_for_label}} class="input">
                                                     </div>
                                                 </div>
                                                 {% endif %}
-                                                {% if form.username.errors or error%}
+                                                {% if form.username.errors %}
                                                 <div class="field"><label class=""
                                                         for={{form.username.id_for_label}}>Username</label>
                                                     <div class="control has-icons-right"><input type="text"
@@ -137,7 +130,7 @@
                                                     <div class="field"><label class=""
                                                             for={{form.username.id_for_label}}>Username</label>
                                                         <div class="control is-clearfix"><input type="text"
-                                                                name="username" id={{form.username.id_for_label}} value="{{form.username.value|default_if_none:""}}"
+                                                                name="username" id={{form.username.id_for_label}} value="{{form.username.value|default_if_none:username}}"
                                                                 class="input">
                                                         </div>
                                                     </div>
@@ -157,7 +150,7 @@
                                                         <div class="field"><label class=""
                                                                 for={{form.email.id_for_label}}>Email</label>
                                                             <div class="control is-clearfix"><input type="email"
-                                                                    name="email" id={{form.email.id_for_label}} value="{{form.email.value|default_if_none:""}}"
+                                                                    name="email" id={{form.email.id_for_label}} value="{{form.email.value|default_if_none:email}}"
                                                                     class="input">
                                                             </div>
                                                         </div>
@@ -179,39 +172,39 @@
                                                                     for={{form.telefone.id_for_label}}>Telefone/Telemovel</label>
                                                                 <div class="control is-clearfix"><input type="tel"
                                                                         id={{form.telefone.id_for_label}}
-                                                                        name="telefone" class="input" value="{{form.telefone.value|default_if_none:""}}"
+                                                                        name="telefone" class="input" value="{{form.telefone.value|default_if_none:telefone}}"
                                                                         pattern="[0-9]{3}[0-9]{3}[0-9]{3}">
                                                                 </div>
                                                             </div>
                                                             {% endif %}
-                                            {% if form.funcao.value %}
+                                            {% if form.funcao.value or funcao %}
                                             <div class="field"><label class=""
                                                 for={{form.funcao.id_for_label}}>Função</label>
                                             <div class=" control is-clearfix"><input type="text"
-                                                    id={{form.funcao.id_for_label}} name="funcao" class="input" value="{{form.funcao.value|default_if_none:""}}" disabled>
+                                                    id={{form.funcao.id_for_label}} name="funcao" class="input" value="{{form.funcao.value|default_if_none:funcao}}" disabled>
                                                     <input type="hidden"
-                                                    id={{form.funcao.id_for_label}} name="funcao" class="input" value="{{form.funcao.value|default_if_none:""}}" >
+                                                    id={{form.funcao.id_for_label}} name="funcao" class="input" value="{{form.funcao.value|default_if_none:funcao}}" >
                                             </div>
                                         </div>
                                         {% endif %}
-                                        {% if form.dep.value %}
+                                        {% if form.dep.value or dep %}
                                         <div class="field"><label class="" for={{form.dep.id_for_label}}>Departamento</label>
                                             <div class=" control is-clearfix"><input type="text" id={{form.dep.id_for_label}} name="dep" class="input"
-                                                    value={{form.dep.value}} >
+                                                    value={{form.dep.value|default_if_none:dep}} >
                                             </div>
                                         </div>
                                         {% endif %}
-                                        {% if form.UO.value %}
+                                        {% if form.UO.value or UO %}
                                         <div class="field"><label class="" for={{form.UO.id_for_label}}>Unidade Organica</label>
                                             <div class=" control is-clearfix"><input type="text" id={{form.UO.id_for_label}} name="UO" class="input"
-                                                    value="{{form.UO.value|default_if_none:""}}" >
+                                                    value="{{form.UO.value|default_if_none:UO}}" >
                                             </div>
                                         </div>
                                         {% endif %}
-                                        {% if form.curso.value %}
+                                        {% if form.curso.value or curso %}
                                         <div class="field"><label class="" for={{form.curso.id_for_label}}>Curso</label>
                                             <div class=" control is-clearfix"><input type="text" id={{form.curso.id_for_label}} name="curso" class="input"
-                                                    value="{{form.curso.value|default_if_none:""}}">
+                                                    value="{{form.curso.value|default_if_none:curso}}">
                                             </div>
                                         </div>
                                         {% endif %}
