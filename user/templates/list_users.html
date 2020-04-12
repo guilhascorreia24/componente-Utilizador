@@ -179,7 +179,7 @@
                                 <thead>
                                     <tr>
                                         <!---->
-                                        
+
                                         <th class="is-sortable">
                                             <div class="th-wrap th-sm">Nome <span class="icon is-small"
                                                     style="display: none;"><i class="mdi mdi-menu-up"></i></span>
@@ -221,7 +221,7 @@
 
                                     {% for user in users %}
                                     {% if user.validada != me.validada %}
-                                    <tr class="" scope="row" >
+                                    <tr class="" scope="row">
                                         <td data-label="Nome" class=""> {{user.nome}}
                                         </td>
                                         <td data-label="Nome" class=""> {{user.email}}
@@ -232,11 +232,17 @@
 
 
 
-                                        <td data-label="Estado" class="dropdown "><span
-                                                {% if user.estado == 'Validado' %}class="tag text is-success"
-                                                {% else %}class="tag text is-warning" {% endif %}
-                                                style="width: 7rem; font-size: small;"> {{user.estado}}</span></td>
-
+                                        <td data-label="Estado" class="form-group ">
+                                 
+                                            {% if user.estado == 'Pendente' %}<span class="tag"
+                                                style="width: 7rem; font-size: small;"><select name="valida" id="color_me{{ forloop.counter }}" class="form-control orange" onchange="location=this.value"
+                                                     style="height:55%;">
+                                                    <option selected>{{user.estado}}</option>
+                                                    <option class="green" value="{% url "validacoes" acao=1  id=user.pk %}">Validado</option>
+                                                    <option class="pink" value="{% url "validacoes" acao=2  id=user.pk %}">Rejeitar</option>
+                                                </select></span></td>
+                                        {% endif %}
+                                   
                                         <td data-label="Ações" class="has-text-centered"><a role="button"
                                                 data-toggle="modal" data-target="#{{ forloop.counter }}"><span
                                                     class="icon has-text-danger"><i
@@ -245,8 +251,8 @@
                                                     class="icon has-text-success"><i
                                                         class="mdi mdi-account-search mdi-24px"></i></span></a>
                                             <a role="button" href="{% url "profile_edit" user.idutilizador %}"><span
-                                                            class="icon has-text-success"><i
-                                                                class="mdi mdi-pencil mdi-24px"></i></span></a></td>
+                                                    class="icon has-text-success"><i
+                                                        class="mdi mdi-pencil mdi-24px"></i></span></a></td>
                                         {% endif %}
                                     </tr>
                                     <!---->
@@ -416,5 +422,12 @@
     </div>
 </div>
 </form>
+<script>
+    {% for user in users %}
+    $("#color_me{{ forloop.counter }}").change(function () {
+        var color = $("option:selected", this).attr("class");
+        $("#color_me").attr("class", color);
+    });
+    {% endfor %}</script>
 {% endfor %}
 {% endblock content %}

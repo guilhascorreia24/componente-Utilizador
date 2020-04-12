@@ -343,8 +343,20 @@ def reset(request):
             messages.error(request, f'Email incorreto')
     return render(request, 'reset.html', {'form': sub})
 #-------------------------------------------------validacoes---------------------------------------------------------------
-def validacoes(request,id):
-    if request.POST == 'POST':
-        if Coordenador.objects.filter(utilizador_utilizadorid=request.session['user_id']).exists():
-            user = Utilizador.objects.get(validada=1)
-    return render(request, "validacoes.html", {"users": user,"id":request.session['user_id'],"funcao":user(request)})
+def validacoes(request,acao,id):
+    id=signing.loads(id)
+    user=Utilizador.objects.get(pk=id)
+    if acao==1:
+        if Colaborador.objects.filter(pk=id).exists():
+            user.validada=1
+        elif Coordenador.objects.filter(pk=id).exists():
+            user.validada=2
+        elif ProfessorUniversitario.objects.filter(pk=id).exists():
+            user.validada=3
+        elif Administrador.objects.filter(pk=id).exists():
+            user.validada=4
+        user.save()
+    else:
+        user.validada=5
+        user.save()
+    return redirect('profile_list')
