@@ -290,24 +290,30 @@
                                                 <div class="columns">
                                                     <div class="column">
                                                         <div class="field"><label class="label">Nome da escola</label>
-                                                            <div class="control is-clearfix"><input type="text" id={{escola.nome.id}}
-                                                                    autocomplete="on" required="required" class="input">
-                                                                <!---->
-                                                                <!---->
-                                                                <!---->
+                                                            <div class="control is-clearfix">{{form.escola.nome|addcss:"input"}}
                                                             </div>
                                                             <!---->
                                                         </div>
                                                     </div>
                                                     <div class="column">
                                                         <div class="field"><label class="label">Localidade</label>
-                                                            <div class="control is-clearfix"><input type="text" id={{escola.local.id}}
-                                                                    autocomplete="on" required="required" class="input">
-                                                                <!---->
-                                                                <!---->
-                                                                <!---->
+                                                            <div class="control is-clearfix">{{form.escola.local|addcss:"input"}}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="columns">
+                                                    <div class="column">
+                                                        <div class="field"><label class="label">E-mail da escola</label>
+                                                            <div class="control is-clearfix">{{form.escola.email|addcss:"input"}}
                                                             </div>
                                                             <!---->
+                                                        </div>
+                                                    </div>
+                                                    <div class="column">
+                                                        <div class="field"><label class="label">Telefone da escola</label>
+                                                            <div class="control is-clearfix">{{form.escola.telefone|addcss:"input"}}
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -316,25 +322,26 @@
                                                     Informação da Turma </h2>
                                                 <div class="columns">
                                                     <div class="column">
-                                                        <div class="field"><label class="label">Ano</label>
-                                                            <div class="control is-clearfix"><input type="number" id={{inscricao.ano.id}}
-                                                                    autocomplete="on" required="required" class="input">
-                                                                <!---->
-                                                                <!---->
-                                                                <!---->
+                                                    <div class="field has-numberinput has-numberinput-compact">
+                                                        <label class="label">Ano</label>
+                                                        <div class="b-numberinput field has-addons">
+                                                            <p class="control"><button type="button"
+                                                                    class="button is-primary"><span class="icon"><i
+                                                                            class="mdi mdi-minus mdi-24px"></i></span></button>
+                                                            </p>
+                                                            <div class="control is-clearfix">{{ form.inscricao.ano|addcss:"input ano_input" }}
                                                             </div>
-                                                            <!---->
+                                                            <p class="control"><button type="button"
+                                                                    class="button is-primary"><span class="icon"><i
+                                                                            class="mdi mdi-plus mdi-24px"></i></span></button>
+                                                            </p>
                                                         </div>
+                                                    </div>
                                                     </div>
                                                     <div class="column">
                                                         <div class="field"><label class="label">Turma</label>
-                                                            <div class="control is-clearfix"><input type="text" id={{insColetiva.turma.id}}
-                                                                    autocomplete="on" required="required" class="input">
-                                                                <!---->
-                                                                <!---->
-                                                                <!---->
+                                                            <div class="control is-clearfix">{{form.inscricao.turma|addcss:"input"}}
                                                             </div>
-                                                            <!---->
                                                         </div>
                                                     </div>
                                                     <div class="column">
@@ -345,11 +352,7 @@
                                                                         class="button is-primary"><span class="icon"><i
                                                                                 class="mdi mdi-minus mdi-24px"></i></span></button>
                                                                 </p>
-                                                                <div class="control is-clearfix"><input type="number"
-                                                                        autocomplete="on" step="1" class="input">
-                                                                    <!---->
-                                                                    <!---->
-                                                                    <!---->
+                                                                <div class="control is-clearfix">{{form.inscricao.participantes|addcss:"input"}}
                                                                 </div>
                                                                 <p class="control"><button type="button"
                                                                         class="button is-primary"><span class="icon"><i
@@ -361,11 +364,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="field"><label class="label">Área científica</label>
-                                                    <div class="control is-clearfix"><input type="text" id={{inscricao.areacientifica.id}}
-                                                            autocomplete="on" required="required" class="input">
-                                                        <!---->
-                                                        <!---->
-                                                        <!---->
+                                                    <div class="control is-clearfix">{{form.inscricao.areacientifica|addcss:"input"}}
                                                     </div>
                                                     <!---->
                                                 </div>
@@ -833,53 +832,31 @@
                                         <div class="tab">
                                             <div data-v-f5fe8f88="" style="padding: 1rem 2vw 0px;">
                                                 <hr data-v-f5fe8f88="">
+                                                {% for camp in form.almoco.campus %}
                                                 <h2 data-v-f5fe8f88="" class="title has-text-grey is-uppercase"
-                                                    style="font-size: 0.9rem;"> Informação de almoço </h2>
+                                                    style="font-size: 0.9rem;"> Informação de almoço - Campus {{camp.nome}} </h2>
+
+                                                {% for prato,menu in camp.pratos %}
+                                                
                                                 <div data-v-f5fe8f88=""
                                                     class="field has-numberinput has-numberinput-compact"><label
-                                                        class="label">Cantina da Penha (Preço Aluno: €2.80, Preço
-                                                        Docente: €4.25)</label>
+                                                        >{{menu.tipo}} - {{menu.menu}} (Preço para docentes:{{menu.precoprofessor}}€  Preço para Alunos:{{menu.precoaluno}}€)</label>
                                                     <div data-v-f5fe8f88="" class="b-numberinput field has-addons">
                                                         <p class="control"><button type="button"
                                                                 class="button is-primary"><span class="icon"><i
                                                                         class="mdi mdi-minus mdi-24px"></i></span></button>
                                                         </p>
-                                                        <div class="control is-clearfix"><input type="number"
-                                                                autocomplete="on" step="1" class="input">
-                                                            <!---->
-                                                            <!---->
-                                                            <!---->
+                                                        <div class="control is-clearfix">{{prato.nralmocos|addcss:"input"}}
                                                         </div>
                                                         <p class="control"><button type="button"
                                                                 class="button is-primary"><span class="icon"><i
                                                                         class="mdi mdi-plus mdi-24px"></i></span></button>
                                                         </p>
                                                     </div>
-                                                    <!---->
                                                 </div>
-                                                <div data-v-f5fe8f88=""
-                                                    class="field has-numberinput has-numberinput-compact"><label
-                                                        class="label">Cantina de Gambelas (Preço Aluno: €2.80, Preço
-                                                        Docente: €4.25)</label>
-                                                    <div data-v-f5fe8f88="" class="b-numberinput field has-addons">
-                                                        <p class="control"><button type="button"
-                                                                class="button is-primary"><span class="icon"><i
-                                                                        class="mdi mdi-minus mdi-24px"></i></span></button>
-                                                        </p>
-                                                        <div class="control is-clearfix"><input type="number"
-                                                                autocomplete="on" step="1" class="input">
-                                                            <!---->
-                                                            <!---->
-                                                            <!---->
-                                                        </div>
-                                                        <p class="control"><button type="button"
-                                                                class="button is-primary"><span class="icon"><i
-                                                                        class="mdi mdi-plus mdi-24px"></i></span></button>
-                                                        </p>
-                                                    </div>
-                                                    <!---->
-                                                </div>
+                                                {% endfor %}
                                                 <hr data-v-f5fe8f88="">
+                                                {% endfor %}
                                             </div>
                                         </div>
                                         <div class="tab">
@@ -3630,156 +3607,117 @@
     </div>
     <script src="{% static "js/chunk-vendors.63f37e79.js" %}"></script>
     <script>
-                                    var currentTab = 0; // Current tab is set to be the first tab (0)
-                                    showTab(currentTab); // Display the current tab
+        var currentTab = 0; // Current tab is set to be the first tab (0)
+        $(document).ready(function() { 
+            $(".b-numberinput > .control > .button > span > .mdi-minus").click(function(){
+                var input = $(this).parents(".b-numberinput").first().find("input");
+                var value = parseInt(input.val());
+                if(value<=0 || isNaN(value)){
+                    value = 0;
+                }else{
+                    value-=1;
+                }
+                input.val(value);
+            }); 
 
-                                    function showTab(n) {
-                                        // This function will display the specified tab of the form...
-                                        var x = document.getElementsByClassName("tab");
-                                        x[n].style.display = "block";
-                                        //... and fix the Previous/Next buttons:
-                                        if (n == 0) {
-                                            document.getElementById("prevBtn").style.display = "Cancel";
-                                        } else {
-                                            document.getElementById("prevBtn").style.display = "Anterior";
-                                        }
-                                        if (n == (x.length - 1)) {
-                                            document.getElementById("nextBtn").innerHTML = "Submeter";
-                                        } else {
-                                            document.getElementById("nextBtn").innerHTML = "Proximo";
-                                        }
-                                        //... and run a function that will display the correct step indicator:
-                                        fixStepIndicator(n)
-                                    }
+            $(".b-numberinput > .control > .button > span > .mdi-plus").click(function(){
+                var input = $(this).parents(".b-numberinput").first().find("input");
+                var value = parseInt(input.val());
+                if(value<0 || isNaN(value)){
+                    value = 0;
+                }else{
+                    value+=1;
+                }
+                input.val(value);
+            }); 
+        });
+        showTab(currentTab); // Display the current tab
 
-                                    function nextPrev(n) {
-                                        // This function will figure out which tab to display
-                                        var x = document.getElementsByClassName("tab");
-                                        // Exit the function if any field in the current tab is invalid:
-                                        if (n == 99) return false;
-                                        // Hide the current tab:
-                                        x[currentTab].style.display = "none";
-                                        // Increase or decrease the current tab by 1:
-                                        currentTab = currentTab + n;
-                                        // if you have reached the end of the form...
-                                        if (currentTab >= x.length) {
-                                            // ... the form gets submitted:
-                                            document.getElementById("regForm").submit();
-                                            return false;
-                                        }
-                                        // Otherwise, display the correct tab:
-                                        showTab(currentTab);
-                                    }
+        function showTab(n) {
+            // This function will display the specified tab of the form...
+            var x = document.getElementsByClassName("tab");
+            x[n].style.display = "block";
+            //... and fix the Previous/Next buttons:
+            if (n == 0) {
+                document.getElementById("prevBtn").style.display = "Cancel";
+            } else {
+                document.getElementById("prevBtn").style.display = "Anterior";
+            }
+            if (n == (x.length - 1)) {
+                document.getElementById("nextBtn").innerHTML = "Submeter";
+            } else {
+                document.getElementById("nextBtn").innerHTML = "Proximo";
+            }
+            //... and run a function that will display the correct step indicator:
+            fixStepIndicator(n)
+        }
 
-                                    function validateForm() {
-                                        // This function deals with validation of the form fields
-                                        var x, y, i, valid = true;
-                                        x = document.getElementsByClassName("tab");
-                                        y = x[currentTab].getElementsByTagName("input");
-                                        // A loop that checks every input field in the current tab:
-                                        for (i = 0; i < y.length; i++) {
-                                            // If a field is empty...
-                                            if (y[i].value == "") {
-                                                // add an "invalid" class to the field:
-                                                y[i].className += " invalid";
-                                                // and set the current valid status to false
-                                                valid = false;
-                                            }
-                                        }
-                                        // If the valid status is true, mark the step as finished and valid:
-                                        if (valid) {
-                                            document.getElementsByClassName("step")[currentTab].className += " finish";
-                                        }
-                                        return valid; // return the valid status
-                                    }
+        function nextPrev(n) {
+            // This function will figure out which tab to display
+            var x = document.getElementsByClassName("tab");
+            // Exit the function if any field in the current tab is invalid:
+            if (n == 99) return false;
+            // Hide the current tab:
+            x[currentTab].style.display = "none";
+            // Increase or decrease the current tab by 1:
+            currentTab = currentTab + n;
+            // if you have reached the end of the form...
+            if (currentTab >= x.length) {
+                // ... the form gets submitted:
+                document.getElementById("regForm").submit();
+                return false;
+            }
+            // Otherwise, display the correct tab:
+            showTab(currentTab);
+        }
 
-                                    function fixStepIndicator(n) {
-                                        // This function removes the "active" class of all steps...
-                                        var i, x = document.getElementsByClassName("step");
-                                        for (i = 0; i < x.length; i++) {
-                                            x[i].className = x[i].className.replace(" active", "");
-                                        }
-                                        //... and adds the "active" class on the current step:
-                                        x[n].className += " active";
-                                    }
-                                    function add_responsavel() {
-                                    	var form_idx = $('#responsavel_form').children().length;
-                                    	$('#responsavel_form').append($('#responsavel_template').html().replace(/__prefix__/g, form_idx));
-                                    }
+        function validateForm() {
+            // This function deals with validation of the form fields
+            var x, y, i, valid = true;
+            x = document.getElementsByClassName("tab");
+            y = x[currentTab].getElementsByTagName("input");
+            // A loop that checks every input field in the current tab:
+            for (i = 0; i < y.length; i++) {
+                // If a field is empty...
+                if (y[i].value == "") {
+                    // add an "invalid" class to the field:
+                    y[i].className += " invalid";
+                    // and set the current valid status to false
+                    valid = false;
+                }
+            }
+            // If the valid status is true, mark the step as finished and valid:
+            if (valid) {
+                document.getElementsByClassName("step")[currentTab].className += " finish";
+            }
+            return valid; // return the valid status
+        }
 
-                                    function delete_responsavel() {
-                                        if($('#responsavel_form > .responsavel').length > 1){
-                                    	    $('#responsavel_form > .responsavel').last().remove();
-                                        }
-                                    }
-                                    //ADD END BUTTON RESPONSAVEIS
-                                    /*function updateElementIndex(el, prefix, ndx) {
-                                        var id_regex = new RegExp('(' + prefix + '-\\d+)');
-                                        var replacement = prefix + '-' + ndx;
-                                        if ($(el).attr("for")) $(el).attr("for", $(el).attr("for").replace(id_regex, replacement));
-                                        if (el.id) el.id = el.id.replace(id_regex, replacement);
-                                        if (el.name) el.name = el.name.replace(id_regex, replacement);
-                                    }
-                                    function cloneMore(selector, prefix) {
-                                        var newElement = $(selector).clone(true);
-                                        var total = $('#id_' + prefix + '-TOTAL_FORMS').val();
-                                        newElement.find(':input:not([type=button]):not([type=submit]):not([type=reset])').each(function() {
-                                            var name = $(this).attr('name').replace('-' + (total-1) + '-', '-' + total + '-');
-                                            var id = 'id_' + name;
-                                            $(this).attr({'name': name, 'id': id}).val('').removeAttr('checked');
-                                        });
-                                        newElement.find('label').each(function() {
-                                            var forValue = $(this).attr('for');
-                                            if (forValue) {
-                                              forValue = forValue.replace('-' + (total-1) + '-', '-' + total + '-');
-                                              $(this).attr({'for': forValue});
-                                            }
-                                        });
-                                        total++;
-                                        $('#id_' + prefix + '-TOTAL_FORMS').val(total);
-                                        $(selector).after(newElement);
-                                        return false;
-                                    }
-                                    function deleteForm(prefix, btn) {
-                                        var total = parseInt($('#id_' + prefix + '-TOTAL_FORMS').val());
-                                        if (total > 1){
-                                            btn.closest('.form-row').remove();
-                                            var forms = $('.form-row');
-                                            $('#id_' + prefix + '-TOTAL_FORMS').val(forms.length);
-                                            for (var i=0, formCount=forms.length; i<formCount; i++) {
-                                                $(forms.get(i)).find(':input').each(function() {
-                                                    updateElementIndex(this, prefix, i);
-                                                });
-                                            }
-                                        }
-                                        return false;
-                                    }
-                                    $(document).ready(function() {
-                                        $('#add-responsavel').click(function(ev) {
-                                            ev.preventDefault();
-                                            var count = $('#responsavel').children().length;
-                                            var tmplMarkup = $('#responsavel').html();
-                                            var compiledTmpl = tmplMarkup.replace(/__prefix__/g, count);
-                                            $('div#items-form-container').append(compiledTmpl);
+        function fixStepIndicator(n) {
+            // This function removes the "active" class of all steps...
+            var i, x = document.getElementsByClassName("step");
+            for (i = 0; i < x.length; i++) {
+                x[i].className = x[i].className.replace(" active", "");
+            }
+            //... and adds the "active" class on the current step:
+            x[n].className += " active";
+        }
+        function increment_next_input(pos){
+            window.alert($(this));
+            $(pos).next("input").value += 1;
+        }
 
-                                            // update form count
-                                            $('#id_item_items-TOTAL_FORMS').attr('value', count+1);
+        function add_responsavel() {
+        	var form_idx = $('#responsavel_form').children().length;
+        	$('#responsavel_form').append($('#responsavel_template').html().replace(/__prefix__/g, form_idx));
+        }
 
-                                            // some animate to scroll to view our new form
-                                            $('html, body').animate({
-                                                    scrollTop: $("#add-item-button").position().top-200
-                                                }, 800);
-                                        });
-                                    });
-
-                                    $(document).on('click', '.remove-form-row', function(e){
-                                        e.preventDefault();
-                                        deleteForm('form', $(this));
-                                        return false;
-                                    });*/
-
-                                    //END ADD REMOVE BUTTON
-                                </script>
+        function delete_responsavel() {
+            if($('#responsavel_form > .responsavel').length > 1){
+        	    $('#responsavel_form > .responsavel').last().remove();
+            }
+        }
+    </script>
 </body>
 
 </html>

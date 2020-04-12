@@ -1,25 +1,19 @@
 <html>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+    $('.save-button').on('click', function () {
+        window.alert($(this).id);
+            // Now the div itself as an object is $(this)
+        $(this).next("input").val("test");
+    });
+})
+    </script>
     <body>
-        <button type = "submit" id="add_responsavel">Sub</button>
-        <form method = "POST">
-            {% csrf_token %}
-            {{form}}
-    
-            <input type = "submit">
-             {{form.telefone.fields}}
-             <label for={{form.telefone.id_for_label}}>{{form.telefone.label}}</label>
-             <input type="tel" name={{form.telefone.html_name}} id={{escola.telefone.id}} autocomplete="on" value="{{field.value}}"required="required" class="input">
+        <button type = "submit" class="save-button" id="save-button">Sub</button>
+        <p>sfdlsflkj</p>
+        <input type="text" value="skjdfh">
         </form>
     </body>
-    <script>
-    $(document).ready ( function () {
-    $(document).on ("click", "#add_responsavel", function () {
-        alert("hi");
-    });
-});
-    function func(){
-        window.alert("test");
-    }
-    </script>
 </html>
 
