@@ -37,6 +37,7 @@ PASSWORD_HASHERS = [
 # Application definition
 
 INSTALLED_APPS = [
+    'Notification',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -89,9 +90,9 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'les',
         'USER': 'root',
-        'PASSWORD': '1234',
-        'HOST': 'localhost',
-        'PORT': '3306'
+        'PASSWORD': '12345abcd',
+        'HOST': '127.0.0.1',
+        'PORT': '3306',
     }
 }
 
