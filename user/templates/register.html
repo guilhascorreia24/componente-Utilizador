@@ -16,6 +16,15 @@
     </style>
 </head>
 <div class="navbar-menu">
+    {% if func == "Coordenador" %}
+    {% include "navbar-coord.html" %}
+    {% elif func == "administardor" %}
+    {% include "navabar-admin.html" %}
+    {% elif func == "docente Univesitario" %}
+    {% include "navabar-dc.hmtl"}
+    {% elif func == None %}
+    {% include "navabar-part.html" %}
+    {% endif %}
     <div class="navbar-end">
         <div data-v-a67fe1ba="" class="navbar-item">
             <div data-v-a67fe1ba="" class="dropdown is-bottom-left is-mobile-modal">

@@ -95,7 +95,7 @@ def register(request):
         form = UserRegisterForm(request.POST)
         data=request.POST
         print(form.is_valid())
-        if validateEmail(data['email']) and type_user(data,None) and request.POST['password1']==request.POST['password2'] and not Utilizador.objects.filter(email=request.POST['email']).exists() and  not Utilizador.objects.filter(telefone=request.POST['telefone']).exists() and password_check(request.POST['password1']) is True:
+        if len(data['name'])>0 and len(data['username'])>0 and len(data['email'])>0 and len(data['password1'])>0 and validateEmail(data['email']) and type_user(data,None) and request.POST['password1']==request.POST['password2'] and not Utilizador.objects.filter(email=request.POST['email']).exists() and  not Utilizador.objects.filter(telefone=request.POST['telefone']).exists() and password_check(request.POST['password1']) is True:
             form.save()
             user_id=Utilizador.objects.get(email=request.POST['email']).idutilizador
             type_user(data,user_id)
@@ -128,7 +128,7 @@ def register(request):
                 error1 = password_check(request.POST['password1']) 
             return render(request, 'register.html', {'form': form,'UOs':UOs,'deps':deps,'error1': error, 'error2': error1, 'error3': error2, 'error4': error3,'error5':type_user(data,None)})
     form = UserRegisterForm()
-    return render(request, 'register.html', {'form': form,'UOs':UOs,'deps':deps})
+    return render(request, 'register.html', {'form': form,'UOs':UOs,'deps':deps,"func":user(request)})
 
 #*----------------------------------------------------------login---------------------------------------
 def login_request(request):
@@ -185,7 +185,7 @@ def modify_user(request,id):
     me=request.session['user_id']
     if request.method=='POST':
         form=ModifyForm(request.POST)
-        if form.is_valid and request.POST['name']!="" and request.POST['username']!="" and request.POST['email']!="" and not Utilizador.objects.filter(email=request.POST['email']).exists() and not Utilizador.objects.filter(telefone=request.POST['telefone']).exists() and request.POST['telefone']!="":
+        if request.POST['name']!="" and request.POST['username']!="" and request.POST['email']!="" and not Utilizador.objects.filter(email=request.POST['email']).exists() and not Utilizador.objects.filter(telefone=request.POST['telefone']).exists() and request.POST['telefone']!="" and validateEmail(request.POST['email']):
             t=Utilizador.objects.get(pk=id)
             t.nome=request.POST['name']
             t.username=request.POST['username']
@@ -200,6 +200,7 @@ def modify_user(request,id):
             username=data['username']
             telefone=data['telefone']
             funcao=data['funcao']
+            email=data['email']
             curso=False
             dep=False
             UO=False
@@ -217,7 +218,7 @@ def modify_user(request,id):
                 error = "Email ja existe"
             if Utilizador.objects.filter(telefone=request.POST['telefone']).exists() and Utilizador.objects.get(telefone=request.POST['telefone']).idutilizador!=id:
                 error3 = "telefone ja existe"
-            return render(request, 'profile_modify.html', {'UO':UO,'username':username,'telefone':telefone,'funcao':funcao,'curso':curso,'dep':dep,"form": form,'error4':error3,"error1":error,'me':signing.dumps(me),'id':signing.dumps(id),'nome':name})
+            return render(request, 'profile_modify.html', {'email':email,'UO':UO,'username':username,'telefone':telefone,'funcao':funcao,'curso':curso,'dep':dep,"form": form,'error4':error3,"error1":error,'me':signing.dumps(me),'id':signing.dumps(id),'nome':name})
     else:
         form = ModifyForm()
         if Utilizador.objects.get(idutilizador=id).username == '':
@@ -233,6 +234,8 @@ def modify_user(request,id):
     funcao=False
     if Administrador.objects.filter(utilizador_idutilizador=id).exists():
         funcao = "Administardor"
+    elif Participante.objects.filter(utilizador_idutilizador=id).exists():
+        funcao = "Participante"
     elif ProfessorUniversitario.objects.filter(utilizador_idutilizador=id).exists():
         funcao = "Docente Univesitario"
         depid = ProfessorUniversitario.objects.get(utilizador_idutilizador=id).departamento_iddepartamento
@@ -298,6 +301,10 @@ def profile_list(request):
             u.cargo="Docente Universitario"
             if u.validada==3:
                 u.estado="Validado"
+        elif Administrador.objects.filter(pk=u.pk).exists():
+            u.cargo="Administrador"
+            if u.validada==4:
+                u.estado="Validado"
         elif Participante.objects.filter(pk=u.idutilizador):
             if u.validada==0:
                 u.estado="Validado"
@@ -359,13 +366,13 @@ def validacoes(request,acao,id):
             Participante.objects.filter(pk=id).delete()
         elif Coordenador.objects.filter(pk=id).exists():
             user.validada=2
-            Coordenador.objects.filter(pk=id).delete()
+            Participante.objects.filter(pk=id).delete()
         elif ProfessorUniversitario.objects.filter(pk=id).exists():
             user.validada=3
-            ProfessorUniversitario.objects.filter(pk=id).delete()
+            Participante.objects.filter(pk=id).delete()
         elif Administrador.objects.filter(pk=id).exists():
             user.validada=4
-            Administrador.objects.filter(pk=id).delete()
+            Participante.objects.filter(pk=id).delete()
         user.save()
     else:
         user.validada=5

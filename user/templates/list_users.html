@@ -148,7 +148,11 @@
                             <li class="is-active"><a href="{% url "blog-home" %}"
                                     class="router-link-exact-active router-link-active">Utilizadores</a></li>
                         </ul>
-                    </nav>
+                    </nav>{% if user.validada == 4 %}
+                    <a href="{% url "register" %}" class="button is-success is-outlined" type="button"
+                        style="margin-bottom: 0.9rem; margin-right: 1rem;text-decoration:none;"><span
+                            class="icon is-small"><i class="mdi mdi-plus"></i></span> <span> Novo Utilizador </span>
+                        <!----></a>{% endif %}
                     <div class="b-table">
                         <div class="field table-mobile-sort">
                             <div class="field has-addons">
@@ -220,7 +224,7 @@
                                 <tbody>
 
                                     {% for user in users %}
-                                    {% if user.validada != me.validada %}
+                                    {% if user.idutilizador != me.idutilizador %}
                                     <tr class="" scope="row">
                                         <td data-label="Nome" class=""> {{user.nome}}
                                         </td>
@@ -248,20 +252,24 @@
                                                     </option>
                                                 </select></span></td>
                                         {% else %}
-                                        <span {% if user.estado == 'Validado' %}class="tag is-success"{% else %}class="tag is-danger"{% endif %} style="width: 7rem; font-size: small;"> {{user.estado}}
+                                        <span {% if user.estado == 'Validado' %}class="tag is-success"
+                                            {% else %}class="tag is-danger" {% endif %}
+                                            style="width: 7rem; font-size: small;"> {{user.estado}}
                                         </span></td>
                                         {% endif %}
 
-                                        <td data-label="Ações" class="has-text-centered"><a role="button"
-                                                data-toggle="modal" data-target="#{{ forloop.counter }}"><span
+                                        <td data-label="Ações" class="has-text-centered">
+                                            {% if me.validada == 4 %}<a role="button" data-toggle="modal"
+                                                data-target="#{{ forloop.counter }}"><span
                                                     class="icon has-text-danger"><i
-                                                        class="mdi mdi-close-box mdi-24px"></i></span></a>
+                                                        class="mdi mdi-close-box mdi-24px"></i></span></a>{% endif %}
                                             <a role="button" href="{% url "profile_user" user.idutilizador %}"><span
                                                     class="icon has-text-success"><i
                                                         class="mdi mdi-account-search mdi-24px"></i></span></a>
+                                            {% if me.validada == 4 %}
                                             <a role="button" href="{% url "profile_edit" user.idutilizador %}"><span
                                                     class="icon has-text-success"><i
-                                                        class="mdi mdi-pencil mdi-24px"></i></span></a></td>
+                                                        class="mdi mdi-pencil mdi-24px"></i></span></a>{% endif %}</td>
                                         {% endif %}
                                     </tr>
                                     <!---->
