@@ -24,8 +24,11 @@ def test1(request):
         form = forms.CustomForm()
         return render(request,'test.html',{'form': form})
 
+def list_sessao():
+    models.Sessao.objects.raw('SELECT * FROM Sessao, Atividade WHERE Atividade.validada = 1')
 
 def inscricao_form(request):
+    #list_sessao()
     if request.method == 'POST':
         form = forms.CustomForm(request)
         if form.is_valid():
@@ -35,5 +38,6 @@ def inscricao_form(request):
             return render(request,'inscricao_form.html',{'form': form})
         
     else:
+        #//atividades
         form = forms.CustomForm()
         return render(request,'inscricao_form.html',{'form': form})
