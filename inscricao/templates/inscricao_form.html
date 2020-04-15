@@ -3273,7 +3273,7 @@
                                                                                                                                         <button type="button" class="button is-primary"><span class="icon"><i class="mdi mdi-minus mdi-24px"></i></span></button>
                                                                                                                                     </p>
                                                                                                                                     <div class="control is-clearfix">
-                                                                                                                                        <input type="number" autocomplete="on" step="1" min="0" class="input">
+                                                                                                                                        <input type="number" autocomplete="on" step="1" min="0" class="input escolher_sessao">
                                                                                                                                         <!---->
                                                                                                                                         <!---->
                                                                                                                                         <!---->
@@ -3537,8 +3537,41 @@
                                                     <!---->
                                                     <div class="table-wrapper">
                                                         <table class="table has-mobile-cards">
-                                                            <!---->
-                                                            <tbody>
+                                                            <thead>
+                                                                <tr> 
+                                                                    <th class="">
+                                                                        <div class="th-wrap">
+                                                                            Horário <span class="icon is-small" style="display: none;"><i class="mdi mdi-arrow-up"></i></span>
+                                                                        </div>
+                                                                    </th>
+                                                                    <th class="">
+                                                                        <div class="th-wrap">
+                                                                            Inscritos <span class="icon is-small" style="display: none;"><i class="mdi mdi-arrow-up"></i></span>
+                                                                        </div>
+                                                                    </th>
+                                                                    <th class="">
+                                                                        <div class="th-wrap">
+                                                                            Atividade <span class="icon is-small" style="display: none;"><i class="mdi mdi-arrow-up"></i></span>
+                                                                        </div>
+                                                                    </th>
+                                                                    <th class="">
+                                                                        <div class="th-wrap">
+                                                                            Espaço <span class="icon is-small" style="display: none;"><i class="mdi mdi-arrow-up"></i></span>
+                                                                        </div>
+                                                                    </th>
+                                                                    <th class="">
+                                                                        <div class="th-wrap">
+                                                                            Campus <span class="icon is-small" style="display: none;"><i class="mdi mdi-arrow-up"></i></span>
+                                                                        </div>
+                                                                    </th>
+                                                                    <th class="">
+                                                                        <div class="th-wrap is-centered">
+                                                                            Ações <span class="icon is-small" style="display: none;"><i class="mdi mdi-arrow-up"></i></span>
+                                                                        </div>
+                                                                    </th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody id="sessao_escolhida">
                                                                 <tr class="is-empty">
                                                                     <td colspan="0">
                                                                         <p class="has-text-grey">Não há sessões
@@ -3618,10 +3651,12 @@
                 var value = parseInt(input.val());
                 if(value<=0 || isNaN(value)){
                     value = 0;
+                    input.val(value);
+                    return;
                 }else{
                     value-=1;
                 }
-                input.val(value);
+                input.val(value).change();
             }); 
 
             $(".b-numberinput > .control > .button > span > .mdi-plus").click(function(){
@@ -3629,13 +3664,15 @@
                 var value = parseInt(input.val());
                 if(value<0 || isNaN(value)){
                     value = 0;
+                    input.val(value);
+                    return;
                 }else{
                     value+=1;
                 }
-                input.val(value);
-            }); 
+                input.val(value).change();
+            });
 
-            $("tr").click(function(){
+            $(".has-mobile-cards > tbody > tr").click(function(){
                 var detail = $(this).next(".detail");
 
                 if(detail.is(":visible")){
@@ -3645,12 +3682,58 @@
                     detail.show();
                     $(this).find(".icon").addClass("is-expanded");
                 }
-            }); 
+            });
+
+            //Handle Dinamic table
+            $('.escolher_sessao').data('pre', 0);
+            $(".escolher_sessao").on("change",function(){
+                var prev = $(this).data('pre');
+                var current = $(this).val();
+                $(this).data('pre',current);
+
+                if(current>0 && prev == 0){
+
+                    
+
+                    var table = $(this).parents("tr").first().clone(true);
+                    var tInput = table.find('.escolher_sessao');
+                    syncInputs(tInput,$(this));
+
+                    //removes the entry if reaches 0
+                    tInput.on("change",function(){
+                        if($(this).val() == 0){
+                            var par = $("#sessao_escolhida");
+                            $(this).parents("tr").first().remove();
+                            if(par.children().length <= 1){
+                                par.children(".is-empty").show();
+                            }
+                        }
+                    });
+                    $("#sessao_escolhida").append(table);
+                    var par = $("#sessao_escolhida");
+                    if(par.children().length > 1){
+                        par.children(".is-empty").hide();
+                    }
+                }
+            });
 
             $("#nextBtn").click(nextTab);
             $("#prevBtn").click(previousTab);
         });
         showTab(currentTab); // Display the current tab
+
+
+        //Link 2 inputs on change
+        function syncInputs(el1,el2){
+            el1.on("change",function(){
+                if(el1.val() != el2.val())
+                    el2.val(el1.val()).change();
+            });
+            el2.on("change",function(){
+                if(el1.val() != el2.val())
+                    el1.val(el2.val()).change();
+            });
+        }
 
         function showTab(){
             var list = $(".step-content > form > .step-item").first().show();
