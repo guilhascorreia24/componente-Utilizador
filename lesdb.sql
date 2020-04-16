@@ -1002,13 +1002,14 @@ CREATE TABLE IF NOT EXISTS `les`.`tarefa` (
   `concluida` TINYINT NOT NULL,
   `Coordenador_Utilizador_idutilizador` INT NOT NULL,
   `colaborador_Utilizador_idutilizador` INT NOT NULL,
-  `Atividade_idAtividade` INT NULL,
-  `horario_has_dia_id_dia_hora` INT NOT NULL,
+  `Atividade_idAtividade` INT NULL DEFAULT NULL,
+  `hora_inicio` TIME NOT NULL,
+  `dia_dia` DATE NOT NULL,
   PRIMARY KEY (`idtarefa`),
   INDEX `fk_tarefa_Coordenador_id` (`Coordenador_Utilizador_idutilizador` ASC) VISIBLE,
   INDEX `fk_tarefa_colaborador_id` (`colaborador_Utilizador_idutilizador` ASC) VISIBLE,
   INDEX `fk_tarefa_Atividade_id` (`Atividade_idAtividade` ASC) VISIBLE,
-  INDEX `fk_tarefa_horario_has_dia1_idx` (`horario_has_dia_id_dia_hora` ASC) VISIBLE,
+  INDEX `fk_tarefa_dia1_idx` (`dia_dia` ASC) VISIBLE,
   CONSTRAINT `fk_tarefa_Atividade`
     FOREIGN KEY (`Atividade_idAtividade`)
     REFERENCES `les`.`atividade` (`idAtividade`)
@@ -1024,9 +1025,9 @@ CREATE TABLE IF NOT EXISTS `les`.`tarefa` (
     REFERENCES `les`.`coordenador` (`Utilizador_idutilizador`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
-  CONSTRAINT `fk_tarefa_horario_has_dia1`
-    FOREIGN KEY (`horario_has_dia_id_dia_hora`)
-    REFERENCES `les`.`horario_has_dia` (`id_dia_hora`)
+  CONSTRAINT `fk_tarefa_dia1`
+    FOREIGN KEY (`dia_dia`)
+    REFERENCES `les`.`dia` (`dia`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
