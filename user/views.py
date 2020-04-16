@@ -9,18 +9,20 @@ import datetime
 import re
 
 def user(request):
-    id1=request.session['user_id']
-    if Participante.objects.filter(utilizador_idutilizador=id1).exists():
-        funcao = ""
-    elif ProfessorUniversitario.objects.filter(utilizador_idutilizador=id1).exists():
-        funcao = "docente Univesitario"
-    elif Administrador.objects.filter(utilizador_idutilizador=id1).exists():
-        funcao = "administardor"
-    elif Coordenador.objects.filter(utilizador_idutilizador=id1).exists():
-        funcao = "Coordenador"
-    elif Colaborador.objects.filter(utilizador_idutilizador=id1).exists():
-        funcao = "colab"
-    id=signing.dumps(id1)
+    funcao=None
+    if 'user_id' in request.session:
+        id1=request.session['user_id']
+        if Participante.objects.filter(utilizador_idutilizador=id1).exists():
+            funcao = "Participante"
+        elif ProfessorUniversitario.objects.filter(utilizador_idutilizador=id1).exists():
+            funcao = "docente Univesitario"
+        elif Administrador.objects.filter(utilizador_idutilizador=id1).exists():
+            funcao = "administardor"
+        elif Coordenador.objects.filter(utilizador_idutilizador=id1).exists():
+            funcao = "Coordenador"
+        elif Colaborador.objects.filter(utilizador_idutilizador=id1).exists():
+            funcao = "colab"
+        id=signing.dumps(id1)
     return funcao
 #----------------------------------------------registo user--------------------------------
 def password_check(passwd):   
@@ -71,7 +73,7 @@ def type_user(data,user_id):
             return t
     elif data['funcao']=='3' :
         if data['departamento']!='0' and user_id is not None:
-            DC=ProfessorUniversitario.objects.create(pk=user_id,departamento_iddepartamento=Departamento.objects.get(pk=data['departamento']))
+            DC=ProfessorUniversitario.objects.create(pk=user_id,departamento_iddepartamento=Departamento.objects.get(pk=data['departamento'].split("_")[1]))
         elif data['departamento']=='0':
             t=3
             return t
@@ -88,9 +90,16 @@ def type_user(data,user_id):
 def validateEmail(email):
     return re.search('^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$', email)
 
+def dep():
+    deps=Departamento.objects.all().annotate(value=Value("",CharField()))
+    for dep in deps:
+        uo=dep.unidade_organica_iduo
+        dep.value=str(uo.pk)+"_"+str(dep.pk)
+        print(dep.value)
+    return deps
 def register(request):
     UOs=UnidadeOrganica.objects.all()
-    deps=Departamento.objects.all()
+    deps=dep()
     if request.method == 'POST':
         form = UserRegisterForm(request.POST)
         data=request.POST

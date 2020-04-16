@@ -30,6 +30,9 @@ class Departamento(models.Model):
     class Meta:
         managed = False
         db_table = 'departamento'
+    
+    def __str__(self):
+        return str(self.iddepartamento)
 
 
 class Participante(models.Model):
@@ -126,5 +129,5 @@ class UnidadeOrganica(models.Model):
         db_table = 'unidade_organica'
     
     def __str__(self):
-        return self.iduo
+        return str(self.iduo)
 

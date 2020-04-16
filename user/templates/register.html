@@ -1,5 +1,6 @@
 {% extends "homepage.html" %}
 {% block content %}
+
 <head>
     <style>
         #hidden_div {
@@ -22,8 +23,9 @@
     {% include "navabar-admin.html" %}
     {% elif func == "docente Univesitario" %}
     {% include "navabar-dc.hmtl"}
-    {% elif func == None %}
+    {% elif func == "Participante" %}
     {% include "navabar-part.html" %}
+    {% elif func == None %}
     {% endif %}
     <div class="navbar-end">
         <div data-v-a67fe1ba="" class="navbar-item">
@@ -170,58 +172,60 @@
                                                                     <!---->
                                                                 </div>
                                                                 <p class="help is-danger">{{error2}}</p>
+                                                            </div>
+                                                            {% else %}
+                                                            <div class="field">
+                                                                <p class="" for={{form.password1.id_for_label}}>
+                                                                    Password</p>
+                                                                <div class="control is-clearfix"><input type="password"
+                                                                        id={{form.password1.id_for_label}}
+                                                                        name="password1" class="input">
                                                                 </div>
+                                                            </div>
+                                                            {% endif %}
+                                                            {% if form.password2.errors or error3 %}
+                                                            <div class="field">
+                                                                <p class="" for={{form.password1.id_for_label}}>
+                                                                    Password
+                                                                    Confirm</p>
+                                                                <div class="control has-icons-right"><input
+                                                                        type="password" name="password2"
+                                                                        id={{form.password2.id_for_label}}
+                                                                        autocomplete="on" class="input is-danger">
+                                                                    <!----> <span
+                                                                        class="icon is-right has-text-danger"><i
+                                                                            class="mdi mdi-alert-circle mdi-24px"></i></span>
+                                                                    <!---->
+                                                                </div>
+                                                                <p class="help is-danger">{{error3}}</p>
                                                                 {% else %}
                                                                 <div class="field">
-                                                                    <p class="" for={{form.password1.id_for_label}}>
-                                                                        Password</p>
+                                                                    <p class="" for={{form.password2.id_for_label}}>
+                                                                        Password
+                                                                        Confirm</p>
                                                                     <div class="control is-clearfix"><input
                                                                             type="password"
-                                                                            id={{form.password1.id_for_label}}
-                                                                            name="password1" class="input">
+                                                                            id={{form.password2.id_for_label}}
+                                                                            name="password2" class="input">
                                                                     </div>
                                                                 </div>
                                                                 {% endif %}
-                                                                {% if form.password2.errors or error3 %}
-                                                                <div class="field">
-                                                                    <p class="" for={{form.password1.id_for_label}}>
-                                                                        Password
-                                                                        Confirm</p>
-                                                                    <div class="control has-icons-right"><input
-                                                                            type="password" name="password2"
-                                                                            id={{form.password2.id_for_label}}
-                                                                            autocomplete="on" class="input is-danger">
-                                                                        <!----> <span
-                                                                            class="icon is-right has-text-danger"><i
-                                                                                class="mdi mdi-alert-circle mdi-24px"></i></span>
-                                                                        <!---->
-                                                                    </div>
-                                                                    <p class="help is-danger">{{error3}}</p>
-                                                                    {% else %}
-                                                                    <div class="field">
-                                                                        <p class="" for={{form.password2.id_for_label}}>
-                                                                            Password
-                                                                            Confirm</p>
-                                                                        <div class="control is-clearfix"><input
-                                                                                type="password"
-                                                                                id={{form.password2.id_for_label}}
-                                                                                name="password2" class="input">
-                                                                        </div>
-                                                                    </div>
-                                                                    {% endif %}
-                                                                    <div id="hidden_div" {% if form.funcao.value == '1' %} style="display:block;" {% endif %}>
+                                                                <div id="hidden_div" {% if form.funcao.value == '1' %}
+                                                                    style="display:block;" {% endif %}>
                                                                     {% if error5 == '1' %}
-                                                                        <div class="field">
+                                                                    <div class="field">
                                                                         <p class="" for={{form.curso.id_for_label}}>
                                                                             Curso</p>
                                                                         <div class=" control is-clearfix"><input
                                                                                 type="text"
                                                                                 id={{form.curso.id_for_label}}
-                                                                                name="curso" class="input is-danger"><span
+                                                                                name="curso"
+                                                                                class="input is-danger"><span
                                                                                 class="icon is-right has-text-danger"><i
                                                                                     class="mdi mdi-alert-circle mdi-24px"></i></span>
                                                                         </div>
-                                                                        <p class="help is-danger">Indique o seu curso</p>
+                                                                        <p class="help is-danger">Indique o seu curso
+                                                                        </p>
                                                                     </div>
                                                                     {% else %}
                                                                     <div class="field">
@@ -230,13 +234,19 @@
                                                                         <div class=" control is-clearfix"><input
                                                                                 type="text"
                                                                                 id={{form.curso.id_for_label}}
-                                                                                name="curso" class="input" value="{{form.curso.value|default_if_none:""}}">
+                                                                                name="curso" class="input"
+                                                                                value="{{form.curso.value|default_if_none:""}}">
                                                                         </div>
                                                                     </div>
                                                                     {% endif %}
-                                                                    <div class="field"><p
-                                                                            class="" for="{{form.Perferencias.id_for_label}}">Perferencias</p>
-                                                                        <div class="control is-clearfix"><textarea name="Perferencias" value="{{form.Perferencias.value|default_if_none:""}}" id="{{form.Perferencias.id_for_label}}"
+                                                                    <div class="field">
+                                                                        <p class=""
+                                                                            for="{{form.Perferencias.id_for_label}}">
+                                                                            Perferencias</p>
+                                                                        <div class="control is-clearfix"><textarea
+                                                                                name="Perferencias"
+                                                                                value="{{form.Perferencias.value|default_if_none:""}}"
+                                                                                id="{{form.Perferencias.id_for_label}}"
                                                                                 class="textarea"></textarea>
                                                                             <!---->
                                                                             <!----> <small
@@ -245,124 +255,166 @@
                                                                             </small></div>
                                                                         <!---->
                                                                     </div>
-                                                                    </div>
-                                                                    <div id="hidden_div2" {% if form.funcao.value == '2' %} style="display:block;" {% endif %}>
-                                                                        {% if error5 == 2 %}
-                                                                        <div class="field">
-                                                                            <p class="" for="{{form.UO.id_for_label}}">
-                                                                                Unidade Organica</p>
-                                                                            <div class="control is-expanded"><span
-                                                                                    class="select is-danger"><select
-                                                                                        name="UO" id="{{form.UO.id_for_label}}" value={{form.UO.value}}>
-                                                                                        <!---->
-                                                                                        <option value=0>
-                                                                                        </option>
-                                                                                        {% for UO in UOs %}
-                                                                                        <option value={{UO.pk}} {% if UO.pk == form.UO.value|add:"0" %} selected {% endif %}>{{UO.sigla}}
-                                                                                        </option>
-                                                                                        {% endfor %}
-                                                                                    </select></span>
-                                                                                <!---->
-                                                                            </div>
-                                                                            <p class="help is-danger">Preencha este campo.</p>
-                                                                            <!---->
-                                                                        </div>
-                                                                        {% else %}
-                                                                        <div class="field">
-                                                                            <p class="">
-                                                                                Unidade Organica</p>
-                                                                            <div class="control is-expanded"><span
-                                                                                    class="select "><select
-                                                                                        name="UO" id="{{form.UO.id_for_label}}" value={{form.UO.value}}>
-                                                                                        <!---->
-                                                                                        <option value=0>
-                                                                                        </option>
-                                                                                        {% for UO in UOs %}
-                                                                                        <option value={{UO.pk}} {% if form.UO.value|add:"0" == UO.pk %} selected {% endif %}>{{UO.sigla}}
-                                                                                        </option>
-                                                                                        {% endfor %}
-                                                                                    </select></span>
-                                                                                <!---->
-                                                                            </div>
-                                                                            
-                                                                            <!---->
-                                                                        </div>
-                                                                        {% endif %}
-                                                                    </div>
-                                                                   
-                                                                    <div id="hidden_div3" {% if form.funcao.value == '3' %} style="display:block;" {% endif %}>
-                                                                       {% if error5 == 3 %}
-                                                                        <div class="field">
-                                                                            <p class="" for="{{form.departamento.id_for_label}}">
-                                                                                Departamento</p>
-                                                                            <div class="control is-expanded"><span
-                                                                                    class="select  is-danger"><select
-                                                                                        name="departamento" id="{{form.departamento.id_for_label}}" value={{form.departamento.value}}>
-                                                                                        <!---->
-                                                                                        <option value=0>
-                                                                                        </option>
-                                                                                        {% for departamento in deps %}
-                                                                                        <option value={{departamento.pk}} {% if form.departamento.value|add:"0" == departamento.pk %} selected {% endif %}>{{departamento.nome}}
-                                                                                        </option>
-                                                                                        {% endfor %}
-                                                                                    </select></span>
-                                                                                <!---->
-                                                                            </div>
-                                                                            <p class="help is-danger">Preencha este campo.</p>
-                                                                            <!---->
-                                                                        </div>
-                                                                        {% else %}
-                                                                        <div class="field">
-                                                                            <p class="" for="{{form.departamento.id_for_label}}">
-                                                                                Departamento</p>
-                                                                            <div class="control is-expanded"><span
-                                                                                    class="select"><select
-                                                                                        name="departamento" id="{{form.departamento.id_for_label}}" value="{{form.departamento.value}}">
-                                                                                        <!---->
-                                                                                        <option value=0>
-                                                                                        </option>
-                                                                                        {% for departamento in deps %}
-                                                                                        <option value={{departamento.pk}} {% if form.departamento.value|add:"0" == departamento.pk %} selected {% endif %}>{{departamento.nome}}
-                                                                                        </option>
-                                                                                        {% endfor %}
-                                                                                    </select></span>
-                                                                                <!---->
-                                                                            </div>
-                                                                            
-                                                                            <!---->
-                                                                        </div>
-                                                                        {% endif %}
-                                                                    </div>
+                                                                </div>
+                                                                <div id="hidden_div2"
+                                                                    {% if form.funcao.value == '2' or form.funcao.value == '3' %}
+                                                                    style="display:block;" {% endif %}>
+                                                                    {% if error5 == 2 %}
                                                                     <div class="field">
-                                                                        <p class="" for={{form.funcao.id_for_label}}>
-                                                                            Função</p>
+                                                                        <p class="" for="{{form.UO.id_for_label}}">
+                                                                            Unidade Organica</p>
                                                                         <div class="control is-expanded"><span
-                                                                                class="select"><select
-                                                                                    id={{form.funcao.id_for_label}}
-                                                                                    name="funcao"
-                                                                                    value="{{form.funcao.value}}"
-                                                                                    onchange="yesnoCheck(this);">
+                                                                                class="select is-danger"><select
+                                                                                    name="UO"
+                                                                                    id="{{form.UO.id_for_label}}"
+                                                                                    value={{form.UO.value}}
+                                                                                    >
                                                                                     <!---->
-                                                                                    
-                                                                                    <option value=0 {% if form.funcao.value == '0' %} selected {% endif %}>Participante
+                                                                                    <option value=0>
                                                                                     </option>
-                                                                                    <option value=1 {% if form.funcao.value == '1' %} selected {% endif %}>Colaborador
+                                                                                    {% for UO in UOs %}
+                                                                                    <option value={{UO.pk}}
+                                                                                        {% if UO.pk == form.UO.value|add:"0" %}
+                                                                                        selected {% endif %}>
+                                                                                        {{UO.sigla}}
                                                                                     </option>
-                                                                                    <option value=2 {% if form.funcao.value == '2' %} selected {% endif %}>Coordenador
-                                                                                    </option>
-                                                                                    <option value=3 {% if form.funcao.value == '3' %} selected {% endif %}>
-                                                                                        Docente Universitario</option>
-                                                                                    <option value=4 {% if form.funcao.value == '4' %} selected {% endif %}>Administrador
-                                                                                    </option>
+                                                                                    {% endfor %}
                                                                                 </select></span>
                                                                             <!---->
                                                                         </div>
+                                                                        <p class="help is-danger">Preencha este campo.
+                                                                        </p>
                                                                         <!---->
                                                                     </div>
+                                                                    {% else %}
+                                                                    <div class="field">
+                                                                        <p class="">
+                                                                            Unidade Organica</p>
+                                                                        <div class="control is-expanded"><span
+                                                                                class="select "><select name="UO"
+                                                                                    id="{{form.UO.id_for_label}}"
+                                                                                    value={{form.UO.value}}
+                                                                                >
+                                                                                    <!---->
+                                                                                    <option value=0>
+                                                                                    </option>
+                                                                                    {% for UO in UOs %}
+                                                                                    <option value={{UO.pk}}
+                                                                                        {% if form.UO.value|add:"0" == UO.pk %}
+                                                                                        selected {% endif %}>
+                                                                                        {{UO.sigla}}
+                                                                                    </option>
+                                                                                    {% endfor %}
+                                                                                </select></span>
+                                                                            <!---->
+                                                                        </div>
+
+                                                                        <!---->
+                                                                    </div>
+                                                                    {% endif %}
                                                                 </div>
-                                                                <hr>
+                                                                <p id="de"></p>
+                                                                <div id="hidden_div3" {% if form.funcao.value == '3' %}
+                                                                    style="display:block;" {% endif %}>
+                                                                    {% if error5 == 3 %}
+                                                                    <div class="field">
+                                                                        <p class=""
+                                                                            for="{{form.departamento.id_for_label}}">
+                                                                            Departamento</p>
+                                                                        <div class="control is-expanded"><span
+                                                                                class="select  is-danger"><select
+                                                                                    name="departamento"
+                                                                                    id="{{form.departamento.id_for_label}}"
+                                                                                    value={{form.departamento.value}}>
+                                                                                    <!---->
+                                                                                    <option value=0>
+                                                                                    </option>
+                                                                                    {% for UO in UOs %}
+                                                                                    {% for departamento in deps %}
+                                                                                    {% if UO.pk == departamento.unidade_organica_iduo %}
+                                                                                    <option value={{departamento.value}}
+                                                                                        {% if form.departamento.value|add:"0" == departamento.pk %}
+                                                                                        selected {% endif %}><p hidden >{{UO.nome}}</hidden>
+                                                                                        {{departamento.nome}}
+                                                                                    </option>
+                                                                                    {% endif %}
+                                                                                    {% endfor %}
+                                                                                    {% endfor %}
+                                                                                </select></span>
+                                                                            <!---->
+                                                                        </div>
+                                                                        <p class="help is-danger">Preencha este campo.
+                                                                        </p>
+                                                                        <!---->
+                                                                    </div>
+                                                                    {% else %}
+                                                                    <div class="field">
+                                                                        <p class=""
+                                                                            for="{{form.departamento.id_for_label}}">
+                                                                            Departamento</p>
+                                                                        <div class="control is-expanded"><span
+                                                                                class="select"><select
+                                                                                    name="departamento"
+                                                                                    id="{{form.departamento.id_for_label}}"
+                                                                                    value="{{form.departamento.value}}">
+                                                                                    <!---->
+                                                                                    <option value=0>
+                                                                                    </option>
+                                                                                    {% for departamento in deps %}
+                                                                                    <option value="{{departamento.value}}"
+                                                                                        {% if form.departamento.value|add:"0" == departamento.pk %}
+                                                                                        selected {% endif %}>
+                                                                                        {{departamento.nome}}
+                                                                                    </option>
+                                                                                    {% endfor %}
+                                                                                </select></span>
+                                                                            <!---->
+                                                                        </div>
+
+                                                                        <!---->
+                                                                    </div>
+                                                                    {% endif %}
+                                                                </div>
+                                                                <div class="field">
+                                                                    <p class="" for={{form.funcao.id_for_label}}>
+                                                                        Função</p>
+                                                                    <div class="control is-expanded"><span
+                                                                            class="select"><select
+                                                                                id={{form.funcao.id_for_label}}
+                                                                                name="funcao"
+                                                                                value="{{form.funcao.value}}"
+                                                                                onchange="yesnoCheck(this);">
+                                                                                <!---->
+
+                                                                                <option value=0
+                                                                                    {% if form.funcao.value == '0' %}
+                                                                                    selected {% endif %}>Participante
+                                                                                </option>
+                                                                                <option value=1
+                                                                                    {% if form.funcao.value == '1' %}
+                                                                                    selected {% endif %}>Colaborador
+                                                                                </option>
+                                                                                <option value=2
+                                                                                    {% if form.funcao.value == '2' %}
+                                                                                    selected {% endif %}>Coordenador
+                                                                                </option>
+                                                                                <option value=3
+                                                                                    {% if form.funcao.value == '3' %}
+                                                                                    selected {% endif %}>
+                                                                                    Docente Universitario</option>
+                                                                                <option value=4
+                                                                                    {% if form.funcao.value == '4' %}
+                                                                                    selected {% endif %}>Administrador
+                                                                                </option>
+                                                                            </select></span>
+                                                                        <!---->
+                                                                    </div>
+                                                                    <!---->
+                                                                </div>
                                                             </div>
+                                                            <hr>
                                                         </div>
+                                                    </div>
                         </section>
 
                         <div class="column is-8 is-offset-2">
@@ -411,20 +463,31 @@
                 document.getElementById('hidden_div2').style.display = 'none';
                 document.getElementById('hidden_div3').style.display = 'none';
                 document.getElementById('hidden_div').style.display = 'block';
-            } else if(that.value==2){
+            } else if (that.value == 2) {
                 document.getElementById('hidden_div').style.display = 'none';
                 document.getElementById('hidden_div3').style.display = 'none';
                 document.getElementById('hidden_div2').style.display = 'block';
-            } else if(that.value==3){
+            } else if (that.value == 3) {
                 document.getElementById('hidden_div').style.display = 'none';
-                document.getElementById('hidden_div2').style.display = 'none';
+                document.getElementById('hidden_div2').style.display = 'block';
                 document.getElementById('hidden_div3').style.display = 'block';
             }
-            else{
+            else {
                 document.getElementById('hidden_div').style.display = 'none';
-               document.getElementById('hidden_div2').style.display = 'none';
-                document.getElementById('hidden_div3').style.display = 'none'; 
+                document.getElementById('hidden_div2').style.display = 'none';
+                document.getElementById('hidden_div3').style.display = 'none';
             }
-}
+        }    </script>
+    <script>
+$(function() {
+    $('#{{form.UO.id_for_label}}').on('change', function() {
+        var val = this.value;
+        $('#{{form.departamento.id_for_label}} option').hide().filter(function() {
+            return this.value.indexOf( val + '_' ) === 0;
+        })
+        .show();
+    })
+    .change();
+});
     </script>
     {% endblock content %}
