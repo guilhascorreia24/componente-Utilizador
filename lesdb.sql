@@ -60,6 +60,7 @@ CREATE TABLE IF NOT EXISTS `les`.`campus` (
   `nome` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`idCampus`))
 ENGINE = InnoDB
+AUTO_INCREMENT = 2
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -135,6 +136,7 @@ CREATE TABLE IF NOT EXISTS `les`.`unidade_organica` (
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
+AUTO_INCREMENT = 3
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -154,6 +156,7 @@ CREATE TABLE IF NOT EXISTS `les`.`departamento` (
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
+AUTO_INCREMENT = 3
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -286,6 +289,7 @@ CREATE TABLE IF NOT EXISTS `les`.`django_content_type` (
   PRIMARY KEY (`id`),
   UNIQUE INDEX `django_content_type_app_label_model_76bd3d3b_uniq` (`app_label` ASC, `model` ASC) VISIBLE)
 ENGINE = InnoDB
+AUTO_INCREMENT = 177
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -304,6 +308,7 @@ CREATE TABLE IF NOT EXISTS `les`.`auth_permission` (
     FOREIGN KEY (`content_type_id`)
     REFERENCES `les`.`django_content_type` (`id`))
 ENGINE = InnoDB
+AUTO_INCREMENT = 705
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -626,6 +631,7 @@ CREATE TABLE IF NOT EXISTS `les`.`django_migrations` (
   `applied` DATETIME(6) NOT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB
+AUTO_INCREMENT = 23
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -996,11 +1002,14 @@ CREATE TABLE IF NOT EXISTS `les`.`tarefa` (
   `concluida` TINYINT NOT NULL,
   `Coordenador_Utilizador_idutilizador` INT NOT NULL,
   `colaborador_Utilizador_idutilizador` INT NOT NULL,
-  `Atividade_idAtividade` INT NOT NULL,
+  `Atividade_idAtividade` INT NULL DEFAULT NULL,
+  `hora_inicio` TIME NOT NULL,
+  `dia_dia` DATE NOT NULL,
   PRIMARY KEY (`idtarefa`),
   INDEX `fk_tarefa_Coordenador_id` (`Coordenador_Utilizador_idutilizador` ASC) VISIBLE,
   INDEX `fk_tarefa_colaborador_id` (`colaborador_Utilizador_idutilizador` ASC) VISIBLE,
   INDEX `fk_tarefa_Atividade_id` (`Atividade_idAtividade` ASC) VISIBLE,
+  INDEX `fk_tarefa_dia1_idx` (`dia_dia` ASC) VISIBLE,
   CONSTRAINT `fk_tarefa_Atividade`
     FOREIGN KEY (`Atividade_idAtividade`)
     REFERENCES `les`.`atividade` (`idAtividade`)
@@ -1014,6 +1023,11 @@ CREATE TABLE IF NOT EXISTS `les`.`tarefa` (
   CONSTRAINT `fk_tarefa_Coordenador`
     FOREIGN KEY (`Coordenador_Utilizador_idutilizador`)
     REFERENCES `les`.`coordenador` (`Utilizador_idutilizador`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_tarefa_dia1`
+    FOREIGN KEY (`dia_dia`)
+    REFERENCES `les`.`dia` (`dia`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
