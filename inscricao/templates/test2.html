@@ -1,19 +1,29 @@
 <html>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-<script>
-$(document).ready(function(){
-    $('.save-button').on('click', function () {
-        window.alert($(this).id);
-            // Now the div itself as an object is $(this)
-        $(this).next("input").val("test");
-    });
-})
-    </script>
-    <body>
-        <button type = "submit" class="save-button" id="save-button">Sub</button>
-        <p>sfdlsflkj</p>
-        <input type="text" value="skjdfh">
-        </form>
-    </body>
+<template id="template_table_sessoes">
+<tr draggable="false">
+    <td data-label="id" style="display:none;">ksjdfhskdjfh</td>
+    <td data-label="Horário">jksdfhskjdf</td>
+    <td data-label="Inscrever">
+        <div class="field has-numberinput has-numberinput-compact">
+            <div class="b-numberinput field has-addons" style="width: 7rem;">
+                <p class="control"><button type="button" class="button is-primary">
+                    <span class="icon"><i class="mdi mdi-minus mdi-24px"></i></span></button>
+                </p>
+                <div class="control is-clearfix"> <input type="number" autocomplete="on" step="1" min="0" class="input escolher_sessao"></div> 
+                <p class="control"><button type="button" class="button is-primary">
+                    <span class="icon"><i class="mdi mdi-plus mdi-24px"></i></span></button>
+                </p>
+            </div>
+        </div>
+    </td>
+    <td data-label="Titulo">sdfsdf</td>
+    <td data-label="Espaço" >sdfsdf</td>
+    <td data-label="Campus" >erwerwer</td>
+    <td data-label="Ações" class="has-text-centered">
+        <button id="remove_button"><span class="icon has-text-danger"><i class="mdi mdi-close-box mdi-24px"></i></span>
+        </button>
+    </td>
+</tr>
+</template>
 </html>
 

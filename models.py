@@ -530,8 +530,8 @@ class TransporteHasInscricao(models.Model):
     transporte_has_inscricao_id = models.IntegerField(primary_key=True)
     partida = models.ForeignKey(HorarioHasDia, models.DO_NOTHING, db_column='partida')
     numero_passageiros = models.IntegerField(blank=True, null=True)
-    partida_paragem = models.ForeignKey(Paragem, models.DO_NOTHING, db_column='partida_paragem', related_name='part')
-    chegada_paragem = models.ForeignKey(Paragem, models.DO_NOTHING, db_column='chegada_paragem', related_name='cheg')
+    partida_paragem = models.ForeignKey(Paragem, models.DO_NOTHING, db_column='partida_paragem')
+    chegada_paragem = models.ForeignKey(Paragem, models.DO_NOTHING, db_column='chegada_paragem')
 
     class Meta:
         managed = False

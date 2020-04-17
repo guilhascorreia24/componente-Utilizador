@@ -33,50 +33,16 @@ class Form_Escola(ModelForm):
 
 ###################### TRANSPORTES ########################################
 
-class Form_Transporte_Per_Campus(Form):
-    numero_passageiros=forms.IntegerField(label="Numero de Passageiros")
-    partida = forms.ModelChoiceField(queryset=models.HorarioHasDia.objects.all())
-    chegada = forms.ModelChoiceField(queryset=models.HorarioHasDia.objects.all())
+class Form_Transportes(ModelForm):
 
-    def save(self,origem,inscricao,campus):
-        destino = campus.paragem
-        chegada = self.cleaned_data['partida']
-        partida = self.cleaned_data['chegada']
-        numero_passageiros = self.cleaned_data['numero_passageiros']
-        db_partida = models.TransporteHasHorario(horario_has_dia_id_dia_hora = partida,npessoas=numero_passageiros,destino = destino,origem = origem)
-        db_chegada = models.TransporteHasHorario(horario_has_dia_id_dia_hora = chegada,npessoas=numero_passageiros,destino = origem,origem = destino)
-        db_transporte = models.TransporteHasInscricao(inscricao_idinscricao = inscricao,partida = db_partida, chegada = db_chegada)
+    def save(self, idinscricao):
+        base = super(Form_Transportes, self).save(commit=False)
+        base.inscricao_idinscricao = idinscricao
+        return base.save()
 
-        db_partida.save()
-        db_chegada.save()
-        db_transporte.save()
-
-
-class Form_Transportes(Form):
-    def __init__(self,request = 0):
-        campus = models.Campus.objects.all()
-        self.campus = list()
-        if request != 0 and request.method == 'POST':
-            for camp in campus:
-                transporte = Form_Transporte_Per_Campus(request.POST,prefix="transporte_" + str(camp.idcampus))
-                transporte.campus = camp
-                self.campus.append(transporte)
-        else:
-            for camp in campus:
-                transporte = Form_Transporte_Per_Campus(prefix="transporte_" + str(camp.idcampus))
-                transporte.nome = camp.nome
-                self.campus.append(transporte)
-
-    def is_valid(self):
-        value = True
-        for camp in self.campus:
-            if not camp.is_valid():
-                value = False
-        return value
-
-    def save(self,origem,inscricao):
-        for transporte in self.campus:
-            transporte.save(origem,inscricao,transporte.campus)
+    class Meta:
+        model = models.TransporteHasInscricao
+        fields = ['partida','numero_passageiros','partida_paragem','chegada_paragem']
 
 
 
@@ -149,32 +115,50 @@ class Form_Prato(ModelForm):
 ###################################################SESSOES#############################################
 
 class Form_Sessao(ModelForm):
+    inscritos = forms.IntegerField()
+    sessao_idsessao = forms.IntegerField()
+
 
     def save(self,inscricao):
         base = super(Form_Sessao, self).save(commit=False)
-        base.inscricao_idinscricao = inscricao
+        base.inscricao_idinscricao = self.cleaned_data['inscricao']
+        base.sessao_idsessao = self.cleaned_data['sessao_idsessao']
         return base.save()
+
+    def is_valid(self):
+        ids = self.cleaned_data['sessao_idsessao']
+        try:
+            sessao = SomeModel.objects.get(pk=ids)
+        except SomeModel.DoesNotExist:
+            return False
+        
+        if self.cleaned_data['inscritos'] > sessao.vagas:
+            return False
+        
+        return True
     class Meta:
         model = models.InscricaoHasSessao
-        fields = ['sessao_idsessao','inscritos']
+        fields = []
 
 ###################################################END SESSOES#############################################
 class CustomForm:
     def __init__(self,request = 0):
         Sessao = modelformset_factory(models.InscricaoHasSessao,form = Form_Sessao,extra=1)
         Responsaveis = modelformset_factory(models.Responsaveis,form = Form_Responsaveis,extra=1)
+        Transportes = modelformset_factory(models.TransporteHasInscricao,form = Form_Transportes,extra=1)
         self.almoco = Form_Almoco(request)
-        self.transportes = Form_Transportes(request)
         if request != 0 and request.method == 'POST':
             self.escola = Form_Escola(request.POST,prefix="escola")
             self.inscricao = Form_Inscricao(request.POST,prefix="inscricao")
-            self.responsaveis = self.responsaveis(request.POST,prefix='responsaveis_set')
-            self.sessao = self.sessao(request.POST,prefix='sessao_set')
+            self.responsaveis = Responsaveis(request.POST,prefix='responsaveis_set')
+            self.sessao = Sessao(request.POST,prefix='sessao_set')
+            self.transportes = Transportes(request.POST,prefix='transportes_set')
         else:
             self.escola = Form_Escola(prefix="escola")
             self.inscricao = Form_Inscricao(prefix="inscricao")
             self.sessao = Sessao(prefix='sessao_set')
             self.responsaveis = Responsaveis(prefix='responsaveis_set')
+            self.transportes = Transportes(prefix='transportes_set')
     
     def is_valid(self):
         #print(self.inscricao_coletiva.is_valid())
@@ -189,6 +173,10 @@ class CustomForm:
         self.almoco.save(inscricao)
         origem ,created = models.Paragem.objects.get_or_create(paragem = escola.local)
         self.transportes.save(origem,inscricao)
+
+        for each in self.transportes:
+            each.save(inscricao)
+
 
         for each in self.sessao:
             each.save(inscricao)

@@ -3066,111 +3066,10 @@
                                                                                 <!---->
                                                                             </thead>
                                                                             <tbody>
-                                                                                <tr draggable="false" class="">
-                                                                                    <td class="chevron-cell"><a
-                                                                                            role="button"><span
-                                                                                                class="icon"><i
-                                                                                                    class="mdi mdi-chevron-right mdi-24px"></i></span></a>
-                                                                                    </td>
-                                                                                    <!---->
-                                                                                    <td data-label="Nome" class="">
-                                                                                        Introdução a Python </td>
-                                                                                    <td data-label="Tipo" class="">
-                                                                                        Atividades Tecnológicas </td>
-                                                                                    <td data-label="Campus" class="">
-                                                                                        Gambelas </td>
-                                                                                    <td data-label="E.O." class=""> FCT
-                                                                                    </td>
-                                                                                    <td data-label="Dep." class=""> DEEI
-                                                                                    </td>
-                                                                                    <!---->
-                                                                                </tr>
-                                                                                <!---->
-                                                                                <!---->
-                                                                                <tr draggable="false" class="">
-                                                                                    <td class="chevron-cell"><a
-                                                                                            role="button"><span
-                                                                                                class="icon"><i
-                                                                                                    class="mdi mdi-chevron-right mdi-24px"></i></span></a>
-                                                                                    </td>
-                                                                                    <!---->
-                                                                                    <td data-label="Nome" class=""> O
-                                                                                        primeiro Hello World </td>
-                                                                                    <td data-label="Tipo" class="">
-                                                                                        Atividades Tecnológicas </td>
-                                                                                    <td data-label="Campus" class="">
-                                                                                        Gambelas </td>
-                                                                                    <td data-label="E.O." class=""> FCT
-                                                                                    </td>
-                                                                                    <td data-label="Dep." class=""> DEEI
-                                                                                    </td>
-                                                                                    <!---->
-                                                                                </tr>
-                                                                                <!---->
-                                                                                <!---->
-                                                                                <tr draggable="false" class="">
-                                                                                    <td class="chevron-cell"><a
-                                                                                            role="button"><span
-                                                                                                class="icon"><i
-                                                                                                    class="mdi mdi-chevron-right mdi-24px"></i></span></a>
-                                                                                    </td>
-                                                                                    <!---->
-                                                                                    <td data-label="Nome" class="">
-                                                                                        Deixa-me rir </td>
-                                                                                    <td data-label="Tipo" class="">
-                                                                                        Palestra </td>
-                                                                                    <td data-label="Campus" class="">
-                                                                                        Gambelas </td>
-                                                                                    <td data-label="E.O." class=""> FCT
-                                                                                    </td>
-                                                                                    <td data-label="Dep." class=""> DEEI
-                                                                                    </td>
-                                                                                    <!---->
-                                                                                </tr>
-                                                                                <!---->
-                                                                                <!---->
-                                                                                <tr draggable="false" class="">
-                                                                                    <td class="chevron-cell"><a
-                                                                                            role="button"><span
-                                                                                                class="icon"><i
-                                                                                                    class="mdi mdi-chevron-right mdi-24px"></i></span></a>
-                                                                                    </td>
-                                                                                    <!---->
-                                                                                    <td data-label="Nome" class="">
-                                                                                        Observação microscópica </td>
-                                                                                    <td data-label="Tipo" class="">
-                                                                                        Atividade Laboratorial </td>
-                                                                                    <td data-label="Campus" class="">
-                                                                                        Gambelas </td>
-                                                                                    <td data-label="E.O." class=""> FCT
-                                                                                    </td>
-                                                                                    <td data-label="Dep." class=""> DEEI
-                                                                                    </td>
-                                                                                    <!---->
-                                                                                </tr>
-                                                                                <!---->
-                                                                                <!---->
-                                                                                <tr draggable="false" class="">
-                                                                                    <td class="chevron-cell"><a
-                                                                                            role="button"><span
-                                                                                                class="icon"><i
-                                                                                                    class="mdi mdi-chevron-right mdi-24px"></i></span></a>
-                                                                                    </td>
-                                                                                    <!---->
-                                                                                    <td data-label="Nome" class="">
-                                                                                        Fomos longe demais? </td>
-                                                                                    <td data-label="Tipo" class="">
-                                                                                        Tertúlia </td>
-                                                                                    <td data-label="Campus" class="">
-                                                                                        Gambelas </td>
-                                                                                    <td data-label="E.O." class=""> FCT
-                                                                                    </td>
-                                                                                    <td data-label="Dep." class=""> DEEI
-                                                                                    </td>
-                                                                                    <!---->
-                                                                                </tr>
-                                                                                <!---->
-                                                                                <!---->
+                                                                                {% regroup atividades_sessao by idatividade as atividade_group %}
+                                                                                {% for at in atividade_group %}
+                                                                                {% if at.list %}
+                                                                                {% with at.list.0 as atividade %}
                                                                                 <tr class="dropdown-toggle" role="button" data-toggle="dropdown">
                                                                                     <td class="chevron-cell"><a
                                                                                             role="button"><span
@@ -3179,14 +3078,16 @@
                                                                                     </td>
                                                                                     <!---->
                                                                                     <td data-label="Nome" class="">
-                                                                                        Ciência no mundo </td>
+                                                                                        {{atividade.titulo}} </td>
                                                                                     <td data-label="Tipo" class="">
-                                                                                        Tertúlia </td>
+                                                                                        {{atividade.tematica}} </td>
                                                                                     <td data-label="Campus" class="">
-                                                                                        Gambelas </td>
-                                                                                    <td data-label="E.O." class=""> EE
+                                                                                        {{atividade.campus}} </td>
+                                                                                    <td data-label="E.O." class=""> 
+                                                                                        {{atividade.unidade_organica}}
                                                                                     </td>
-                                                                                    <td data-label="Dep." class=""> BD
+                                                                                    <td data-label="Dep." class="">
+                                                                                        {{atividade.departamento}}
                                                                                     </td>
                                                                                     <!---->
                                                                                 </tr>
@@ -3195,12 +3096,9 @@
                                                                                         <div class="detail-container dropdown-item">
                                                                                             <div class="content">
                                                                                                 <div style="font-size: 15px;">
-                                                                                                    <p>Conceitos físicos
-                                                                                                        demonstrados em
-                                                                                                        tarefas do dia a
-                                                                                                        dia</p>
+                                                                                                    <p>{{atividade.descricao}}</p>
                                                                                                     <p><strong>Responsável:</strong>
-                                                                                                        João Barreiros
+                                                                                                        {{atividade.docente}}
                                                                                                     </p>
                                                                                                     <div class="b-table">
                                                                                                         <!---->
@@ -3209,8 +3107,6 @@
                                                                                                             <table class="table has-mobile-cards">
                                                                                                                 <thead>
                                                                                                                     <tr>
-                                                                                                                        <!---->
-                                                                                                                        <!---->
                                                                                                                         <th class="">
                                                                                                                             <div class="th-wrap">
                                                                                                                                 Hora
@@ -3241,29 +3137,35 @@
                                                                                                                                 <span class="icon is-small" style="display: none;"><i class="mdi mdi-arrow-up"></i></span>
                                                                                                                             </div>
                                                                                                                         </th>
-                                                                                                                        <!---->
                                                                                                                     </tr>
                                                                                                                     <!---->
                                                                                                                     <!---->
                                                                                                                 </thead>
                                                                                                                 <tbody>
+                                                                                                                    {% for sessao in at.list %}
                                                                                                                     <tr draggable="false" class="">
                                                                                                                         <!---->
                                                                                                                         <!---->
-                                                                                                                        <td data-label="Hora" class="">
-                                                                                                                            14:00
+                                                                                                                        <td data-label="Campus" style="display:none" class="">
+                                                                                                                            {{atividade.campus}}
+                                                                                                                        </td>
+                                                                                                                        <td data-label="Titulo" style="display:none" class="">
+                                                                                                                            {{atividade.titulo}}
+                                                                                                                        </td>
+                                                                                                                        <td data-label="id" style="display:none" class="">
+                                                                                                                            {{sessao.idsessao}}
+                                                                                                                        </td>
+                                                                                                                        <td data-label="Horário" class="">
+                                                                                                                            {{sessao.hora}}
                                                                                                                         </td>
                                                                                                                         <td data-label="Duração" class="">
-                                                                                                                            60
-                                                                                                                            min
+                                                                                                                            {{sessao.duracao}}
                                                                                                                         </td>
                                                                                                                         <td data-label="Vagas" class="">
-                                                                                                                            35
+                                                                                                                            {{sessao.vagas}}
                                                                                                                         </td>
                                                                                                                         <td data-label="Espaço" class="">
-                                                                                                                            Ed.2
-                                                                                                                            Sala
-                                                                                                                            2.12
+                                                                                                                            {{atividade.espaco}}
                                                                                                                         </td>
                                                                                                                         <td data-label="Inscrever" class="">
                                                                                                                             <div class="field has-numberinput has-numberinput-compact">
@@ -3274,9 +3176,6 @@
                                                                                                                                     </p>
                                                                                                                                     <div class="control is-clearfix">
                                                                                                                                         <input type="number" autocomplete="on" step="1" min="0" class="input escolher_sessao">
-                                                                                                                                        <!---->
-                                                                                                                                        <!---->
-                                                                                                                                        <!---->
                                                                                                                                     </div>
                                                                                                                                     <p class="control">
                                                                                                                                         <button type="button" class="button is-primary"><span class="icon"><i class="mdi mdi-plus mdi-24px"></i></span></button>
@@ -3287,8 +3186,7 @@
                                                                                                                         </td>
                                                                                                                         <!---->
                                                                                                                     </tr>
-                                                                                                                    <!---->
-                                                                                                                    <!---->
+                                                                                                                {% endfor %}
                                                                                                                 </tbody>
                                                                                                                 <!---->
                                                                                                             </table>
@@ -3300,193 +3198,9 @@
                                                                                         </div>
                                                                                     </td>
                                                                                 </tr>
-                                                                                <!---->
-                                                                                <!---->
-                                
-                                                                                <tr class="dropdown-toggle" role="button" data-toggle="dropdown">
-                                                                                    <td class="chevron-cell"><a
-                                                                                            role="button"><span
-                                                                                                class="icon"><i
-                                                                                                    class="mdi mdi-chevron-right mdi-24px"></i></span></a>
-                                                                                    </td>
-                                                                                    <!---->
-                                                                                    <td data-label="Nome" class="">
-                                                                                        Física no Dia a Dia </td>
-                                                                                    <td data-label="Tipo" class="">
-                                                                                        Debate </td>
-                                                                                    <td data-label="Campus" class="">
-                                                                                        Gambelas </td>
-                                                                                    <td data-label="E.O." class=""> FCT
-                                                                                    </td>
-                                                                                    <td data-label="Dep." class=""> BST
-                                                                                    </td>
-                                                                                    <!---->
-                                                                                </tr>
-                                                                                <tr class="detail" style="display:none;">
-                                                                                    <td colspan="6">
-                                                                                        <div class="detail-container dropdown-item">
-                                                                                            <div class="content">
-                                                                                                <div
-                                                                                                    style="font-size: 15px;">
-                                                                                                    <p>Conceitos físicos
-                                                                                                        demonstrados em
-                                                                                                        tarefas do dia a
-                                                                                                        dia</p>
-                                                                                                    <p><strong>Responsável:</strong>
-                                                                                                        João Barreiros
-                                                                                                    </p>
-                                                                                                    <div
-                                                                                                        class="b-table">
-                                                                                                        <!---->
-                                                                                                        <!---->
-                                                                                                        <div
-                                                                                                            class="table-wrapper">
-                                                                                                            <table
-                                                                                                                class="table has-mobile-cards">
-                                                                                                                <thead>
-                                                                                                                    <tr>
-                                                                                                                        <!---->
-                                                                                                                        <!---->
-                                                                                                                        <th
-                                                                                                                            class="">
-                                                                                                                            <div
-                                                                                                                                class="th-wrap">
-                                                                                                                                Hora
-                                                                                                                                <span
-                                                                                                                                    class="icon is-small"
-                                                                                                                                    style="display: none;"><i
-                                                                                                                                        class="mdi mdi-arrow-up"></i></span>
-                                                                                                                            </div>
-                                                                                                                        </th>
-                                                                                                                        <th
-                                                                                                                            class="">
-                                                                                                                            <div
-                                                                                                                                class="th-wrap">
-                                                                                                                                Duração
-                                                                                                                                <span
-                                                                                                                                    class="icon is-small"
-                                                                                                                                    style="display: none;"><i
-                                                                                                                                        class="mdi mdi-arrow-up"></i></span>
-                                                                                                                            </div>
-                                                                                                                        </th>
-                                                                                                                        <th
-                                                                                                                            class="">
-                                                                                                                            <div
-                                                                                                                                class="th-wrap">
-                                                                                                                                Vagas
-                                                                                                                                <span
-                                                                                                                                    class="icon is-small"
-                                                                                                                                    style="display: none;"><i
-                                                                                                                                        class="mdi mdi-arrow-up"></i></span>
-                                                                                                                            </div>
-                                                                                                                        </th>
-                                                                                                                        <th
-                                                                                                                            class="">
-                                                                                                                            <div
-                                                                                                                                class="th-wrap">
-                                                                                                                                Espaço
-                                                                                                                                <span
-                                                                                                                                    class="icon is-small"
-                                                                                                                                    style="display: none;"><i
-                                                                                                                                        class="mdi mdi-arrow-up"></i></span>
-                                                                                                                            </div>
-                                                                                                                        </th>
-                                                                                                                        <th
-                                                                                                                            class="">
-                                                                                                                            <div
-                                                                                                                                class="th-wrap">
-                                                                                                                                Inscrever
-                                                                                                                                <span
-                                                                                                                                    class="icon is-small"
-                                                                                                                                    style="display: none;"><i
-                                                                                                                                        class="mdi mdi-arrow-up"></i></span>
-                                                                                                                            </div>
-                                                                                                                        </th>
-                                                                                                                        <!---->
-                                                                                                                    </tr>
-                                                                                                                    <!---->
-                                                                                                                    <!---->
-                                                                                                                </thead>
-                                                                                                                <tbody>
-                                                                                                                    <tr draggable="false"
-                                                                                                                        class="">
-                                                                                                                        <!---->
-                                                                                                                        <!---->
-                                                                                                                        <td data-label="Hora"
-                                                                                                                            class="">
-                                                                                                                            14:00
-                                                                                                                        </td>
-                                                                                                                        <td data-label="Duração"
-                                                                                                                            class="">
-                                                                                                                            60
-                                                                                                                            min
-                                                                                                                        </td>
-                                                                                                                        <td data-label="Vagas"
-                                                                                                                            class="">
-                                                                                                                            35
-                                                                                                                        </td>
-                                                                                                                        <td data-label="Espaço"
-                                                                                                                            class="">
-                                                                                                                            Ed.2
-                                                                                                                            Sala
-                                                                                                                            2.12
-                                                                                                                        </td>
-                                                                                                                        <td data-label="Inscrever"
-                                                                                                                            class="">
-                                                                                                                            <div
-                                                                                                                                class="field has-numberinput has-numberinput-compact">
-                                                                                                                                <!---->
-                                                                                                                                <div class="b-numberinput field no-margin-bottom has-addons"
-                                                                                                                                    style="width: 7rem; margin-bottom: 0px;">
-                                                                                                                                    <p
-                                                                                                                                        class="control">
-                                                                                                                                        <button
-                                                                                                                                            type="button"
-                                                                                                                                            class="button is-primary"><span
-                                                                                                                                                class="icon"><i
-                                                                                                                                                    class="mdi mdi-minus mdi-24px"></i></span></button>
-                                                                                                                                    </p>
-                                                                                                                                    <div
-                                                                                                                                        class="control is-clearfix">
-                                                                                                                                        <input
-                                                                                                                                            type="number"
-                                                                                                                                            autocomplete="on"
-                                                                                                                                            step="1"
-                                                                                                                                            min="0"
-                                                                                                                                            class="input">
-                                                                                                                                        <!---->
-                                                                                                                                        <!---->
-                                                                                                                                        <!---->
-                                                                                                                                    </div>
-                                                                                                                                    <p
-                                                                                                                                        class="control">
-                                                                                                                                        <button
-                                                                                                                                            type="button"
-                                                                                                                                            class="button is-primary"><span
-                                                                                                                                                class="icon"><i
-                                                                                                                                                    class="mdi mdi-plus mdi-24px"></i></span></button>
-                                                                                                                                    </p>
-                                                                                                                                </div>
-                                                                                                                                <!---->
-                                                                                                                            </div>
-                                                                                                                        </td>
-                                                                                                                        <!---->
-                                                                                                                    </tr>
-                                                                                                                    <!---->
-                                                                                                                    <!---->
-                                                                                                                </tbody>
-                                                                                                                <!---->
-                                                                                                            </table>
-                                                                                                        </div>
-                                                                                                        <!---->
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </td>
-                                                                                </tr>
-                                                                                <!---->
-                                                                                <!---->
+                                                                                {% endwith %}
+                                                                                {% endif %}
+                                                                                {% endfor %}
                                                                             </tbody>
                                                                             <!---->
                                                                         </table>
@@ -3536,8 +3250,8 @@
                                                     <!---->
                                                     <!---->
                                                     <div class="table-wrapper">
-                                                        <table class="table has-mobile-cards">
-                                                            <thead>
+                                                        <table class="table has-mobile-cards" id="sessao_escolhida">
+                                                            <thead style="display:none;">
                                                                 <tr> 
                                                                     <th class="">
                                                                         <div class="th-wrap">
@@ -3571,7 +3285,34 @@
                                                                     </th>
                                                                 </tr>
                                                             </thead>
-                                                            <tbody id="sessao_escolhida">
+                                                            
+                                                            <tbody>
+                                                                <!--TEMPLATE -->
+                                                                <tr draggable="false" id="templateTableSessoes" style="display:none;">
+                                                                    <td data-label="id" style="display:none">{{form.sessao.empty_form.sessao_idsessao}}</td>
+                                                                    <td data-label="Horário"></td>
+                                                                    <td data-label="Inscrever">
+                                                                        <div class="field has-numberinput has-numberinput-compact">
+                                                                            <div class="b-numberinput field has-addons" style="width: 7rem;">
+                                                                                <p class="control"><button type="button" class="button is-primary">
+                                                                                    <span class="icon"><i class="mdi mdi-minus mdi-24px"></i></span></button>
+                                                                                </p>
+                                                                                <div class="control is-clearfix">{{form.sessao.empty_form.inscritos|addcss:"input"}}</div> 
+                                                                                <p class="control"><button type="button" class="button is-primary">
+                                                                                    <span class="icon"><i class="mdi mdi-plus mdi-24px"></i></span></button>
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td data-label="Titulo"></td>
+                                                                    <td data-label="Espaço" ></td>
+                                                                    <td data-label="Campus" ></td>
+                                                                    <td data-label="Ações" class="has-text-centered">
+                                                                        <a id="remove_button"><span class="icon has-text-danger"><i class="mdi mdi-close-box mdi-24px"></i></span>
+                                                                        </a>
+                                                                    </td>
+                                                                </tr>
+                                                                <!--END TEMPLATE-->
                                                                 <tr class="is-empty">
                                                                     <td colspan="0">
                                                                         <p class="has-text-grey">Não há sessões
@@ -3646,6 +3387,8 @@
     <script>
         var currentTab = 0; // Current tab is set to be the first tab (0)
         $(document).ready(function() { 
+
+            //Fix plus button
             $(".b-numberinput > .control > .button > span > .mdi-minus").click(function(){
                 var input = $(this).parents(".b-numberinput").first().find("input");
                 var value = parseInt(input.val());
@@ -3659,6 +3402,7 @@
                 input.val(value).change();
             }); 
 
+            //Fix minus button
             $(".b-numberinput > .control > .button > span > .mdi-plus").click(function(){
                 var input = $(this).parents(".b-numberinput").first().find("input");
                 var value = parseInt(input.val());
@@ -3672,7 +3416,8 @@
                 input.val(value).change();
             });
 
-            $(".has-mobile-cards > tbody > tr").click(function(){
+            //Expand Cards
+            $(".has-mobile-cards > tbody > .dropdown-toggle").click(function(){
                 var detail = $(this).next(".detail");
 
                 if(detail.is(":visible")){
@@ -3692,28 +3437,39 @@
                 $(this).data('pre',current);
 
                 if(current>0 && prev == 0){
+                    var parent = $(this).closest("tr");
+                    var table = $("#templateTableSessoes").clone(true);
+                    table.removeAttr('id');
 
-                    
+                    var form_idx = $('#sessao_escolhida > tbody').children().length-1; 
+                    var replace = table.html().replace(/__prefix__/g, form_idx);
+                    table.html(replace);
+                        console.log(table);
+                    table.find("td[data-label='Campus']").html(parent.children("td[data-label='Campus']").html());
+                    table.find("td[data-label='Titulo']").html(parent.children("td[data-label='Titulo']").html());
+                    table.find("td[data-label='Horário']").html(parent.children("td[data-label='Horário']").html());
+                    table.find("td[data-label='Espaço']").html(parent.children("td[data-label='Espaço']").html());
 
-                    var table = $(this).parents("tr").first().clone(true);
-                    var tInput = table.find('.escolher_sessao');
+                    var tInput = table.find("td[data-label='Inscrever']").find('.input');
+                    tInput.val($(this).val());
+                    table.find("td[data-label='id']").find('input').val(parent.children("td[data-label='id']").text());
                     syncInputs(tInput,$(this));
+
+                    //Removes entry if button clicked
+                    table.find('#remove_button').on("click",function(){
+                        $(this).closest('tbody').find('.input').val(0).change();
+                        removeEntry($(this).closest('tr'));
+                    });
 
                     //removes the entry if reaches 0
                     tInput.on("change",function(){
                         if($(this).val() == 0){
-                            var par = $("#sessao_escolhida");
-                            $(this).parents("tr").first().remove();
-                            if(par.children().length <= 1){
-                                par.children(".is-empty").show();
-                            }
+                            removeEntry($(this).closest('tr'));
                         }
                     });
-                    $("#sessao_escolhida").append(table);
-                    var par = $("#sessao_escolhida");
-                    if(par.children().length > 1){
-                        par.children(".is-empty").hide();
-                    }
+                    //$("#sessao_escolhida").append(table);
+                    //var par = $("#sessao_escolhida");
+                    addEntry(table,$("#sessao_escolhida"));
                 }
             });
 
@@ -3721,6 +3477,29 @@
             $("#prevBtn").click(previousTab);
         });
         showTab(currentTab); // Display the current tab
+
+        function addEntry(entry,table){
+            var body = $(table).children('tbody');
+
+            if(body.children().length ==2){
+                table.children('thead').show();
+                //window.alert();
+                body.children('.is-empty').hide();
+            }
+            body.append(entry);
+            entry.show();
+
+        }
+
+        function removeEntry(entry){
+
+            if(entry.siblings().length==2){
+                var table = entry.closest('table');
+                table.children('thead').hide();
+                table.children('tbody').children('.is-empty').show();
+            }
+            entry.remove();
+        }
 
 
         //Link 2 inputs on change
@@ -3734,7 +3513,6 @@
                     el1.val(el2.val()).change();
             });
         }
-
         function showTab(){
             var list = $(".step-content > form > .step-item").first().show();
             var list_step = $(".steps > .step-items > .step-item").first().addClass("is-active");
@@ -3819,7 +3597,8 @@
 
         function add_responsavel() {
         	var form_idx = $('#responsavel_form').children().length;
-        	$('#responsavel_form').append($('#responsavel_template').html().replace(/__prefix__/g, form_idx));
+            var template = $('#responsavel_template').clone(true);
+        	$('#responsavel_form').append(template.html().replace(/__prefix__/g, form_idx));
         }
 
         function delete_responsavel() {
@@ -3830,4 +3609,4 @@
     </script>
 </body>
 
-</html>
+</html><!--{{form.sessao.empty_form.idsessao}}--><!--{{form.sessao.empty_form.inscritos|addcss:"input"}}-->
