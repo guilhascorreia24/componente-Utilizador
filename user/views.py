@@ -3,7 +3,7 @@ from django.contrib import messages
 from .forms import UserRegisterForm, AuthenticationForm, ModifyForm, PasswordChangeForm, EmailSender, DeleteUser
 from django.core.mail import send_mail
 from django.core import signing
-from .models import UnidadeOrganica, DiaAberto,Departamento, Utilizador, Participante, ProfessorUniversitario, Administrador, Coordenador, Colaborador, DjangoSession
+from .models import UnidadeOrganica, DiaAberto,Departamento, Utilizador, Participante, ProfessorUniversitario, Administrador, Coordenador, Colaborador, DjangoSession, Curso
 from django.db.models import CharField, Value
 import datetime
 import re
@@ -97,9 +97,19 @@ def dep():
         dep.value=str(uo.pk)+"_"+str(dep.pk)
         print(dep.value)
     return deps
+
+def curso():
+    deps=Curso.objects.all().annotate(value=Value("",CharField()))
+    for dep in deps:
+        uo=dep.unidade_organica_iduo
+        dep.value=str(uo.pk)+"_"+str(dep.pk)
+        print(dep.value)
+    return deps
+
 def register(request):
     UOs=UnidadeOrganica.objects.all()
     deps=dep()
+    cursos=curso()
     if request.method == 'POST':
         form = UserRegisterForm(request.POST)
         data=request.POST
@@ -135,9 +145,9 @@ def register(request):
                 error2 = "Passwords nao coincidem"
             if not password_check(request.POST['password1']):
                 error1 = password_check(request.POST['password1']) 
-            return render(request, 'register.html', {'form': form,'UOs':UOs,'deps':deps,'error1': error, 'error2': error1, 'error3': error2, 'error4': error3,'error5':type_user(data,None)})
+            return render(request, 'register.html', {'form': form,'cursos':cursos,'UOs':UOs,'deps':deps,'error1': error, 'error2': error1, 'error3': error2, 'error4': error3,'error5':type_user(data,None)})
     form = UserRegisterForm()
-    return render(request, 'register.html', {'form': form,'UOs':UOs,'deps':deps,"func":user(request)})
+    return render(request, 'register.html', {'form': form,'UOs':UOs,'deps':deps,'cursos':cursos,"func":user(request)})
 
 #*----------------------------------------------------------login---------------------------------------
 def login_request(request):

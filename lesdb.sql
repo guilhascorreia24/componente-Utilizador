@@ -427,15 +427,33 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
+-- Table `les`.`curso`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `les`.`curso` (
+  `idcurso` INT NOT NULL,
+  `unidade_organica_idUO` INT NOT NULL,
+  `nome` VARCHAR(250) NOT NULL,
+  PRIMARY KEY (`idcurso`),
+  INDEX `fk_curso_unidade_organica1_idx` (`unidade_organica_idUO` ASC) VISIBLE,
+  CONSTRAINT `fk_curso_unidade_organica1`
+    FOREIGN KEY (`unidade_organica_idUO`)
+    REFERENCES `les`.`unidade_organica` (`idUO`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
 -- Table `les`.`colaborador`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `les`.`colaborador` (
-  `curso` VARCHAR(45) NOT NULL,
   `preferencia` VARCHAR(255) NULL DEFAULT NULL,
   `Utilizador_idutilizador` INT NOT NULL,
   `dia_aberto_ano` YEAR NOT NULL,
+  `curso_idcurso` INT NULL,
   PRIMARY KEY (`Utilizador_idutilizador`),
   INDEX `fk_colaborador_dia_aberto_id` (`dia_aberto_ano` ASC) VISIBLE,
+  INDEX `fk_colaborador_curso1_idx` (`curso_idcurso` ASC) VISIBLE,
   CONSTRAINT `fk_colaborador_dia_aberto`
     FOREIGN KEY (`dia_aberto_ano`)
     REFERENCES `les`.`dia_aberto` (`ano`)
@@ -444,6 +462,11 @@ CREATE TABLE IF NOT EXISTS `les`.`colaborador` (
   CONSTRAINT `fk_colaborador_Utilizador`
     FOREIGN KEY (`Utilizador_idutilizador`)
     REFERENCES `les`.`utilizador` (`idutilizador`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_colaborador_curso1`
+    FOREIGN KEY (`curso_idcurso`)
+    REFERENCES `les`.`curso` (`idcurso`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
