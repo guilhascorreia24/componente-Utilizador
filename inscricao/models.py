@@ -295,6 +295,8 @@ class Espaco(models.Model):
 class Horario(models.Model):
     hora = models.TimeField(primary_key=True)
 
+    def __str__(self):
+        return self.hora
     class Meta:
         managed = False
         db_table = 'horario'
@@ -304,6 +306,9 @@ class HorarioHasDia(models.Model):
     horario_hora = models.ForeignKey(Horario, models.DO_NOTHING, db_column='horario_hora')
     dia_dia = models.ForeignKey(Dia, models.DO_NOTHING, db_column='Dia_dia')  # Field name made lowercase.
     id_dia_hora = models.IntegerField(primary_key=True)
+
+    def __str__(self):
+        return str(self.horario_hora.hora)
 
     class Meta:
         managed = False
@@ -319,13 +324,12 @@ class Idioma(models.Model):
         managed = False
         db_table = 'idioma'
 
-
 class Inscricao(models.Model):
     idinscricao = models.AutoField(primary_key=True)
     ano = models.IntegerField()
     local = models.CharField(max_length=255)
     areacientifica = models.CharField(max_length=255)
-    transporte = models.IntegerField()
+    transporte = models.BooleanField()
 
     class Meta:
         managed = False
@@ -413,6 +417,9 @@ class Notificacao(models.Model):
 
 class Paragem(models.Model):
     paragem = models.CharField(primary_key=True, max_length=45)
+
+    def __str__(self):
+        return self.paragem
 
     class Meta:
         managed = False

@@ -19,6 +19,17 @@ class Form_Inscricao(ModelForm):
     class Meta:
         model = models.Inscricao
         fields = ['ano','local','areacientifica','transporte']
+    
+    transporte = forms.ChoiceField(
+    initial=(0,'Não'),
+    required=True,
+    widget=forms.RadioSelect,
+    choices=(
+        (0,'Não'),
+        (1,'Sim'),
+    )
+)
+
 
     def save(self, idUtilizador, idEscola, nresponsaveis):
         inscricao = super(Form_Inscricao, self).save(commit=True)
@@ -43,7 +54,6 @@ class Form_Transportes(ModelForm):
     class Meta:
         model = models.TransporteHasInscricao
         fields = ['partida','numero_passageiros','partida_paragem','chegada_paragem']
-
 
 
 ########################Almoços###########################
@@ -198,7 +208,7 @@ class CustomForm:
 #       - campus (array)
 #           - nome (nome do campus)
 #           - (prato,menu) (array de tuppples)
-#   - transporte
+#   - transportes
 #       -campus (array)
 #           - nome  (nome do campus)
 #           - transporte
