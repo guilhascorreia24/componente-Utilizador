@@ -378,454 +378,182 @@
                                                     Informação de transporte </h2>
                                                 <div class="columns">
                                                     <div class="column">
-                                                        <div class="field"><label class="label">Meio de
-                                                                transporte</label>
+                                                        <div class="field"><label class="label">Local de Origem</label>
+                                                            <div class="control is-expanded">
+                                                            </div>
+                                                            <!---->
+                                                        </div>
+                                                    </div>
+                                                    <div class="column">
+                                                        <div class="field"><label class="label">Local de Chegada</label>
+                                                            <div class="control is-expanded">
+                                                            </div>
+                                                            <!---->
+                                                        </div>
+                                                    </div>
+                                                    <div class="column">
+                                                        <div class="field"><label class="label">Numero de Passageiros</label>
+                                                            <div class="control is-expanded">
+                                                            </div>
+                                                            <!---->
+                                                        </div>
+                                                    </div>
+                                                    <div class="column">
+                                                        <div class="field"><label class="label">Hora de Partida</label>
+                                                            <div class="control is-expanded">
+                                                            </div>
+                                                            <!---->
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div id="table_transporte" style="padding-bottom:2%">
+                                                {% for transporte in form.transportes %}
+                                                <div class="columns">
+                                                    <div class="column">
+                                                        <div class="field">
+                                                            <div class="control is-expanded">
+                                                            <span class="select is-fullwidth is-empty">
+                                                            {{transporte.partida_paragem}}
+                                                            </span>
+                                                            </div>
+                                                            <!---->
+                                                        </div>
+                                                    </div>
+                                                    <div class="column">
+                                                        <div class="field">
                                                             <div class="control is-expanded"><span
-                                                                    class="select is-fullwidth is-empty"><select>
-                                                                        <!---->
-                                                                        <option value="universidade">Pedir transporte à
-                                                                            universidade</option>
-                                                                        <option value="comboio">Comboio</option>
-                                                                        <option value="autocarroProprio">Autocarro
-                                                                            Próprio</option>
-                                                                        <option value="outrosMeios">Outros Meios
-                                                                        </option>
-                                                                    </select></span>
+                                                                    class="select is-fullwidth is-empty">
+                                                                    {{transporte.chegada_paragem}}
+                                                                    </span>
                                                                 <!---->
                                                             </div>
                                                             <!---->
                                                         </div>
                                                     </div>
                                                     <div class="column">
-                                                        <div class="columns">
-                                                            <div class="column">
-                                                                <div class="field"><label class="label">Hora de
-                                                                        chegada</label>
-                                                                    <div class="timepicker control">
-                                                                        <div class="dropdown is-mobile-modal">
-                                                                            <div role="button" aria-haspopup="true"
-                                                                                class="dropdown-trigger">
-                                                                                <div
-                                                                                    class="control has-icons-left is-clearfix">
-                                                                                    <input type="text"
-                                                                                        autocomplete="off"
-                                                                                        class="input"> <span
-                                                                                        class="icon is-left"><i
-                                                                                            class="mdi mdi-clock mdi-24px"></i></span>
-                                                                                    <!---->
-                                                                                    <!---->
-                                                                                </div>
-                                                                            </div>
-                                                                            <div aria-hidden="true" class="background"
-                                                                                style="display: none;"></div>
-                                                                            <div aria-hidden="true"
-                                                                                class="dropdown-menu"
-                                                                                style="display: none;">
-                                                                                <div class="dropdown-content">
-                                                                                    <div tabindex="0"
-                                                                                        class="dropdown-item">
-                                                                                        <div
-                                                                                            class="field is-grouped-centered is-grouped">
-                                                                                            <!---->
-                                                                                            <div class="control"><span
-                                                                                                    class="select is-empty"><select>
-                                                                                                        <option
-                                                                                                            disabled="disabled"
-                                                                                                            hidden="hidden"
-                                                                                                            value="">
-                                                                                                            00
-                                                                                                        </option>
-                                                                                                        <option
-                                                                                                            value="0">
-                                                                                                            00
-                                                                                                        </option>
-                                                                                                        <option
-                                                                                                            value="1">
-                                                                                                            01
-                                                                                                        </option>
-                                                                                                        <option
-                                                                                                            value="2">
-                                                                                                            02
-                                                                                                        </option>
-                                                                                                        <option
-                                                                                                            value="3">
-                                                                                                            03
-                                                                                                        </option>
-                                                                                                        <option
-                                                                                                            value="4">
-                                                                                                            04
-                                                                                                        </option>
-                                                                                                        <option
-                                                                                                            value="5">
-                                                                                                            05
-                                                                                                        </option>
-                                                                                                        <option
-                                                                                                            value="6">
-                                                                                                            06
-                                                                                                        </option>
-                                                                                                        <option
-                                                                                                            value="7">
-                                                                                                            07
-                                                                                                        </option>
-                                                                                                        <option
-                                                                                                            value="8">
-                                                                                                            08
-                                                                                                        </option>
-                                                                                                        <option
-                                                                                                            value="9">
-                                                                                                            09
-                                                                                                        </option>
-                                                                                                        <option
-                                                                                                            value="10">
-                                                                                                            10
-                                                                                                        </option>
-                                                                                                        <option
-                                                                                                            value="11">
-                                                                                                            11
-                                                                                                        </option>
-                                                                                                        <option
-                                                                                                            value="12">
-                                                                                                            12
-                                                                                                        </option>
-                                                                                                        <option
-                                                                                                            value="13">
-                                                                                                            13
-                                                                                                        </option>
-                                                                                                        <option
-                                                                                                            value="14">
-                                                                                                            14
-                                                                                                        </option>
-                                                                                                        <option
-                                                                                                            value="15">
-                                                                                                            15
-                                                                                                        </option>
-                                                                                                        <option
-                                                                                                            value="16">
-                                                                                                            16
-                                                                                                        </option>
-                                                                                                        <option
-                                                                                                            value="17">
-                                                                                                            17
-                                                                                                        </option>
-                                                                                                        <option
-                                                                                                            value="18">
-                                                                                                            18
-                                                                                                        </option>
-                                                                                                        <option
-                                                                                                            value="19">
-                                                                                                            19
-                                                                                                        </option>
-                                                                                                        <option
-                                                                                                            value="20">
-                                                                                                            20
-                                                                                                        </option>
-                                                                                                        <option
-                                                                                                            value="21">
-                                                                                                            21
-                                                                                                        </option>
-                                                                                                        <option
-                                                                                                            value="22">
-                                                                                                            22
-                                                                                                        </option>
-                                                                                                        <option
-                                                                                                            value="23">
-                                                                                                            23
-                                                                                                        </option>
-                                                                                                    </select></span>
-                                                                                                <!---->
-                                                                                            </div> <span
-                                                                                                class="control is-colon">:</span>
-                                                                                            <div class="control"><span
-                                                                                                    class="select is-empty"><select>
-                                                                                                        <option
-                                                                                                            disabled="disabled"
-                                                                                                            hidden="hidden"
-                                                                                                            value="">
-                                                                                                            00
-                                                                                                        </option>
-                                                                                                        <option
-                                                                                                            value="0">
-                                                                                                            00
-                                                                                                        </option>
-                                                                                                        <option
-                                                                                                            value="5">
-                                                                                                            05
-                                                                                                        </option>
-                                                                                                        <option
-                                                                                                            value="10">
-                                                                                                            10
-                                                                                                        </option>
-                                                                                                        <option
-                                                                                                            value="15">
-                                                                                                            15
-                                                                                                        </option>
-                                                                                                        <option
-                                                                                                            value="20">
-                                                                                                            20
-                                                                                                        </option>
-                                                                                                        <option
-                                                                                                            value="25">
-                                                                                                            25
-                                                                                                        </option>
-                                                                                                        <option
-                                                                                                            value="30">
-                                                                                                            30
-                                                                                                        </option>
-                                                                                                        <option
-                                                                                                            value="35">
-                                                                                                            35
-                                                                                                        </option>
-                                                                                                        <option
-                                                                                                            value="40">
-                                                                                                            40
-                                                                                                        </option>
-                                                                                                        <option
-                                                                                                            value="45">
-                                                                                                            45
-                                                                                                        </option>
-                                                                                                        <option
-                                                                                                            value="50">
-                                                                                                            50
-                                                                                                        </option>
-                                                                                                        <option
-                                                                                                            value="55">
-                                                                                                            55
-                                                                                                        </option>
-                                                                                                    </select></span>
-                                                                                                <!---->
-                                                                                            </div>
-                                                                                            <!---->
-                                                                                            <!---->
-                                                                                            <!---->
-                                                                                        </div>
-                                                                                        <!---->
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <!---->
+                                                        <div class="field has-numberinput has-numberinput-compact">
+                                                            
+                                                            <div class="b-numberinput field has-addons">
+                                                                <p class="control">
+                                                                    <button type="button" class="button is-primary"><span class="icon"><i class="mdi mdi-minus mdi-24px"></i></span></button>
+                                                                </p>
+                                                                <div class="control is-clearfix">
+                                                                    {{transporte.numero_passageiros|addcss:"input"}}
                                                                 </div>
+                                                                <p class="control">
+                                                                    <button type="button" class="button is-primary"><span class="icon"><i class="mdi mdi-plus mdi-24px"></i></span></button>
+                                                                </p>
                                                             </div>
-                                                            <div class="column">
-                                                                <div class="field"><label class="label">Hora de
-                                                                        partida</label>
-                                                                    <div class="timepicker control">
-                                                                        <div class="dropdown is-mobile-modal">
-                                                                            <div role="button" aria-haspopup="true"
-                                                                                class="dropdown-trigger">
-                                                                                <div
-                                                                                    class="control has-icons-left is-clearfix">
-                                                                                    <input type="text"
-                                                                                        autocomplete="off"
-                                                                                        class="input"> <span
-                                                                                        class="icon is-left"><i
-                                                                                            class="mdi mdi-clock mdi-24px"></i></span>
-                                                                                    <!---->
-                                                                                    <!---->
-                                                                                </div>
-                                                                            </div>
-                                                                            <div aria-hidden="true" class="background"
-                                                                                style="display: none;"></div>
-                                                                            <div aria-hidden="true"
-                                                                                class="dropdown-menu"
-                                                                                style="display: none;">
-                                                                                <div class="dropdown-content">
-                                                                                    <div tabindex="0"
-                                                                                        class="dropdown-item">
-                                                                                        <div
-                                                                                            class="field is-grouped-centered is-grouped">
-                                                                                            <!---->
-                                                                                            <div class="control"><span
-                                                                                                    class="select is-empty"><select>
-                                                                                                        <option
-                                                                                                            disabled="disabled"
-                                                                                                            hidden="hidden"
-                                                                                                            value="">
-                                                                                                            00
-                                                                                                        </option>
-                                                                                                        <option
-                                                                                                            value="0">
-                                                                                                            00
-                                                                                                        </option>
-                                                                                                        <option
-                                                                                                            value="1">
-                                                                                                            01
-                                                                                                        </option>
-                                                                                                        <option
-                                                                                                            value="2">
-                                                                                                            02
-                                                                                                        </option>
-                                                                                                        <option
-                                                                                                            value="3">
-                                                                                                            03
-                                                                                                        </option>
-                                                                                                        <option
-                                                                                                            value="4">
-                                                                                                            04
-                                                                                                        </option>
-                                                                                                        <option
-                                                                                                            value="5">
-                                                                                                            05
-                                                                                                        </option>
-                                                                                                        <option
-                                                                                                            value="6">
-                                                                                                            06
-                                                                                                        </option>
-                                                                                                        <option
-                                                                                                            value="7">
-                                                                                                            07
-                                                                                                        </option>
-                                                                                                        <option
-                                                                                                            value="8">
-                                                                                                            08
-                                                                                                        </option>
-                                                                                                        <option
-                                                                                                            value="9">
-                                                                                                            09
-                                                                                                        </option>
-                                                                                                        <option
-                                                                                                            value="10">
-                                                                                                            10
-                                                                                                        </option>
-                                                                                                        <option
-                                                                                                            value="11">
-                                                                                                            11
-                                                                                                        </option>
-                                                                                                        <option
-                                                                                                            value="12">
-                                                                                                            12
-                                                                                                        </option>
-                                                                                                        <option
-                                                                                                            value="13">
-                                                                                                            13
-                                                                                                        </option>
-                                                                                                        <option
-                                                                                                            value="14">
-                                                                                                            14
-                                                                                                        </option>
-                                                                                                        <option
-                                                                                                            value="15">
-                                                                                                            15
-                                                                                                        </option>
-                                                                                                        <option
-                                                                                                            value="16">
-                                                                                                            16
-                                                                                                        </option>
-                                                                                                        <option
-                                                                                                            value="17">
-                                                                                                            17
-                                                                                                        </option>
-                                                                                                        <option
-                                                                                                            value="18">
-                                                                                                            18
-                                                                                                        </option>
-                                                                                                        <option
-                                                                                                            value="19">
-                                                                                                            19
-                                                                                                        </option>
-                                                                                                        <option
-                                                                                                            value="20">
-                                                                                                            20
-                                                                                                        </option>
-                                                                                                        <option
-                                                                                                            value="21">
-                                                                                                            21
-                                                                                                        </option>
-                                                                                                        <option
-                                                                                                            value="22">
-                                                                                                            22
-                                                                                                        </option>
-                                                                                                        <option
-                                                                                                            value="23">
-                                                                                                            23
-                                                                                                        </option>
-                                                                                                    </select></span>
-                                                                                                <!---->
-                                                                                            </div> <span
-                                                                                                class="control is-colon">:</span>
-                                                                                            <div class="control"><span
-                                                                                                    class="select is-empty"><select>
-                                                                                                        <option
-                                                                                                            disabled="disabled"
-                                                                                                            hidden="hidden"
-                                                                                                            value="">
-                                                                                                            00
-                                                                                                        </option>
-                                                                                                        <option
-                                                                                                            value="0">
-                                                                                                            00
-                                                                                                        </option>
-                                                                                                        <option
-                                                                                                            value="5">
-                                                                                                            05
-                                                                                                        </option>
-                                                                                                        <option
-                                                                                                            value="10">
-                                                                                                            10
-                                                                                                        </option>
-                                                                                                        <option
-                                                                                                            value="15">
-                                                                                                            15
-                                                                                                        </option>
-                                                                                                        <option
-                                                                                                            value="20">
-                                                                                                            20
-                                                                                                        </option>
-                                                                                                        <option
-                                                                                                            value="25">
-                                                                                                            25
-                                                                                                        </option>
-                                                                                                        <option
-                                                                                                            value="30">
-                                                                                                            30
-                                                                                                        </option>
-                                                                                                        <option
-                                                                                                            value="35">
-                                                                                                            35
-                                                                                                        </option>
-                                                                                                        <option
-                                                                                                            value="40">
-                                                                                                            40
-                                                                                                        </option>
-                                                                                                        <option
-                                                                                                            value="45">
-                                                                                                            45
-                                                                                                        </option>
-                                                                                                        <option
-                                                                                                            value="50">
-                                                                                                            50
-                                                                                                        </option>
-                                                                                                        <option
-                                                                                                            value="55">
-                                                                                                            55
-                                                                                                        </option>
-                                                                                                    </select></span>
-                                                                                                <!---->
-                                                                                            </div>
-                                                                                            <!---->
-                                                                                            <!---->
-                                                                                            <!---->
-                                                                                        </div>
-                                                                                        <!---->
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
+                                                            <!---->
+                                                        </div>
+                                                    </div>
+                                                    <div class="column">
+                                                        <div class="field">
+                                                            <div class="timepicker control">
+                                                                <div class="dropdown is-mobile-modal">
+                                                                    <div role="button" aria-haspopup="true"
+                                                                        class="dropdown-trigger">
+                                                                        <div
+                                                                            class="control has-icons-left is-clearfix">
+                                                                            <span
+                                                                            class="select is-fullwidth is-empty">
+                                                                            {{transporte.partida|addcss:"input"}}
+                                                                            </span>
+                                                                            <span class="icon is-left"><i class="mdi mdi-clock mdi-24px"></i></span>
                                                                         </div>
                                                                     </div>
-                                                                    <!---->
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
+                                                {% endfor %}
+                                                </div>
+
+                                                <!--TEMPLATE-->
+                                                <div id="template_transporte" style="display:none">
+                                                <div class="columns">
+                                                    <div class="column">
+                                                        <div class="field">
+                                                            <div class="control is-expanded"><span
+                                                                    class="select is-fullwidth is-empty">{{form.transportes.empty_form.partida_paragem}}</span>
+                                                                <!---->
+                                                            </div>
+                                                            <!---->
+                                                        </div>
+                                                    </div>
+                                                    <div class="column">
+                                                        <div class="field">
+                                                            <div class="control is-expanded"><span
+                                                                    class="select is-fullwidth is-empty">{{form.transportes.empty_form.chegada_paragem}}</span>
+                                                                <!---->
+                                                            </div>
+                                                            <!---->
+                                                        </div>
+                                                    </div>
+                                                    <div class="column">
+                                                        <div class="field has-numberinput has-numberinput-compact">
+                                                            
+                                                            <div class="b-numberinput field has-addons">
+                                                                <p class="control">
+                                                                    <button type="button" class="button is-primary"><span class="icon"><i class="mdi mdi-minus mdi-24px"></i></span></button>
+                                                                </p>
+                                                                <div class="control is-clearfix">
+                                                                    {{form.transportes.empty_form.numero_passageiros|addcss:"input"}}
+                                                                </div>
+                                                                <p class="control">
+                                                                    <button type="button" class="button is-primary"><span class="icon"><i class="mdi mdi-plus mdi-24px"></i></span></button>
+                                                                </p>
+                                                            </div>
+                                                            <!---->
+                                                        </div>
+                                                    </div>
+                                                    <div class="column">
+                                                        <div class="field">
+                                                            <div class="timepicker control">
+                                                                <div class="dropdown is-mobile-modal">
+                                                                    <div role="button" aria-haspopup="true"
+                                                                        class="dropdown-trigger">
+                                                                        <div
+                                                                            class="control has-icons-left is-clearfix">
+                                                                            <span
+                                                                            class="select is-fullwidth is-empty">
+                                                                            {{form.transportes.empty_form.partida|addcss:"input"}}
+                                                                            </span>
+                                                                            <span class="icon is-left"><i class="mdi mdi-clock mdi-24px"></i></span>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div></div>
+                                                <!--END TEMPLATE-->
+
+
+                                                <button type="button" class="button" onclick="add_transporte()">
+                                                <span class="icon is-small"><i class="mdi mdi-plus"></i></span>
+                                                    <span>Adicionar transporte</span>
+                                                </button>
+                                                    
+                                                <button type="button" class="button" style="float:right" onclick="delete_transporte()">
+                                                        <span>Remover transporte </span>
+                                                        <span class="icon is-small"><i class="mdi mdi-minus"></i></span>    
+                                                </button>
+                                                <hr>
+                                                <!--<p style="display: inline-block; padding-right: 2rem;"> Precisam de
+                                                    transporte para efectuar as visitas entre os 3 Campos? </p>
+                                                    <label class="b-radio radio"><input type="radio" name="name" value="Não">
+                                                    <span class="check"></span> <span class="control-label"> Não </span></label>
+                                                    <label class="b-radio radio"><input type="radio" name="name" value="Sim"> 
+                                                    <span class="check"></span> <span class="control-label"> Sim </span></label>
+                                                -->
                                                 <p style="display: inline-block; padding-right: 2rem;"> Precisam de
-                                                    transporte para efectuar as visitas entre os 3 Campi? </p><label
-                                                    class="b-radio radio"><input type="radio" name="name" value="Não">
-                                                    <span class="check"></span> <span class="control-label"> Não
-                                                    </span></label><label class="b-radio radio"><input type="radio"
-                                                        name="name" value="Sim"> <span class="check"></span> <span
-                                                        class="control-label"> Sim </span></label>
+                                                    transporte para efectuar as visitas entre os 3 Campos? </p>
+                                                {% for radio in form.inscricao.transporte %}
+                                                    <label for="{{ radio.id_for_label }}" class="b-radio radio">{{ radio.tag }}
+                                                    <span class="check"></span> <span class="control-label"> {{ radio.choice_label }} </span></label>
+                                                {% endfor %}
                                                 <hr>
                                             </div>
                                         </div>
@@ -3355,7 +3083,7 @@
                                         <div class="level-right">
                                             <button type="button" class="button is-large is-success is-outlined" id="nextBtn">
                                                 <!----> <span> Seguinte </span> <span class="icon is-medium"><i class="mdi mdi-forward mdi-36px"></i></span></button>
-                                                <button type="button" style="display:none;"
+                                                <button type="submit" style="display:none;"
                                                 class="button is-large is-success is-outlined" id="submitBtn">
                                                 <!----> <span> Submeter </span> <span class="icon is-medium"><i
                                                         class="mdi mdi-forward mdi-36px"></i></span></button></div>
@@ -3606,7 +3334,16 @@
         	    $('#responsavel_form > .responsavel').last().remove();
             }
         }
+        function add_transporte() {
+        	var form_idx = $('#table_transporte').children().length;
+            var template = $('#template_transporte').clone(true);
+        	$('#table_transporte').append(template.html().replace(/__prefix__/g, form_idx));
+        }
+
+        function delete_transporte() {
+        	$('#table_transporte').children().last().remove();
+        }
     </script>
 </body>
 
-</html><!--{{form.sessao.empty_form.idsessao}}--><!--{{form.sessao.empty_form.inscritos|addcss:"input"}}-->
+</html>
