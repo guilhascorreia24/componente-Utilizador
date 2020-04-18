@@ -306,36 +306,30 @@ def profile(request,id):
 def profile_list(request):
     funcao=user(request)
     me=Utilizador.objects.get(pk=request.session['user_id'])
-    users=Utilizador.objects.all().annotate(cargo=Value('Participante',CharField()),estado=Value('Pendente',CharField()))
+    users=Utilizador.objects.all().annotate(cargo=Value('',CharField()),estado=Value('Pendente',CharField()),UO=Value('-',CharField()))
     for u in users:
         if Coordenador.objects.filter(pk=u.idutilizador).exists():
             u.cargo="Coordenador"
+            u.UO=UnidadeOrganica.objects.get(pk=Coordenador.objects.get(pk=u.idutilizador).unidade_organica_iduo).sigla
             if u.validada==2:
                 u.estado="Validado"
         elif Colaborador.objects.filter(pk=u.idutilizador).exists():
             u.cargo="Colaborador"
+            u.UO=UnidadeOrganica.objects.get(pk=Curso.objects.get(pk=Colaborador.objects.get(pk=u.idutilizador).curso_idcurso).unidade_organica_iduo).sigla
             if u.validada==1:
                 u.estado="Validado"
         elif ProfessorUniversitario.objects.filter(pk=u.idutilizador).exists():
             u.cargo="Docente Universitario"
+            dep=ProfessorUniversitario.objects.get(pk=u.idutilizador).departamento_iddepartamento
+            u.UO=UnidadeOrganica.objects.get(pk=dep.pk).sigla
             if u.validada==3:
                 u.estado="Validado"
         elif Administrador.objects.filter(pk=u.pk).exists():
             u.cargo="Administrador"
             if u.validada==4:
                 u.estado="Validado"
-        elif Participante.objects.filter(pk=u.idutilizador):
-            if u.validada==0:
-                u.estado="Validado"
-            elif u.validada==1:
-                u.cargo="Colaborador"
-            elif u.validada==2:
-                u.cargo="Coordenador"
-            elif u.validada==3:
-                u.cargo="Docente Universitario"
         u.idutilizador=signing.dumps(u.idutilizador)
     id=signing.dumps(request.session['user_id'])
-    print(users)
     return render(request,"list_users.html",{"users":users,"funcao":funcao,"id":id,'me':me})
 #--------------------------------------------recuperaçao de password---------------------------------
 def change_password(request, id):
