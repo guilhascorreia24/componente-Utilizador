@@ -148,7 +148,7 @@
                             <li class="is-active"><a href="{% url "blog-home" %}"
                                     class="router-link-exact-active router-link-active">Utilizadores</a></li>
                         </ul>
-                    </nav>{% if me.validada == 4 %}
+                    </nav>{% if funcao == "administardor" %}
                     <a href="{% url "register" %}" class="button is-success is-outlined" type="button"
                         style="margin-bottom: 0.9rem; margin-right: 1rem;text-decoration:none;"><span
                             class="icon is-small"><i class="mdi mdi-plus"></i></span> <span> Novo Utilizador </span>
@@ -224,54 +224,17 @@
                                 <tbody>
 
                                     {% for user in users %}
-                                    {% if user.idutilizador != me.idutilizador %}
-                                    <tr class="" scope="row">
-                                        <td data-label="Nome" class=""> {{user.nome}}
-                                        </td>
-                                        <td data-label="Nome" class=""> {{user.email}}
-                                        </td>
-                                        <td data-label="Nome" class=""> {{user.UO}}
-                                        </td>
-                                        <td data-label="Nome" class="">{{user.cargo}}</td>
-
-
-
-                                        <td data-label="Estado" class="form-group ">
-
-                                            {% if user.estado == 'Pendente' %}<span class="tag"
-                                                style="width: 8.2rem; font-size: small;padding:0%"><select name="valida"
-                                                    id="color_me{{ forloop.counter }}" class="form-control orange"
-                                                    onchange="location=this.value" style="height:55%;padding-left:20%">
-                                                    <option hidden selected>{{user.estado}}</option>
-                                                    <option class="green" style="background-color: white;color: black;"
-                                                        value="{% url "validacoes" acao=1  id=user.pk %}"><span
-                                                            class="icon is-small"><i
-                                                                class="mdi mdi-check"></i></span>Validar</option>
-                                                    <option class="pink" style="background-color:white;color:black"
-                                                        value="{% url "validacoes" acao=2  id=user.pk %}">Rejeitar
-                                                    </option>
-                                                </select></span></td>
+                                    
+                                    {% if user.idutilizador != me_id %}
+                                        {% if funcao == "Coordenador" %}
+                                            {% if user.UO == me.sigla %}
+                                                {% include "consulta_admin.html" %}
+                                            {% endif %}
                                         {% else %}
-                                        <span {% if user.estado == 'Validado' %}class="tag is-success"
-                                            {% else %}class="tag is-danger" {% endif %}
-                                            style="width: 7rem; font-size: small;"> {{user.estado}}
-                                        </span></td>
+                                            {% include "consulta_admin.html" %}
                                         {% endif %}
-
-                                        <td data-label="Ações" class="has-text-centered">
-                                            {% if me.validada == 4 %}<a role="button" data-toggle="modal"
-                                                data-target="#{{ forloop.counter }}"><span
-                                                    class="icon has-text-danger"><i
-                                                        class="mdi mdi-close-box mdi-24px"></i></span></a>{% endif %}
-                                            <a role="button" href="{% url "profile_user" user.idutilizador %}"><span
-                                                    class="icon has-text-success"><i
-                                                        class="mdi mdi-account-search mdi-24px"></i></span></a>
-                                            {% if me.validada == 4 %}
-                                            <a role="button" href="{% url "profile_edit" user.idutilizador %}"><span
-                                                    class="icon has-text-success"><i
-                                                        class="mdi mdi-pencil mdi-24px"></i></span></a>{% endif %}</td>
-                                        {% endif %}
-                                    </tr>
+                                    {% endif %}
+                                </tr>
                                     <!---->
                                     <!---->
                                     <!---->
