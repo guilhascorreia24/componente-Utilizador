@@ -75,7 +75,7 @@ class Coordenador(models.Model):
         return self.utilizador_idutilizador
 
 class Colaborador(models.Model):
-    curso = models.CharField(max_length=45)
+    curso_idcurso = models.ForeignKey('Curso', models.DO_NOTHING, db_column='curso_idcurso', blank=True, null=True)
     preferencia = models.CharField(max_length=45, blank=True, null=True)
     utilizador_idutilizador = models.OneToOneField('Utilizador', models.DO_NOTHING, db_column='Utilizador_idutilizador', primary_key=True)  # Field name made lowercase.
     dia_aberto_ano = models.ForeignKey('DiaAberto', models.DO_NOTHING, db_column='Dia_Aberto_ano')  # Field name made lowercase. Field renamed to remove unsuitable characters.
@@ -131,3 +131,11 @@ class UnidadeOrganica(models.Model):
     def __str__(self):
         return str(self.iduo)
 
+class Curso(models.Model):
+    idcurso = models.IntegerField(primary_key=True)
+    unidade_organica_iduo = models.ForeignKey('UnidadeOrganica', models.DO_NOTHING, db_column='unidade_organica_idUO')  # Field name made lowercase.
+    nome = models.CharField(max_length=250)
+
+    class Meta:
+        managed = False
+        db_table = 'curso'
