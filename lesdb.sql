@@ -787,7 +787,7 @@ CREATE TABLE IF NOT EXISTS `les`.`menu` (
   `menu` VARCHAR(45) NOT NULL,
   `Campus_idCampus` INT NOT NULL,
   `horario_has_dia_id_dia_hora` INT NOT NULL,
-  `nralmoçosdisponiveis` INT NOT NULL,
+  `nralmocosdisponiveis` INT NOT NULL,
   PRIMARY KEY (`idMenu`),
   INDEX `fk_Menu_Campus_id` (`Campus_idCampus` ASC) VISIBLE,
   INDEX `fk_menu_horario_has_dia1_idx` (`horario_has_dia_id_dia_hora` ASC) VISIBLE,

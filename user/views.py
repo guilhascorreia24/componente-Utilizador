@@ -210,6 +210,8 @@ def modify_user(request,id):
             t.username=request.POST['username']
             t.email=request.POST['email']
             t.telefone=request.POST['telefone']
+            if t.validada==5:
+                t.validada=0
             t.save()
             return redirect('blog-home')
         else:
@@ -310,7 +312,7 @@ def profile_list(request):
     for u in users:
         if Coordenador.objects.filter(pk=u.idutilizador).exists():
             u.cargo="Coordenador"
-            u.UO=UnidadeOrganica.objects.get(pk=Coordenador.objects.get(pk=u.idutilizador).unidade_organica_iduo).sigla
+            u.UO=UnidadeOrganica.objects.get(pk=Coordenador.objects.get(pk=u.idutilizador).unidade_organica_iduo.pk).sigla
             if u.validada==2:
                 u.estado="Validado"
         elif Colaborador.objects.filter(pk=u.idutilizador).exists():
