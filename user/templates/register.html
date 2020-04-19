@@ -298,7 +298,7 @@
                                                                         <p class="">
                                                                             Curso</p>
                                                                         <div class="control is-expanded"><span
-                                                                                class="select "><select name="UO"
+                                                                                class="select "><select name="curso""
                                                                                     id="{{form.curso.id_for_label}}"
                                                                                     value={{form.curso.value}}>
                                                                                     <!---->
@@ -306,7 +306,7 @@
                                                                                     </option>
                                                                                     {% for curso in cursos %}
                                                                                     <option value={{curso.value}}
-                                                                                        {% if form.UO.value|add:"0" == UO.pk %}
+                                                                                        {% if form.curso.value|add:"0" == curso.pk %}
                                                                                         selected {% endif %}>
                                                                                         {{curso.nome}}
                                                                                     </option>
@@ -351,17 +351,16 @@
                                                                                     <!---->
                                                                                     <option value=0>
                                                                                     </option>
-                                                                                    {% for UO in UOs %}
+                                                                                    
                                                                                     {% for departamento in deps %}
-                                                                                    {% if UO.pk == departamento.unidade_organica_iduo %}
+                                                                                   
                                                                                     <option value={{departamento.value}}
                                                                                         {% if form.departamento.value|add:"0" == departamento.pk %}
                                                                                         selected {% endif %}>
                                                                                         <p hidden>{{UO.nome}}</hidden>
                                                                                             {{departamento.nome}}
                                                                                     </option>
-                                                                                    {% endif %}
-                                                                                    {% endfor %}
+                                                                              
                                                                                     {% endfor %}
                                                                                 </select></span>
                                                                             <!---->

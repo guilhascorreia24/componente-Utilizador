@@ -210,6 +210,8 @@ def modify_user(request,id):
             t.username=request.POST['username']
             t.email=request.POST['email']
             t.telefone=request.POST['telefone']
+            if t.validada==5:
+                t.validada=0
             t.save()
             return redirect('blog-home')
         else:
@@ -305,12 +307,12 @@ def profile(request,id):
 
 def profile_list(request):
     funcao=user(request)
-    me=Utilizador.objects.get(pk=request.session['user_id'])
+    user_id=request.session['user_id']
     users=Utilizador.objects.all().annotate(cargo=Value('',CharField()),estado=Value('Pendente',CharField()),UO=Value('-',CharField()))
     for u in users:
         if Coordenador.objects.filter(pk=u.idutilizador).exists():
             u.cargo="Coordenador"
-            u.UO=UnidadeOrganica.objects.get(pk=Coordenador.objects.get(pk=u.idutilizador).unidade_organica_iduo).sigla
+            u.UO=UnidadeOrganica.objects.get(pk=Coordenador.objects.get(pk=u.idutilizador).unidade_organica_iduo.pk).sigla
             if u.validada==2:
                 u.estado="Validado"
         elif Colaborador.objects.filter(pk=u.idutilizador).exists():
@@ -329,8 +331,12 @@ def profile_list(request):
             if u.validada==4:
                 u.estado="Validado"
         u.idutilizador=signing.dumps(u.idutilizador)
-    id=signing.dumps(request.session['user_id'])
-    return render(request,"list_users.html",{"users":users,"funcao":funcao,"id":id,'me':me})
+    if Coordenador.objects.filter(pk=user_id).exists():
+        me=Coordenador.objects.raw("SELECT a.Utilizador_idutilizador, b.sigla  FROM coordenador a, unidade_organica b WHERE b.idUO = a.unidade_organica_idUO;")
+    elif Administrador.objects.filter(pk=user_id).exists():
+        me=Administrador.objects.get(pk=user_id)
+    me_id=signing.dumps(user_id)
+    return render(request,"list_users.html",{"users":users,"funcao":funcao,"me":me,"me_id":me_id})
 #--------------------------------------------recuperaçao de password---------------------------------
 def change_password(request, id):
     id_deccryp=signing.loads(id)
