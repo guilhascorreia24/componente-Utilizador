@@ -1,4 +1,4 @@
-from django.forms import ModelForm,modelformset_factory,Form,inlineformset_factory
+from django.forms import ModelForm,modelformset_factory,Form,inlineformset_factory,ValidationError
 from django import forms
 from inscricao import models
 
@@ -135,15 +135,16 @@ class Form_Sessao(ModelForm):
         base.sessao_idsessao = self.cleaned_data['sessao_idsessao']
         return base.save()
 
-    def is_valid(self):
-        ids = self.cleaned_data['sessao_idsessao']
+    def clean(self):
+        cleaned_data = super().clean()
+        ids = cleaned_data.get('sessao_idsessao')
         try:
-            sessao = SomeModel.objects.get(pk=ids)
-        except SomeModel.DoesNotExist:
-            return False
+            sessao = models.Sessao.objects.get(pk=ids)
+        except models.Sessao.DoesNotExist:
+            raise ValidationError("Sessão não existe")
         
-        if self.cleaned_data['inscritos'] > sessao.vagas:
-            return False
+        if cleaned_data.get > sessao.vagas:
+            raise ValidationError("Sessão não têm vagas suficientes")
         
         return True
     class Meta:
@@ -166,9 +167,9 @@ class CustomForm:
         else:
             self.escola = Form_Escola(prefix="escola")
             self.inscricao = Form_Inscricao(prefix="inscricao")
-            self.sessao = Sessao(prefix='sessao_set')
-            self.responsaveis = Responsaveis(prefix='responsaveis_set')
-            self.transportes = Transportes(prefix='transportes_set')
+            self.sessao = Sessao(prefix='sessao_set',queryset=models.InscricaoHasSessao.objects.none())
+            self.responsaveis = Responsaveis(prefix='responsaveis_set',queryset=models.Responsaveis.objects.none())
+            self.transportes = Transportes(prefix='transportes_set',queryset=models.TransporteHasInscricao.objects.none())
     
     def is_valid(self):
         #print(self.inscricao_coletiva.is_valid())

@@ -217,6 +217,7 @@
                                                     </div>
                                                 </div>
                                                 <div id="responsavel_form" style="padding-bottom:2%">
+                                                    {{ form.responsaveis.management_form }}
                                                     {% for responsavel in form.responsaveis%}
                                                     <div class="columns responsavel">
                                                         <div class="column">
@@ -297,7 +298,7 @@
                                                     </div>
                                                     <div class="column">
                                                         <div class="field"><label class="label">Localidade</label>
-                                                            <div class="control is-clearfix">{{form.escola.local|addcss:"input"}}
+                                                            <div class="control is-clearfix" id="local-escola">{{form.escola.local|addcss:"input"}}
                                                             </div>
                                                         </div>
                                                     </div>
@@ -407,12 +408,13 @@
                                                     </div>
                                                 </div>
                                                 <div id="table_transporte" style="padding-bottom:2%">
+                                                {{ form.responsaveis.transportes }}
                                                 {% for transporte in form.transportes %}
                                                 <div class="columns">
                                                     <div class="column">
                                                         <div class="field">
                                                             <div class="control is-expanded">
-                                                            <span class="select is-fullwidth is-empty">
+                                                            <span class="select is-fullwidth is-empty select-transporte">
                                                             {{transporte.partida_paragem}}
                                                             </span>
                                                             </div>
@@ -422,7 +424,7 @@
                                                     <div class="column">
                                                         <div class="field">
                                                             <div class="control is-expanded"><span
-                                                                    class="select is-fullwidth is-empty">
+                                                                    class="select is-fullwidth is-empty select-transporte">
                                                                     {{transporte.chegada_paragem}}
                                                                     </span>
                                                                 <!---->
@@ -476,7 +478,7 @@
                                                     <div class="column">
                                                         <div class="field">
                                                             <div class="control is-expanded"><span
-                                                                    class="select is-fullwidth is-empty">{{form.transportes.empty_form.partida_paragem}}</span>
+                                                                    class="select is-fullwidth is-empty select-transporte">{{form.transportes.empty_form.partida_paragem}}</span>
                                                                 <!---->
                                                             </div>
                                                             <!---->
@@ -485,7 +487,7 @@
                                                     <div class="column">
                                                         <div class="field">
                                                             <div class="control is-expanded"><span
-                                                                    class="select is-fullwidth is-empty">{{form.transportes.empty_form.chegada_paragem}}</span>
+                                                                    class="select is-fullwidth is-empty select-transporte">{{form.transportes.empty_form.chegada_paragem}}</span>
                                                                 <!---->
                                                             </div>
                                                             <!---->
@@ -541,13 +543,6 @@
                                                         <span class="icon is-small"><i class="mdi mdi-minus"></i></span>    
                                                 </button>
                                                 <hr>
-                                                <!--<p style="display: inline-block; padding-right: 2rem;"> Precisam de
-                                                    transporte para efectuar as visitas entre os 3 Campos? </p>
-                                                    <label class="b-radio radio"><input type="radio" name="name" value="Não">
-                                                    <span class="check"></span> <span class="control-label"> Não </span></label>
-                                                    <label class="b-radio radio"><input type="radio" name="name" value="Sim"> 
-                                                    <span class="check"></span> <span class="control-label"> Sim </span></label>
-                                                -->
                                                 <p style="display: inline-block; padding-right: 2rem;"> Precisam de
                                                     transporte para efectuar as visitas entre os 3 Campos? </p>
                                                 {% for radio in form.inscricao.transporte %}
@@ -568,7 +563,7 @@
                                                 
                                                 <div data-v-f5fe8f88=""
                                                     class="field has-numberinput has-numberinput-compact"><label
-                                                        >{{menu.tipo}} - {{menu.menu}} (Preço para docentes:{{menu.precoprofessor}}€  Preço para Alunos:{{menu.precoaluno}}€)</label>
+                                                        >{{menu.tipo}} - {{menu.menu}}</label>
                                                     <div data-v-f5fe8f88="" class="b-numberinput field has-addons">
                                                         <p class="control"><button type="button"
                                                                 class="button is-primary"><span class="icon"><i
@@ -2978,6 +2973,7 @@
                                                     <!---->
                                                     <!---->
                                                     <div class="table-wrapper">
+                                                        {{ form.sessao.management_form }}
                                                         <table class="table has-mobile-cards" id="sessao_escolhida">
                                                             <thead style="display:none;">
                                                                 <tr> 
@@ -3114,7 +3110,8 @@
     <script src="{% static "js/chunk-vendors.63f37e79.js" %}"></script>
     <script>
         var currentTab = 0; // Current tab is set to be the first tab (0)
-        $(document).ready(function() { 
+        $(document).ready(function() {
+            $(".select-transporte").find("select").append('<option value=0 class="escola-option">Escola</option>');
 
             //Fix plus button
             $(".b-numberinput > .control > .button > span > .mdi-minus").click(function(){
@@ -3128,7 +3125,16 @@
                     value-=1;
                 }
                 input.val(value).change();
-            }); 
+            });
+
+            //Add school option to transportes
+            $("#local-escola > input").on("change",function(){
+                var local = $(this);
+                $(".escola-option").each(function(index){
+                    $(this).text(local.val());
+                    $(this).val(local.val());
+                });
+            });
 
             //Fix minus button
             $(".b-numberinput > .control > .button > span > .mdi-plus").click(function(){
@@ -3169,7 +3175,7 @@
                     var table = $("#templateTableSessoes").clone(true);
                     table.removeAttr('id');
 
-                    var form_idx = $('#sessao_escolhida > tbody').children().length-1; 
+                    var form_idx = $('#sessao_escolhida > tbody').children().length-2; 
                     var replace = table.html().replace(/__prefix__/g, form_idx);
                     table.html(replace);
                         console.log(table);
@@ -3185,7 +3191,11 @@
 
                     //Removes entry if button clicked
                     table.find('#remove_button').on("click",function(){
-                        $(this).closest('tbody').find('.input').val(0).change();
+                        var value = parseInt($('#id_sessao_set-TOTAL_FORMS').val());
+                        if(value>=0){
+                            $('#id_sessao_set-TOTAL_FORMS').val(value-1);
+                            $(this).closest('tbody').find('.input').val(0).change();
+                        }
                         removeEntry($(this).closest('tr'));
                     });
 
@@ -3197,6 +3207,8 @@
                     });
                     //$("#sessao_escolhida").append(table);
                     //var par = $("#sessao_escolhida");
+                    var value = parseInt($('#id_sessao_set-TOTAL_FORMS').val());
+                    $('#id_sessao_set-TOTAL_FORMS').val(value+1);
                     addEntry(table,$("#sessao_escolhida"));
                 }
             });
@@ -3205,13 +3217,11 @@
             $("#prevBtn").click(previousTab);
         });
         showTab(currentTab); // Display the current tab
-
         function addEntry(entry,table){
             var body = $(table).children('tbody');
 
             if(body.children().length ==2){
                 table.children('thead').show();
-                //window.alert();
                 body.children('.is-empty').hide();
             }
             body.append(entry);
@@ -3318,12 +3328,10 @@
 
         }
 
-        function increment_next_input(pos){
-            window.alert($(this));
-            $(pos).next("input").value += 1;
-        }
-
         function add_responsavel() {
+            var value = parseInt($('#id_responsaveis_set-TOTAL_FORMS').val());
+            $('#id_responsaveis_set-TOTAL_FORMS').val(value+1);
+
         	var form_idx = $('#responsavel_form').children().length;
             var template = $('#responsavel_template').clone(true);
         	$('#responsavel_form').append(template.html().replace(/__prefix__/g, form_idx));
@@ -3331,17 +3339,26 @@
 
         function delete_responsavel() {
             if($('#responsavel_form > .responsavel').length > 1){
+                var value = parseInt($('#id_responsaveis_set-TOTAL_FORMS').val());
+                $('#id_responsaveis_set-TOTAL_FORMS').val(value-1);
         	    $('#responsavel_form > .responsavel').last().remove();
             }
         }
         function add_transporte() {
+            var value = parseInt($('#id_transportes_set-TOTAL_FORMS').val());
+            $('#id_transportes_set-TOTAL_FORMS').val(value+1);
+
         	var form_idx = $('#table_transporte').children().length;
             var template = $('#template_transporte').clone(true);
         	$('#table_transporte').append(template.html().replace(/__prefix__/g, form_idx));
         }
 
         function delete_transporte() {
-        	$('#table_transporte').children().last().remove();
+            var value = parseInt($('#id_transportes_set-TOTAL_FORMS').val());
+            if(value>0){
+                $('#id_transportes_set-TOTAL_FORMS').val(value-1);
+        	    $('#table_transporte').children().last().remove();
+            }
         }
     </script>
 </body>
