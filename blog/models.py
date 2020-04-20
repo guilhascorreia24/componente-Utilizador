@@ -539,7 +539,7 @@ class TransporteHasHorario(models.Model):
 
 class TransporteHasInscricao(models.Model):
     inscricao_idinscricao = models.ForeignKey(Inscricao, models.DO_NOTHING, db_column='inscricao_idinscricao')
-    transporte_has_inscricao_id = models.IntegerField(primary_key=True)
+    transporte_has_inscricao_id = models.AutoField(primary_key=True)
     partida = models.ForeignKey(HorarioHasDia, models.DO_NOTHING, db_column='partida')
     numero_passageiros = models.IntegerField(blank=True, null=True)
     partida_paragem = models.ForeignKey(Paragem, models.DO_NOTHING, db_column='partida_paragem',related_name="TransporteHasInscricao_partida_paragem")
