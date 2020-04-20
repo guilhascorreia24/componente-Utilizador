@@ -145,3 +145,99 @@ class Curso(models.Model):
     
     def __str__(self):
         return self.idcurso
+
+class Escola(models.Model):
+    idescola = models.AutoField(primary_key=True)
+    nome = models.CharField(max_length=255)
+    local = models.CharField(max_length=45)
+    telefone = models.CharField(max_length=45)
+    email = models.CharField(max_length=255, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'escola'
+
+
+class Inscricao(models.Model):
+    idinscricao = models.AutoField(primary_key=True)
+    ano = models.IntegerField()
+    local = models.CharField(max_length=255)
+    areacientifica = models.CharField(max_length=255)
+    transporte = models.IntegerField()
+
+    class Meta:
+        managed = False
+        db_table = 'inscricao'
+
+class InscricaoColetiva(models.Model):
+    nresponsaveis = models.IntegerField()
+    turma = models.CharField(max_length=1)
+    participante_utilizador_idutilizador = models.ForeignKey('Participante', models.DO_NOTHING, db_column='Participante_Utilizador_idutilizador')  # Field name made lowercase.
+    escola_idescola = models.ForeignKey(Escola, models.DO_NOTHING, db_column='escola_idescola')
+    nparticipantes = models.IntegerField()
+    inscricao_idinscricao = models.OneToOneField(Inscricao, models.DO_NOTHING, db_column='inscricao_idinscricao', primary_key=True)
+
+    class Meta:
+        managed = False
+        db_table = 'inscricao_coletiva'
+
+
+class InscricaoIndividual(models.Model):
+    nracompanhades = models.IntegerField()
+    participante_utilizador_idutilizador = models.ForeignKey('Participante', models.DO_NOTHING, db_column='Participante_Utilizador_idutilizador')  # Field name made lowercase.
+    inscricao_idinscricao = models.OneToOneField(Inscricao, models.DO_NOTHING, db_column='inscricao_idinscricao', primary_key=True)
+    telefone = models.IntegerField()
+
+    class Meta:
+        managed = False
+        db_table = 'inscricao_individual'
+        
+class Espaco(models.Model):
+    idespaco = models.AutoField(primary_key=True)
+    nome = models.CharField(max_length=255)
+    campus_idcampus = models.ForeignKey(Campus, models.DO_NOTHING, db_column='campus_idCampus')  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'espaco'
+
+class Atividade(models.Model):
+    idatividade = models.AutoField(db_column='idAtividade', primary_key=True)  # Field name made lowercase.
+    titulo = models.CharField(max_length=45)
+    capacidade = models.IntegerField()
+    publico_alvo = models.CharField(max_length=45)
+    duracao = models.FloatField()
+    descricao = models.CharField(max_length=250)
+    validada = models.IntegerField()
+    professor_universitario_utilizador_idutilizador = models.ForeignKey('ProfessorUniversitario', models.DO_NOTHING, db_column='professor_universitario_Utilizador_idutilizador')  # Field name made lowercase.
+    unidade_organica_iduo = models.ForeignKey('UnidadeOrganica', models.DO_NOTHING, db_column='unidade_organica_idUO')  # Field name made lowercase.
+    departamento_iddepartamento = models.ForeignKey('Departamento', models.DO_NOTHING, db_column='Departamento_idDepartamento')  # Field name made lowercase.
+    espaco_idespaco = models.ForeignKey('Espaco', models.DO_NOTHING, db_column='espaco_idespaco', blank=True, null=True)
+    tematica = models.CharField(max_length=250, blank=True, null=True)
+    nrcolaborador = models.CharField(db_column='nrColaborador', max_length=45, blank=True, null=True)  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'atividade'
+
+class Dia(models.Model):
+    dia = models.DateField(primary_key=True)
+
+    class Meta:
+        managed = False
+        db_table = 'dia'
+
+class Tarefa(models.Model):
+    idtarefa = models.AutoField(primary_key=True)
+    nome = models.CharField(max_length=255)
+    concluida = models.IntegerField()
+    coordenador_utilizador_idutilizador = models.ForeignKey(Coordenador, models.DO_NOTHING, db_column='Coordenador_Utilizador_idutilizador')  # Field name made lowercase.
+    colaborador_utilizador_idutilizador = models.ForeignKey(Colaborador, models.DO_NOTHING, db_column='colaborador_Utilizador_idutilizador')  # Field name made lowercase.
+    atividade_idatividade = models.ForeignKey(Atividade, models.DO_NOTHING, db_column='Atividade_idAtividade', blank=True, null=True)  # Field name made lowercase.
+    hora_inicio = models.TimeField()
+    dia_dia = models.ForeignKey(Dia, models.DO_NOTHING, db_column='dia_dia')
+
+    class Meta:
+        managed = False
+        db_table = 'tarefa'
+

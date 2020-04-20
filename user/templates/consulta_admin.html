@@ -11,7 +11,7 @@
 
     <td data-label="Estado" class="form-group ">
         {% if funcao == "administardor" %}{% if user.cargo == "Colaborador" %}
-        <span class="tag" style="background-color: grey;color: white;" style="width: 7rem; font-size: small;"> Não pode
+        <span class="tag" style="background-color: grey;color: white; width: 7rem; font-size: small;"> Não pode
             validar
         </span></td>
     {% elif user.cargo == "Docente Universitario" %}

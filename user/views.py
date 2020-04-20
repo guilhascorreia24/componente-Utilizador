@@ -3,7 +3,7 @@ from django.contrib import messages
 from .forms import UserRegisterForm, AuthenticationForm, ModifyForm, PasswordChangeForm, EmailSender, DeleteUser
 from django.core.mail import send_mail
 from django.core import signing
-from .models import UnidadeOrganica, DiaAberto,Departamento, Utilizador, Participante, ProfessorUniversitario, Administrador, Coordenador, Colaborador, DjangoSession, Curso
+from .models import UnidadeOrganica, DiaAberto,Departamento, Utilizador, Participante, ProfessorUniversitario, Administrador, Coordenador, Colaborador, DjangoSession, Curso, InscricaoColetiva, InscricaoIndividual, Atividade, Tarefa
 from django.db.models import CharField, Value
 import datetime
 import re
@@ -190,12 +190,31 @@ def logout_request(request):
 #----------------------------------------------remover user-----------------------------------
 def delete_user(request,id):
     id=signing.loads(id)
-    Utilizador.objects.filter(pk=id).delete()
-    Participante.objects.filter(pk=id).delete()
-    Administrador.objects.filter(pk=id).delete()
-    Coordenador.objects.filter(pk=id).delete()
-    Colaborador.objects.filter(pk=id).delete()
-    ProfessorUniversitario.objects.filter(pk=id).delete()
+    u=Utilizador.objects.filter(pk=id)
+    admin=Administrador.objects.filter(pk=id)
+    prof=ProfessorUniversitario.objects.filter(pk=id)
+    coord=Coordenador.objects.filter(pk=id)
+    part=Participante.objects.filter(pk=id)
+    colab=Colaborador.objects.filter(pk=id)
+    if admin.exists():
+        u.delete()
+        admin.delete()
+        messages.success(request, f'Utilizador eliminado com sucesso')
+    elif prof.exists() and (not Atividade.objects.filter(professor_universitario_utilizador_idutilizador=id).exists()):
+        u.delete()
+        prof.delete()
+        messages.success(request, f'Utilizador eliminado com sucesso')
+    elif part.exists() and (not InscricaoColetiva.objects.filter(participante_utilizador_idutilizador=id).exists() or not InscricaoIndividual.objects.filter(participante_utilizador_idutilizador=id).exists()):
+        u.delete()
+        part.delete()
+        messages.success(request, f'Utilizador eliminado com sucesso')
+    elif (coord.exists() or colab.exists()) and (not Tarefa.objects.filter(colaborador_utilizador_idutilizador=id).exists() or not Tarefa.objects.filter(coordenador_utilizador_idutilizador=id).exists()):
+        u.delete()
+        coord.delete()
+        colab.delete()
+        messages.success(request, f'Utilizador eliminado com sucesso')
+    else:
+        messages.error(request, f'Impossivel de eliminar o utilizador')
     return redirect("profile_list")
 
 #--------------------------------------alterar user---------------------------------------------
