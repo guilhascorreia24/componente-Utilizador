@@ -47,6 +47,7 @@ class ModifyForm(forms.Form):
     UO=forms.CharField(max_length=45,label="uo")
     dep=forms.CharField(max_length=45,label="dep")
     curso=forms.CharField(max_length=45,label="curso")
+    ano=forms.IntegerField(label="ano")
     preferencia=forms.CharField(max_length=45,label="preferencia")
 
     class Meta:

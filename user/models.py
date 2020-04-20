@@ -142,3 +142,6 @@ class Curso(models.Model):
     class Meta:
         managed = False
         db_table = 'curso'
+    
+    def __str__(self):
+        return self.idcurso

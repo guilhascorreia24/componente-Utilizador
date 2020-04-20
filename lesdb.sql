@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS `les`.`utilizador` (
   UNIQUE INDEX `email_UNIQUE` (`email` ASC) VISIBLE,
   UNIQUE INDEX `telefone_UNIQUE` (`telefone` ASC) VISIBLE)
 ENGINE = InnoDB
-AUTO_INCREMENT = 12
+AUTO_INCREMENT = 3
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -434,6 +434,8 @@ CREATE TABLE IF NOT EXISTS `les`.`dia_aberto` (
   `dataPropostaAtividadeInicio` DATE NOT NULL,
   `dataPropostaAtividadesFim` DATE NOT NULL,
   `Administrador_Utilizador_idutilizador` INT NOT NULL,
+  `preco_almoco_estudante` FLOAT NOT NULL DEFAULT 0,
+  `preco_almoco_professor` FLOAT NOT NULL,
   PRIMARY KEY (`ano`),
   INDEX `fk_dia_aberto_Administrador_id` (`Administrador_Utilizador_idutilizador` ASC) VISIBLE,
   CONSTRAINT `fk_dia_aberto_Administrador`
@@ -781,8 +783,6 @@ COLLATE = utf8mb4_0900_ai_ci;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `les`.`menu` (
   `idMenu` INT NOT NULL AUTO_INCREMENT,
-  `precoAluno` FLOAT NOT NULL,
-  `PrecoProfessor` FLOAT NOT NULL,
   `tipo` VARCHAR(45) NOT NULL,
   `menu` VARCHAR(45) NOT NULL,
   `Campus_idCampus` INT NOT NULL,
@@ -884,8 +884,8 @@ COLLATE = utf8mb4_0900_ai_ci;
 CREATE TABLE IF NOT EXISTS `les`.`inscricao_has_sessao` (
   `inscricao_idinscricao` INT NOT NULL,
   `sessao_idsessao` INT NOT NULL,
+  `inscricao_has_sessao_id` INT NOT NULL AUTO_INCREMENT,
   `inscricao_has_sessao_id` INT NOT NULL,
-  `nrinscritos` INT NOT NULL DEFAULT 0,
   PRIMARY KEY (`inscricao_has_sessao_id`),
   INDEX `fk_inscricao_has_sessao_sessao_id` (`sessao_idsessao` ASC) VISIBLE,
   INDEX `fk_inscricao_has_sessao_inscricao_id` (`inscricao_idinscricao` ASC) VISIBLE,
@@ -1080,7 +1080,7 @@ COLLATE = utf8mb4_0900_ai_ci;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `les`.`transporte_has_inscricao` (
   `inscricao_idinscricao` INT NOT NULL,
-  `transporte_has_inscricao_id` INT NOT NULL AUTO_INCREMENT,
+  `transporte_has_inscricao_id` INT NOT NULL,
   `partida` INT NOT NULL,
   `numero_passageiros` INT NULL DEFAULT '0',
   `partida_paragem` VARCHAR(45) NOT NULL,

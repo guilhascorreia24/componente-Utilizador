@@ -57,7 +57,8 @@ def type_user(data,user_id):
     #print(type(data['departamento']))
     if data['funcao']=='1':
         if len(data['curso'])>0 and user_id is not None:
-            colab=Colaborador(pk=user_id,curso=data['curso'],preferencia=data['Perferencias'],dia_aberto_ano=DiaAberto.objects.get(pk=datetime.date.today().year))
+            curso_id=Curso.objects.get(pk=data['curso'].split("_")[1])
+            colab=Colaborador(pk=user_id,curso_idcurso=curso_id,preferencia=data['Perferencias'],dia_aberto_ano=DiaAberto.objects.get(pk=datetime.date.today().year))
             colab.save()
         elif len(data['curso'])==0:
             t=1
@@ -299,10 +300,10 @@ def profile(request,id):
         IDUO = Coordenador.objects.get(pk=id).unidade_organica_iduo
         UO=UnidadeOrganica.objects.get(pk=IDUO.pk).sigla
     elif Colaborador.objects.filter(utilizador_idutilizador=id).exists():
-        ano = Colaborador.objects.get(utilizador_utilizadorid=id).dia_aberto_ano
+        ano = Colaborador.objects.get(pk=id).dia_aberto_ano.pk
         funcao = "Colaborador"
-        curso = Colaborador.objects.get(utilizador_idutilizador=id).curso
-    return render(request, 'profile.html', {"form": form, 'nome': name,'UO':UO,'username': username, 'email': email, 
+        curso=Colaborador.objects.get(utilizador_idutilizador=id).curso_idcurso.nome
+    return render(request, 'profile.html', {"form": form, 'nome': name,'UO':UO,'username': username, 'email': email,"ano":ano,
                     'telefone': telefone, 'funcao': funcao, 'ano': ano, 'curso': curso,'dep':dep,"me":signing.dumps(me),'id':signing.dumps(id),'func':user(request)})
 
 def profile_list(request):
@@ -317,7 +318,8 @@ def profile_list(request):
                 u.estado="Validado"
         elif Colaborador.objects.filter(pk=u.idutilizador).exists():
             u.cargo="Colaborador"
-            u.UO=UnidadeOrganica.objects.get(pk=Curso.objects.get(pk=Colaborador.objects.get(pk=u.idutilizador).curso_idcurso).unidade_organica_iduo).sigla
+            curso_id=Colaborador.objects.get(pk=u.pk).curso_idcurso.pk
+            u.UO=UnidadeOrganica.objects.get(pk=Curso.objects.get(pk=curso_id).unidade_organica_iduo.pk).sigla
             if u.validada==1:
                 u.estado="Validado"
         elif ProfessorUniversitario.objects.filter(pk=u.idutilizador).exists():

@@ -60,6 +60,16 @@
             </div>
         </div>
         {% endif %}
+        {% if ano %}
+        <div class="field"><label class="" for={{form.ano.id_for_label}}>Ano</label>
+            <div class=" control is-clearfix"><input type="text" id={{form.ano.id_for_label}} name="ano" class="input"
+                    value={{ano}} disabled>
+                    <input type="hidden" id={{form.ano.id_for_label}} name="ano" class="input"
+                    value={{ano}} >
+            </div>
+        </div>
+        {% endif %}
+
     </div>
     <hr>
     </div>
