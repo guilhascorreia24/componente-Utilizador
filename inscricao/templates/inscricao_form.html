@@ -149,6 +149,76 @@
                                         {% csrf_token %}
                                         <div class="step-item" style="display:none;">
                                             <div style="padding: 1rem 2vw 0px;">
+                                                {% if form.responsaveis.errors %}
+    {% for field in form.responsaveis %}
+        {% for error in field.errors %}
+            <div class="alert alert-danger">
+                <strong>{{ error|escape }}</strong>
+            </div>
+        {% endfor %}
+    {% endfor %}
+    {% for error in form.responsaveis.non_field_errors %}
+        <div class="alert alert-danger">
+            <strong>{{ error|escape }}</strong>
+        </div>
+    {% endfor %}
+{% endif %}
+{% if form.transportes.errors %}
+    {% for field in form.transportes %}
+        {% for error in field.errors %}
+            <div class="alert alert-danger">
+                <strong>{{ error|escape }}</strong>
+            </div>
+        {% endfor %}
+    {% endfor %}
+    {% for error in form.transportes.non_field_errors %}
+        <div class="alert alert-danger">
+            <strong>{{ error|escape }}</strong>
+        </div>
+    {% endfor %}
+{% endif %}
+{% if form.sessao.errors %}
+    {% for field in form.sessao %}
+        {% for error in field.errors %}
+            <div class="alert alert-danger">
+                <strong>{{ error|escape }}</strong>
+            </div>
+        {% endfor %}
+    {% endfor %}
+    {% for error in form.sessao.non_field_errors %}
+        <div class="alert alert-danger">
+            <strong>{{ error|escape }}</strong>
+        </div>
+    {% endfor %}
+{% endif %}
+{% if form.escola.errors %}
+    {% for field in form.escola %}
+        {% for error in field.errors %}
+            <div class="alert alert-danger">
+                <strong>{{ error|escape }}</strong>
+            </div>
+        {% endfor %}
+    {% endfor %}
+    {% for error in form.escola.non_field_errors %}
+        <div class="alert alert-danger">
+            <strong>{{ error|escape }}</strong>
+        </div>
+    {% endfor %}
+{% endif %}
+{% if form.inscricao.errors %}
+    {% for field in form.inscricao %}
+        {% for error in field.errors %}
+            <div class="alert alert-danger">
+                <strong>{{field.label}} {{ error|escape }}</strong>
+            </div>
+        {% endfor %}
+    {% endfor %}
+    {% for error in form.inscricao.non_field_errors %}
+        <div class="alert alert-danger">
+            <strong>{{ error|escape }}</strong>
+        </div>
+    {% endfor %}
+{% endif %}
                                                 <hr>
                                                 <h2 class="title has-text-grey is-uppercase" style="font-size: 0.9rem;">
                                                     Docentes responsáveis</h2>
@@ -171,6 +241,7 @@
                                                     </div>
                                                 </div>
                                                 <div id="responsavel_form" style="padding-bottom:2%">
+                                                    {{ form.responsaveis.management_form }}
                                                     {% for responsavel in form.responsaveis%}
                                                     <div class="columns responsavel">
                                                         <div class="column">
@@ -251,7 +322,7 @@
                                                     </div>
                                                     <div class="column">
                                                         <div class="field"><label class="label">Localidade</label>
-                                                            <div class="control is-clearfix">{{form.escola.local|addcss:"input"}}
+                                                            <div class="control is-clearfix" id="local-escola">{{form.escola.local|addcss:"input"}}
                                                             </div>
                                                         </div>
                                                     </div>
@@ -361,12 +432,13 @@
                                                     </div>
                                                 </div>
                                                 <div id="table_transporte" style="padding-bottom:2%">
+                                                {{ form.transportes.management_form }}
                                                 {% for transporte in form.transportes %}
                                                 <div class="columns">
                                                     <div class="column">
                                                         <div class="field">
                                                             <div class="control is-expanded">
-                                                            <span class="select is-fullwidth is-empty">
+                                                            <span class="select is-fullwidth is-empty select-transporte">
                                                             {{transporte.partida_paragem}}
                                                             </span>
                                                             </div>
@@ -376,7 +448,7 @@
                                                     <div class="column">
                                                         <div class="field">
                                                             <div class="control is-expanded"><span
-                                                                    class="select is-fullwidth is-empty">
+                                                                    class="select is-fullwidth is-empty select-transporte">
                                                                     {{transporte.chegada_paragem}}
                                                                     </span>
                                                                 <!---->
@@ -430,7 +502,7 @@
                                                     <div class="column">
                                                         <div class="field">
                                                             <div class="control is-expanded"><span
-                                                                    class="select is-fullwidth is-empty">{{form.transportes.empty_form.partida_paragem}}</span>
+                                                                    class="select is-fullwidth is-empty select-transporte">{{form.transportes.empty_form.partida_paragem}}</span>
                                                                 <!---->
                                                             </div>
                                                             <!---->
@@ -439,7 +511,7 @@
                                                     <div class="column">
                                                         <div class="field">
                                                             <div class="control is-expanded"><span
-                                                                    class="select is-fullwidth is-empty">{{form.transportes.empty_form.chegada_paragem}}</span>
+                                                                    class="select is-fullwidth is-empty select-transporte">{{form.transportes.empty_form.chegada_paragem}}</span>
                                                                 <!---->
                                                             </div>
                                                             <!---->
@@ -495,13 +567,6 @@
                                                         <span class="icon is-small"><i class="mdi mdi-minus"></i></span>    
                                                 </button>
                                                 <hr>
-                                                <!--<p style="display: inline-block; padding-right: 2rem;"> Precisam de
-                                                    transporte para efectuar as visitas entre os 3 Campos? </p>
-                                                    <label class="b-radio radio"><input type="radio" name="name" value="Não">
-                                                    <span class="check"></span> <span class="control-label"> Não </span></label>
-                                                    <label class="b-radio radio"><input type="radio" name="name" value="Sim"> 
-                                                    <span class="check"></span> <span class="control-label"> Sim </span></label>
-                                                -->
                                                 <p style="display: inline-block; padding-right: 2rem;"> Precisam de
                                                     transporte para efectuar as visitas entre os 3 Campos? </p>
                                                 {% for radio in form.inscricao.transporte %}
@@ -522,7 +587,7 @@
                                                 
                                                 <div data-v-f5fe8f88=""
                                                     class="field has-numberinput has-numberinput-compact"><label
-                                                        >{{menu.tipo}} - {{menu.menu}} (Preço para docentes:{{menu.precoprofessor}}€  Preço para Alunos:{{menu.precoaluno}}€)</label>
+                                                        >{{menu.tipo}} - {{menu.menu}}</label>
                                                     <div data-v-f5fe8f88="" class="b-numberinput field has-addons">
                                                         <p class="control"><button type="button"
                                                                 class="button is-primary"><span class="icon"><i
@@ -2825,7 +2890,7 @@
                                                                                                                 </thead>
                                                                                                                 <tbody>
                                                                                                                     {% for sessao in at.list %}
-                                                                                                                    <tr draggable="false" class="">
+                                                                                                                    <tr draggable="false" class="sessao_table">
                                                                                                                         <!---->
                                                                                                                         <!---->
                                                                                                                         <td data-label="Campus" style="display:none" class="">
@@ -2834,8 +2899,8 @@
                                                                                                                         <td data-label="Titulo" style="display:none" class="">
                                                                                                                             {{atividade.titulo}}
                                                                                                                         </td>
-                                                                                                                        <td data-label="id" style="display:none" class="">
-                                                                                                                            {{sessao.idsessao}}
+                                                                                                                        <td data-label="id" style="display:none" class="" value="{{sessao.idsessao}}">
+                                                                                                                            <input value={{sessao.idsessao}}>
                                                                                                                         </td>
                                                                                                                         <td data-label="Horário" class="">
                                                                                                                             {{sessao.hora}}
@@ -2932,6 +2997,16 @@
                                                     <!---->
                                                     <!---->
                                                     <div class="table-wrapper">
+                                                        {{ form.sessao.management_form }}
+                                                        
+                                                        <div style="display:none" id="sessao_start_info">
+                                                        {% for sessao in form.sessao %}
+                                                        <div>
+                                                        {{sessao.nrinscritos}}
+                                                        {{sessao.idsessao}}
+                                                        </div>
+                                                        {% endfor %}
+                                                        </div>
                                                         <table class="table has-mobile-cards" id="sessao_escolhida">
                                                             <thead style="display:none;">
                                                                 <tr> 
@@ -2971,7 +3046,7 @@
                                                             <tbody>
                                                                 <!--TEMPLATE -->
                                                                 <tr draggable="false" id="templateTableSessoes" style="display:none;">
-                                                                    <td data-label="id" style="display:none">{{form.sessao.empty_form.sessao_idsessao}}</td>
+                                                                    <td data-label="id" style="display:none">{{form.sessao.empty_form.sessao_id}}</td>
                                                                     <td data-label="Horário"></td>
                                                                     <td data-label="Inscrever">
                                                                         <div class="field has-numberinput has-numberinput-compact">
@@ -2979,7 +3054,7 @@
                                                                                 <p class="control"><button type="button" class="button is-primary">
                                                                                     <span class="icon"><i class="mdi mdi-minus mdi-24px"></i></span></button>
                                                                                 </p>
-                                                                                <div class="control is-clearfix">{{form.sessao.empty_form.inscritos|addcss:"input"}}</div> 
+                                                                                <div class="control is-clearfix">{{form.sessao.empty_form.nrinscritos|addcss:"input"}}</div> 
                                                                                 <p class="control"><button type="button" class="button is-primary">
                                                                                     <span class="icon"><i class="mdi mdi-plus mdi-24px"></i></span></button>
                                                                                 </p>
@@ -2987,8 +3062,8 @@
                                                                         </div>
                                                                     </td>
                                                                     <td data-label="Titulo"></td>
-                                                                    <td data-label="Espaço" ></td>
-                                                                    <td data-label="Campus" ></td>
+                                                                    <td data-label="Espaço"></td>
+                                                                    <td data-label="Campus"></td>
                                                                     <td data-label="Ações" class="has-text-centered">
                                                                         <a id="remove_button"><span class="icon has-text-danger"><i class="mdi mdi-close-box mdi-24px"></i></span>
                                                                         </a>
@@ -3068,7 +3143,8 @@
     <script src="{% static "js/chunk-vendors.63f37e79.js" %}"></script>
     <script>
         var currentTab = 0; // Current tab is set to be the first tab (0)
-        $(document).ready(function() { 
+        $(document).ready(function() {
+            $(".select-transporte").find("select").append('<option value=0 class="escola-option">Escola</option>');
 
             //Fix plus button
             $(".b-numberinput > .control > .button > span > .mdi-minus").click(function(){
@@ -3082,7 +3158,16 @@
                     value-=1;
                 }
                 input.val(value).change();
-            }); 
+            });
+
+            //Add school option to transportes
+            $("#local-escola > input").on("change",function(){
+                var local = $(this);
+                $(".escola-option").each(function(index){
+                    $(this).text(local.val());
+                    $(this).val(local.val());
+                });
+            });
 
             //Fix minus button
             $(".b-numberinput > .control > .button > span > .mdi-plus").click(function(){
@@ -3123,10 +3208,9 @@
                     var table = $("#templateTableSessoes").clone(true);
                     table.removeAttr('id');
 
-                    var form_idx = $('#sessao_escolhida > tbody').children().length-1; 
-                    var replace = table.html().replace(/__prefix__/g, form_idx);
-                    table.html(replace);
-                        console.log(table);
+                    var form_idx = $('#sessao_escolhida > tbody').children().length-2;
+                    table.find('input').each(function (){replaceIdName($(this),"__prefix__",form_idx);});
+
                     table.find("td[data-label='Campus']").html(parent.children("td[data-label='Campus']").html());
                     table.find("td[data-label='Titulo']").html(parent.children("td[data-label='Titulo']").html());
                     table.find("td[data-label='Horário']").html(parent.children("td[data-label='Horário']").html());
@@ -3134,38 +3218,71 @@
 
                     var tInput = table.find("td[data-label='Inscrever']").find('.input');
                     tInput.val($(this).val());
-                    table.find("td[data-label='id']").find('input').val(parent.children("td[data-label='id']").text());
+                    table.find("td[data-label='id']").find('input').val(parseInt(parent.children("td[data-label='id']").children("input").val()));
                     syncInputs(tInput,$(this));
 
                     //Removes entry if button clicked
                     table.find('#remove_button').on("click",function(){
-                        $(this).closest('tbody').find('.input').val(0).change();
+                        var value = parseInt($('#id_sessao_set-TOTAL_FORMS').val());
+                        if(value>0){
+                            $('#id_sessao_set-TOTAL_FORMS').val(value-1);
+                            $(this).closest('tr').find('.input').val(0).change();
+                            return
+                        }
                         removeEntry($(this).closest('tr'));
                     });
 
                     //removes the entry if reaches 0
                     tInput.on("change",function(){
                         if($(this).val() == 0){
+                            var value = parseInt($('#id_sessao_set-TOTAL_FORMS').val());
+                            $('#id_sessao_set-TOTAL_FORMS').val(value-1);
                             removeEntry($(this).closest('tr'));
                         }
                     });
                     //$("#sessao_escolhida").append(table);
                     //var par = $("#sessao_escolhida");
+                    var value = parseInt($('#id_sessao_set-TOTAL_FORMS').val());
+                    $('#id_sessao_set-TOTAL_FORMS').val(value+1);
                     addEntry(table,$("#sessao_escolhida"));
                 }
             });
+
+            var sessoes = $(".sessao_table");
+
+            $('#sessao_start_info').children().each(function(){
+                var value = "input[value='"+$(this).children().last().val()+"']";
+                var inscritos = parseInt($(this).children().first().val());
+                var id = sessoes.children("td[data-label='id']").children(value);
+                id.closest('.sessao_table').children("td[data-label='Inscrever']").find('input').val(inscritos).change();
+            });
+
 
             $("#nextBtn").click(nextTab);
             $("#prevBtn").click(previousTab);
         });
         showTab(currentTab); // Display the current tab
 
+        function replaceIdName(elem,pattern,replace){
+            if ($(elem).attr('id')) {
+                var id = $(elem).attr('id').replace(pattern, replace);
+                console.log(id);
+                //var newId = $(elem).attr('id').replace(id, parseInt(id,10)+1);
+                $(elem).attr('id', id);   
+            }
+
+            if ($(elem).attr('name')) {
+                var curName = $(elem).attr('name').replace(pattern, replace);
+                //var newName = $(elem).attr('name').replace(curName, parseInt(curName,10)+1);
+                $(elem).attr('name', curName);
+            }
+        }
+
         function addEntry(entry,table){
             var body = $(table).children('tbody');
 
             if(body.children().length ==2){
                 table.children('thead').show();
-                //window.alert();
                 body.children('.is-empty').hide();
             }
             body.append(entry);
@@ -3272,12 +3389,10 @@
 
         }
 
-        function increment_next_input(pos){
-            window.alert($(this));
-            $(pos).next("input").value += 1;
-        }
-
         function add_responsavel() {
+            var value = parseInt($('#id_responsaveis_set-TOTAL_FORMS').val());
+            $('#id_responsaveis_set-TOTAL_FORMS').val(value+1);
+
         	var form_idx = $('#responsavel_form').children().length;
             var template = $('#responsavel_template').clone(true);
         	$('#responsavel_form').append(template.html().replace(/__prefix__/g, form_idx));
@@ -3285,17 +3400,26 @@
 
         function delete_responsavel() {
             if($('#responsavel_form > .responsavel').length > 1){
+                var value = parseInt($('#id_responsaveis_set-TOTAL_FORMS').val());
+                $('#id_responsaveis_set-TOTAL_FORMS').val(value-1);
         	    $('#responsavel_form > .responsavel').last().remove();
             }
         }
         function add_transporte() {
+            var value = parseInt($('#id_transportes_set-TOTAL_FORMS').val());
+            $('#id_transportes_set-TOTAL_FORMS').val(value+1);
+
         	var form_idx = $('#table_transporte').children().length;
             var template = $('#template_transporte').clone(true);
         	$('#table_transporte').append(template.html().replace(/__prefix__/g, form_idx));
         }
 
         function delete_transporte() {
-        	$('#table_transporte').children().last().remove();
+            var value = parseInt($('#id_transportes_set-TOTAL_FORMS').val());
+            if(value>0){
+                $('#id_transportes_set-TOTAL_FORMS').val(value-1);
+        	    $('#table_transporte').children().last().remove();
+            }
         }
     </script>
 </body>
