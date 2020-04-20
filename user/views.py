@@ -308,7 +308,7 @@ def profile(request,id):
 def profile_list(request):
     funcao=user(request)
     user_id=request.session['user_id']
-    users=Utilizador.objects.all().annotate(cargo=Value('',CharField()),estado=Value('Pendente',CharField()),UO=Value('-',CharField()))
+    users=Utilizador.objects.all().annotate(cargo=Value('Participante',CharField()),estado=Value('Pendente',CharField()),UO=Value('-',CharField()))
     for u in users:
         if Coordenador.objects.filter(pk=u.idutilizador).exists():
             u.cargo="Coordenador"
@@ -330,12 +330,16 @@ def profile_list(request):
             u.cargo="Administrador"
             if u.validada==4:
                 u.estado="Validado"
+        elif Participante.objects.filter(pk=u.pk).exists():
+            u.estado="Validado"
         u.idutilizador=signing.dumps(u.idutilizador)
     if Coordenador.objects.filter(pk=user_id).exists():
-        me=Coordenador.objects.raw("SELECT a.Utilizador_idutilizador, b.sigla  FROM coordenador a, unidade_organica b WHERE b.idUO = a.unidade_organica_idUO;")
+        me=UnidadeOrganica.objects.get(pk=Coordenador.objects.get(pk=user_id).unidade_organica_iduo.pk).sigla
     elif Administrador.objects.filter(pk=user_id).exists():
         me=Administrador.objects.get(pk=user_id)
+        me.sigla=None
     me_id=signing.dumps(user_id)
+    print()
     return render(request,"list_users.html",{"users":users,"funcao":funcao,"me":me,"me_id":me_id})
 #--------------------------------------------recuperaçao de password---------------------------------
 def change_password(request, id):
