@@ -210,8 +210,8 @@
                                         {% endif %}
                                         {% if form.ano.value or ano %}
                                         <div class="field"><label class="" for={{form.ano.id_for_label}}>Ano</label>
-                                            <div class=" control is-clearfix"><input type="text" id={{form.ano.id_for_label}} name="curso" class="input"
-                                                    value="{{form.ano.value|default_if_none:ano}}">
+                                            <div class=" control is-clearfix"><input type="text" id={{form.ano.id_for_label}} name="ano" class="input"
+                                                    value="{{form.ano.value|default_if_none:ano}}" disabled>
                                             </div>
                                         </div>
                                         {% endif %}

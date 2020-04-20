@@ -3,7 +3,7 @@ from django.contrib import messages
 from .forms import UserRegisterForm, AuthenticationForm, ModifyForm, PasswordChangeForm, EmailSender, DeleteUser
 from django.core.mail import send_mail
 from django.core import signing
-from .models import UnidadeOrganica, DiaAberto,Departamento, Utilizador, Participante, ProfessorUniversitario, Administrador, Coordenador, Colaborador, DjangoSession, Curso, InscricaoColetiva, InscricaoIndividual, Atividade, Tarefa
+from .models import UnidadeOrganica, DiaAberto,Departamento, Utilizador, Participante, ProfessorUniversitario, Administrador, Coordenador, Colaborador, DjangoSession, Curso, InscricaoColetiva, InscricaoIndividual, Atividade, Tarefa, Campus
 from django.db.models import CharField, Value
 import datetime
 import re
@@ -106,7 +106,6 @@ def curso():
         dep.value=str(uo.pk)+"_"+str(dep.pk)
         print(dep.value)
     return deps
-
 def register(request):
     UOs=UnidadeOrganica.objects.all()
     deps=dep()
@@ -241,6 +240,7 @@ def modify_user(request,id):
             username=data['username']
             telefone=data['telefone']
             funcao=data['funcao']
+            ano=data['ano']
             email=data['email']
             curso=False
             dep=False
@@ -259,7 +259,7 @@ def modify_user(request,id):
                 error = "Email ja existe"
             if Utilizador.objects.filter(telefone=request.POST['telefone']).exists() and Utilizador.objects.get(telefone=request.POST['telefone']).idutilizador!=id:
                 error3 = "telefone ja existe"
-            return render(request, 'profile_modify.html', {'email':email,'UO':UO,'username':username,'telefone':telefone,'funcao':funcao,'curso':curso,'dep':dep,"form": form,'error4':error3,"error1":error,'me':signing.dumps(me),'id':signing.dumps(id),'nome':name})
+            return render(request, 'profile_modify.html', {'email':email,'UO':UO,'username':username,'telefone':telefone,'funcao':funcao,'curso':curso,'dep':dep,"form": form,'error4':error3,"error1":error,'me':signing.dumps(me),'id':signing.dumps(id),'nome':name,'ano':ano})
     else:
         form = ModifyForm()
         if Utilizador.objects.get(idutilizador=id).username == '':
@@ -286,10 +286,10 @@ def modify_user(request,id):
         IDUO = Coordenador.objects.get(pk=id).unidade_organica_iduo
         UO=UnidadeOrganica.objects.get(pk=IDUO.pk).sigla
     elif Colaborador.objects.filter(utilizador_idutilizador=id).exists():
-        ano = Colaborador.objects.get(utilizador_utilizadorid=id).dia_aberto_ano
+        ano = Colaborador.objects.get(pk=id).dia_aberto_ano.pk
         funcao = "Colaborador"
-        curso = Colaborador.objects.get(utilizador_idutilizador=id).curso
-    return render(request, 'profile_modify.html', {"form": form, 'nome': name,'UO':UO,'username': username, 'email': email, 
+        curso=Colaborador.objects.get(utilizador_idutilizador=id).curso_idcurso.nome
+    return render(request, 'profile_modify.html', {"form": form, 'nome': name,'UO':UO,'username': username, 'email': email, "ano":ano,
                     'telefone': telefone, 'funcao': funcao, 'ano': ano, 'curso': curso,'dep':dep,"me":signing.dumps(me),'id':signing.dumps(id),'func':user(request)})
 
 def profile(request,id):
@@ -324,6 +324,16 @@ def profile(request,id):
         curso=Colaborador.objects.get(utilizador_idutilizador=id).curso_idcurso.nome
     return render(request, 'profile.html', {"form": form, 'nome': name,'UO':UO,'username': username, 'email': email,"ano":ano,
                     'telefone': telefone, 'funcao': funcao, 'ano': ano, 'curso': curso,'dep':dep,"me":signing.dumps(me),'id':signing.dumps(id),'func':user(request)})
+
+
+
+def uo():
+    uos=UnidadeOrganica.objects.all().annotate(value=Value("",CharField()))
+    for uo in uos:
+        camp=uo.campus_idcampus
+        uo.value=str(camp.pk)+"_"+str(uo.pk)
+    return uos
+
 
 def profile_list(request):
     funcao=user(request)
@@ -360,8 +370,9 @@ def profile_list(request):
         me=Administrador.objects.get(pk=user_id)
         me.sigla=None
     me_id=signing.dumps(user_id)
-    print()
-    return render(request,"list_users.html",{"users":users,"funcao":funcao,"me":me,"me_id":me_id})
+    campus=Campus.objects.all()
+    uos=uo()
+    return render(request,"list_users.html",{"users":users,"funcao":funcao,"me":me,"me_id":me_id,"campus":campus,"uos":uos})
 #--------------------------------------------recuperaçao de password---------------------------------
 def change_password(request, id):
     id_deccryp=signing.loads(id)
@@ -402,6 +413,8 @@ def reset(request):
     return render(request, 'reset.html', {'form': sub})
 #-------------------------------------------------validacoes---------------------------------------------------------------
 def validacoes(request,acao,id):
+    if not Administrador.objects.filter(pk=request.session['user_id']).exists() or not Coordenador.objects.filter(pk=request.session['user_id']).exists():
+        redirect("blog-home")
     id=signing.loads(id)
     user=Utilizador.objects.get(pk=id)
     if acao==1:
