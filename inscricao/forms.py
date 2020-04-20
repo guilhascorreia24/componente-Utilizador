@@ -18,8 +18,13 @@ class Form_Inscricao(ModelForm):
     participantes = forms.IntegerField()
     class Meta:
         model = models.Inscricao
-        fields = ['ano','local','areacientifica','transporte']
+        fields = ['ano','areacientifica','transporte']
     
+    def save(self):
+        base = super(Form_Inscricao, self).save(commit=False)
+        base.local = "Empty"
+        return base.save()
+
     transporte = forms.ChoiceField(
     initial=(0,'Não'),
     required=True,
@@ -29,7 +34,6 @@ class Form_Inscricao(ModelForm):
         (1,'Sim'),
     )
 )
-
 
     def save(self, idUtilizador, idEscola, nresponsaveis):
         inscricao = super(Form_Inscricao, self).save(commit=True)
@@ -125,36 +129,36 @@ class Form_Prato(ModelForm):
 ###################################################SESSOES#############################################
 
 class Form_Sessao(ModelForm):
-    inscritos = forms.IntegerField()
-    sessao_idsessao = forms.IntegerField()
+    sessao_id = forms.IntegerField()
 
 
     def save(self,inscricao):
         base = super(Form_Sessao, self).save(commit=False)
-        base.inscricao_idinscricao = self.cleaned_data['inscricao']
-        base.sessao_idsessao = self.cleaned_data['sessao_idsessao']
+        base.inscricao_idinscricao = inscricao
+        base.sessao_idsessao = self.cleaned_data['sessao_id']
         return base.save()
 
     def clean(self):
-        cleaned_data = super().clean()
-        ids = cleaned_data.get('sessao_idsessao')
+        super().clean()
+        cleaned_data = self.cleaned_data
+        ids = cleaned_data['sessao_id']
         try:
             sessao = models.Sessao.objects.get(pk=ids)
         except models.Sessao.DoesNotExist:
             raise ValidationError("Sessão não existe")
+       
+        if cleaned_data['nrinscritos'] > sessao.vagas:
+           raise ValidationError("Sessão não têm vagas suficientes")
         
-        if cleaned_data.get > sessao.vagas:
-            raise ValidationError("Sessão não têm vagas suficientes")
-        
-        return True
+        #return True
     class Meta:
         model = models.InscricaoHasSessao
-        fields = []
+        fields = ['nrinscritos']
 
 ###################################################END SESSOES#############################################
 class CustomForm:
     def __init__(self,request = 0):
-        Sessao = modelformset_factory(models.InscricaoHasSessao,form = Form_Sessao,extra=1)
+        Sessao = modelformset_factory(models.InscricaoHasSessao,form = Form_Sessao,extra=0)
         Responsaveis = modelformset_factory(models.Responsaveis,form = Form_Responsaveis,extra=1)
         Transportes = modelformset_factory(models.TransporteHasInscricao,form = Form_Transportes,extra=1)
         self.almoco = Form_Almoco(request)
@@ -172,18 +176,17 @@ class CustomForm:
             self.transportes = Transportes(prefix='transportes_set',queryset=models.TransporteHasInscricao.objects.none())
     
     def is_valid(self):
-        #print(self.inscricao_coletiva.is_valid())
+        print(self.inscricao.is_valid())
         return all([self.escola.is_valid(), self.inscricao.is_valid(), self.responsaveis.is_valid(), self.almoco.is_valid(),self.sessao.is_valid(),self.transportes.is_valid()])
 
     def save(self):
-        user = models.Utilizador.objects.get(idutilizador = 2)
+        user = models.Utilizador.objects.get(idutilizador = 42)
         part = models.Participante.objects.get(utilizador_idutilizador = user)
 
         escola = self.escola.save()
         inscricao = self.inscricao.save(part,escola,len(self.responsaveis))
         self.almoco.save(inscricao)
         origem ,created = models.Paragem.objects.get_or_create(paragem = escola.local)
-        self.transportes.save(origem,inscricao)
 
         for each in self.transportes:
             each.save(inscricao)

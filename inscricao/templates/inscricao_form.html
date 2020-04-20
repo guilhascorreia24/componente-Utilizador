@@ -195,6 +195,76 @@
                                         {% csrf_token %}
                                         <div class="step-item" style="display:none;">
                                             <div style="padding: 1rem 2vw 0px;">
+                                                {% if form.responsaveis.errors %}
+    {% for field in form.responsaveis %}
+        {% for error in field.errors %}
+            <div class="alert alert-danger">
+                <strong>{{ error|escape }}</strong>
+            </div>
+        {% endfor %}
+    {% endfor %}
+    {% for error in form.responsaveis.non_field_errors %}
+        <div class="alert alert-danger">
+            <strong>{{ error|escape }}</strong>
+        </div>
+    {% endfor %}
+{% endif %}
+{% if form.transportes.errors %}
+    {% for field in form.transportes %}
+        {% for error in field.errors %}
+            <div class="alert alert-danger">
+                <strong>{{ error|escape }}</strong>
+            </div>
+        {% endfor %}
+    {% endfor %}
+    {% for error in form.transportes.non_field_errors %}
+        <div class="alert alert-danger">
+            <strong>{{ error|escape }}</strong>
+        </div>
+    {% endfor %}
+{% endif %}
+{% if form.sessao.errors %}
+    {% for field in form.sessao %}
+        {% for error in field.errors %}
+            <div class="alert alert-danger">
+                <strong>{{ error|escape }}</strong>
+            </div>
+        {% endfor %}
+    {% endfor %}
+    {% for error in form.sessao.non_field_errors %}
+        <div class="alert alert-danger">
+            <strong>{{ error|escape }}</strong>
+        </div>
+    {% endfor %}
+{% endif %}
+{% if form.escola.errors %}
+    {% for field in form.escola %}
+        {% for error in field.errors %}
+            <div class="alert alert-danger">
+                <strong>{{ error|escape }}</strong>
+            </div>
+        {% endfor %}
+    {% endfor %}
+    {% for error in form.escola.non_field_errors %}
+        <div class="alert alert-danger">
+            <strong>{{ error|escape }}</strong>
+        </div>
+    {% endfor %}
+{% endif %}
+{% if form.inscricao.errors %}
+    {% for field in form.inscricao %}
+        {% for error in field.errors %}
+            <div class="alert alert-danger">
+                <strong>{{field.label}} {{ error|escape }}</strong>
+            </div>
+        {% endfor %}
+    {% endfor %}
+    {% for error in form.inscricao.non_field_errors %}
+        <div class="alert alert-danger">
+            <strong>{{ error|escape }}</strong>
+        </div>
+    {% endfor %}
+{% endif %}
                                                 <hr>
                                                 <h2 class="title has-text-grey is-uppercase" style="font-size: 0.9rem;">
                                                     Docentes responsáveis</h2>
@@ -408,7 +478,7 @@
                                                     </div>
                                                 </div>
                                                 <div id="table_transporte" style="padding-bottom:2%">
-                                                {{ form.responsaveis.transportes }}
+                                                {{ form.transportes.management_form }}
                                                 {% for transporte in form.transportes %}
                                                 <div class="columns">
                                                     <div class="column">
@@ -2866,7 +2936,7 @@
                                                                                                                 </thead>
                                                                                                                 <tbody>
                                                                                                                     {% for sessao in at.list %}
-                                                                                                                    <tr draggable="false" class="">
+                                                                                                                    <tr draggable="false" class="sessao_table">
                                                                                                                         <!---->
                                                                                                                         <!---->
                                                                                                                         <td data-label="Campus" style="display:none" class="">
@@ -2875,8 +2945,8 @@
                                                                                                                         <td data-label="Titulo" style="display:none" class="">
                                                                                                                             {{atividade.titulo}}
                                                                                                                         </td>
-                                                                                                                        <td data-label="id" style="display:none" class="">
-                                                                                                                            {{sessao.idsessao}}
+                                                                                                                        <td data-label="id" style="display:none" class="" value="{{sessao.idsessao}}">
+                                                                                                                            <input value={{sessao.idsessao}}>
                                                                                                                         </td>
                                                                                                                         <td data-label="Horário" class="">
                                                                                                                             {{sessao.hora}}
@@ -2974,6 +3044,15 @@
                                                     <!---->
                                                     <div class="table-wrapper">
                                                         {{ form.sessao.management_form }}
+                                                        
+                                                        <div style="display:none" id="sessao_start_info">
+                                                        {% for sessao in form.sessao %}
+                                                        <div>
+                                                        {{sessao.nrinscritos}}
+                                                        {{sessao.idsessao}}
+                                                        </div>
+                                                        {% endfor %}
+                                                        </div>
                                                         <table class="table has-mobile-cards" id="sessao_escolhida">
                                                             <thead style="display:none;">
                                                                 <tr> 
@@ -3013,7 +3092,7 @@
                                                             <tbody>
                                                                 <!--TEMPLATE -->
                                                                 <tr draggable="false" id="templateTableSessoes" style="display:none;">
-                                                                    <td data-label="id" style="display:none">{{form.sessao.empty_form.sessao_idsessao}}</td>
+                                                                    <td data-label="id" style="display:none">{{form.sessao.empty_form.sessao_id}}</td>
                                                                     <td data-label="Horário"></td>
                                                                     <td data-label="Inscrever">
                                                                         <div class="field has-numberinput has-numberinput-compact">
@@ -3021,7 +3100,7 @@
                                                                                 <p class="control"><button type="button" class="button is-primary">
                                                                                     <span class="icon"><i class="mdi mdi-minus mdi-24px"></i></span></button>
                                                                                 </p>
-                                                                                <div class="control is-clearfix">{{form.sessao.empty_form.inscritos|addcss:"input"}}</div> 
+                                                                                <div class="control is-clearfix">{{form.sessao.empty_form.nrinscritos|addcss:"input"}}</div> 
                                                                                 <p class="control"><button type="button" class="button is-primary">
                                                                                     <span class="icon"><i class="mdi mdi-plus mdi-24px"></i></span></button>
                                                                                 </p>
@@ -3029,8 +3108,8 @@
                                                                         </div>
                                                                     </td>
                                                                     <td data-label="Titulo"></td>
-                                                                    <td data-label="Espaço" ></td>
-                                                                    <td data-label="Campus" ></td>
+                                                                    <td data-label="Espaço"></td>
+                                                                    <td data-label="Campus"></td>
                                                                     <td data-label="Ações" class="has-text-centered">
                                                                         <a id="remove_button"><span class="icon has-text-danger"><i class="mdi mdi-close-box mdi-24px"></i></span>
                                                                         </a>
@@ -3175,10 +3254,9 @@
                     var table = $("#templateTableSessoes").clone(true);
                     table.removeAttr('id');
 
-                    var form_idx = $('#sessao_escolhida > tbody').children().length-2; 
-                    var replace = table.html().replace(/__prefix__/g, form_idx);
-                    table.html(replace);
-                        console.log(table);
+                    var form_idx = $('#sessao_escolhida > tbody').children().length-2;
+                    table.find('input').each(function (){replaceIdName($(this),"__prefix__",form_idx);});
+
                     table.find("td[data-label='Campus']").html(parent.children("td[data-label='Campus']").html());
                     table.find("td[data-label='Titulo']").html(parent.children("td[data-label='Titulo']").html());
                     table.find("td[data-label='Horário']").html(parent.children("td[data-label='Horário']").html());
@@ -3186,15 +3264,16 @@
 
                     var tInput = table.find("td[data-label='Inscrever']").find('.input');
                     tInput.val($(this).val());
-                    table.find("td[data-label='id']").find('input').val(parent.children("td[data-label='id']").text());
+                    table.find("td[data-label='id']").find('input').val(parseInt(parent.children("td[data-label='id']").children("input").val()));
                     syncInputs(tInput,$(this));
 
                     //Removes entry if button clicked
                     table.find('#remove_button').on("click",function(){
                         var value = parseInt($('#id_sessao_set-TOTAL_FORMS').val());
-                        if(value>=0){
+                        if(value>0){
                             $('#id_sessao_set-TOTAL_FORMS').val(value-1);
-                            $(this).closest('tbody').find('.input').val(0).change();
+                            $(this).closest('tr').find('.input').val(0).change();
+                            return
                         }
                         removeEntry($(this).closest('tr'));
                     });
@@ -3202,6 +3281,8 @@
                     //removes the entry if reaches 0
                     tInput.on("change",function(){
                         if($(this).val() == 0){
+                            var value = parseInt($('#id_sessao_set-TOTAL_FORMS').val());
+                            $('#id_sessao_set-TOTAL_FORMS').val(value-1);
                             removeEntry($(this).closest('tr'));
                         }
                     });
@@ -3213,10 +3294,36 @@
                 }
             });
 
+            var sessoes = $(".sessao_table");
+
+            $('#sessao_start_info').children().each(function(){
+                var value = "input[value='"+$(this).children().last().val()+"']";
+                var inscritos = parseInt($(this).children().first().val());
+                var id = sessoes.children("td[data-label='id']").children(value);
+                id.closest('.sessao_table').children("td[data-label='Inscrever']").find('input').val(inscritos).change();
+            });
+
+
             $("#nextBtn").click(nextTab);
             $("#prevBtn").click(previousTab);
         });
         showTab(currentTab); // Display the current tab
+
+        function replaceIdName(elem,pattern,replace){
+            if ($(elem).attr('id')) {
+                var id = $(elem).attr('id').replace(pattern, replace);
+                console.log(id);
+                //var newId = $(elem).attr('id').replace(id, parseInt(id,10)+1);
+                $(elem).attr('id', id);   
+            }
+
+            if ($(elem).attr('name')) {
+                var curName = $(elem).attr('name').replace(pattern, replace);
+                //var newName = $(elem).attr('name').replace(curName, parseInt(curName,10)+1);
+                $(elem).attr('name', curName);
+            }
+        }
+
         function addEntry(entry,table){
             var body = $(table).children('tbody');
 
