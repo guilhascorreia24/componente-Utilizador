@@ -100,7 +100,7 @@
                                                     Campus
                                                 </option>
                                                 {% for campu in campus %}
-                                                <option value="{{campu.value}}">{{campu.nome}}</option>
+                                                <option value={{campu.pk}} >{{campu.nome}}</option>
                                                 {% endfor %}
                                             </select></span> <span class="icon is-left"><i
                                                 class="mdi mdi-magnify mdi-24px"></i></span></div>
@@ -116,7 +116,7 @@
                                                 </option>
                                                 {% for uo in uos %}
                                                 {{uo.value}}
-                                                <option value="{{uo.value}}">{{uo.sigla}}</option>
+                                                <option value="{{uo.value}}@{{uo.sigla}}" >{{uo.sigla}}</option>
                                                 {% endfor %}
                                             </select></span> <span class="icon is-left"><i
                                                 class="mdi mdi-magnify mdi-24px"></i></span></div>
@@ -364,7 +364,7 @@
     function myFunction3() {
         var input, filter, table, tr, td, i, txtValue;
         input = document.getElementById("myInput3");
-        filter = input.value.toUpperCase();
+        filter = input.value.split("@")[1].toUpperCase();
         table = document.getElementById("myTable");
         tr = table.getElementsByTagName("tr");
         for (i = 0; i < tr.length; i++) {
