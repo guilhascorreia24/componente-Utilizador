@@ -26,7 +26,7 @@ class UserRegisterForm(forms.Form):
     def save(self):
         data = self.cleaned_data
         user=Utilizador(nome=data['name'],username=data['username'],
-            email=data['email'],telefone=data['telefone'],password=data['password1'],validada=0)
+            email=data['email'],telefone=data['telefone'],password=data['password1'],validada=5)
         user.save()
     
 

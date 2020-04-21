@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from .forms import UserRegisterForm, AuthenticationForm, ModifyForm, PasswordChangeForm, EmailSender, DeleteUser
-from django.core.mail import send_mail
+from django.core.mail import message, send_mail
 from django.core import signing
 from .models import UnidadeOrganica, DiaAberto,Departamento, Utilizador, Participante, ProfessorUniversitario, Administrador, Coordenador, Colaborador, DjangoSession, Curso, InscricaoColetiva, InscricaoIndividual, Atividade, Tarefa, Campus
 from django.db.models import CharField, Value
@@ -85,6 +85,13 @@ def type_user(data,user_id):
         else:
             t=4
             return t
+    elif data['funcao']=='0':
+        if user_id is not None:
+            part = Participante(pk=user_id)
+            part.save()
+        else:
+            t=0
+            return t
     return t
 
 
@@ -118,8 +125,6 @@ def register(request):
             form.save()
             user_id=Utilizador.objects.get(email=request.POST['email']).idutilizador
             type_user(data,user_id)
-            part = Participante(pk=user_id)
-            part.save()
             messages.success(request, f'Registo feito com Sucesso!')
             return redirect('blog-home')
         else:
@@ -448,7 +453,13 @@ def validacoes(request,acao,id):
             user.validada=4
             Participante.objects.filter(pk=id).delete()
         user.save()
+        message.success(request,f'Utilizador {user.name} validado com sucesso')
     else:
-        user.validada=5
-        user.save()
+        recepient=user.email
+        subject="Validação da conta"
+        message="A sua conta nao foi aceite "
+        send_mail(subject,'a61098@ualg.pt',[recepient])
+        message.success(request,f'Email enviado com sucesso')
+        user.delete()
+        return redirect("blog-home")
     return redirect('profile_list')
