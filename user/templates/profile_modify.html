@@ -139,7 +139,7 @@
                                                     <div class="field"><label class=""
                                                             for={{form.email.id_for_label}}>Email</label>
                                                         <div class="control has-icons-right"><input type="email"
-                                                                name="email" id={{form.email.id_for_label}}
+                                                                name="email" id={{form.email.id_for_label}} value="{{email|default_if_none:form.email.value}}"
                                                                 autocomplete="on" class="input is-danger">
                                                             <!----> <span class="icon is-right has-text-danger"><i
                                                                     class="mdi mdi-alert-circle mdi-24px"></i></span>
@@ -212,6 +212,8 @@
                                         <div class="field"><label class="" for={{form.ano.id_for_label}}>Ano</label>
                                             <div class=" control is-clearfix"><input type="text" id={{form.ano.id_for_label}} name="ano" class="input"
                                                     value="{{form.ano.value|default_if_none:ano}}" disabled>
+                                                    <input type="hidden"
+                                                    id={{form.ano.id_for_label}} name="ano" class="input" value="{{form.ano.value|default_if_none:ano}}" >
                                             </div>
                                         </div>
                                         {% endif %}

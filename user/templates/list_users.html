@@ -300,12 +300,15 @@
 <script>
     $(document).ready(function () {
         $('#myTable').DataTable({
-            "paging": false,
+            "paging": true,
             "info": false,
-            "searching": false
+            "searching": false,
+            "bLengthChange": false,
+            "aLengthMenu": [[5, 10, 25, -1], [5, 10, 25, "All"]],
         });
     });
 </script>
+
 <script>
     function myFunction() {
         var input, filter, table, tr, td, i, txtValue;

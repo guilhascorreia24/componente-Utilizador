@@ -52,7 +52,7 @@ class ModifyForm(forms.Form):
 
     class Meta:
         model=Utilizador
-        fields=['name','username','email','telefone','funcao','UO','curso','dep','preferencia']
+        fields=['name','username','email','telefone','funcao','UO','curso','dep','preferencia','ano']
     
     def save(self):
         data = self.cleaned_data

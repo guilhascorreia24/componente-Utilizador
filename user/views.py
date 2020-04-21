@@ -223,7 +223,14 @@ def modify_user(request,id):
     me=request.session['user_id']
     if request.method=='POST':
         form=ModifyForm(request.POST)
-        if request.POST['name']!="" and request.POST['username']!="" and request.POST['email']!="" and not Utilizador.objects.filter(email=request.POST['email']).exists() and not Utilizador.objects.filter(telefone=request.POST['telefone']).exists() and request.POST['telefone']!="" and validateEmail(request.POST['email']):
+        print(request.POST['name']!="")
+        print(request.POST['username']!="") 
+        print(request.POST['email']!="")
+        print(not Utilizador.objects.filter(email=request.POST['email']).exists() and Utilizador.objects.get(email=request.POST['email']).idutilizador!=id)
+        print(not Utilizador.objects.filter(telefone=request.POST['telefone']).exists() and Utilizador.objects.get(telefone=request.POST['telefone']).idutilizador!=id)
+        print(request.POST['telefone']!="")
+        print(bool(validateEmail(request.POST['email'])))
+        if (request.POST['name']!="") and (request.POST['username']!="") and (request.POST['email']!="") and not(Utilizador.objects.filter(email=request.POST['email']).exists() and Utilizador.objects.get(email=request.POST['email']).idutilizador!=id) and not( Utilizador.objects.filter(telefone=request.POST['telefone']).exists() and Utilizador.objects.get(telefone=request.POST['telefone']).idutilizador!=id) and (request.POST['telefone']!="") and (validateEmail(request.POST['email'])):
             t=Utilizador.objects.get(pk=id)
             t.nome=request.POST['name']
             t.username=request.POST['username']
@@ -240,11 +247,13 @@ def modify_user(request,id):
             username=data['username']
             telefone=data['telefone']
             funcao=data['funcao']
-            ano=data['ano']
             email=data['email']
             curso=False
             dep=False
             UO=False
+            ano=False
+            if 'ano' in data:
+                ano=data['ano']
             if 'curso' in data:
                 curso=data['curso']
             if 'dep' in data:
@@ -275,8 +284,6 @@ def modify_user(request,id):
     funcao=False
     if Administrador.objects.filter(utilizador_idutilizador=id).exists():
         funcao = "Administardor"
-    elif Participante.objects.filter(utilizador_idutilizador=id).exists():
-        funcao = "Participante"
     elif ProfessorUniversitario.objects.filter(utilizador_idutilizador=id).exists():
         funcao = "Docente Univesitario"
         depid = ProfessorUniversitario.objects.get(utilizador_idutilizador=id).departamento_iddepartamento
@@ -289,6 +296,8 @@ def modify_user(request,id):
         ano = Colaborador.objects.get(pk=id).dia_aberto_ano.pk
         funcao = "Colaborador"
         curso=Colaborador.objects.get(utilizador_idutilizador=id).curso_idcurso.nome
+    elif Participante.objects.filter(utilizador_idutilizador=id).exists():
+        funcao = "Participante"
     return render(request, 'profile_modify.html', {"form": form, 'nome': name,'UO':UO,'username': username, 'email': email, "ano":ano,
                     'telefone': telefone, 'funcao': funcao, 'ano': ano, 'curso': curso,'dep':dep,"me":signing.dumps(me),'id':signing.dumps(id),'func':user(request)})
 
@@ -345,22 +354,30 @@ def profile_list(request):
             u.UO=UnidadeOrganica.objects.get(pk=Coordenador.objects.get(pk=u.idutilizador).unidade_organica_iduo.pk).sigla
             if u.validada==2:
                 u.estado="Validado"
+            elif u.validada==5:
+                u.estado="Rejeitado"
         elif Colaborador.objects.filter(pk=u.idutilizador).exists():
             u.cargo="Colaborador"
             curso_id=Colaborador.objects.get(pk=u.pk).curso_idcurso.pk
             u.UO=UnidadeOrganica.objects.get(pk=Curso.objects.get(pk=curso_id).unidade_organica_iduo.pk).sigla
             if u.validada==1:
                 u.estado="Validado"
+            elif u.validada==5:
+                u.estado="Rejeitado"
         elif ProfessorUniversitario.objects.filter(pk=u.idutilizador).exists():
             u.cargo="Docente Universitario"
             dep=ProfessorUniversitario.objects.get(pk=u.idutilizador).departamento_iddepartamento
             u.UO=UnidadeOrganica.objects.get(pk=dep.pk).sigla
             if u.validada==3:
                 u.estado="Validado"
+            elif u.validada==5:
+                u.estado="Rejeitado"
         elif Administrador.objects.filter(pk=u.pk).exists():
             u.cargo="Administrador"
             if u.validada==4:
                 u.estado="Validado"
+            elif u.validada==5:
+                u.estado="Rejeitado"
         elif Participante.objects.filter(pk=u.pk).exists():
             u.estado="Validado"
         u.idutilizador=signing.dumps(u.idutilizador)
