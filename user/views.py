@@ -89,9 +89,7 @@ def type_user(data,user_id):
         if user_id is not None:
             part = Participante(pk=user_id)
             part.save()
-        else:
-            t=0
-            return t
+            Utilizador.objects.filter(pk=user_id).update(validada=0)
     return t
 
 
@@ -120,8 +118,9 @@ def register(request):
     if request.method == 'POST':
         form = UserRegisterForm(request.POST)
         data=request.POST
-        print(form.is_valid())
-        if len(data['name'])>0 and len(data['username'])>0 and len(data['email'])>0 and len(data['password1'])>0 and validateEmail(data['email']) and type_user(data,None) and request.POST['password1']==request.POST['password2'] and not Utilizador.objects.filter(email=request.POST['email']).exists() and  not Utilizador.objects.filter(telefone=request.POST['telefone']).exists() and password_check(request.POST['password1']) is True:
+        form.is_valid()
+        print(bool(type_user(data,None)))
+        if len(data['name'])>0 and len(data['username'])>0 and len(data['email'])>0 and len(data['password1'])>0 and validateEmail(data['email']) and bool(type_user(data,None)) and request.POST['password1']==request.POST['password2'] and not Utilizador.objects.filter(email=request.POST['email']).exists() and  not Utilizador.objects.filter(telefone=request.POST['telefone']).exists() and password_check(request.POST['password1']) is True:
             form.save()
             user_id=Utilizador.objects.get(email=request.POST['email']).idutilizador
             type_user(data,user_id)
@@ -161,16 +160,17 @@ def login_request(request):
         tentatives=int(request.POST['tentatives'])
         if request.POST['email'] != '' and request.POST['password'] != '':
             if Utilizador.objects.filter(email=request.POST['email'], password=request.POST['password']).exists():
-                username = Utilizador.objects.get(
-                    email=request.POST['email']).username
-                messages.success(request, f"Bem-vindo {username}")
-                request.session['user_id'] = Utilizador.objects.get(
-                    email=request.POST['email']).idutilizador
-                r = redirect('blog-home')
-                if 'check' in request.POST and request.POST['check'] == '1':
-                    r.set_cookie(
-                        'cookie_id', request.session['user_id'], 7 * 24 * 60 * 60)
-                return r
+                username = Utilizador.objects.get( email=request.POST['email'])
+                if username.validada != int(5):
+                    messages.success(request, f"Bem-vindo {username.username}")
+                    request.session['user_id'] = Utilizador.objects.get(email=request.POST['email']).idutilizador
+                    r = redirect('blog-home')
+                    if 'check' in request.POST and request.POST['check'] == '1':
+                        r.set_cookie('cookie_id', request.session['user_id'], 7 * 24 * 60 * 60)
+                    return r
+                else:
+                    tentatives-=1
+                    messages.error(request, f"Sua conta ainda não validada pelo administrador")
             else:
                 tentatives-=1
                 messages.error(request, f"Username e/ou palavra-passe. Tem mais {tentatives} tentativas")
@@ -359,30 +359,22 @@ def profile_list(request):
             u.UO=UnidadeOrganica.objects.get(pk=Coordenador.objects.get(pk=u.idutilizador).unidade_organica_iduo.pk).sigla
             if u.validada==2:
                 u.estado="Validado"
-            elif u.validada==5:
-                u.estado="Rejeitado"
         elif Colaborador.objects.filter(pk=u.idutilizador).exists():
             u.cargo="Colaborador"
             curso_id=Colaborador.objects.get(pk=u.pk).curso_idcurso.pk
             u.UO=UnidadeOrganica.objects.get(pk=Curso.objects.get(pk=curso_id).unidade_organica_iduo.pk).sigla
             if u.validada==1:
                 u.estado="Validado"
-            elif u.validada==5:
-                u.estado="Rejeitado"
         elif ProfessorUniversitario.objects.filter(pk=u.idutilizador).exists():
             u.cargo="Docente Universitario"
             dep=ProfessorUniversitario.objects.get(pk=u.idutilizador).departamento_iddepartamento
             u.UO=UnidadeOrganica.objects.get(pk=dep.pk).sigla
             if u.validada==3:
                 u.estado="Validado"
-            elif u.validada==5:
-                u.estado="Rejeitado"
         elif Administrador.objects.filter(pk=u.pk).exists():
             u.cargo="Administrador"
             if u.validada==4:
                 u.estado="Validado"
-            elif u.validada==5:
-                u.estado="Rejeitado"
         elif Participante.objects.filter(pk=u.pk).exists():
             u.estado="Validado"
         u.idutilizador=signing.dumps(u.idutilizador)
@@ -427,7 +419,7 @@ def reset(request):
             p=Utilizador.objects.get(email=recepient).idutilizador
             id = signing.dumps(p)
             message = 'Para recuperar a sua palavra-passe re-introduza uma palavra-passe nova, no seguinte link:http://127.0.0.1:8000/login/recuperacao_password/'+id+'/'
-            send_mail(subject, message, 'a61098@ualg.pt', [recepient])
+            send_mail(subject, message, 'diaabertoworking@gmail.com', [recepient])
             messages.success(request, f'Verifique o seu email')
             return render(request, 'reset.html', {'form': sub})
         else:
@@ -453,13 +445,16 @@ def validacoes(request,acao,id):
             user.validada=4
             Participante.objects.filter(pk=id).delete()
         user.save()
-        message.success(request,f'Utilizador {user.name} validado com sucesso')
+        recepient=user.email
+        subject="Validação da conta"
+        message="A sua conta foi aceite. Bem-vindo ao site do dia aberto. "
+        send_mail(subject,message,'diabertoworking@gmail.com',[recepient],fail_silently=False)
+        messages.success(request,f'Utilizador {user.nome} validado com sucesso.')
     else:
         recepient=user.email
         subject="Validação da conta"
         message="A sua conta nao foi aceite "
-        send_mail(subject,'a61098@ualg.pt',[recepient])
-        message.success(request,f'Email enviado com sucesso')
+        send_mail(subject,message,'diabertoworking@gmail.com',[recepient],fail_silently=False)
+        messages.success(request,f'Email enviado com sucesso')
         user.delete()
-        return redirect("blog-home")
     return redirect('profile_list')

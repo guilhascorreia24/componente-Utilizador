@@ -138,9 +138,10 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE=True
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.ttirv.com'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 25
-EMAIL_HOST_USER = 'ogddzhartkleonuybf@ttirv.com'
+EMAIL_HOST_USER = 'diabertoworking@gmail.com'
+EMAIL_HOST_PASSWORD = ''
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
