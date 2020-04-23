@@ -293,6 +293,7 @@ def modify_user(request,id):
         funcao = "Docente Univesitario"
         depid = ProfessorUniversitario.objects.get(utilizador_idutilizador=id).departamento_iddepartamento
         dep= Departamento.objects.get(pk=depid.pk).nome
+        UO=UnidadeOrganica.objects.get(pk=depid.pk).sigla
     elif Coordenador.objects.filter(utilizador_idutilizador=id).exists():
         funcao = "Coordenador"
         IDUO = Coordenador.objects.get(pk=id).unidade_organica_iduo
@@ -300,7 +301,8 @@ def modify_user(request,id):
     elif Colaborador.objects.filter(utilizador_idutilizador=id).exists():
         ano = Colaborador.objects.get(pk=id).dia_aberto_ano.pk
         funcao = "Colaborador"
-        curso=Colaborador.objects.get(utilizador_idutilizador=id).curso_idcurso.nome
+        cursoid=Colaborador.objects.get(utilizador_idutilizador=id).curso_idcurso
+        UO=Curso.objects.get(pk=cursoid).unidade_organica_iduo.sigla
     elif Participante.objects.filter(utilizador_idutilizador=id).exists():
         funcao = "Participante"
     return render(request, 'profile_modify.html', {"form": form, 'nome': name,'UO':UO,'username': username, 'email': email, "ano":ano,
@@ -320,7 +322,7 @@ def profile(request,id):
     UO=False
     dep=False
     ano=False
-    curso=False
+    cursoname=False
     funcao=False
     if Administrador.objects.filter(utilizador_idutilizador=id).exists():
         funcao = "administardor"
@@ -328,6 +330,7 @@ def profile(request,id):
         funcao = "Docente Univesitario"
         depid = ProfessorUniversitario.objects.get(utilizador_idutilizador=id).departamento_iddepartamento
         dep= Departamento.objects.get(pk=depid.pk).nome
+        UO=UnidadeOrganica.objects.get(pk=depid.pk).sigla
     elif Coordenador.objects.filter(utilizador_idutilizador=id).exists():
         funcao = "Coordenador"
         IDUO = Coordenador.objects.get(pk=id).unidade_organica_iduo
@@ -335,9 +338,11 @@ def profile(request,id):
     elif Colaborador.objects.filter(utilizador_idutilizador=id).exists():
         ano = Colaborador.objects.get(pk=id).dia_aberto_ano.pk
         funcao = "Colaborador"
-        curso=Colaborador.objects.get(utilizador_idutilizador=id).curso_idcurso.nome
+        curso=Colaborador.objects.get(utilizador_idutilizador=id).curso_idcurso
+        cursoname=curso.nome
+        UO=UnidadeOrganica.objects.get(pk=curso.unidade_organica_iduo.pk).sigla
     return render(request, 'profile.html', {"form": form, 'nome': name,'UO':UO,'username': username, 'email': email,"ano":ano,
-                    'telefone': telefone, 'funcao': funcao, 'ano': ano, 'curso': curso,'dep':dep,"me":signing.dumps(me),'id':signing.dumps(id),'func':user(request)})
+                    'telefone': telefone, 'funcao': funcao, 'ano': ano, 'curso': cursoname,'dep':dep,"me":signing.dumps(me),'id':signing.dumps(id),'func':user(request)})
 
 
 
@@ -419,7 +424,7 @@ def reset(request):
             p=Utilizador.objects.get(email=recepient).idutilizador
             id = signing.dumps(p)
             message = 'Para recuperar a sua palavra-passe re-introduza uma palavra-passe nova, no seguinte link:http://127.0.0.1:8000/login/recuperacao_password/'+id+'/'
-            send_mail(subject, message, 'diaabertoworking@gmail.com', [recepient])
+            send_mail(subject, message, 'diabertoworking@gmail.com', [recepient])
             messages.success(request, f'Verifique o seu email')
             return render(request, 'reset.html', {'form': sub})
         else:
