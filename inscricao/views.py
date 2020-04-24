@@ -9,7 +9,7 @@ from django.core import signing
 
 # Main Views.
 
-def list_sessao(id_inscricao):
+def list_sessao():
     test = models.Sessao.objects \
     .select_related('atividade_idatividade','atividade_idatividade__departamento_iddepartamento','atividade_idatividade__campus','atividade_idatividade__unidade_organica_iduo__campus_idcampus','atividade_idatividade__unidade_organica_iduo','horario_has_dia_id_dia_hora__horario_hora','atividade_idatividade__professor_universitario_utilizador_idutilizador__utilizador_idutilizador','atividade_idatividade__espaco_idespaco')\
     .filter(atividade_idatividade__validada=1)\
