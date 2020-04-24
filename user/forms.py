@@ -26,7 +26,7 @@ class UserRegisterForm(forms.Form):
     def save(self):
         data = self.cleaned_data
         user=Utilizador(nome=data['name'],username=data['username'],
-            email=data['email'],telefone=data['telefone'],password=data['password1'],validada=0)
+            email=data['email'],telefone=data['telefone'],password=data['password1'],validada=5)
         user.save()
     
 
@@ -47,11 +47,12 @@ class ModifyForm(forms.Form):
     UO=forms.CharField(max_length=45,label="uo")
     dep=forms.CharField(max_length=45,label="dep")
     curso=forms.CharField(max_length=45,label="curso")
+    ano=forms.IntegerField(label="ano")
     preferencia=forms.CharField(max_length=45,label="preferencia")
 
     class Meta:
         model=Utilizador
-        fields=['name','username','email','telefone','funcao','UO','curso','dep','preferencia']
+        fields=['name','username','email','telefone','funcao','UO','curso','dep','preferencia','ano']
     
     def save(self):
         data = self.cleaned_data

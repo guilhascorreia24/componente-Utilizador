@@ -5,6 +5,7 @@ from blog import userValidation
 from inscricao import forms
 from django.forms import formset_factory
 from django.db.models import F
+from django.core import signing
 
 # Main Views.
 
@@ -28,7 +29,7 @@ def inscricao_form(request):
             return HttpResponse("<html>Sucess</html>")
         else:
             sessoes = list_sessao()
-            return render(request,'inscricao_form.html',{'form': form, 'atividades_sessao' : sessoes})
+            return render(request,'inscricao_form.html',{'form': form, 'atividades_sessao' : sessoes,'id':id})
         
     else:
         form = forms.CustomForm()

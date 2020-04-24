@@ -11,11 +11,12 @@
 
     <td data-label="Estado" class="form-group ">
         {% if funcao == "administardor" %}{% if user.cargo == "Colaborador" %}
-        <span class="tag" style="background-color: grey;color: white;" style="width: 7rem; font-size: small;"> Não pode
-            validar
+        <span class="tag" style="background-color: grey;color: white; width: 7rem; font-size: small;" disabaled><i
+            class="mdi mdi-block-helper mdi-18px"></i>
         </span></td>
     {% elif user.cargo == "Docente Universitario" %}
-    <span class="tag" style="width: 7rem; font-size: small;background-color: grey;color: white;"> Não pode validar
+    <span class="tag" style="width: 7rem; font-size: small;background-color: grey;color: white;"><i
+        class="mdi mdi-block-helper mdi-24px"></i>
     </span></td>
     {% elif user.estado == 'Pendente' %}
     {% include "validacao.html" %}

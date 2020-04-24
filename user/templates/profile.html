@@ -35,14 +35,6 @@
             </div>
         </div>
         {% endif %}
-        {% if dep %}
-        <div class="field"><label class="" for={{form.dep.id_for_label}}>Departamento</label>
-            <div class=" control is-clearfix"><input type="text" id={{form.dep.id_for_label}} name="dep" class="input"
-                    value={{dep}} disabled><input type="hidden" id={{form.dep.id_for_label}} name="dep" class="input"
-                    value={{dep}} >
-            </div>
-        </div>
-        {% endif %}
         {% if UO %}
         <div class="field"><label class="" for={{form.UO.id_for_label}}>Unidade Organica</label>
             <div class=" control is-clearfix"><input type="text" id={{form.UO.id_for_label}} name="UO" class="input"
@@ -57,6 +49,23 @@
                     value={{curso}} disabled>
                     <input type="hidden" id={{form.curso.id_for_label}} name="curso" class="input"
                     value={{curso}} >
+            </div>
+        </div>
+        {% endif %}
+        {% if ano %}
+        <div class="field"><label class="" for={{form.ano.id_for_label}}>Ano</label>
+            <div class=" control is-clearfix"><input type="text" id={{form.ano.id_for_label}} name="ano" class="input"
+                    value={{ano}} disabled>
+                    <input type="hidden" id={{form.ano.id_for_label}} name="ano" class="input"
+                    value={{ano}} >
+            </div>
+        </div>
+        {% endif %}
+        {% if dep %}
+        <div class="field"><label class="" for={{form.dep.id_for_label}}>Departamento</label>
+            <div class=" control is-clearfix"><input type="text" id={{form.dep.id_for_label}} name="dep" class="input"
+                    value={{dep}} disabled><input type="hidden" id={{form.dep.id_for_label}} name="dep" class="input"
+                    value={{dep}} >
             </div>
         </div>
         {% endif %}

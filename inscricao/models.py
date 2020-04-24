@@ -299,10 +299,6 @@ class SessaoHasHorarioHasDia(models.Model):
         db_table = 'sessao_has_horario_has_dia'
 
 
-    class Meta:
-        managed = False
-        db_table = 'tarefa'
-
 
 class Transporte(models.Model):
     idtransporte = models.AutoField(primary_key=True)

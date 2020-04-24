@@ -7,7 +7,7 @@
     {% include "navabar-admin.html" %}
     {% elif func == "docente Univesitario" %}
     {% include "navabar-dc.hmtl"}
-    {% elif func == None %}
+    {% elif func == None or func == "Participante" %}
     {% include "navabar-part.html" %}
     {% endif %}
     <div class="navbar-end">
@@ -39,7 +39,7 @@
                 </div>
             </div>
             <div data-v-a67fe1ba="" class="dropdown is-bottom-left is-mobile-modal">
-                <div role="button" aria-haspopup="true" class="dropdown-trigger"><a href="{% url "profile" me %}"><button
+                <div role="button" aria-haspopup="true" class="dropdown-trigger"><a href="{% url "profile_edit" me %}"><button
                             data-v-a67fe1ba="" type="button" class="button is-text" style="margin-right: 0.9rem;">
                             <!----> <span><span data-v-a67fe1ba="" class="icon"><i
                                         class="mdi mdi-account-circle mdi-24px"></i></span></span>
@@ -139,7 +139,7 @@
                                                     <div class="field"><label class=""
                                                             for={{form.email.id_for_label}}>Email</label>
                                                         <div class="control has-icons-right"><input type="email"
-                                                                name="email" id={{form.email.id_for_label}}
+                                                                name="email" id={{form.email.id_for_label}} value="{{email|default_if_none:form.email.value}}"
                                                                 autocomplete="on" class="input is-danger">
                                                             <!----> <span class="icon is-right has-text-danger"><i
                                                                     class="mdi mdi-alert-circle mdi-24px"></i></span>
@@ -187,24 +187,33 @@
                                             </div>
                                         </div>
                                         {% endif %}
-                                        {% if form.dep.value or dep %}
-                                        <div class="field"><label class="" for={{form.dep.id_for_label}}>Departamento</label>
-                                            <div class=" control is-clearfix"><input type="text" id={{form.dep.id_for_label}} name="dep" class="input"
-                                                    value={{form.dep.value|default_if_none:dep}} >
-                                            </div>
-                                        </div>
-                                        {% endif %}
                                         {% if form.UO.value or UO %}
                                         <div class="field"><label class="" for={{form.UO.id_for_label}}>Unidade Organica</label>
                                             <div class=" control is-clearfix"><input type="text" id={{form.UO.id_for_label}} name="UO" class="input"
-                                                    value="{{form.UO.value|default_if_none:UO}}" >
+                                                    value="{{form.UO.value|default_if_none:UO}}" disabled>
+                                            </div>
+                                        </div>
+                                        {% endif %}
+                                        {% if form.dep.value or dep %}
+                                        <div class="field"><label class="" for={{form.dep.id_for_label}}>Departamento</label>
+                                            <div class=" control is-clearfix"><input type="text" id={{form.dep.id_for_label}} name="dep" class="input"
+                                                    value={{form.dep.value|default_if_none:dep}} disabled>
                                             </div>
                                         </div>
                                         {% endif %}
                                         {% if form.curso.value or curso %}
                                         <div class="field"><label class="" for={{form.curso.id_for_label}}>Curso</label>
                                             <div class=" control is-clearfix"><input type="text" id={{form.curso.id_for_label}} name="curso" class="input"
-                                                    value="{{form.curso.value|default_if_none:curso}}">
+                                                    value="{{form.curso.value|default_if_none:curso}}" disabled>
+                                            </div>
+                                        </div>
+                                        {% endif %}
+                                        {% if form.ano.value or ano %}
+                                        <div class="field"><label class="" for={{form.ano.id_for_label}}>Ano</label>
+                                            <div class=" control is-clearfix"><input type="text" id={{form.ano.id_for_label}} name="ano" class="input"
+                                                    value="{{form.ano.value|default_if_none:ano}}" disabled>
+                                                    <input type="hidden"
+                                                    id={{form.ano.id_for_label}} name="ano" class="input" value="{{form.ano.value|default_if_none:ano}}" >
                                             </div>
                                         </div>
                                         {% endif %}
@@ -215,7 +224,8 @@
                         </section>
                         <div class="column is-8 is-offset-2">
                             <div class="level">
-                                <div class="level-left"><a href=".." class="button is-outlined" type="button">
+                                
+                                <div class="level-left"><a {% if me == id %} href=".."{% else %} href="{% url "profile_list" %}" {% endif %} class="button is-outlined" type="button">
                                         <!----> <span> Cancelar </span>
                                         <!----></a></div>
                                 <div class="level-right"><button type="button"

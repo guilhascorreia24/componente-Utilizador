@@ -211,7 +211,7 @@
                                                                 </div>
                                                                 {% endif %}
                                                                 <div id="hidden_div2"
-                                                                    {% if form.funcao.value == '2' or form.funcao.value == '3' %}
+                                                                    {% if form.funcao.value == '1' or form.funcao.value == '2' or form.funcao.value == '3' %}
                                                                     style="display:block;" {% endif %}>
                                                                     {% if error5 == 2 %}
                                                                     <div class="field">
@@ -505,6 +505,7 @@
         $(function () {
             $('#{{form.UO.id_for_label}}').on('change', function () {
                 var val = this.value;
+                if(val!=0){
                 $('#{{form.departamento.id_for_label}} option').hide().filter(function () {
                     return this.value.indexOf(val + '_') === 0;
                 })
@@ -512,7 +513,7 @@
                 $('#{{form.curso.id_for_label}} option').hide().filter(function () {
                     return this.value.indexOf(val + '_') === 0;
                 })
-                    .show();
+                    .show();}
             })
                 .change();
         });
