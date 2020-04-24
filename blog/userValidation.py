@@ -6,51 +6,55 @@ PROFESSOR_UNIVERSITARIO = 4
 COLABORADOR = 5
 
 NONE = 0
+class Container(object):
+    pass 
 
-#Retorna um uitilizador com os mesmos campos da base de dados e com um atributo adicional (type) que será 
-#um dos campos acima, caso o user não exista retorna 0
+#Retorna um utilizador com os mesmos campos da base de dados e com um atributo adicional (type) que será 
+#um dos campos acima
 
 def getCurrentUser(_id):
-    if _id == 0:
-        return 0
-
-    user = Utilizador.objects.filter(idutilizador = _id).first()
+    user = Utilizador.objects.get(idutilizador = _id)
 
     if user == None:
-        return 0
+        value = Container
+        value._type = NONE
+        return value
 
-    part = Participante.objects.select_related().filter(utilizador_idutilizador = _id).first()
-    if part != None:
-        part.type = PARTICIPANTE 
+    if user.validada == 0:
+        part = Participante.objects.select_related('utilizador_idutilizador').get(utilizador_idutilizador = user)
+        part._type = PARTICIPANTE
         return part
     
-    coord = Coordenador.objects.select_related().filter(utilizador_idutilizador = _id).first()
-    if coord != None:
-        coord.type = COORDENADOR 
+    if user.validada == 1:
+        colab = Colaborador.objects.select_related('utilizador_idutilizador').get(utilizador_idutilizador = user)
+        colab._type = COLABORADOR
+        return colab
+    
+    if user.validada == 2:
+        coord = Coordenador.objects.select_related('utilizador_idutilizador').get(utilizador_idutilizador = user)
+        coord._type = COORDENADOR 
         return coord
 
-    prof = ProfessorUniversitario.objects.select_related().filter(utilizador_idutilizador = _id).first()
-    if prof != None:
-        prof.type = PROFESSOR_UNIVERSITARIO 
+    if user.validada == 3:
+        prof._type=PROFESSOR_UNIVERSITARIO
+        prof = ProfessorUniversitario.objects.select_related('utilizador_idutilizador').get(utilizador_idutilizador = user)
         return prof
 
-    admin = Administrador.objects.select_related().filter(utilizador_idutilizador = _id).first()
-    if admin != None:
-        admin.type = ADMINISTRADOR 
+    if user.validada == 4:
+        admin = Administrador.objects.select_related('utilizador_idutilizador').get(utilizador_idutilizador = user)
+        admin._type = ADMINISTRADOR 
         return admin
     
-    colab = Colaborador.objects.select_related().filter(utilizador_idutilizador = _id).first()
-    if colab != None:
-        colab.type = COLABORADOR
-        return colab
 
-    user.type = NONE
+    user._type = NONE
     return user
     
 
 def getLoggedUser(request):
     if request.session.is_empty():
-        return 0
+        value = Container()
+        value._type = NONE
+        return value
     return getCurrentUser(request.session['user_id'])
     
     

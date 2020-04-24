@@ -884,7 +884,7 @@ COLLATE = utf8mb4_0900_ai_ci;
 CREATE TABLE IF NOT EXISTS `les`.`inscricao_has_sessao` (
   `inscricao_idinscricao` INT NOT NULL,
   `sessao_idsessao` INT NOT NULL,
-  `inscricao_has_sessao_id` INT NOT NULL,
+  `inscricao_has_sessao_id` INT NOT NULL AUTO_INCREMENT,
   `nrinscritos` INT NOT NULL DEFAULT 0,
   PRIMARY KEY (`inscricao_has_sessao_id`),
   INDEX `fk_inscricao_has_sessao_sessao_id` (`sessao_idsessao` ASC) VISIBLE,

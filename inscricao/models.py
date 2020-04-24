@@ -163,7 +163,7 @@ class InscricaoHasPrato(models.Model):
 class InscricaoHasSessao(models.Model):
     inscricao_idinscricao = models.ForeignKey(Inscricao, models.DO_NOTHING, db_column='inscricao_idinscricao')
     sessao_idsessao = models.ForeignKey('Sessao', models.DO_NOTHING, db_column='sessao_idsessao')
-    inscricao_has_sessao_id = models.IntegerField(primary_key=True)
+    inscricao_has_sessao_id = models.AutoField(primary_key=True)
     nrinscritos = models.IntegerField(db_column='nrinscritos')
 
     class Meta:

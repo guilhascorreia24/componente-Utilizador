@@ -1,0 +1,391 @@
+{% extends "navbar-part.html" %}
+{% load static %}
+{% load ins_form_tags %}
+{% block content %}
+
+<div data-v-8716d23a="" class="columns">
+    <div class="column">
+            <div class="b-table">
+                <div class="field table-mobile-sort">
+                    <div class="field has-addons">
+                        <div class="control is-expanded"><span class="select is-fullwidth"><select>
+                                    <!---->
+                                    <!---->
+                                    <option value="[object Object]">
+                                        Escola
+                                    </option>
+                                    <option value="[object Object]">
+                                        Localidade
+                                    </option>
+                                    <option value="[object Object]">
+                                        Campus
+                                    </option>
+                                    <!---->
+                                    <!---->
+                                </select></span>
+                            <!---->
+                        </div>
+                        <div class="control"><button class="button is-primary"><span class="icon is-small"><i
+                                        class="mdi mdi-menu-up"></i></span></button></div>
+                    </div>
+                </div>
+                <!---->
+                <div class="table-wrapper">
+                    <table class="table is-striped has-mobile-cards is-hoverable">
+                        <thead>
+                            <tr>
+                                <th width="40px"></th>
+                                <!---->
+                                <th class="is-sortable">
+                                    <div class="th-wrap">Escola <span class="icon is-small" style="display: none;"><i
+                                                class="mdi mdi-menu-up"></i></span></div>
+                                </th>
+                                <th class="is-sortable">
+                                    <div class="th-wrap">Area <span class="icon is-small"
+                                            style="display: none;"><i class="mdi mdi-menu-up"></i></span></div>
+                                </th>
+                                <th class="is-sortable">
+                                    <div class="th-wrap">Participantes <span class="icon is-small" style="display: none;"><i
+                                                class="mdi mdi-menu-up"></i></span></div>
+                                </th>
+                                <th class="" style="width: 120px;">
+                                    <div class="th-wrap">Turma <span class="icon is-small" style="display: none;"><i
+                                                class="mdi mdi-menu-up"></i></span></div>
+                                </th>
+                                <th class="">
+                                    <div class="th-wrap">Estado <span class="icon is-small" style="display: none;"><i
+                                                class="mdi mdi-menu-up"></i></span></div>
+                                </th>
+                                <!---->
+                            </tr>
+                            <!---->
+                            <!---->
+                        </thead>
+                        <tbody>
+                            {% for inscricao in inscricoes %}
+                            <tr draggable="false" class="">
+                                <td class="chevron-cell"><a role="button"><span class="icon"><i
+                                                class="mdi mdi-chevron-right mdi-24px"></i></span></a></td>
+                                <td data-label="Escola" class=""> {{inscricao.escola}} </td>
+                                <td data-label="Area" class=""> {{inscricao.area}} </td>
+                                <td data-label="Participantes" class=""> {{inscricao.participantes}} </td>
+                                <td data-label="Turma" class=""> {{inscricao.turma}} </td>
+                                <td data-label="Estado" class="">
+                                    <!----><span class="tag is-warning" style="width: 7rem; font-size: small;"> Por
+                                        publicar </span></td>
+                                <!---->
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                        <!---->
+                    </table>
+                </div>
+                <div class="level">
+                    <div class="level-left"></div>
+                    <div class="level-right">
+                        <div class="level-item">
+                            <nav class="pagination"><a role="button" href="#" disabled="disabled" aria-label="Page 0."
+                                    class="pagination-link pagination-previous"><span class="icon" aria-hidden="true"><i
+                                            class="mdi mdi-chevron-left mdi-24px"></i></span></a> <a role="button"
+                                    href="#" disabled="disabled" aria-label="Page 2."
+                                    class="pagination-link pagination-next"><span class="icon" aria-hidden="true"><i
+                                            class="mdi mdi-chevron-right mdi-24px"></i></span></a>
+                                <ul class="pagination-list">
+                                    <!---->
+                                    <!---->
+                                    <li><a role="button" href="#" aria-label="Current page, Page 1." aria-current="true"
+                                            class="pagination-link is-current ">1</a></li>
+                                    <!---->
+                                    <!---->
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    <script>
+        var currentTab = 0; // Current tab is set to be the first tab (0)
+        $(document).ready(function() {
+
+            //Fix plus button
+            $(".b-numberinput > .control > .button > span > .mdi-minus").click(function(){
+                var input = $(this).parents(".b-numberinput").first().find("input");
+                var value = parseInt(input.val());
+                if(value<=0 || isNaN(value)){
+                    value = 0;
+                    input.val(value);
+                    return;
+                }else{
+                    value-=1;
+                }
+                input.val(value).change();
+            });
+
+            //Add school option to transportes
+            /*$(".select-transporte").find("select").append('<option value=0 class="escola-option">Escola</option>');
+            $("#local-escola > input").on("change",function(){
+                var local = $(this);
+                $(".escola-option").each(function(index){
+                    $(this).text(local.val());
+                    $(this).val(local.val());
+                });
+            });*/
+
+            //Fix minus button
+            $(".b-numberinput > .control > .button > span > .mdi-plus").click(function(){
+                var input = $(this).parents(".b-numberinput").first().find("input");
+                var value = parseInt(input.val());
+                if(value<0 || isNaN(value)){
+                    value = 0;
+                    input.val(value);
+                    return;
+                }else{
+                    value+=1;
+                }
+                input.val(value).change();
+            });
+
+            //Expand Cards
+            $(".has-mobile-cards > tbody > .dropdown-toggle").click(function(){
+                var detail = $(this).next(".detail");
+
+                if(detail.is(":visible")){
+                    detail.hide();
+                    $(this).find(".icon").removeClass("is-expanded");
+                }else{
+                    detail.show();
+                    $(this).find(".icon").addClass("is-expanded");
+                }
+            });
+
+            //Handle Dinamic table
+            $('.escolher_sessao').data('pre', 0);
+            $(".escolher_sessao").on("change",function(){
+                var prev = $(this).data('pre');
+                var current = $(this).val();
+                $(this).data('pre',current);
+
+                if(current>0 && prev == 0){
+                    var parent = $(this).closest("tr");
+                    var table = $("#templateTableSessoes").clone(true);
+                    table.removeAttr('id');
+
+                    var form_idx = $('#sessao_escolhida > tbody').children().length-2;
+                    table.find('input').each(function (){replaceIdName($(this),"__prefix__",form_idx);});
+
+                    table.find("td[data-label='Campus']").html(parent.children("td[data-label='Campus']").html());
+                    table.find("td[data-label='Titulo']").html(parent.children("td[data-label='Titulo']").html());
+                    table.find("td[data-label='Horário']").html(parent.children("td[data-label='Horário']").html());
+                    table.find("td[data-label='Espaço']").html(parent.children("td[data-label='Espaço']").html());
+
+                    var tInput = table.find("td[data-label='Inscrever']").find('.input');
+                    tInput.val($(this).val());
+                    table.find("td[data-label='id']").find('input').val(parseInt(parent.children("td[data-label='id']").children("input").val()));
+                    syncInputs(tInput,$(this));
+
+                    //Removes entry if button clicked
+                    table.find('#remove_button').on("click",function(){
+                        var value = parseInt($('#id_sessao_set-TOTAL_FORMS').val());
+                        if(value>0){
+                            $('#id_sessao_set-TOTAL_FORMS').val(value-1);
+                            $(this).closest('tr').find('.input').val(0).change();
+                            return
+                        }
+                        removeEntry($(this).closest('tr'));
+                    });
+
+                    //removes the entry if reaches 0
+                    tInput.on("change",function(){
+                        if($(this).val() == 0){
+                            var value = parseInt($('#id_sessao_set-TOTAL_FORMS').val());
+                            $('#id_sessao_set-TOTAL_FORMS').val(value-1);
+                            removeEntry($(this).closest('tr'));
+                        }
+                    });
+                    //$("#sessao_escolhida").append(table);
+                    //var par = $("#sessao_escolhida");
+                    var value = parseInt($('#id_sessao_set-TOTAL_FORMS').val());
+                    $('#id_sessao_set-TOTAL_FORMS').val(value+1);
+                    addEntry(table,$("#sessao_escolhida"));
+                }
+            });
+
+            var sessoes = $(".sessao_table");
+
+            $('#sessao_start_info').children().each(function(){
+                var value = "input[value='"+$(this).children().last().val()+"']";
+                var inscritos = parseInt($(this).children().first().val());
+                var id = sessoes.children("td[data-label='id']").children(value);
+                id.closest('.sessao_table').children("td[data-label='Inscrever']").find('input').val(inscritos).change();
+            });
+
+
+            $("#nextBtn").click(nextTab);
+            $("#prevBtn").click(previousTab);
+        });
+        showTab(currentTab); // Display the current tab
+
+        function replaceIdName(elem,pattern,replace){
+            if ($(elem).attr('id')) {
+                var id = $(elem).attr('id').replace(pattern, replace);
+                console.log(id);
+                //var newId = $(elem).attr('id').replace(id, parseInt(id,10)+1);
+                $(elem).attr('id', id);   
+            }
+
+            if ($(elem).attr('name')) {
+                var curName = $(elem).attr('name').replace(pattern, replace);
+                //var newName = $(elem).attr('name').replace(curName, parseInt(curName,10)+1);
+                $(elem).attr('name', curName);
+            }
+        }
+
+        function addEntry(entry,table){
+            var body = $(table).children('tbody');
+
+            if(body.children().length ==2){
+                table.children('thead').show();
+                body.children('.is-empty').hide();
+            }
+            body.append(entry);
+            entry.show();
+
+        }
+
+        function removeEntry(entry){
+
+            if(entry.siblings().length==2){
+                var table = entry.closest('table');
+                table.children('thead').hide();
+                table.children('tbody').children('.is-empty').show();
+            }
+            entry.remove();
+        }
+
+
+        //Link 2 inputs on change
+        function syncInputs(el1,el2){
+            el1.on("change",function(){
+                if(el1.val() != el2.val())
+                    el2.val(el1.val()).change();
+            });
+            el2.on("change",function(){
+                if(el1.val() != el2.val())
+                    el1.val(el2.val()).change();
+            });
+        }
+        function showTab(){
+            var list = $(".step-content > form > .step-item").first().show();
+            var list_step = $(".steps > .step-items > .step-item").first().addClass("is-active");
+        }
+
+        function nextTab(){
+            var list = $(".step-content > form > .step-item");
+            var list_step = $(".steps > .step-items > .step-item");
+
+            var length = list.length-1;
+
+            if(length == currentTab){
+                $('#regForm').submit();
+                return;
+            }
+
+            var curr = list.eq(currentTab);
+            var next = list.eq(currentTab+1);
+
+            curr.hide();
+            next.show();
+
+            var curr_step = list_step.eq(currentTab);
+            var next_step = list_step.eq(currentTab+1);
+
+            curr_step.addClass("is-previous");
+            curr_step.removeClass("is-active");
+            next_step.addClass("is-active");
+
+            currentTab +=1;
+            if(length == currentTab){
+                $("#nextBtn").hide();
+                $("#submitBtn").show();
+                return;
+            }
+
+            if(currentTab == 1){
+                $("#prevBtn").show();
+                $("#cancelBtn").hide();
+            }
+        }
+
+        function previousTab(){
+            var list = $(".step-content > form > .step-item");
+            var list_step = $(".steps > .step-items > .step-item");
+
+            var length = list.length-1;
+
+            var curr = list.eq(currentTab);
+            var next = list.eq(currentTab-1);
+
+            curr.hide();
+            next.show();
+
+            var curr_step = list_step.eq(currentTab);
+            var next_step = list_step.eq(currentTab-1);
+
+            next_step.removeClass("is-previous");
+            curr_step.removeClass("is-active");
+            next_step.addClass("is-active");
+
+            currentTab -=1;
+
+            if(length-1 == currentTab){
+                $("#nextBtn").show();
+                $("#submitBtn").hide();
+                return;
+            }
+
+            if(0 == currentTab){
+                $("#prevBtn").hide();
+                $("#cancelBtn").show();
+                return;
+            }
+
+        }
+
+        function add_responsavel() {
+            var value = parseInt($('#id_responsaveis_set-TOTAL_FORMS').val());
+            $('#id_responsaveis_set-TOTAL_FORMS').val(value+1);
+
+        	var form_idx = $('#responsavel_form').children().length;
+            var template = $('#responsavel_template').clone(true);
+        	$('#responsavel_form').append(template.html().replace(/__prefix__/g, form_idx));
+        }
+
+        function delete_responsavel() {
+            if($('#responsavel_form > .responsavel').length > 1){
+                var value = parseInt($('#id_responsaveis_set-TOTAL_FORMS').val());
+                $('#id_responsaveis_set-TOTAL_FORMS').val(value-1);
+        	    $('#responsavel_form > .responsavel').last().remove();
+            }
+        }
+        function add_transporte() {
+            var value = parseInt($('#id_transportes_set-TOTAL_FORMS').val());
+            $('#id_transportes_set-TOTAL_FORMS').val(value+1);
+
+        	var form_idx = $('#table_transporte').children().length;
+            var template = $('#template_transporte').clone(true);
+        	$('#table_transporte').append(template.html().replace(/__prefix__/g, form_idx));
+        }
+
+        function delete_transporte() {
+            var value = parseInt($('#id_transportes_set-TOTAL_FORMS').val());
+            if(value>0){
+                $('#id_transportes_set-TOTAL_FORMS').val(value-1);
+        	    $('#table_transporte').children().last().remove();
+            }
+        }
+    </script>
+
+{% endblock content %}

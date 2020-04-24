@@ -80,9 +80,10 @@
                     role="button" aria-label="menu" class="navbar-burger burger"><span aria-hidden="true"></span> <span
                         aria-hidden="true"></span> <span aria-hidden="true"></span></a></div>
             <div class="navbar-menu">
-                <div class="navbar-start"><a data-v-a67fe1ba="" href="/inscricao"
-                        class="navbar-item is-tab router-link router-link-exact-active router-link-active"> Minha
-                        Inscrição </a></div>
+                <div class="navbar-start">
+                        <a data-v-a67fe1ba="" href={% url 'inscricao:register' %} class="navbar-item is-tab router-link"> Minha Inscrição </a>
+                        <a data-v-a67fe1ba="" href={% url 'inscricao:consulta' %} class="navbar-item is-tab router-link"> Consultar Inscrição </a>
+                </div>
                 <div class="navbar-end">
                     <div data-v-a67fe1ba="" class="navbar-item">
                         <div data-v-a67fe1ba="" class="dropdown is-bottom-left is-mobile-modal">
@@ -150,9 +151,7 @@
                                         class="router-link-exact-active router-link-active">Minha Inscrição</a></li>
                             </ul>
                         </nav>
-                        <div style="padding: 3rem 2vw 1rem;">
                                 {% block content %}{% endblock %}
-                        </div>
                      </div>
                 </div>
             </div>
@@ -165,4 +164,15 @@
     </div>
     </body>
     <script src="{% static "js/chunk-vendors.63f37e79.js" %}"></script>
+    <script type="text/javascript">
+        var req = "{{request.path}}"
+    $(document).ready(function(){
+        $('.navbar-start > a').each(function(){
+                var redirect = $(this).attr('href');
+                if(req == redirect){
+                        $(this).addClass("router-link-exact-active router-link-active");
+                }
+        });
+    });
+    </script>
 </html>
