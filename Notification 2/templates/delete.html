@@ -6,7 +6,6 @@
 </head>
 
 <body>
-
     <form method='POST'>
         {% csrf_token %}
         <h2>Notificacoes</h2>
@@ -22,8 +21,7 @@
                 <td>{{ not.utilizadorrecebe }}</td>
                 <td>{{ not.descricao }}</td>
 
-                <td> <input type="checkbox" name="checkbox" id="checkbox"> </td>
-                
+                <td> <input type="checkbox" id="{{forloop.count}}" name="nots" value="{{not.descricao}}"> </td>
             </tr>
             {% endfor %}
         </table>
