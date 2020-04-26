@@ -3,8 +3,6 @@
 {% load ins_form_tags %}
 {% block content %}
 
-<div data-v-8716d23a="" class="columns">
-    <div class="column">
             <div class="b-table">
                 <div class="field table-mobile-sort">
                     <div class="field has-addons">
@@ -63,7 +61,7 @@
                         </thead>
                         <tbody>
                             {% for inscricao in inscricoes %}
-                            <tr draggable="false" class="">
+                            <tr draggable="false" class="dropdown-toggle">
                                 <td class="chevron-cell"><a role="button"><span class="icon"><i
                                                 class="mdi mdi-chevron-right mdi-24px"></i></span></a></td>
                                 <td data-label="Escola" class=""> {{inscricao.escola}} </td>
@@ -72,8 +70,88 @@
                                 <td data-label="Turma" class=""> {{inscricao.turma}} </td>
                                 <td data-label="Estado" class="">
                                     <!----><span class="tag is-warning" style="width: 7rem; font-size: small;"> Por
-                                        publicar </span></td>
+                                        publicar </span>
+                                </td>
                                 <!---->
+                            </tr>
+                            <tr draggable="false" class="detail" style="display:none">
+                                <td colspan="6">
+                                    <div class="detail-container dropdown-item">
+                                        <div class="content">
+                                            <hr>
+                                            <h2 class="title has-text-grey is-uppercase" style="font-size: 0.8rem;">Geral</h2>
+                                            <p>Escola:{{inscricao.escola}}<p>
+                                            <p>Turma:{{inscricao.turma}}<p>
+                                            <p>Area:{{inscricao.area}}<p>
+                                            <p>Participantes:{{inscricao.participantes}}<p>
+
+                                            <hr>
+                                            <h2 class="title has-text-grey is-uppercase" style="font-size: 0.8rem;"> Docentes Responsáveis</h2>
+                                            <table>
+                                                <thead>
+                                                    <tr>
+                                                        <th data-label="Nome" class=""> Nome </td>
+                                                        <th data-label="Email" class=""> Email </td>
+                                                        <th data-label="Telémovel" class=""> Telemovel </td>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for docente in inscricao.responsaveis %}
+                                                        <td data-label="Nome" class=""> {{docente.nome}} </td>
+                                                        <td data-label="Email" class=""> {{docente.email}} </td>
+                                                        <td data-label="Telémovel" class=""> {{docente.telefone}} </td>
+                                                    {% endfor %}
+
+                                                </tbody>
+                                            </table>
+                                            <hr>
+                                            <h2 class="title has-text-grey is-uppercase" style="font-size: 0.8rem;"> Transportes</h2>
+                                            <table>
+                                                <thead>
+                                                    <tr>
+                                                        <th data-label="Local de Partida" class=""> Local de Partida </td>
+                                                        <th data-label="Local de Chegada" class=""> Local de Chegada </td>
+                                                        <th data-label="Numero de Passageiros" class=""> Numero de Passageiros </td>
+                                                        <th data-label="Hora" class=""> Hora </td>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for transporte in inscricao.transportes %}
+                                                        <td data-label="Local de Partida" class=""> {{transporte.partida_paragem}} </td>
+                                                        <td data-label="Local de Chegada" class=""> {{transporte.chegada_paragem}} </td>
+                                                        <td data-label="Numero de Passageiros" class=""> {{transporte.passageiros}} </td>
+                                                        <td data-label="Hora" class=""> {{transporte.hora}} </td>
+                                                    {% endfor %}
+
+                                                </tbody>
+                                            </table>
+                                            <hr>
+                                            <h2 class="title has-text-grey is-uppercase" style="font-size: 0.8rem;">Almoços</h2>
+                                            {% regroup inscricao.almoco by campus as almocos %}
+                                            {% for group in almocos %}
+                                                <p><strong>{{group.grouper}}</strong></p>
+                                                {% for almoco in group.list %}
+                                                    <p>{{almoco.tipo}} - {{almoco.nralmocos}} reservas<p>
+                                                {% endfor %}
+                                            {% endfor %}
+                                            <hr>
+                                            <h2 class="title has-text-grey is-uppercase" style="font-size: 0.8rem;">Sessões</h2>
+                                            {% regroup inscricao.sessoes by idatividade as atividade_group %}
+                                            {% for at in atividade_group %}
+                                            {% if at.list %}
+                                            {% with at.list.0 as atividade %}
+                                            
+                                            <p><strong>{{atividade.titulo}}</strong><p>
+                                            {% for sessao in at.list%}
+                                            <p><strong>{{sessao.hora}} - {{sessao.nrinscritos}} reservas</strong><p>
+                                            
+                                            {% endfor %}
+                                            {% endwith %}
+                                            {% endif %}
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </td>
                             </tr>
                             {% endfor %}
                         </tbody>
@@ -103,9 +181,6 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-</div>
     <script>
         var currentTab = 0; // Current tab is set to be the first tab (0)
         $(document).ready(function() {
