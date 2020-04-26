@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS `les`.`utilizador` (
   UNIQUE INDEX `email_UNIQUE` (`email` ASC) VISIBLE,
   UNIQUE INDEX `telefone_UNIQUE` (`telefone` ASC) VISIBLE)
 ENGINE = InnoDB
-AUTO_INCREMENT = 19
+AUTO_INCREMENT = 35
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -969,6 +969,8 @@ DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
 
+
+
 -- -----------------------------------------------------
 -- Table `les`.`sessao_has_horario_has_dia`
 -- -----------------------------------------------------
@@ -1005,7 +1007,7 @@ CREATE TABLE IF NOT EXISTS `les`.`tarefa` (
   `colaborador_Utilizador_idutilizador` INT NOT NULL,
   `hora_inicio` TIME NOT NULL,
   `dia_dia` DATE NOT NULL,
-  `sessao_idsessao` INT NULL,
+  `sessao_idsessao` INT NULL DEFAULT NULL,
   PRIMARY KEY (`idtarefa`),
   INDEX `fk_tarefa_Coordenador_id` (`Coordenador_Utilizador_idutilizador` ASC) VISIBLE,
   INDEX `fk_tarefa_colaborador_id` (`colaborador_Utilizador_idutilizador` ASC) VISIBLE,
@@ -1165,6 +1167,32 @@ CREATE TABLE IF NOT EXISTS `les`.`utilizador_has_notificacao` (
   CONSTRAINT `fk_Utilizador_has_notificacao_Utilizador`
     FOREIGN KEY (`Utilizador_idutilizador`)
     REFERENCES `les`.`utilizador` (`idutilizador`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+--- -----------------------------------------------------
+-- Table `les`.`inscricao_has_sessao`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `les`.`inscricao_has_sessao` (
+  `inscricao_idinscricao` INT NOT NULL,
+  `sessao_idsessao` INT NOT NULL,
+  `inscricao_has_sessao_id` INT NOT NULL AUTO_INCREMENT,
+  `nr_inscritos` INT NOT NULL,
+  PRIMARY KEY (`inscricao_has_sessao_id`),
+  INDEX `fk_inscricao_has_sessao_sessao_id` (`sessao_idsessao` ASC) VISIBLE,
+  INDEX `fk_inscricao_has_sessao_inscricao_id` (`inscricao_idinscricao` ASC) VISIBLE,
+  CONSTRAINT `fk_inscricao_has_sessao_inscricao`
+    FOREIGN KEY (`inscricao_idinscricao`)
+    REFERENCES `les`.`inscricao` (`idinscricao`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_inscricao_has_sessao_sessao`
+    FOREIGN KEY (`sessao_idsessao`)
+    REFERENCES `les`.`sessao` (`idsessao`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB

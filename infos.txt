@@ -14,4 +14,6 @@ Sessao:
     2=Coordenador
     3=DC
     4=ADmin
+
+    encryptaçao de passe no fim  de todo  
     

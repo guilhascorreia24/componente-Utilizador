@@ -4,7 +4,7 @@ from .models import Administrador, Coordenador, Colaborador, Participante, Profe
 from django.core import signing
 def home(request):
     if 'cookie_id' in request.COOKIES:
-        request.session['user_id']=request.COOKIES['cookie_id']
+        request.session['user_id']=signing.loads(request.COOKIES['cookie_id'])
     if 'user_id' in request.session:
         id1=request.session['user_id']
         if Participante.objects.filter(utilizador_idutilizador=id1).exists():

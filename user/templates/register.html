@@ -213,7 +213,7 @@
                                                                 <div id="hidden_div2"
                                                                     {% if form.funcao.value == '1' or form.funcao.value == '2' or form.funcao.value == '3' %}
                                                                     style="display:block;" {% endif %}>
-                                                                    {% if error5 == 2 %}
+                                                                    {% if error5 == 2 or error5 == 1 or error5 == 3 %}
                                                                     <div class="field">
                                                                         <p class="" for="{{form.UO.id_for_label}}">
                                                                             Unidade Organica</p>
@@ -267,7 +267,7 @@
                                                                 </div>
                                                                 <div id="hidden_div" {% if form.funcao.value == '1' %}
                                                                     style="display:block;" {% endif %}>
-                                                                    {% if error5 == '1' %}
+                                                                    {% if error5 == 1 %}
                                                                     <div class="field">
                                                                         <p class="" for="{{form.curso.id_for_label}}">
                                                                             Curso</p>
@@ -405,7 +405,7 @@
                                                                             class="select"><select
                                                                                 id={{form.funcao.id_for_label}}
                                                                                 name="funcao"
-                                                                                value="{{form.funcao.value}}"
+                                                                                value="{{form.funcao.value|default_if_none:0}}"
                                                                                 onchange="yesnoCheck(this);">
                                                                                 <!---->
 

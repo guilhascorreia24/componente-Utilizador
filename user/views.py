@@ -60,7 +60,7 @@ def type_user(data,user_id):
             curso_id=Curso.objects.get(pk=data['curso'].split("_")[1])
             colab=Colaborador(pk=user_id,curso_idcurso=curso_id,preferencia=data['Perferencias'],dia_aberto_ano=DiaAberto.objects.get(pk=datetime.date.today().year))
             colab.save()
-        elif len(data['curso'])==0:
+        elif data['UO']=='0' or len(data['curso'])==0:
             t=1
             return t
     elif data['funcao']=='2' :
@@ -68,14 +68,14 @@ def type_user(data,user_id):
             #print("\n"+t)
             Coord=Coordenador(pk=user_id,unidade_organica_iduo=UnidadeOrganica.objects.get(pk=data['UO']))
             Coord.save()
-        elif data['UO']==0:
+        elif data['UO']=='0':
             t=2
             #print("\n"+t)
             return t
     elif data['funcao']=='3' :
         if data['departamento']!='0' and user_id is not None:
             DC=ProfessorUniversitario.objects.create(pk=user_id,departamento_iddepartamento=Departamento.objects.get(pk=data['departamento'].split("_")[1]))
-        elif data['departamento']=='0':
+        elif data['UO']=='0' or data['departamento']=='0':
             t=3
             return t
     elif data['funcao']=='4':
@@ -119,8 +119,8 @@ def register(request):
         form = UserRegisterForm(request.POST)
         data=request.POST
         form.is_valid()
-        print(bool(type_user(data,None)))
-        if len(data['name'])>0 and len(data['username'])>0 and len(data['email'])>0 and len(data['password1'])>0 and validateEmail(data['email']) and bool(type_user(data,None)) and request.POST['password1']==request.POST['password2'] and not Utilizador.objects.filter(email=request.POST['email']).exists() and  not Utilizador.objects.filter(telefone=request.POST['telefone']).exists() and password_check(request.POST['password1']) is True:
+        print(type_user(data,None))
+        if len(data['name'])>0 and len(data['username'])>0 and len(data['email'])>0 and len(data['password1'])>0 and validateEmail(data['email']) and type_user(data,None) is True and request.POST['password1']==request.POST['password2'] and not Utilizador.objects.filter(email=request.POST['email']).exists() and  not Utilizador.objects.filter(telefone=request.POST['telefone']).exists() and password_check(request.POST['password1']) is True:
             form.save()
             user_id=Utilizador.objects.get(email=request.POST['email']).idutilizador
             type_user(data,user_id)
@@ -159,6 +159,7 @@ def login_request(request):
         form = AuthenticationForm(request.POST)
         tentatives=int(request.POST['tentatives'])
         if request.POST['email'] != '' and request.POST['password'] != '':
+            print(signing.dumps(request.POST['password']))
             if Utilizador.objects.filter(email=request.POST['email'], password=request.POST['password']).exists():
                 username = Utilizador.objects.get( email=request.POST['email'])
                 if username.validada != int(5):
@@ -166,7 +167,7 @@ def login_request(request):
                     request.session['user_id'] = Utilizador.objects.get(email=request.POST['email']).idutilizador
                     r = redirect('blog-home')
                     if 'check' in request.POST and request.POST['check'] == '1':
-                        r.set_cookie('cookie_id', request.session['user_id'], 7 * 24 * 60 * 60)
+                        r.set_cookie('cookie_id', signing.dumps(request.session['user_id']), 7 * 24 * 60 * 60)
                     return r
                 else:
                     tentatives-=1
@@ -200,6 +201,8 @@ def delete_user(request,id):
     coord=Coordenador.objects.filter(pk=id)
     part=Participante.objects.filter(pk=id)
     colab=Colaborador.objects.filter(pk=id)
+    if Utilizador.objects.get(pk=id).validada == 5:
+        u.delete()
     if admin.exists():
         u.delete()
         admin.delete()
@@ -400,7 +403,7 @@ def change_password(request, id):
         passwd=request.POST['password']
         if form.is_valid and password_check(passwd) is True:
             t=Utilizador.objects.get(pk=id_deccryp)
-            t.password=passwd
+            t.password=signing.dumps(passwd)
             t.save()
             messages.success(request, f'Password alterada com sucesso')
             return redirect('blog-home')
