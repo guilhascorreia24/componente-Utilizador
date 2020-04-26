@@ -25,13 +25,15 @@ urlpatterns = [
     path('logout/',user_views.logout_request,name='logout'),
     path('login/recuperacao_password/',user_views.reset,name="recuperacao_password"),
     path('login/recuperacao_password/<str:id>/',user_views.change_password,name="reset"),
-    path('inscricao/',include('inscricao.urls')),
+    path('inscricao/',include('inscricao.urls', namespace='inscricao'), name='inscricao'),
     path('profile/<str:id>',user_views.profile,name="profile"),
     path('profiles_list/',user_views.profile_list,name='profile_list'),
     path("profiles_list/<str:id>/",user_views.profile,name="profile_user"),
     path("profile_edit/<str:id>",user_views.modify_user,name="profile_edit"),
     path("profiles_list/delete/<str:id>/",user_views.delete_user,name="delete"),
-    path("notificacao/",notificacao_views.checknot,name="not-search"),
     path('validacoes/<int:acao>/<str:id>',user_views.validacoes,name="validacoes"),
-    path('', include("blog.urls"))
+    path('', include("blog.urls")),
+    path('create/',notificacao_views.createnot),
+    path('check/',notificacao_views.checknot),
+    path('delete/',notificacao_views.deletenot)
 ]

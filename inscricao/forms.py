@@ -7,23 +7,19 @@ class Form_Responsaveis(ModelForm):
     def save(self, idinscricao):
         base = super(Form_Responsaveis, self).save(commit=False)
         base.idinscricao = idinscricao
-        return base.save()
+        base.save()
+        return base
 
     class Meta:
         model = models.Responsaveis
         fields = ['nome','email','telefone']
 
-class Form_Inscricao(ModelForm):
+class Form_Inscricao(ModelForm):#numero de participantes precia de ser checkado
     turma = forms.CharField(max_length=1)
     participantes = forms.IntegerField()
     class Meta:
         model = models.Inscricao
         fields = ['ano','areacientifica','transporte']
-    
-    def save(self):
-        base = super(Form_Inscricao, self).save(commit=False)
-        base.local = "Empty"
-        return base.save()
 
     transporte = forms.ChoiceField(
     initial=(0,'Não'),
@@ -36,12 +32,15 @@ class Form_Inscricao(ModelForm):
 )
 
     def save(self, idUtilizador, idEscola, nresponsaveis):
-        inscricao = super(Form_Inscricao, self).save(commit=True)
-        query = models.InscricaoColetiva(nresponsaveis = nresponsaveis, nparticipantes = self.cleaned_data['participantes'],participante_utilizador_idutilizador = idUtilizador,escola_idescola = idEscola, inscricao_idinscricao = inscricao, turma = self.cleaned_data['turma'])
+        base = super(Form_Inscricao, self).save(commit=False)
+        base.local = "Empty"
+        base.save()
+        query = models.InscricaoColetiva.objects.create(nresponsaveis = nresponsaveis, nparticipantes = self.cleaned_data['participantes'],participante_utilizador_idutilizador_id = idUtilizador.pk,escola_idescola = idEscola, inscricao_idinscricao = base, turma = self.cleaned_data['turma'])
         query.save()
-        return inscricao
+        return base
 
 class Form_Escola(ModelForm):
+
     class Meta:
         model = models.Escola
         fields = ['nome','local','telefone','email']
@@ -53,7 +52,8 @@ class Form_Transportes(ModelForm):
     def save(self, idinscricao):
         base = super(Form_Transportes, self).save(commit=False)
         base.inscricao_idinscricao = idinscricao
-        return base.save()
+        base.save()
+        return base
 
     class Meta:
         model = models.TransporteHasInscricao
@@ -135,8 +135,9 @@ class Form_Sessao(ModelForm):
     def save(self,inscricao):
         base = super(Form_Sessao, self).save(commit=False)
         base.inscricao_idinscricao = inscricao
-        base.sessao_idsessao = self.cleaned_data['sessao_id']
-        return base.save()
+        base.sessao_idsessao = models.Sessao.objects.get(idsessao=self.cleaned_data['sessao_id'])
+        base.save()
+        return base
 
     def clean(self):
         super().clean()
@@ -176,12 +177,9 @@ class CustomForm:
             self.transportes = Transportes(prefix='transportes_set',queryset=models.TransporteHasInscricao.objects.none())
     
     def is_valid(self):
-        print(self.inscricao.is_valid())
         return all([self.escola.is_valid(), self.inscricao.is_valid(), self.responsaveis.is_valid(), self.almoco.is_valid(),self.sessao.is_valid(),self.transportes.is_valid()])
 
-    def save(self):
-        user = models.Utilizador.objects.get(idutilizador = 42)
-        part = models.Participante.objects.get(utilizador_idutilizador = user)
+    def save(self,part):
 
         escola = self.escola.save()
         inscricao = self.inscricao.save(part,escola,len(self.responsaveis))
