@@ -4,6 +4,7 @@ from .models import Utilizador
 from django.core import validators
 from django.core.exceptions import ValidationError
 from django.core import signing
+import hashlib
 
 
 class UserRegisterForm(forms.Form):
@@ -27,7 +28,7 @@ class UserRegisterForm(forms.Form):
     def save(self):
         data = self.cleaned_data
         user=Utilizador(nome=data['name'],username=data['username'],
-            email=data['email'],telefone=data['telefone'],password=data['password1'],validada=5) # encriptar passe quando estiveresmos quse a acabr
+            email=data['email'],telefone=data['telefone'],password=hashlib.sha256(data['password1'].encode('utf-8')).hexdigest(),validada=5) # encriptar passe quando estiveresmos quse a acabr
         user.save()
     
 
