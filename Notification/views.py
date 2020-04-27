@@ -8,10 +8,11 @@ from django.contrib.auth import authenticate
 from django.core.mail import send_mail
 from django.core import signing
 from django.contrib import messages
+from user import views as user_views
+from django.db.models import CharField, Value
 
 
 def createnot(request):
-
     if request.method == 'POST':
         form = NotificationForm(request.POST)
         if form.is_valid():
@@ -30,18 +31,22 @@ def createnot(request):
 
 
 def checknot(request):
+    me_id=signing.dumps(request.session['user_id'])
+    nots=Notificacao.objects.all().annotate(emissor=Value("",CharField()))
+    for noti in nots:
+        noti.emissor=Utilizador.objects.get(pk=noti.idutilizadorenvia).email
+    func=user_views.user(request)
+    return render(request,'check.html',{'nots':nots,'me_id':me_id,'funcao':func})
 
+def deletenot(request,id):
     form = Notificacao.objects.filter(utilizadorrecebe=request.session['user_id'])
-    return render(request, 'check.html', {'form': form})
-
-
-def deletenot(request):
-
-    form = Notificacao.objects.filter(utilizadorrecebe=request.session['user_id'])
-
     if 'nots' in request.POST:
         if request.POST.get('delete'):
             form = Notificacao.objects.filter().delete()
             return HttpResponse("<h2>Deleted sucessfully</h2>")
     else:
         return render(request, 'delete.html', {'form': form})
+
+def noti(request,id):
+    return HttpResponse("top")
+

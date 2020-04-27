@@ -20,6 +20,10 @@ from Notification import views as notificacao_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+        path('create/',notificacao_views.createnot,name="create_not"),
+    path('notificacao/',notificacao_views.checknot,name="check_not"),
+    path('delete/',notificacao_views.deletenot,name="del_not"),
+    path('notificacao/<str:id>/',notificacao_views.noti,name="noti"),
     path('register/', user_views.register, name='register'),
     path('login/',user_views.login_request,name='login'),
     path('logout/',user_views.logout_request,name='logout'),
@@ -32,8 +36,5 @@ urlpatterns = [
     path("profile_edit/<str:id>",user_views.modify_user,name="profile_edit"),
     path("profiles_list/delete/<str:id>/",user_views.delete_user,name="delete"),
     path('validacoes/<int:acao>/<str:id>',user_views.validacoes,name="validacoes"),
-    path('', include("blog.urls")),
-    path('create/',notificacao_views.createnot),
-    path('check/',notificacao_views.checknot),
-    path('delete/',notificacao_views.deletenot)
+    path('', include("blog.urls"))
 ]

@@ -33,7 +33,7 @@
                                 </div>
                             </div>
                             <hr data-v-a67fe1ba="" class="dropdown-divider">
-                        </div><a data-v-a67fe1ba="" tabindex="0" class="dropdown-item"><u data-v-a67fe1ba="">Ver todas
+                        </div><a data-v-a67fe1ba="" tabindex="0" class="dropdown-item" href="notificacao/"><u data-v-a67fe1ba="">Ver todas
                                 as notificações</u></a>
                     </div>
                 </div>
@@ -115,26 +115,6 @@
                                                     </div>
                                                 </div>
                                                 {% endif %}
-                                                {% if form.username.errors %}
-                                                <div class="field"><label class=""
-                                                        for={{form.username.id_for_label}}>Username</label>
-                                                    <div class="control has-icons-right"><input type="text"
-                                                            name="username" id={{form.username.id_for_label}}
-                                                            autocomplete="on" class="input is-danger">
-                                                        <!----> <span class="icon is-right has-text-danger"><i
-                                                                class="mdi mdi-alert-circle mdi-24px"></i></span>
-                                                        <!---->
-                                                    </div>
-                                                    <p class="help is-danger">Preencha este campo.</p>
-                                                    {% else %}
-                                                    <div class="field"><label class=""
-                                                            for={{form.username.id_for_label}}>Username</label>
-                                                        <div class="control is-clearfix"><input type="text"
-                                                                name="username" id={{form.username.id_for_label}} value="{{form.username.value|default_if_none:username}}"
-                                                                class="input">
-                                                        </div>
-                                                    </div>
-                                                    {% endif %}
                                                     {% if form.email.errors or error1 %}
                                                     <div class="field"><label class=""
                                                             for={{form.email.id_for_label}}>Email</label>

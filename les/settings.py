@@ -25,7 +25,7 @@ SECRET_KEY = '1q5ds3g%t(7w!a(vw)rh4waw74pzf2#q34*z%w8!twvh)89hdx'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 PASSWORD_HASHERS = [
     'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'blog.apps.BlogConfig',
     'crispy_forms',
+    'cryptography',
     'user.apps.UserConfig',
     'inscricao.apps.InscricaoConfig',
     'Notification.apps.NotificationConfig'
@@ -89,7 +90,11 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'les',
         'USER': 'root',
+<<<<<<< HEAD
         'PASSWORD': '12345abcd',
+=======
+        'PASSWORD': '1234',
+>>>>>>> 0afb40452ea26818368e9e1d3d39ae2f9f3893d0
         'HOST': '127.0.0.1',
         'PORT': '3306',
     }
@@ -134,14 +139,16 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+ENCRYPT_KEY = b'iDJpljxUBBsacCZ50GpSBff6Xem0R-giqXXnBFGJ2Rs='
+
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE=True
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.office365.com'
 EMAIL_PORT = 25
-EMAIL_HOST_USER = 'diabertoworking@gmail.com'
-EMAIL_HOST_PASSWORD = ''
+EMAIL_HOST_USER = 'a61098@ualg.pt'
+EMAIL_HOST_PASSWORD = '*****'
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
