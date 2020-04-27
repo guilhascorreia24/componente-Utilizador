@@ -5,10 +5,11 @@ from django.core import validators
 from django.core.exceptions import ValidationError
 from .models import Utilizador
 
-class UserRegisterForm(forms.Form):
-    Destinatario=forms.IntegerField(label="Destinatario")
-    Descricao=forms.CharField(widget=forms.Textarea(attrs={'width':"100%", 'cols' : "30", 'rows': "3", }))
+class NotificationForm(forms.Form):
 
+    Destinatario=forms.EmailField(label="Destinatario")
+    #Assunto=forms.CharField(label="Assunto")
+    Descricao=forms.CharField(widget=forms.Textarea(attrs={'width':"100%", 'cols' : "30", 'rows': "3", }))
 
     class Meta:
         model=Notificacao

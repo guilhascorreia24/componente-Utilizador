@@ -18,15 +18,15 @@
 
             {% for not in form %}
             <tr>
-                <td>{{ not.utilizadorrecebe }}</td>
+                <td>{{ not.utilizadoenvia }}</td>
                 <td>{{ not.descricao }}</td>
 
-                <td> <input type="checkbox" id="{{forloop.count}}" name="nots" value="{{not.descricao}}"> </td>
+                <td> <input type="checkbox" id="{{not.id}}" name="nots" value="{{not.id}}"> </td>
             </tr>
             {% endfor %}
         </table>
         <p></p>
-        <input type="submit" value="Eliminar">
+        <input type="submit" value="Eliminar" name= "delete">
     </form>
 
 </body>

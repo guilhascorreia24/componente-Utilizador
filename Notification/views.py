@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from Notification import templates
-from .models import Notificacao, Utilizador, DjangoSession
+from .models import Notificacao, Utilizador, DjangoSession, Participante, ProfessorUniversitario, Administrador, Coordenador, Colaborador
 from .forms import *
 from django.http import HttpResponse
 from django.contrib.auth.models import User
@@ -9,16 +9,22 @@ from django.core.mail import send_mail
 from django.core import signing
 from django.contrib import messages
 
+
 def createnot(request):
 
     if request.method == 'POST':
-        form = UserRegisterForm(request.POST)
+        form = NotificationForm(request.POST)
         if form.is_valid():
             form.cleaned_data['idutilizadorenvia'] = request.session['user_id']
+            user_email = Utilizador.objects.get(email=request.POST['Destinatario'])
+            print(request.POST['Destinatario'])
+            print("hello world")
+            form.cleaned_data['idutilizadorrecebe'] = int(user_email.pk)
             form.save(request)
-            return HttpResponse("<h2>Sent sucessfully</h2>")
+            messages.success(request, 'Successfully sent.')
+            return redirect('/create/')
     else:
-        form = UserRegisterForm()
+        form = NotificationForm()
 
     return render(request, 'notification.html', {'form': form})
 
@@ -34,8 +40,8 @@ def deletenot(request):
     form = Notificacao.objects.filter(utilizadorrecebe=request.session['user_id'])
 
     if 'nots' in request.POST:
-        print("hello world")
-        form.delete()
-        return HttpResponse("<h2>Deleted sucessfully</h2>")
+        if request.POST.get('delete'):
+            form = Notificacao.objects.filter().delete()
+            return HttpResponse("<h2>Deleted sucessfully</h2>")
     else:
         return render(request, 'delete.html', {'form': form})
