@@ -153,7 +153,7 @@ def register(request):
         print(not Utilizador.objects.filter(email=request.POST['email']).exists())
         print(not Utilizador.objects.filter(telefone=request.POST['telefone']).exists())
         print(password_check(request.POST['password1']))
-        if len(data['name'])>0 and len(data['username'])>0 and len(data['email'])>0 and len(data['password1'])>0 and validateEmail(data['email']) and type_user(data,None) is True and request.POST['password1']==request.POST['password2'] and not Utilizador.objects.filter(email=request.POST['email']).exists() and  not Utilizador.objects.filter(telefone=request.POST['telefone']).exists() and password_check(request.POST['password1']) is True:
+        if len(data['name'])>0 and len(data['username'])>0 and len(data['email'])>0 and len(data['password1'])>0 and validateEmail(data['email']) and (type_user(data,None) is True or type_user(data,None) == 4) and request.POST['password1']==request.POST['password2'] and not Utilizador.objects.filter(email=request.POST['email']).exists() and  not Utilizador.objects.filter(telefone=request.POST['telefone']).exists() and password_check(request.POST['password1']) is True:
             form.save()
             user_id=Utilizador.objects.get(email=request.POST['email']).idutilizador
             type_user(data,user_id)
@@ -191,6 +191,8 @@ def login_request(request):
     if request.method == 'POST':
         form = AuthenticationForm(request.POST)
         tentatives=int(request.POST['tentatives'])
+        print(request.POST['email'])
+        print(request.POST['password'])
         if request.POST['email'] != '' and request.POST['password'] != '':
             print(signing.dumps(request.POST['password']))
             if Utilizador.objects.filter(email=request.POST['email'], password=hashlib.sha256(request.POST['password'].encode('utf-8')).hexdigest()).exists():
