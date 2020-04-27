@@ -180,7 +180,7 @@ def register(request):
                 error3 = "telefone ja existe"
             if request.POST['password1'] != request.POST['password2']:
                 error2 = "Passwords nao coincidem"
-            if not password_check(request.POST['password1']):
+            if password_check(request.POST['password1']):
                 error1 = password_check(request.POST['password1']) 
             return render(request, 'register.html', {'form': form,'cursos':cursos,'UOs':UOs,'deps':deps,'error1': error, 'error2': error1, 'error3': error2, 'error4': error3,'error5':type_user(data,None)})
     form = UserRegisterForm()
