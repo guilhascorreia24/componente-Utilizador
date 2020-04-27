@@ -280,7 +280,7 @@
                                                                                     <option value=0>
                                                                                     </option>
                                                                                     {% for curso in cursos %}
-                                                                                    <option value={{curso.pk}}
+                                                                                    <option value={{curso.value}}
                                                                                         {% if curso.pk == form.curso.value|add:"0" %}
                                                                                         selected {% endif %}>
                                                                                         {{curso.nome}}

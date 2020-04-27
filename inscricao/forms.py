@@ -154,7 +154,7 @@ class Form_Sessao(ModelForm):
         #return True
     class Meta:
         model = models.InscricaoHasSessao
-        fields = ['nrinscritos']
+        fields = ['nr_inscritos']
 
 ###################################################END SESSOES#############################################
 class CustomForm:

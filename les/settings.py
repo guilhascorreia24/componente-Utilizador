@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'blog.apps.BlogConfig',
     'crispy_forms',
+    'cryptography',
     'user.apps.UserConfig',
     'inscricao.apps.InscricaoConfig',
     'Notification.apps.NotificationConfig'
@@ -134,6 +135,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+ENCRYPT_KEY = b'iDJpljxUBBsacCZ50GpSBff6Xem0R-giqXXnBFGJ2Rs='
+
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE=True
@@ -142,6 +145,6 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.office365.com'
 EMAIL_PORT = 25
 EMAIL_HOST_USER = 'a61098@ualg.pt'
-EMAIL_HOST_PASSWORD = '******'
+EMAIL_HOST_PASSWORD = '*****'
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False

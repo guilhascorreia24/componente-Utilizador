@@ -404,7 +404,7 @@ class Menu(models.Model):
     menu = models.CharField(max_length=45)
     campus_idcampus = models.ForeignKey(Campus, models.DO_NOTHING, db_column='Campus_idCampus')  # Field name made lowercase.
     horario_has_dia_id_dia_hora = models.ForeignKey(HorarioHasDia, models.DO_NOTHING, db_column='horario_has_dia_id_dia_hora')
-    nralmocosdisponiveis = models.IntegerField()
+    nralmoçosdisponiveis = models.IntegerField()
 
     class Meta:
         managed = False
@@ -543,9 +543,8 @@ class TransporteHasInscricao(models.Model):
     transporte_has_inscricao_id = models.IntegerField(primary_key=True)
     partida = models.ForeignKey(HorarioHasDia, models.DO_NOTHING, db_column='partida')
     numero_passageiros = models.IntegerField(blank=True, null=True)
-    partida_paragem = models.ForeignKey(Paragem, models.DO_NOTHING, db_column='partida_paragem',related_name="TransporteHasInscricao_partida_paragem")
-    chegada_paragem = models.ForeignKey(Paragem, models.DO_NOTHING, db_column='chegada_paragem',related_name="TransporteHasInscricao_cheagada_paragem")
-
+    partida_paragem = models.ForeignKey(Paragem, models.DO_NOTHING, db_column='partida_paragem')
+    chegada_paragem = models.ForeignKey(Paragem, models.DO_NOTHING, db_column='chegada_paragem')
 
     class Meta:
         managed = False

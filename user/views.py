@@ -8,6 +8,29 @@ from django.db.models import CharField, Value
 import datetime
 import re
 import hashlib
+from cryptography.fernet import Fernet
+import base64
+import logging
+import traceback
+from django.conf import settings
+
+def encrypt(txt):
+        # convert integer etc to string first
+        txt = str(txt)
+        # get the key from settings
+        cipher_suite = Fernet(settings.ENCRYPT_KEY) # key should be byte
+        # #input should be byte, so convert the text to byte
+        encrypted_text = cipher_suite.encrypt(txt.encode('ascii'))
+        # encode to urlsafe base64 format
+        encrypted_text = base64.urlsafe_b64encode(encrypted_text).decode("ascii") 
+        return encrypted_text
+def decrypt(txt):
+        # base64 decode
+        txt = base64.urlsafe_b64decode(txt)
+        cipher_suite = Fernet(settings.ENCRYPT_KEY)
+        decoded_text = cipher_suite.decrypt(txt).decode("ascii")     
+        return decoded_text
+
 
 def user(request):
     funcao=None
@@ -23,7 +46,7 @@ def user(request):
             funcao = "Coordenador"
         elif Colaborador.objects.filter(utilizador_idutilizador=id1).exists():
             funcao = "colab"
-        id=signing.dumps(id1)
+        id=encrypt(id1)
     return funcao
 #----------------------------------------------registo user--------------------------------
 def password_check(passwd):   
@@ -177,7 +200,8 @@ def login_request(request):
                     request.session['user_id'] = Utilizador.objects.get(email=request.POST['email']).idutilizador
                     r = redirect('blog-home')
                     if 'check' in request.POST and request.POST['check'] == '1':
-                        r.set_cookie('cookie_id', username.telefone*0.25, 7 * 24 * 60 * 60)
+                        Utilizador.objects.filter(pk=request.session['user_id']).update(remember_me=encrypt(request.session['user_id']))
+                        r.set_cookie('cookie_id', encrypt(request.session['user_id']), 7 * 24 * 60 * 60)
                     return r
                 else:
                     tentatives-=1
@@ -395,6 +419,7 @@ def profile_list(request):
                 u.estado="Validado"
         elif Participante.objects.filter(pk=u.pk).exists():
             u.estado="Validado"
+        print(str(u.idutilizador)+" "+str(user_id))
         u.idutilizador=signing.dumps(u.idutilizador)
     if Coordenador.objects.filter(pk=user_id).exists():
         me=UnidadeOrganica.objects.get(pk=Coordenador.objects.get(pk=user_id).unidade_organica_iduo.pk).sigla
@@ -413,7 +438,7 @@ def change_password(request, id):
         passwd=request.POST['password']
         if form.is_valid and password_check(passwd) is True:
             t=Utilizador.objects.get(pk=id_deccryp)
-            t.password=signing.dumps(passwd)
+            t.password=encrypt(passwd)
             t.save()
             messages.success(request, f'Password alterada com sucesso')
             return redirect('blog-home')
@@ -435,7 +460,7 @@ def reset(request):
         if Utilizador.objects.filter(email=recepient).exists():
             subject = 'Recuperação da Palavra-Passe'
             p=Utilizador.objects.get(email=recepient).idutilizador
-            id = signing.dumps(p)
+            id = encrypt(p)
             message = 'Para recuperar a sua palavra-passe re-introduza uma palavra-passe nova, no seguinte link:http://127.0.0.1:8000/login/recuperacao_password/'+id+'/'
             send_mail(subject, message, 'diabertoworking@gmail.com', [recepient])
             messages.success(request, f'Verifique o seu email')

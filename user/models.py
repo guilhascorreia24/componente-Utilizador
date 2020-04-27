@@ -8,6 +8,7 @@ class Utilizador(models.Model):
     password = models.CharField(max_length=45)
     username = models.CharField(db_column='userName', max_length=45)  # Field name made lowercase.
     validada = models.IntegerField()
+    remember_me = models.CharField(max_length=255, blank=True, null=True)
 
     class Meta:
         managed = False
