@@ -307,6 +307,9 @@ class Espaco(models.Model):
 class Horario(models.Model):
     hora = models.TimeField(primary_key=True)
 
+    def __str__(self):
+        return str(self.hora)
+
     class Meta:
         managed = False
         db_table = 'horario'
@@ -316,6 +319,9 @@ class HorarioHasDia(models.Model):
     horario_hora = models.ForeignKey(Horario, models.DO_NOTHING, db_column='horario_hora')
     dia_dia = models.ForeignKey(Dia, models.DO_NOTHING, db_column='Dia_dia')  # Field name made lowercase.
     id_dia_hora = models.AutoField(primary_key=True)
+
+    def __str__(self):
+        return str(self.horario_hora)
 
     class Meta:
         managed = False
@@ -404,7 +410,7 @@ class Menu(models.Model):
     menu = models.CharField(max_length=45)
     campus_idcampus = models.ForeignKey(Campus, models.DO_NOTHING, db_column='Campus_idCampus')  # Field name made lowercase.
     horario_has_dia_id_dia_hora = models.ForeignKey(HorarioHasDia, models.DO_NOTHING, db_column='horario_has_dia_id_dia_hora')
-    nralmocosdisponiveis = models.IntegerField()
+    nralmoçosdisponiveis = models.IntegerField()
 
     class Meta:
         managed = False
@@ -424,6 +430,9 @@ class Notificacao(models.Model):
 
 class Paragem(models.Model):
     paragem = models.CharField(primary_key=True, max_length=45)
+
+    def __str__(self):
+        return self.paragem
 
     class Meta:
         managed = False
@@ -484,7 +493,7 @@ class Sala(models.Model):
 class Sessao(models.Model):
     idsessao = models.AutoField(primary_key=True)
     nrinscritos = models.IntegerField()
-    vagas = models.IntegerField()
+    capacidade = models.IntegerField(db_column='vagas')
     atividade_idatividade = models.ForeignKey(Atividade, models.DO_NOTHING, db_column='Atividade_idAtividade')  # Field name made lowercase.
     horario_has_dia_id_dia_hora = models.ForeignKey(HorarioHasDia, models.DO_NOTHING, db_column='horario_has_dia_id_dia_hora')
 

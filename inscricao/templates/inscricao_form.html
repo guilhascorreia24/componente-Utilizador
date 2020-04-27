@@ -221,6 +221,7 @@
                                                         <div class="field"><label class="label">Localidade</label>
                                                             <div class="control is-clearfix" id="local-escola">{{form.escola.local|addcss:"input"}}
                                                             </div>
+                                                            <p class="help is-danger">{{form.escola.local.errors.0}}</p>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -2951,7 +2952,7 @@
                                                                                 <p class="control"><button type="button" class="button is-primary">
                                                                                     <span class="icon"><i class="mdi mdi-minus mdi-24px"></i></span></button>
                                                                                 </p>
-                                                                                <div class="control is-clearfix">{{form.sessao.empty_form.nrinscritos|addcss:"input"}}</div> 
+                                                                                <div class="control is-clearfix">{{form.sessao.empty_form.nr_inscritos|addcss:"input"}}</div> 
                                                                                 <p class="control"><button type="button" class="button is-primary">
                                                                                     <span class="icon"><i class="mdi mdi-plus mdi-24px"></i></span></button>
                                                                                 </p>
