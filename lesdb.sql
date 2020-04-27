@@ -26,7 +26,6 @@ CREATE TABLE IF NOT EXISTS `les`.`utilizador` (
   `email` VARCHAR(255) NOT NULL,
   `telefone` VARCHAR(45) NOT NULL,
   `password` VARCHAR(255) NOT NULL,
-  `userName` VARCHAR(255) NOT NULL,
   `validada` TINYINT NOT NULL DEFAULT '0',
   `remember_me` varchar(255) Null, 
   PRIMARY KEY (`idutilizador`),
@@ -404,7 +403,7 @@ COLLATE = utf8mb4_0900_ai_ci;
 -- Table `les`.`curso`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `les`.`curso` (
-  `idcurso` INT NOT NULL,
+  `idcurso` INT NOT NULL Auto_increment,
   `unidade_organica_idUO` INT NOT NULL,
   `nome` VARCHAR(250) NOT NULL,
   PRIMARY KEY (`idcurso`),
@@ -508,7 +507,7 @@ COLLATE = utf8mb4_0900_ai_ci;
 CREATE TABLE IF NOT EXISTS `les`.`horario_has_dia` (
   `horario_hora` TIME NOT NULL,
   `Dia_dia` DATE NOT NULL,
-  `id_dia_hora` INT NOT NULL,
+  `id_dia_hora` INT NOT NULL auto_increment,
   PRIMARY KEY (`id_dia_hora`),
   INDEX `fk_horario_has_Dia_Dia1_idx` (`Dia_dia` ASC) VISIBLE,
   INDEX `fk_horario_has_Dia_horario1_idx` (`horario_hora` ASC) VISIBLE,
@@ -533,7 +532,7 @@ COLLATE = utf8mb4_0900_ai_ci;
 CREATE TABLE IF NOT EXISTS `les`.`colaborador_has_horario` (
   `colaborador_Utilizador_idutilizador` INT NOT NULL,
   `horario_has_dia_id_dia_hora` INT NOT NULL,
-  `colaborador_has_horario_id` INT NOT NULL,
+  `colaborador_has_horario_id` INT NOT NULL auto_increment,
   PRIMARY KEY (`colaborador_has_horario_id`),
   INDEX `fk_colaborador_has_Horario_colaborador_id` (`colaborador_Utilizador_idutilizador` ASC) VISIBLE,
   INDEX `fk_colaborador_has_horario_horario_has_dia1_idx` (`horario_has_dia_id_dia_hora` ASC) VISIBLE,
@@ -558,7 +557,7 @@ COLLATE = utf8mb4_0900_ai_ci;
 CREATE TABLE IF NOT EXISTS `les`.`colaborador_has_unidade_organica` (
   `colaborador_Utilizador_idutilizador` INT NOT NULL,
   `unidade_organica_idUO` INT NOT NULL,
-  `colaborador_has_unidade_organica_id` INT NOT NULL,
+  `colaborador_has_unidade_organica_id` INT NOT NULL auto_increment,
   PRIMARY KEY (`colaborador_has_unidade_organica_id`),
   INDEX `fk_colaborador_has_unidade_organica_unidade_organica_id` (`unidade_organica_idUO` ASC) VISIBLE,
   INDEX `fk_colaborador_has_unidade_organica_colaborador_id` (`colaborador_Utilizador_idutilizador` ASC) VISIBLE,
@@ -833,7 +832,7 @@ COLLATE = utf8mb4_0900_ai_ci;
 CREATE TABLE IF NOT EXISTS `les`.`inscricao_has_prato` (
   `inscricao_idinscricao` INT NOT NULL,
   `Prato_idPrato` INT NOT NULL,
-  `inscricao_has_prato_id` VARCHAR(45) NOT NULL,
+  `inscricao_has_prato_id` int NOT NULL auto_increment,
   PRIMARY KEY (`inscricao_has_prato_id`),
   INDEX `fk_inscricao_has_Prato_Prato_id` (`Prato_idPrato` ASC) VISIBLE,
   INDEX `fk_inscricao_has_Prato_inscricao_id` (`inscricao_idinscricao` ASC) VISIBLE,
@@ -978,7 +977,7 @@ COLLATE = utf8mb4_0900_ai_ci;
 CREATE TABLE IF NOT EXISTS `les`.`sessao_has_horario_has_dia` (
   `sessao_idsessao` INT NOT NULL,
   `horario_has_dia_id_dia_hora` INT NOT NULL,
-  `sessao_has_horario_has_dia_id` INT NOT NULL,
+  `sessao_has_horario_has_dia_id` INT NOT NULL auto_increment,
   PRIMARY KEY (`sessao_has_horario_has_dia_id`),
   INDEX `fk_sessao_has_horario_has_dia_horario_has_dia1_idx` (`horario_has_dia_id_dia_hora` ASC) VISIBLE,
   INDEX `fk_sessao_has_horario_has_dia_sessao1_idx` (`sessao_idsessao` ASC) VISIBLE,
@@ -1057,7 +1056,7 @@ COLLATE = utf8mb4_0900_ai_ci;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `les`.`transporte_has_inscricao` (
   `inscricao_idinscricao` INT NOT NULL,
-  `transporte_has_inscricao_id` INT NOT NULL,
+  `transporte_has_inscricao_id` INT NOT NULL auto_increment,
   `partida` INT NOT NULL,
   `numero_passageiros` INT NULL DEFAULT '0',
   `partida_paragem` VARCHAR(45) NOT NULL,
@@ -1098,7 +1097,7 @@ COLLATE = utf8mb4_0900_ai_ci;
 CREATE TABLE IF NOT EXISTS `les`.`transporte_has_horario` (
   `transporte_idtransporte` INT NOT NULL,
   `id_transporte_has_horario` INT NOT NULL,
-  `transporte_has_inscricao_transporte_has_inscricao_id` INT NOT NULL,
+  `transporte_has_inscricao_transporte_has_inscricao_id` INT NOT NULL auto_increment,
   PRIMARY KEY (`id_transporte_has_horario`),
   INDEX `fk_transporte_has_Horario_transporte_id` (`transporte_idtransporte` ASC) VISIBLE,
   INDEX `fk_transporte_has_horario_transporte_has_inscricao1_idx` (`transporte_has_inscricao_transporte_has_inscricao_id` ASC) VISIBLE,
@@ -1138,7 +1137,7 @@ COLLATE = utf8mb4_0900_ai_ci;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `les`.`transporte_universitario` (
   `capacidade` INT NOT NULL,
-  `transporte_idtransporte` INT NOT NULL AUTO_INCREMENT,
+  `transporte_idtransporte` INT NOT NULL,
   PRIMARY KEY (`transporte_idtransporte`),
   CONSTRAINT `fk_transporte Universitario_transporte`
     FOREIGN KEY (`transporte_idtransporte`)
@@ -1156,7 +1155,7 @@ COLLATE = utf8mb4_0900_ai_ci;
 CREATE TABLE IF NOT EXISTS `les`.`utilizador_has_notificacao` (
   `Utilizador_idutilizador` INT NOT NULL,
   `notificacao_id` INT NOT NULL,
-  `utilizador_has_notificacao_id` INT NOT NULL,
+  `utilizador_has_notificacao_id` INT NOT NULL auto_increment,
   PRIMARY KEY (`utilizador_has_notificacao_id`),
   INDEX `fk_Utilizador_has_notificacao_notificacao_id` (`notificacao_id` ASC) VISIBLE,
   INDEX `fk_Utilizador_has_notificacao_Utilizador_id` (`Utilizador_idutilizador` ASC) VISIBLE,

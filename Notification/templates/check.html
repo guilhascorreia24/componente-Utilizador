@@ -46,7 +46,7 @@
                                         class="mdi mdi-account-circle mdi-24px"></i></span></span>
                             <!----></button></a></div>
                 <div aria-hidden="true" class="background" style="display: none;"></div>
-            </div><a href="../logout"><button data-v-a67fe1ba="" type="button" class="button"><span
+            </div><a href="{% url "logout" %}"><button data-v-a67fe1ba="" type="button" class="button"><span
                         class="icon is-small"><i class="mdi mdi-logout-variant"></i></span> <span> Sair
                     </span>
                     <!----></button></a>
@@ -92,34 +92,17 @@
                                     </div>
                                     <!---->
                                 </div>
-                                <div class="field">
+                                <div data-v-1513178e="" class="field">
                                     <!---->
-                                    <div class="control is-expanded has-icons-left"><span
-                                            class="select is-fullwidth is-empty"><select id="campus">
-                                                <option hidden value="">
-                                                    Campus
-                                                </option>
-                                                {% for campu in campus %}
-                                                <option value={{campu.pk}} >{{campu.nome}}</option>
-                                                {% endfor %}
-                                            </select></span> <span class="icon is-left"><i
-                                                class="mdi mdi-magnify mdi-24px"></i></span></div>
-                                    <!---->
-                                </div>
-                                <div class="field">
-                                    <!---->
-                                    <div class="control is-expanded has-icons-left"><span
-                                            class="select is-fullwidth is-empty"><select id="myInput3"
-                                                onchange="myFunction3()">
-                                                <option hidden value="">
-                                                    Faculdade do Utilizador
-                                                </option>
-                                                {% for uo in uos %}
-                                                {{uo.value}}
-                                                <option value="{{uo.value}}@{{uo.sigla}}" >{{uo.sigla}}</option>
-                                                {% endfor %}
-                                            </select></span> <span class="icon is-left"><i
-                                                class="mdi mdi-magnify mdi-24px"></i></span></div>
+                                    <div data-v-1513178e="" class="autocomplete control">
+                                        <div class="control has-icons-left is-clearfix"><input type="text" id="myInput2"
+                                                onkeyup="myFunction2()" autocomplete="off"
+                                                placeholder="Titulo da notificação" class="input">
+                                            <span class="icon is-left"><i class="mdi mdi-magnify mdi-24px"></i></span>
+                                            <!---->
+                                            <!---->
+                                        </div>
+                                    </div>
                                     <!---->
                                 </div>
                                 <div class="field">
@@ -141,20 +124,6 @@
                                     </div>
                                     <!---->
                                 </div>
-                                <div class="field">
-                                    <!---->
-                                    <div class="control is-expanded has-icons-left"><span
-                                            class="select is-fullwidth is-empty"><select id="myInput5"
-                                                onchange="myFunction5()">
-                                                <option hidden value="">
-                                                    Estado
-                                                </option>
-                                                <option value="Validado">Validado</option>
-                                                <option value="Pendente">Pendente</option>
-                                            </select></span> <span class="icon is-left"><i
-                                                class="mdi mdi-magnify mdi-24px"></i></span></div>
-                                    <!---->
-                                </div>
 
                             </ul>
                         </div>
@@ -165,13 +134,14 @@
                         <ul>
                             <li><a href="/" class="router-link-active">Início</a></li>
                             <li class="is-active"><a href="{% url "blog-home" %}"
-                                    class="router-link-exact-active router-link-active">Utilizadores</a></li>
+                                    class="router-link-exact-active router-link-active">Notificações</a></li>
                         </ul>
                     </nav>
                     <a href="{% url "create_not" %}" class="button is-success is-outlined" type="button"
-                        style="margin-bottom: 0.9rem; margin-right: 1rem;text-decoration:none;"><span
-                            class="icon is-small"><i class="mdi mdi-plus"></i></span> <span> Compor notificação </span>
+                        style="margin-bottom: 0.9rem; margin-right: 1rem;text-decoration:none;" data-toggle="modal" data-target="#exampleModal"><span
+                            class="icon is-small"><i class="mdi mdi-plus"></i></span> <span> Compor Notificação </span>
                         <!----></a>
+                      
                     <div class="b-table">
                         <div class="field table-mobile-sort">
                             <div class="field has-addons">
@@ -201,6 +171,7 @@
                             <table id="myTable" class="table table-striped">
                                 <thead>
                                     <tr>
+                                        <th width="40px"></th>
                                         <!---->
 
                                         <th class="is-sortable">
@@ -209,7 +180,7 @@
                                             </div>
                                         </th>
                                         <th class="is-sortable">
-                                            <div class="th-wrap th-sm">Conteudo<span class="icon is-small"
+                                            <div class="th-wrap th-sm">Titulo da Notificação<span class="icon is-small"
                                                     style="display: none;"><i class="mdi mdi-menu-up"></i></span>
                                             </div>
                                         </th>
@@ -231,19 +202,9 @@
 
 
                                 <tbody>
-
-                                    {% for user in users %}
-                                    {% if user.idutilizador != me_id %}
-                                    {% if funcao == "Coordenador" %}
-                                    {% if user.cargo != "Coordenador" %}
-                                    {% ifequal user.UO me %}
-                                    {% include "consulta_admin.html" %}
-                                    {% endifequal %}
-                                    {% endif %}
-                                    {% else %}
-                                    {% include "consulta_admin.html" %}
-                                    {% endif %}
-                                    {% endif %}
+                                    <tr>
+                                    {% for not in nots %}
+                                    {% include "tabela_de_consulta.html" %}
                                     </tr>
                                     <!---->
                                     <!---->
@@ -288,6 +249,18 @@
     </div>
 </div>
 <script>
+    $('#exampleModal').on('show.bs.modal', function (event) {
+  var button = $(event.relatedTarget) // Button that triggered the modal
+  var recipient = button.data('whatever') // Extract info from data-* attributes
+  // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+  // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+  var modal = $(this)
+  modal.find('.modal-title').text('New message to ' + recipient)
+  modal.find('.modal-body input').val(recipient)
+})
+</script>
+
+<script>
     $(document).ready(function () {
         $('#myTable').DataTable({
             "paging": true,
@@ -295,6 +268,9 @@
             "searching": false,
             "bLengthChange": false,
             "aLengthMenu": [[5, 10, 25, -1], [5, 10, 25, "All"]],
+            "columnDefs": [
+    { "orderable": false, "targets": [0,4] }
+  ]
         });
     });
 </script>
@@ -391,6 +367,7 @@
         }
     }
 </script>
+{% include "compor_not.html" %} 
 {% for user in users %}
 <div class="dialog modal" id="{{ forloop.counter }}">
     <div class="modal-background"></div>
