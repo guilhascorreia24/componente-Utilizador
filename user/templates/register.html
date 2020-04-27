@@ -213,7 +213,7 @@
                                                                 <div id="hidden_div2"
                                                                     {% if form.funcao.value == '1' or form.funcao.value == '2' or form.funcao.value == '3' %}
                                                                     style="display:block;" {% endif %}>
-                                                                    {% if error5 == 2 or error5 == 1 or error5 == 3 %}
+                                                                    {% if error5 == 2 %}
                                                                     <div class="field">
                                                                         <p class="" for="{{form.UO.id_for_label}}">
                                                                             Unidade Organica</p>
@@ -280,7 +280,7 @@
                                                                                     <option value=0>
                                                                                     </option>
                                                                                     {% for curso in cursos %}
-                                                                                    <option value={{curso.pk}}
+                                                                                    <option value={{curso.value}}
                                                                                         {% if curso.pk == form.curso.value|add:"0" %}
                                                                                         selected {% endif %}>
                                                                                         {{curso.nome}}

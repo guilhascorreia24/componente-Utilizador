@@ -33,7 +33,7 @@ urlpatterns = [
     path("profiles_list/delete/<str:id>/",user_views.delete_user,name="delete"),
     path('validacoes/<int:acao>/<str:id>',user_views.validacoes,name="validacoes"),
     path('', include("blog.urls")),
-    path('create/',notificacao_views.createnot),
-    path('check/',notificacao_views.checknot),
-    path('delete/',notificacao_views.deletenot)
+    path('create/',notificacao_views.createnot,name="create_not"),
+    path('notificacao/',notificacao_views.checknot,name="check_not"),
+    path('delete/',notificacao_views.deletenot,name="del_not")
 ]

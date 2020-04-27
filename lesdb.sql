@@ -28,6 +28,7 @@ CREATE TABLE IF NOT EXISTS `les`.`utilizador` (
   `password` VARCHAR(255) NOT NULL,
   `userName` VARCHAR(255) NOT NULL,
   `validada` TINYINT NOT NULL DEFAULT '0',
+  `remember_me` varchar(255) Null, 
   PRIMARY KEY (`idutilizador`),
   UNIQUE INDEX `email_UNIQUE` (`email` ASC) VISIBLE,
   UNIQUE INDEX `telefone_UNIQUE` (`telefone` ASC) VISIBLE)

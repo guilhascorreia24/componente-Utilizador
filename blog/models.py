@@ -371,6 +371,7 @@ class InscricaoHasSessao(models.Model):
     inscricao_idinscricao = models.ForeignKey(Inscricao, models.DO_NOTHING, db_column='inscricao_idinscricao')
     sessao_idsessao = models.ForeignKey('Sessao', models.DO_NOTHING, db_column='sessao_idsessao')
     inscricao_has_sessao_id = models.AutoField(primary_key=True)
+    nr_inscritos = models.IntegerField()
 
     class Meta:
         managed = False
@@ -542,8 +543,8 @@ class TransporteHasInscricao(models.Model):
     transporte_has_inscricao_id = models.IntegerField(primary_key=True)
     partida = models.ForeignKey(HorarioHasDia, models.DO_NOTHING, db_column='partida')
     numero_passageiros = models.IntegerField(blank=True, null=True)
-    partida_paragem = models.ForeignKey(Paragem, models.DO_NOTHING, db_column='partida_paragem', related_name='TransporteHasInscricao_partida_paragem')
-    chegada_paragem = models.ForeignKey(Paragem, models.DO_NOTHING, db_column='chegada_paragem', related_name='TransporteHasInscricao_chegada_paragem')
+    partida_paragem = models.ForeignKey(Paragem, models.DO_NOTHING, db_column='partida_paragem',related_name="TransporteHasInscricao_partida_paragem")
+    chegada_paragem = models.ForeignKey(Paragem, models.DO_NOTHING, db_column='chegada_paragem',related_name="TransporteHasInscricao_cheagada_paragem")
 
     class Meta:
         managed = False
@@ -585,6 +586,7 @@ class Utilizador(models.Model):
     password = models.CharField(max_length=255)
     username = models.CharField(db_column='userName', max_length=255)  # Field name made lowercase.
     validada = models.IntegerField()
+    remember_me = models.CharField(max_length=255, blank=True, null=True)
 
     class Meta:
         managed = False

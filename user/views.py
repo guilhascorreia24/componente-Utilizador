@@ -7,6 +7,30 @@ from .models import UnidadeOrganica, DiaAberto,Departamento, Utilizador, Partici
 from django.db.models import CharField, Value
 import datetime
 import re
+import hashlib
+from cryptography.fernet import Fernet
+import base64
+import logging
+import traceback
+from django.conf import settings
+
+def encrypt(txt):
+        # convert integer etc to string first
+        txt = str(txt)
+        # get the key from settings
+        cipher_suite = Fernet(settings.ENCRYPT_KEY) # key should be byte
+        # #input should be byte, so convert the text to byte
+        encrypted_text = cipher_suite.encrypt(txt.encode('ascii'))
+        # encode to urlsafe base64 format
+        encrypted_text = base64.urlsafe_b64encode(encrypted_text).decode("ascii") 
+        return encrypted_text
+def decrypt(txt):
+        # base64 decode
+        txt = base64.urlsafe_b64decode(txt)
+        cipher_suite = Fernet(settings.ENCRYPT_KEY)
+        decoded_text = cipher_suite.decrypt(txt).decode("ascii")     
+        return decoded_text
+
 
 def user(request):
     funcao=None
@@ -22,7 +46,7 @@ def user(request):
             funcao = "Coordenador"
         elif Colaborador.objects.filter(utilizador_idutilizador=id1).exists():
             funcao = "colab"
-        id=signing.dumps(id1)
+        id=encrypt(id1)
     return funcao
 #----------------------------------------------registo user--------------------------------
 def password_check(passwd):   
@@ -56,11 +80,11 @@ def type_user(data,user_id):
     #print(data['departamento']==0)
     #print(type(data['departamento']))
     if data['funcao']=='1':
-        if len(data['curso'])>0 and user_id is not None:
+        if data['curso']!='0' and user_id is not None:
             curso_id=Curso.objects.get(pk=data['curso'].split("_")[1])
             colab=Colaborador(pk=user_id,curso_idcurso=curso_id,preferencia=data['Perferencias'],dia_aberto_ano=DiaAberto.objects.get(pk=datetime.date.today().year))
             colab.save()
-        elif data['UO']=='0' or len(data['curso'])==0:
+        elif data['UO']=='0' or data['curso']=='0':
             t=1
             return t
     elif data['funcao']=='2' :
@@ -94,7 +118,7 @@ def type_user(data,user_id):
 
 
 def validateEmail(email):
-    return re.search('^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$', email)
+    return bool(re.search('^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$', email))
 
 def dep():
     deps=Departamento.objects.all().annotate(value=Value("",CharField()))
@@ -119,7 +143,16 @@ def register(request):
         form = UserRegisterForm(request.POST)
         data=request.POST
         form.is_valid()
+        print(len(data['name'])>0)
+        print(len(data['username'])>0)
+        print(len(data['email'])>0)
+        print(len(data['password1'])>0)
+        print(validateEmail(data['email']))
         print(type_user(data,None))
+        print(request.POST['password1']==request.POST['password2'])
+        print(not Utilizador.objects.filter(email=request.POST['email']).exists())
+        print(not Utilizador.objects.filter(telefone=request.POST['telefone']).exists())
+        print(password_check(request.POST['password1']))
         if len(data['name'])>0 and len(data['username'])>0 and len(data['email'])>0 and len(data['password1'])>0 and validateEmail(data['email']) and type_user(data,None) is True and request.POST['password1']==request.POST['password2'] and not Utilizador.objects.filter(email=request.POST['email']).exists() and  not Utilizador.objects.filter(telefone=request.POST['telefone']).exists() and password_check(request.POST['password1']) is True:
             form.save()
             user_id=Utilizador.objects.get(email=request.POST['email']).idutilizador
@@ -147,7 +180,7 @@ def register(request):
                 error3 = "telefone ja existe"
             if request.POST['password1'] != request.POST['password2']:
                 error2 = "Passwords nao coincidem"
-            if not password_check(request.POST['password1']):
+            if password_check(request.POST['password1']):
                 error1 = password_check(request.POST['password1']) 
             return render(request, 'register.html', {'form': form,'cursos':cursos,'UOs':UOs,'deps':deps,'error1': error, 'error2': error1, 'error3': error2, 'error4': error3,'error5':type_user(data,None)})
     form = UserRegisterForm()
@@ -160,14 +193,15 @@ def login_request(request):
         tentatives=int(request.POST['tentatives'])
         if request.POST['email'] != '' and request.POST['password'] != '':
             print(signing.dumps(request.POST['password']))
-            if Utilizador.objects.filter(email=request.POST['email'], password=request.POST['password']).exists():
+            if Utilizador.objects.filter(email=request.POST['email'], password=hashlib.sha256(request.POST['password'].encode('utf-8')).hexdigest()).exists():
                 username = Utilizador.objects.get( email=request.POST['email'])
                 if username.validada != int(5):
                     messages.success(request, f"Bem-vindo {username.username}")
                     request.session['user_id'] = Utilizador.objects.get(email=request.POST['email']).idutilizador
                     r = redirect('blog-home')
                     if 'check' in request.POST and request.POST['check'] == '1':
-                        r.set_cookie('cookie_id', signing.dumps(request.session['user_id']), 7 * 24 * 60 * 60)
+                        Utilizador.objects.filter(pk=request.session['user_id']).update(remember_me=encrypt(request.session['user_id']))
+                        r.set_cookie('cookie_id', encrypt(request.session['user_id']), 7 * 24 * 60 * 60)
                     return r
                 else:
                     tentatives-=1
@@ -385,6 +419,7 @@ def profile_list(request):
                 u.estado="Validado"
         elif Participante.objects.filter(pk=u.pk).exists():
             u.estado="Validado"
+        print(str(u.idutilizador)+" "+str(user_id))
         u.idutilizador=signing.dumps(u.idutilizador)
     if Coordenador.objects.filter(pk=user_id).exists():
         me=UnidadeOrganica.objects.get(pk=Coordenador.objects.get(pk=user_id).unidade_organica_iduo.pk).sigla
@@ -403,7 +438,7 @@ def change_password(request, id):
         passwd=request.POST['password']
         if form.is_valid and password_check(passwd) is True:
             t=Utilizador.objects.get(pk=id_deccryp)
-            t.password=signing.dumps(passwd)
+            t.password=encrypt(passwd)
             t.save()
             messages.success(request, f'Password alterada com sucesso')
             return redirect('blog-home')
@@ -425,7 +460,7 @@ def reset(request):
         if Utilizador.objects.filter(email=recepient).exists():
             subject = 'Recuperação da Palavra-Passe'
             p=Utilizador.objects.get(email=recepient).idutilizador
-            id = signing.dumps(p)
+            id = encrypt(p)
             message = 'Para recuperar a sua palavra-passe re-introduza uma palavra-passe nova, no seguinte link:http://127.0.0.1:8000/login/recuperacao_password/'+id+'/'
             send_mail(subject, message, 'diabertoworking@gmail.com', [recepient])
             messages.success(request, f'Verifique o seu email')
@@ -454,15 +489,16 @@ def validacoes(request,acao,id):
             Participante.objects.filter(pk=id).delete()
         user.save()
         recepient=user.email
+        from_user=Utilizador.objects.get(pk=request.session['user_id']).email
         subject="Validação da conta"
         message="A sua conta foi aceite. Bem-vindo ao site do dia aberto. "
-        send_mail(subject,message,'diabertoworking@gmail.com',[recepient],fail_silently=False)
+        send_mail(subject,message,'a61098@ualg.pt',[recepient])
         messages.success(request,f'Utilizador {user.nome} validado com sucesso.')
     else:
         recepient=user.email
         subject="Validação da conta"
         message="A sua conta nao foi aceite "
-        send_mail(subject,message,'diabertoworking@gmail.com',[recepient],fail_silently=False)
+        send_mail(subject,message,'a61098@ualg.pt',[recepient])
         messages.success(request,f'Email enviado com sucesso')
         user.delete()
     return redirect('profile_list')

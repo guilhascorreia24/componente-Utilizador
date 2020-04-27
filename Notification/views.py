@@ -10,7 +10,6 @@ from django.core import signing
 from django.contrib import messages
 
 def createnot(request):
-
     if request.method == 'POST':
         form = UserRegisterForm(request.POST)
         if form.is_valid():
@@ -24,15 +23,11 @@ def createnot(request):
 
 
 def checknot(request):
+    noti=Notificacao.objects.get(idutilizadorrecebe=request.session['user_id'])
+    return render(request,'check.html',{'not':noti})
 
+def deletenot(request,id):
     form = Notificacao.objects.filter(utilizadorrecebe=request.session['user_id'])
-    return render(request, 'check.html', {'form': form})
-
-
-def deletenot(request):
-
-    form = Notificacao.objects.filter(utilizadorrecebe=request.session['user_id'])
-
     if 'nots' in request.POST:
         print("hello world")
         form.delete()
