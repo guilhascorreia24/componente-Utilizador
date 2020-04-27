@@ -51,7 +51,7 @@ def getCurrentUser(_id):
     
 
 def getLoggedUser(request):
-    if request.session.is_empty():
+    if 'user_id' not in request.session:
         value = Container()
         value._type = NONE
         return value
