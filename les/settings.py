@@ -25,7 +25,7 @@ SECRET_KEY = '1q5ds3g%t(7w!a(vw)rh4waw74pzf2#q34*z%w8!twvh)89hdx'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 PASSWORD_HASHERS = [
     'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',

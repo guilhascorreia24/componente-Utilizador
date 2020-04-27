@@ -35,6 +35,10 @@ def inscricao_form(request):
         form = forms.CustomForm()
         sessoes = list_sessao()
         return render(request,'inscricao_form.html',{'form': form, 'atividades_sessao' : sessoes})
+    
+    
+def test(request):
+    return render(request,'test.html')
 
 
 def consultar_inscricao(request):
