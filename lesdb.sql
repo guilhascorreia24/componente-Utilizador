@@ -1057,7 +1057,7 @@ COLLATE = utf8mb4_0900_ai_ci;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `les`.`transporte_has_inscricao` (
   `inscricao_idinscricao` INT NOT NULL,
-  `transporte_has_inscricao_id` INT NOT NULL,
+  `transporte_has_inscricao_id` INT NOT NULL AUTO_INCREMENT,
   `partida` INT NOT NULL,
   `numero_passageiros` INT NULL DEFAULT '0',
   `partida_paragem` VARCHAR(45) NOT NULL,

@@ -148,7 +148,7 @@ class Form_Sessao(ModelForm):
         except models.Sessao.DoesNotExist:
             raise ValidationError("Sessão não existe")
        
-        if cleaned_data['nrinscritos'] > sessao.vagas:
+        if cleaned_data['nr_inscritos'] > sessao.capacidade - sessao.nrinscritos:
            raise ValidationError("Sessão não têm vagas suficientes")
         
         #return True
