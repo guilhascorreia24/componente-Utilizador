@@ -197,7 +197,7 @@ class Menu(models.Model):
     menu = models.CharField(max_length=45)
     campus_idcampus = models.ForeignKey(Campus, models.DO_NOTHING, db_column='Campus_idCampus')  # Field name made lowercase.
     horario_has_dia_id_dia_hora = models.ForeignKey(HorarioHasDia, models.DO_NOTHING, db_column='horario_has_dia_id_dia_hora')
-    nralmoçosdisponiveis = models.IntegerField()
+    nralmocosdisponiveis = models.IntegerField()
 
     class Meta:
         managed = False
