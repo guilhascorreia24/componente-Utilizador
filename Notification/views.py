@@ -10,6 +10,8 @@ from django.core import signing
 from django.contrib import messages
 from user import views as user_views
 from django.db.models import CharField, Value
+from datetime import datetime
+from pytz import timezone
 
 
 def createnot(request):
@@ -18,10 +20,10 @@ def createnot(request):
         if form.is_valid():
             form.cleaned_data['idutilizadorenvia'] = request.session['user_id']
             user_email = Utilizador.objects.get(email=request.POST['Destinatario'])
-            print(request.POST['Destinatario'])
-            print("hello world")
-            form.cleaned_data['idutilizadorrecebe'] = int(user_email.pk)
-            form.save(request)
+            d=request.POST['Descricao']
+            a=request.POST['Assunto']
+            destinatario_pk= int(user_email.pk)
+            Notificacao.objects.create(descricao=d,utilizadorrecebe=destinatario_pk,idutilizadorenvia=request.session['user_id'],criadoem=datetime.now(),assunto=a)
             messages.success(request, 'Successfully sent.')
             return redirect('/create/')
     else:
@@ -31,14 +33,15 @@ def createnot(request):
 
 
 def checknot(request):
-    me_id=signing.dumps(request.session['user_id'])
+    me_id=request.session['user_id']
     nots=Notificacao.objects.all().annotate(emissor=Value("",CharField()))
     for noti in nots:
         noti.emissor=Utilizador.objects.get(pk=noti.idutilizadorenvia).email
+        noti.id=signing.dumps(noti.id)
     func=user_views.user(request)
     return render(request,'check.html',{'nots':nots,'me_id':me_id,'funcao':func})
 
-def deletenot(request,id):
+def deletenot(request):
     form = Notificacao.objects.filter(utilizadorrecebe=request.session['user_id'])
     if 'nots' in request.POST:
         if request.POST.get('delete'):

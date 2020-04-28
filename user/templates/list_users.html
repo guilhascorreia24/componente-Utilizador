@@ -71,7 +71,7 @@
                                     <div data-v-1513178e="" class="autocomplete control">
                                         <div class="control has-icons-left is-clearfix"><input type="text" id="myInput"
                                                 onkeyup="myFunction()" autocomplete="off"
-                                                placeholder="Nome do Utilizador" class="input">
+                                                placeholder="Email do Emissor" class="input">
                                             <span class="icon is-left"><i class="mdi mdi-magnify mdi-24px"></i></span>
                                             <!---->
                                             <!---->
@@ -84,26 +84,12 @@
                                     <div data-v-1513178e="" class="autocomplete control">
                                         <div class="control has-icons-left is-clearfix"><input type="text" id="myInput2"
                                                 onkeyup="myFunction2()" autocomplete="off"
-                                                placeholder="Email do Utilizador" class="input">
+                                                placeholder="Assunto" class="input">
                                             <span class="icon is-left"><i class="mdi mdi-magnify mdi-24px"></i></span>
                                             <!---->
                                             <!---->
                                         </div>
                                     </div>
-                                    <!---->
-                                </div>
-                                <div class="field">
-                                    <!---->
-                                    <div class="control is-expanded has-icons-left"><span
-                                            class="select is-fullwidth is-empty"><select id="campus">
-                                                <option hidden value="">
-                                                    Campus
-                                                </option>
-                                                {% for campu in campus %}
-                                                <option value={{campu.pk}} >{{campu.nome}}</option>
-                                                {% endfor %}
-                                            </select></span> <span class="icon is-left"><i
-                                                class="mdi mdi-magnify mdi-24px"></i></span></div>
                                     <!---->
                                 </div>
                                 <div class="field">
@@ -266,7 +252,7 @@
                                 <!---->
                             </table>
                         </div>
-                        <div class="level">
+                        <!--<div class="level">
                             <div class="level-left"></div>
                             <div class="level-right">
                                 <div class="level-item">
@@ -290,7 +276,7 @@
                                     </nav>
                                 </div>
                             </div>
-                        </div>
+                        </div>-->
                     </div>
                 </div>
             </div>
@@ -320,7 +306,7 @@
         table = document.getElementById("myTable");
         tr = table.getElementsByTagName("tr");
         for (i = 0; i < tr.length; i++) {
-            td = tr[i].getElementsByTagName("td")[0];
+            td = tr[i].getElementsByTagName("td")[1];
             if (td) {
                 txtValue = td.textContent || td.innerText;
                 if (txtValue.toUpperCase().indexOf(filter) > -1) {
@@ -338,7 +324,7 @@
         table = document.getElementById("myTable");
         tr = table.getElementsByTagName("tr");
         for (i = 0; i < tr.length; i++) {
-            td = tr[i].getElementsByTagName("td")[1];
+            td = tr[i].getElementsByTagName("td")[2];
             if (td) {
                 txtValue = td.textContent || td.innerText;
                 if (txtValue.toUpperCase().indexOf(filter) > -1) {
@@ -356,7 +342,7 @@
         table = document.getElementById("myTable");
         tr = table.getElementsByTagName("tr");
         for (i = 0; i < tr.length; i++) {
-            td = tr[i].getElementsByTagName("td")[4];
+            td = tr[i].getElementsByTagName("td")[5];
             if (td) {
                 txtValue = td.textContent || td.innerText;
                 if (txtValue.toUpperCase().indexOf(filter) > -1) {
@@ -374,7 +360,7 @@
         table = document.getElementById("myTable");
         tr = table.getElementsByTagName("tr");
         for (i = 0; i < tr.length; i++) {
-            td = tr[i].getElementsByTagName("td")[2];
+            td = tr[i].getElementsByTagName("td")[3];
             if (td) {
                 txtValue = td.textContent || td.innerText;
                 if (txtValue.toUpperCase().indexOf(filter) > -1) {
@@ -392,7 +378,7 @@
         table = document.getElementById("myTable");
         tr = table.getElementsByTagName("tr");
         for (i = 0; i < tr.length; i++) {
-            td = tr[i].getElementsByTagName("td")[3];
+            td = tr[i].getElementsByTagName("td")[4];
             if (td) {
                 txtValue = td.textContent || td.innerText;
                 if (txtValue.toUpperCase().indexOf(filter) > -1) {

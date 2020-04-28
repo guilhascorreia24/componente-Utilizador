@@ -90,11 +90,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'les',
         'USER': 'root',
-<<<<<<< HEAD
         'PASSWORD': '12345abcd',
-=======
-        'PASSWORD': '1234',
->>>>>>> 0afb40452ea26818368e9e1d3d39ae2f9f3893d0
         'HOST': '127.0.0.1',
         'PORT': '3306',
     }
@@ -152,3 +148,5 @@ EMAIL_HOST_USER = 'a61098@ualg.pt'
 EMAIL_HOST_PASSWORD = '*****'
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
+
+
