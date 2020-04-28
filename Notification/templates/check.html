@@ -204,7 +204,9 @@
                                 <tbody>
                                     <tr>
                                     {% for not in nots %}
+                                    {% if not.utilizadorrecebe == me_id %}
                                     {% include "tabela_de_consulta.html" %}
+                                    {% endif %}
                                     </tr>
                                     <!---->
                                     <!---->
@@ -385,7 +387,7 @@
         </section>
         <footer class="modal-card-foot"><button class="button" data-dismiss="modal">
                 Cancelar
-            </button><a href="delete/{{user.idutilizador}}" style="text-decoration: none;"> <button
+            </button><a href="" style="text-decoration: none;"> <button
                     class="button is-success" type="submit">
                     Confirmar
                 </button></a></footer>

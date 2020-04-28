@@ -20,7 +20,7 @@ from Notification import views as notificacao_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-        path('create/',notificacao_views.createnot,name="create_not"),
+    path('create/',notificacao_views.createnot,name="create_not"),
     path('notificacao/',notificacao_views.checknot,name="check_not"),
     path('delete/',notificacao_views.deletenot,name="del_not"),
     path('notificacao/<str:id>/',notificacao_views.noti,name="noti"),

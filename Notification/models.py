@@ -414,6 +414,7 @@ class Menu(models.Model):
 class Notificacao(models.Model):
     descricao = models.CharField(max_length=255)
     criadoem = models.DateTimeField()
+    assunto = models.CharField(max_length=50)
     idutilizadorenvia = models.IntegerField()
     utilizadorrecebe = models.IntegerField()
 
