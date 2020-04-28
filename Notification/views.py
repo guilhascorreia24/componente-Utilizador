@@ -29,7 +29,7 @@ def createnot(request):
     else:
         form = NotificationForm()
 
-    return render(request, 'notification.html', {'form': form})
+    return render(request, 'compor_not.html', {'form': form})
 
 
 def checknot(request):
