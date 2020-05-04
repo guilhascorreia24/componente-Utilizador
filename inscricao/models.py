@@ -80,8 +80,6 @@ class Colaborador(models.Model):
     dia_aberto_ano = models.ForeignKey('DiaAberto', models.DO_NOTHING, db_column='dia_aberto_ano')
     curso_idcurso = models.ForeignKey('Curso', models.DO_NOTHING, db_column='curso_idcurso', blank=True, null=True)
 
-<<<<<<< HEAD
-=======
     class Meta:
         managed = False
         db_table = 'colaborador'
@@ -106,7 +104,6 @@ class ColaboradorHasUnidadeOrganica(models.Model):
         managed = False
         db_table = 'colaborador_has_unidade_organica'
 
->>>>>>> 82d6666181dd1825204a7f0702ddc5ad71d2f0a7
 
 class Coordenador(models.Model):
     utilizador_idutilizador = models.OneToOneField('Utilizador', models.DO_NOTHING, db_column='Utilizador_idutilizador', primary_key=True)  # Field name made lowercase.
@@ -387,7 +384,7 @@ class Sala(models.Model):
 class Sessao(models.Model):
     idsessao = models.AutoField(primary_key=True)
     nrinscritos = models.IntegerField()
-    vagas = models.IntegerField()
+    capacidade = models.IntegerField(db_column='vagas')
     atividade_idatividade = models.ForeignKey(Atividade, models.DO_NOTHING, db_column='Atividade_idAtividade')  # Field name made lowercase.
     horario_has_dia_id_dia_hora = models.ForeignKey(HorarioHasDia, models.DO_NOTHING, db_column='horario_has_dia_id_dia_hora')
 
