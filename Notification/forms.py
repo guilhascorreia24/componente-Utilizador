@@ -5,16 +5,16 @@ from django.core import validators
 from django.core.exceptions import ValidationError
 from .models import Utilizador
 
-class UserRegisterForm(forms.Form):
-    Destinatario=forms.IntegerField(label="Destinatario")
-    Descricao=forms.CharField(widget=forms.Textarea(attrs={'width':"100%", 'cols' : "30", 'rows': "3", }))
+class NotificationForm(forms.Form):
 
+    Destinatario=forms.EmailField(label="Destinatario")
+    Assunto=forms.CharField(label="Assunto")
+    Descricao=forms.CharField(widget=forms.Textarea(attrs={'width':"100%", 'cols' : "30", 'rows': "3", }))
 
     class Meta:
         model=Notificacao
-        fields=['Descricao','idutilizadorenvia','Destinatario']
+        fields=['Descricao','Assunto','idutilizadorenvia','Destinatario']
 
     def save(self,request):
-        data = self.cleaned_data 
-        Not = Notificacao(descricao=data['Descricao'],idutilizadorenvia=request.session['user_id'],utilizadorrecebe=data['Destinatario'])
+        Not = Notificacao(descricao=request.POST['Descricao'],assunto=request.POST['Assunto'],idutilizadorenvia=request.session['user_id'],utilizadorrecebe=request.POST['Destinatario'])
         Not.save()

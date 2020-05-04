@@ -90,7 +90,10 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'les',
         'USER': 'root',
+
+
         'PASSWORD': '1234',
+
         'HOST': '127.0.0.1',
         'PORT': '3306',
     }
@@ -141,10 +144,12 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE=True
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.office365.com'
-EMAIL_PORT = 25
-EMAIL_HOST_USER = 'a61098@ualg.pt'
-EMAIL_HOST_PASSWORD = '*****'
+#EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'diabertoworking@gmail.com'
+EMAIL_HOST_PASSWORD = '*************'
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
+
+

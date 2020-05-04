@@ -46,8 +46,12 @@
             <div data-v-8716d23a="" id="top">
                 <nav aria-label="breadcrumbs" class="breadcrumb" style="background-color:white">
                     <ul>
-                        <li><a href="/" class="router-link-active">Início</a></li>
-                        <li class="is-active"><a href=".."
+                        <li><a href="{% url "blog-home" %}" class="router-link-active">Início</a></li>
+                        {% if func %}
+                        <li><a href="{% url "profile_list" %}"
+                                class="router-link-exact-active router-link-active">Utilizador</a></li>
+                                {% endif %}
+                        <li class="is-active"><a href=""
                                 class="router-link-exact-active router-link-active">Registar</a></li>
                     </ul>
                 </nav>
@@ -91,27 +95,6 @@
                                                     </div>
                                                 </div>
                                                 {% endif %}
-                                                {% if form.username.errors %}
-                                                <div class="field">
-                                                    <p class="" for={{form.username.id_for_label}}>Username</p>
-                                                    <div class="control has-icons-right"><input type="text"
-                                                            name="username" id={{form.username.id_for_label}}
-                                                            autocomplete="on" class="input is-danger">
-                                                        <!----> <span class="icon is-right has-text-danger"><i
-                                                                class="mdi mdi-alert-circle mdi-24px"></i></span>
-                                                        <!---->
-                                                    </div>
-                                                    <p class="help is-danger">Preencha este campo.</p>
-                                                    {% else %}
-                                                    <div class="field">
-                                                        <p class="" for={{form.username.id_for_label}}>Username</p>
-                                                        <div class="control is-clearfix"><input type="text"
-                                                                name="username" id={{form.username.id_for_label}}
-                                                                value="{{form.username.value|default_if_none:""}}"
-                                                                class="input">
-                                                        </div>
-                                                    </div>
-                                                    {% endif %}
                                                     {% if form.email.errors or error1 %}
                                                     <div class="field">
                                                         <p class="" for={{form.email.id_for_label}}>Email</p>

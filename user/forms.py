@@ -9,7 +9,6 @@ import hashlib
 
 class UserRegisterForm(forms.Form):
     name=forms.CharField(max_length=255,label="Nome")
-    username=forms.CharField(max_length=255,label="username")
     email = forms.EmailField(max_length=255,label="Email")
     telefone=forms.CharField(max_length=255,label="Telefone/Telemovel")
     password1=forms.CharField(max_length=255,label="Password",widget=forms.PasswordInput())
@@ -23,11 +22,11 @@ class UserRegisterForm(forms.Form):
 
     class Meta:
         model=Utilizador
-        fields=['idutilizador','nome','email','telefone','password','username','funcao']
+        fields=['idutilizador','nome','email','telefone','password','funcao']
     
     def save(self):
         data = self.cleaned_data
-        user=Utilizador(nome=data['name'],username=data['username'],
+        user=Utilizador(nome=data['name'],
             email=data['email'],telefone=data['telefone'],password=hashlib.sha256(data['password1'].encode('utf-8')).hexdigest(),validada=5) # encriptar passe quando estiveresmos quse a acabr
         user.save()
     
@@ -42,7 +41,6 @@ class AuthenticationForm(forms.Form):
 
 class ModifyForm(forms.Form):
     name=forms.CharField(max_length=255,label="Nome")
-    username=forms.CharField(max_length=255,label="username")
     email = forms.EmailField(max_length=255,label="Email")
     telefone=forms.CharField(max_length=255,label="Telefone/Telemovel")
     funcao=forms.CharField(max_length=45,label="funcao")
@@ -54,11 +52,11 @@ class ModifyForm(forms.Form):
 
     class Meta:
         model=Utilizador
-        fields=['name','username','email','telefone','funcao','UO','curso','dep','preferencia','ano']
+        fields=['name','email','telefone','funcao','UO','curso','dep','preferencia','ano']
     
     def save(self):
         data = self.cleaned_data
-        user=Utilizador(nome=data['name'],username=data['username'],
+        user=Utilizador(nome=data['name'],
             email=data['email'],telefone=data['telefone'],validada=data['funcao'])
         user.save()
     

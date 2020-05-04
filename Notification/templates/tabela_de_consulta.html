@@ -1,13 +1,11 @@
 <tr class="" scope="row">
+    <td class="chevron-cell"><input type="checkbox" style="transform: scale(1.5);" name="{{ forloop.count }}" value="{{not.pk}}"></td>
     <td data-label="Nome" class=""> {{not.emissor}}
     </td>
-    <td data-label="Nome" class=""> {{not .descricao}}
+    <td data-label="Nome" class=""> {{not.assunto}}
     </td>
-    <td data-label="Nome" class=""> {{not.data}}
+    <td data-label="Nome" class=""> {{not.criadoem|date:'Y-m-d H:i'}}
 
     <td data-label="Ações" class="has-text-centered">
-        <a role="button" data-toggle="modal"
-            data-target="#{{ forloop.counter }}"><span class="icon has-text-danger"><i
-                    class="mdi mdi-close-box mdi-24px"></i></span></a>
-        <a role="button" href="{% url "check_not" not.id %}"><span class="icon has-text-success"><i
-                    class="mdi mdi-account-search mdi-24px"></i></span></a></td>
+        <a role="button" href="{% url "noti" not.id %}"><span class="icon has-text-success"><i
+                    class="mdi mdi-email-open mdi-24px"></i></span></a></td>

@@ -1,7 +1,7 @@
 
 <span class="tag" style="width: 8.2rem; font-size: small;padding:0%"><select
     name="valida" id="color_me{{ forloop.counter }}" class="form-control orange" onchange="location=this.value"
-    style="height:60%;padding-left:20%">
+    style="height:70%;padding-left:20%">
     <option hidden selected>{{user.estado}}</option>
     <option class="green" style="background-color: white;color: black;"
         value="{% url "validacoes" acao=1  id=user.pk %}"><span class="icon is-small"><i
