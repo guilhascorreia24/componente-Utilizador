@@ -223,15 +223,14 @@ class DiaAberto(models.Model):
     datainscricao = models.DateField()
     emaildiaaberto = models.CharField(db_column='emailDiaAberto', max_length=120)  # Field name made lowercase.
     enderecopaginaweb = models.CharField(db_column='enderecoPaginaWeb', max_length=60)  # Field name made lowercase.
-    datadiainscricaoatividadesinicio = models.DateField(db_column='dataDiainscricaoAtividadesInicio')  # Field name made lowercase.
     datadiaabertoinicio = models.DateField(db_column='dataDiaAbertoInicio')  # Field name made lowercase.
-    datainscricaoatividadesfim = models.DateField(db_column='dataInscricaoAtividadesfim')  # Field name made lowercase.
     datadiaabertofim = models.DateField(db_column='dataDiaAbertofim')  # Field name made lowercase.
     datapropostaatividadeinicio = models.DateField(db_column='dataPropostaAtividadeInicio')  # Field name made lowercase.
     datapropostaatividadesfim = models.DateField(db_column='dataPropostaAtividadesFim')  # Field name made lowercase.
     administrador_utilizador_idutilizador = models.ForeignKey(Administrador, models.DO_NOTHING, db_column='Administrador_Utilizador_idutilizador')  # Field name made lowercase.
     preco_almoco_estudante = models.FloatField()
     preco_almoco_professor = models.FloatField()
+    utilizador_idutilizador = models.ForeignKey('Utilizador', models.DO_NOTHING, db_column='utilizador_idutilizador')
 
     class Meta:
         managed = False
@@ -307,9 +306,6 @@ class Espaco(models.Model):
 class Horario(models.Model):
     hora = models.TimeField(primary_key=True)
 
-    def __str__(self):
-        return str(self.hora)
-
     class Meta:
         managed = False
         db_table = 'horario'
@@ -319,9 +315,6 @@ class HorarioHasDia(models.Model):
     horario_hora = models.ForeignKey(Horario, models.DO_NOTHING, db_column='horario_hora')
     dia_dia = models.ForeignKey(Dia, models.DO_NOTHING, db_column='Dia_dia')  # Field name made lowercase.
     id_dia_hora = models.AutoField(primary_key=True)
-
-    def __str__(self):
-        return str(self.horario_hora)
 
     class Meta:
         managed = False
@@ -410,7 +403,7 @@ class Menu(models.Model):
     menu = models.CharField(max_length=45)
     campus_idcampus = models.ForeignKey(Campus, models.DO_NOTHING, db_column='Campus_idCampus')  # Field name made lowercase.
     horario_has_dia_id_dia_hora = models.ForeignKey(HorarioHasDia, models.DO_NOTHING, db_column='horario_has_dia_id_dia_hora')
-    nralmoçosdisponiveis = models.IntegerField()
+    nralmocosdisponiveis = models.IntegerField()
 
     class Meta:
         managed = False
@@ -422,6 +415,8 @@ class Notificacao(models.Model):
     criadoem = models.DateTimeField()
     idutilizadorenvia = models.IntegerField()
     utilizadorrecebe = models.IntegerField()
+    assunto = models.CharField(max_length=45)
+    estadol = models.IntegerField()
 
     class Meta:
         managed = False
@@ -430,9 +425,6 @@ class Notificacao(models.Model):
 
 class Paragem(models.Model):
     paragem = models.CharField(primary_key=True, max_length=45)
-
-    def __str__(self):
-        return self.paragem
 
     class Meta:
         managed = False
@@ -493,7 +485,7 @@ class Sala(models.Model):
 class Sessao(models.Model):
     idsessao = models.AutoField(primary_key=True)
     nrinscritos = models.IntegerField()
-    capacidade = models.IntegerField(db_column='vagas')
+    vagas = models.IntegerField()
     atividade_idatividade = models.ForeignKey(Atividade, models.DO_NOTHING, db_column='Atividade_idAtividade')  # Field name made lowercase.
     horario_has_dia_id_dia_hora = models.ForeignKey(HorarioHasDia, models.DO_NOTHING, db_column='horario_has_dia_id_dia_hora')
 
@@ -521,6 +513,8 @@ class Tarefa(models.Model):
     hora_inicio = models.TimeField()
     dia_dia = models.ForeignKey(Dia, models.DO_NOTHING, db_column='dia_dia')
     sessao_idsessao = models.ForeignKey(Sessao, models.DO_NOTHING, db_column='sessao_idsessao', blank=True, null=True)
+    buscar = models.ForeignKey(Espaco, models.DO_NOTHING, db_column='buscar', blank=True, null=True,related_name="Tarefa_buscar")
+    levar = models.ForeignKey(Espaco, models.DO_NOTHING, db_column='levar', blank=True, null=True,related_name="Tarefa_levar")
 
     class Meta:
         managed = False

@@ -15,6 +15,7 @@ from pytz import timezone
 
 
 def createnot(request):
+    me_id=user_views.user(request)
     if request.method == 'POST':
         form = NotificationForm(request.POST)
         if form.is_valid():
@@ -28,8 +29,7 @@ def createnot(request):
             return redirect('/create/')
     else:
         form = NotificationForm()
-
-    return render(request, 'compor_not.html', {'form': form})
+    return render(request, 'compor_not.html', {'form': form,'me_id':me_id})
 
 
 def checknot(request):

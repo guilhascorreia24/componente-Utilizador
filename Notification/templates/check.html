@@ -202,7 +202,6 @@
 
 
                                 <tbody>
-                                    <tr>
                                     {% for not in nots %}
                                     {% if not.utilizadorrecebe == me_id %}
                                     {% include "tabela_de_consulta.html" %}
@@ -400,7 +399,8 @@
         var color = $("option:selected", this).attr("class");
         $("#color_me").attr("class", color);
     });
-    {% endfor %}</script>
+    {% endfor %}
+    </script>
 <script>
     $(function () {
         $('#campus').on('change', function () {
