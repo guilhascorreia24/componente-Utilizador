@@ -19,6 +19,7 @@ def createnot(request):
     funcao=user_views.user(request)
     if request.method == 'POST':
         form = NotificationForm(request.POST)
+        print(request.POST)
         if form.is_valid():
             form.cleaned_data['idutilizadorenvia'] = request.session['user_id']
             user_email = Utilizador.objects.get(email=request.POST['Destinatario'])

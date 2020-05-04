@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'blog.apps.BlogConfig',
     'crispy_forms',
     'cryptography',
+    'multi_email_field',
     'user.apps.UserConfig',
     'inscricao.apps.InscricaoConfig',
     'Notification.apps.NotificationConfig'
