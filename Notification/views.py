@@ -41,12 +41,12 @@ def checknot(request):
 
 def deletenot(request):
 
-    id_list = request.POST.getlist('forloop.count')
     if request.method == 'POST':
-        #id_list = request.POST.getlist('forloop.count')
+        id_list = request.POST.getlist('forloop.count')
         for not_id in id_list:
             Notificacao.objects.get(id=not_id).delete()
-            return HttpResponse("<h2>Deleted sucessfully</h2>")
+            messages.success(request, 'Successfully deleted.')
+            return redirect('tabela_de_consulta.html')
     else:
         return render(request, 'tabela_de_consulta.html', {'id_list': id_list})
 
