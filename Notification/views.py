@@ -19,14 +19,17 @@ def createnot(request):
     funcao=user_views.user(request)
     if request.method == 'POST':
         form = NotificationForm(request.POST)
-        print(request.POST)
+        emails=request.POST['Destinatario'].split(", ")
+        print(emails)
         if form.is_valid():
-            form.cleaned_data['idutilizadorenvia'] = request.session['user_id']
-            user_email = Utilizador.objects.get(email=request.POST['Destinatario'])
-            d=request.POST['Descricao']
-            a=request.POST['Assunto']
-            destinatario_pk= int(user_email.pk)
-            Notificacao.objects.create(descricao=d,utilizadorrecebe=destinatario_pk,idutilizadorenvia=request.session['user_id'],criadoem=datetime.now(),assunto=a)
+            for email in emails:
+                form.cleaned_data['idutilizadorenvia'] = request.session['user_id']
+                if user_views.validateEmail(email):
+                    user_email = Utilizador.objects.get(email=email)
+                d=request.POST['Descricao']
+                a=request.POST['Assunto']
+                destinatario_pk= int(user_email.pk)
+                Notificacao.objects.create(descricao=d,utilizadorrecebe=destinatario_pk,idutilizadorenvia=request.session['user_id'],criadoem=datetime.now(),assunto=a)
             messages.success(request, 'Successfully sent.')
             return redirect('notification.html')
     else:
