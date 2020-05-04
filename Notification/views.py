@@ -13,7 +13,6 @@ from django.db.models import CharField, Value
 from datetime import datetime
 from pytz import timezone
 
-
 def createnot(request):
     if request.method == 'POST':
         form = NotificationForm(request.POST)
@@ -31,7 +30,6 @@ def createnot(request):
 
     return render(request, 'notification.html', {'form': form})
 
-
 def checknot(request):
     me_id=request.session['user_id']
     nots=Notificacao.objects.all().annotate(emissor=Value("",CharField()))
@@ -42,13 +40,24 @@ def checknot(request):
     return render(request,'check.html',{'nots':nots,'me_id':me_id,'funcao':func})
 
 def deletenot(request):
-    form = Notificacao.objects.filter(utilizadorrecebe=request.session['user_id'])
-    if 'nots' in request.POST:
-        if request.POST.get('delete'):
-            form = Notificacao.objects.filter().delete()
+
+    id_list = request.POST.getlist('forloop.count')
+    if request.method == 'POST':
+        #id_list = request.POST.getlist('forloop.count')
+        for not_id in id_list:
+            Notificacao.objects.get(id=not_id).delete()
             return HttpResponse("<h2>Deleted sucessfully</h2>")
     else:
-        return render(request, 'tabela_de_consulta.html', {'form': form})
+        return render(request, 'tabela_de_consulta.html', {'id_list': id_list})
+
+def enviados(request):
+    me_id=request.session['user_id']
+    nots=Notificacao.objects.filter(idutilizadorenvia = me_id).annotate(emissor=Value("",CharField()))
+    for noti in nots:
+        noti.emissor=Utilizador.objects.get(pk=noti.idutilizadorenvia).email
+        noti.id=signing.dumps(noti.id)
+    func=user_views.user(request)
+    return render(request,'check.html',{'nots':nots,'me_id':me_id,'funcao':func})
 
 def noti(request,id):
     return HttpResponse("top")
