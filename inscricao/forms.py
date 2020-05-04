@@ -1,6 +1,7 @@
 from django.forms import ModelForm,modelformset_factory,Form,inlineformset_factory,ValidationError
 from django import forms
 from inscricao import models
+from inscricao.validators import email_validator, not_zero_validator, telefone_validator, SESSAO_MIN_ERROR
 
 class Form_Responsaveis(ModelForm):
 
@@ -16,7 +17,7 @@ class Form_Responsaveis(ModelForm):
 
 class Form_Inscricao(ModelForm):#numero de participantes precia de ser checkado
     turma = forms.CharField(max_length=1)
-    participantes = forms.IntegerField()
+    participantes = forms.IntegerField(validators=[not_zero_validator])
     class Meta:
         model = models.Inscricao
         fields = ['ano','areacientifica','transporte']
@@ -79,7 +80,8 @@ class Form_Almocos_Per_Campus:
     def save(self,inscricao):
         for prato,menu in self.pratos:
             prat = prato.save(menu)
-            query = models.InscricaoHasPrato(inscricao_idinscricao = inscricao,prato_idprato=prat)
+            if prat.nralmocos>0:
+                query = models.InscricaoHasPrato(inscricao_idinscricao = inscricao,prato_idprato=prat)
             query.save()
 
     def is_valid(self):
@@ -109,8 +111,11 @@ class Form_Almoco:
             c.save(inscricao) 
 
 
-        
+#ERROR HANDLING STILL NEEDED   
 class Form_Prato(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(Form_Prato, self).__init__(*args, **kwargs)
+        self.fields['nralmocos'].required = False
 
     def set_menu(self,menu):
         self.menu = menu
@@ -118,8 +123,14 @@ class Form_Prato(ModelForm):
     def save(self,menu):
         base = super(Form_Prato, self).save(commit=False)
         base.menu_idmenu = menu
-        base.save()
+        if(base.nralmocos == 0):
+            return base
+        else: 
+            base.save()
         return base
+    
+    def clean(self):
+        super().clean()
 
     class Meta:
         model = models.Prato
@@ -161,7 +172,7 @@ class CustomForm:
     def __init__(self,request = 0):
         Sessao = modelformset_factory(models.InscricaoHasSessao,form = Form_Sessao,extra=0)
         Responsaveis = modelformset_factory(models.Responsaveis,form = Form_Responsaveis,extra=1)
-        Transportes = modelformset_factory(models.TransporteHasInscricao,form = Form_Transportes,extra=1)
+        Transportes = modelformset_factory(models.TransporteHasInscricao,form = Form_Transportes,extra=0)
         self.almoco = Form_Almoco(request)
         if request != 0 and request.method == 'POST':
             self.escola = Form_Escola(request.POST,prefix="escola")
@@ -175,9 +186,16 @@ class CustomForm:
             self.sessao = Sessao(prefix='sessao_set',queryset=models.InscricaoHasSessao.objects.none())
             self.responsaveis = Responsaveis(prefix='responsaveis_set',queryset=models.Responsaveis.objects.none())
             self.transportes = Transportes(prefix='transportes_set',queryset=models.TransporteHasInscricao.objects.none())
+
+        print(len(self.sessao))
+        
     
     def is_valid(self):
-        return all([self.escola.is_valid(), self.inscricao.is_valid(), self.responsaveis.is_valid(), self.almoco.is_valid(),self.sessao.is_valid(),self.transportes.is_valid()])
+        value = all([self.escola.is_valid(), self.inscricao.is_valid(), self.responsaveis.is_valid(), self.almoco.is_valid(),self.sessao.is_valid(),self.transportes.is_valid()])
+        if len(self.sessao)<1:
+            self.sessao.errors.append(SESSAO_MIN_ERROR)
+            return False
+        return value
 
     def save(self,part):
 

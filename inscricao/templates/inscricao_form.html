@@ -145,6 +145,7 @@
                                                             <div class="field">
                                                                 <div class="control is-clearfix">{{responsavel.nome|addcss:"input"}}
                                                                 </div>
+                                                                <p class="help is-danger">{{responsavel.nome.errors.0}}</p>
 
                                                             </div>
                                                         </div>
@@ -153,6 +154,7 @@
                                                                 <div class="control is-clearfix">{{responsavel.email|addcss:"input"}}
 
                                                                 </div>
+                                                                <p class="help is-danger">{{responsavel.email.errors.0}}</p>
                                                                 <!---->
                                                             </div>
                                                         </div>
@@ -160,6 +162,7 @@
                                                             <div class="field">
                                                                     <div class="control is-clearfix">{{responsavel.telefone|addcss:"input"}}
                                                                 </div>
+                                                                <p class="help is-danger">{{responsavel.telefone.errors.0}}</p>
                                                                 <!---->
                                                             </div>
                                                         </div>
@@ -213,8 +216,9 @@
                                                     <div class="column">
                                                         <div class="field"><label class="label">Nome da escola</label>
                                                             <div class="control is-clearfix">{{form.escola.nome|addcss:"input"}}
+                                                            
                                                             </div>
-                                                            <!---->
+                                                            <p class="help is-danger">{{form.escola.nome.errors.0}}</p>
                                                         </div>
                                                     </div>
                                                     <div class="column">
@@ -230,13 +234,14 @@
                                                         <div class="field"><label class="label">E-mail da escola</label>
                                                             <div class="control is-clearfix">{{form.escola.email|addcss:"input"}}
                                                             </div>
-                                                            <!---->
+                                                            <p class="help is-danger">{{form.escola.email.errors.0}}</p>
                                                         </div>
                                                     </div>
                                                     <div class="column">
                                                         <div class="field"><label class="label">Telefone da escola</label>
                                                             <div class="control is-clearfix">{{form.escola.telefone|addcss:"input"}}
                                                             </div>
+                                                            <p class="help is-danger">{{form.escola.telefone.errors.0}}</p>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -252,19 +257,21 @@
                                                                     class="button is-primary"><span class="icon"><i
                                                                             class="mdi mdi-minus mdi-24px"></i></span></button>
                                                             </p>
-                                                            <div class="control is-clearfix">{{ form.inscricao.ano|addcss:"input ano_input" }}
+                                                            <div class="control is-clearfix">{{ form.inscricao.ano|addcss:"input" }}
                                                             </div>
                                                             <p class="control"><button type="button"
                                                                     class="button is-primary"><span class="icon"><i
                                                                             class="mdi mdi-plus mdi-24px"></i></span></button>
                                                             </p>
                                                         </div>
+                                                        <p class="help is-danger">{{form.inscricao.ano.errors.0}}</p>
                                                     </div>
                                                     </div>
                                                     <div class="column">
                                                         <div class="field"><label class="label">Turma</label>
                                                             <div class="control is-clearfix">{{form.inscricao.turma|addcss:"input"}}
                                                             </div>
+                                                            <p class="help is-danger">{{form.inscricao.turma.errors.0}}</p>
                                                         </div>
                                                     </div>
                                                     <div class="column">
@@ -282,6 +289,7 @@
                                                                                 class="mdi mdi-plus mdi-24px"></i></span></button>
                                                                 </p>
                                                             </div>
+                                                            <p class="help is-danger">{{form.inscricao.participantes.errors.0}}</p>
                                                             <!---->
                                                         </div>
                                                     </div>
@@ -289,6 +297,7 @@
                                                 <div class="field"><label class="label">Área científica</label>
                                                     <div class="control is-clearfix">{{form.inscricao.areacientifica|addcss:"input"}}
                                                     </div>
+                                                    <p class="help is-danger">{{form.inscricao.areacientifica.errors.0}}</p>
                                                     <!---->
                                                 </div>
                                                 <hr>
@@ -339,6 +348,7 @@
                                                             <span class="select is-fullwidth is-empty select-transporte">
                                                             {{transporte.partida_paragem}}
                                                             </span>
+                                                            <p class="help is-danger">{{form.transportes.partida_paragem.errors.0}}</p>
                                                             </div>
                                                             <!---->
                                                         </div>
@@ -349,6 +359,7 @@
                                                                     class="select is-fullwidth is-empty select-transporte">
                                                                     {{transporte.chegada_paragem}}
                                                                     </span>
+                                                                    <p class="help is-danger">{{form.transportes.chegada_paragem.errors.0}}</p>
                                                                 <!---->
                                                             </div>
                                                             <!---->
@@ -368,7 +379,7 @@
                                                                     <button type="button" class="button is-primary"><span class="icon"><i class="mdi mdi-plus mdi-24px"></i></span></button>
                                                                 </p>
                                                             </div>
-                                                            <!---->
+                                                            <p class="help is-danger">{{form.transportes.numero_passageiros.errors.0}}</p>
                                                         </div>
                                                     </div>
                                                     <div class="column">
@@ -384,6 +395,7 @@
                                                                             {{transporte.partida|addcss:"input"}}
                                                                             </span>
                                                                             <span class="icon is-left"><i class="mdi mdi-clock mdi-24px"></i></span>
+                                                                            <p class="help is-danger">{{form.transportes.partida_paragem.errors.0}}</p>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -483,8 +495,7 @@
 
                                                 {% for prato,menu in camp.pratos %}
                                                 
-                                                <div data-v-f5fe8f88=""
-                                                    class="field has-numberinput has-numberinput-compact"><label
+                                                <div data-v-f5fe8f88="" class="field has-numberinput has-numberinput-compact"><label
                                                         >{{menu.tipo}} - {{menu.menu}}</label>
                                                     <div data-v-f5fe8f88="" class="b-numberinput field has-addons">
                                                         <p class="control"><button type="button"
@@ -498,6 +509,7 @@
                                                                         class="mdi mdi-plus mdi-24px"></i></span></button>
                                                         </p>
                                                     </div>
+                                                    <p class="help is-danger">{{prato.nralmocos.errors.0}}</p>
                                                 </div>
                                                 {% endfor %}
                                                 <hr data-v-f5fe8f88="">
@@ -506,6 +518,9 @@
                                         </div>
                                         <div class="step-item" style="display:none;">
                                             <div data-v-dac68d9e="" style="padding: 1rem 2vw 0px;">
+                                                {% if form.sessao|length < 1 %}
+                                                {{form.sessao.errors.0}}
+                                                {% endif %}
                                                 <hr data-v-dac68d9e="">
                                                 <h2 data-v-dac68d9e="" class="title has-text-grey is-uppercase"
                                                     style="font-size: 0.9rem;"> Sessões Disponíveis </h2>
@@ -2898,10 +2913,10 @@
                                                         {{ form.sessao.management_form }}
                                                         
                                                         <div style="display:none" id="sessao_start_info">
-                                                        {% for sessao in form.sessao %}
+                                                        {% for curr_sessao in form.sessao %}
                                                         <div>
-                                                        {{sessao.nrinscritos}}
-                                                        {{sessao.idsessao}}
+                                                        {{curr_sessao.nr_inscritos}}
+                                                        {{curr_sessao.sessao_id}}
                                                         </div>
                                                         {% endfor %}
                                                         </div>
@@ -3046,6 +3061,14 @@
                 input.val(value).change();
             });
 
+            //Start all number inputs at 0
+            $(".b-numberinput").find(".input").each(function(){
+                var value = parseInt($(this).val());
+                if(isNaN(value)){
+                    $(this).val("0").change();
+                }
+            })
+
             //Add school option to transportes
             /*$(".select-transporte").find("select").append('<option value=0 class="escola-option">Escola</option>');
             $("#local-escola > input").on("change",function(){
@@ -3110,13 +3133,7 @@
 
                     //Removes entry if button clicked
                     table.find('#remove_button').on("click",function(){
-                        var value = parseInt($('#id_sessao_set-TOTAL_FORMS').val());
-                        if(value>0){
-                            $('#id_sessao_set-TOTAL_FORMS').val(value-1);
-                            $(this).closest('tr').find('.input').val(0).change();
-                            return
-                        }
-                        removeEntry($(this).closest('tr'));
+                        $(this).closest('tr').find('.input').val(0).change();
                     });
 
                     //removes the entry if reaches 0
@@ -3125,6 +3142,7 @@
                             var value = parseInt($('#id_sessao_set-TOTAL_FORMS').val());
                             $('#id_sessao_set-TOTAL_FORMS').val(value-1);
                             removeEntry($(this).closest('tr'));
+                            fixSetNumeration("sessao_set");
                         }
                     });
                     //$("#sessao_escolhida").append(table);
@@ -3135,14 +3153,67 @@
                 }
             });
 
+            //Fix numeration
+            function fixSetNumeration(name,start_number=0){
+                var s = 'input[name="' + name + '-TOTAL_FORMS"]';
+                var max_number = parseInt($(s).val());
+                var difference = 0;
+
+                for(var curr_number = start_number; curr_number < max_number;curr_number++){
+                    var inputs = 'input[name^="' + name + '-' + curr_number + '"]';
+                    var elements = $(inputs);
+                    if(elements.length == 0){
+                        difference++;
+                        max_number++;
+                        continue;
+                    }else if(difference > 0){
+                        elements.each(function(){
+                            var search = name+'-'+curr_number;
+                            var num = curr_number-difference;
+
+                            var replace = name+'-'+num;
+                            var reg = new RegExp(search,'g');
+                            var fix_name = $(this).attr('name').replace(reg, replace);
+                            var fix_id = $(this).attr('id').replace(reg, replace);
+
+                            $(this).attr('name',fix_name);
+                            $(this).attr('id',fix_id);
+                        });
+                    }
+                }
+            }
+
+            /*$(document).on('submit','regForm',function(){
+                window.alert("STOP");
+                $("input:regex(name, -TOTAL_FORMS)").each(function(){
+                    window.alert($(this).attr('name'));
+                    var name = $(this).attr('name');
+                    var val = $(this).val();
+                    var match = name.match(/.*-/);
+                    if(match.length>1){
+                        var prefix = match[0];
+                        var search = prefix + ".+?[0-9]+?.*";
+                        var reg = new RegExp(search);
+                        var list = $("input:regex(name, -TOTAL_FORMS)");
+                    }
+                });
+            });*/
+
             var sessoes = $(".sessao_table");
 
+
+            //Handle starting table
+            $('#id_sessao_set-TOTAL_FORMS').val(0);
             $('#sessao_start_info').children().each(function(){
+                //window.alert($(this).html());
                 var value = "input[value='"+$(this).children().last().val()+"']";
+                //console.log($(this));
                 var inscritos = parseInt($(this).children().first().val());
                 var id = sessoes.children("td[data-label='id']").children(value);
                 id.closest('.sessao_table').children("td[data-label='Inscrever']").find('input').val(inscritos).change();
             });
+
+            $("#sessao_start_info").remove();
 
 
             $("#nextBtn").click(nextTab);
@@ -3153,7 +3224,6 @@
         function replaceIdName(elem,pattern,replace){
             if ($(elem).attr('id')) {
                 var id = $(elem).attr('id').replace(pattern, replace);
-                console.log(id);
                 //var newId = $(elem).attr('id').replace(id, parseInt(id,10)+1);
                 $(elem).attr('id', id);   
             }
