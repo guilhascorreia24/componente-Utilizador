@@ -14,8 +14,11 @@ from datetime import datetime
 from pytz import timezone
 
 def createnot(request):
+    me_id=request.session['user_id']
+    funcao=user_views.user(request)
     if request.method == 'POST':
         form = NotificationForm(request.POST)
+        print(request.POST)
         if form.is_valid():
             form.cleaned_data['idutilizadorenvia'] = request.session['user_id']
             user_email = Utilizador.objects.get(email=request.POST['Destinatario'])
@@ -27,8 +30,7 @@ def createnot(request):
             return redirect('notification.html')
     else:
         form = NotificationForm()
-
-    return render(request, 'notification.html', {'form': form})
+    return render(request, 'compor_not.html', {'form': form,'me_id':me_id,'funcao':funcao})
 
 def checknot(request):
     me_id=request.session['user_id']
