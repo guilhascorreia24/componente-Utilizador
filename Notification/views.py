@@ -25,11 +25,11 @@ def createnot(request):
             destinatario_pk= int(user_email.pk)
             Notificacao.objects.create(descricao=d,utilizadorrecebe=destinatario_pk,idutilizadorenvia=request.session['user_id'],criadoem=datetime.now(),assunto=a)
             messages.success(request, 'Successfully sent.')
-            return redirect('/create/')
+            return redirect('notification.html')
     else:
         form = NotificationForm()
 
-    return render(request, 'compor_not.html', {'form': form})
+    return render(request, 'notification.html', {'form': form})
 
 
 def checknot(request):
@@ -48,7 +48,7 @@ def deletenot(request):
             form = Notificacao.objects.filter().delete()
             return HttpResponse("<h2>Deleted sucessfully</h2>")
     else:
-        return render(request, 'delete.html', {'form': form})
+        return render(request, 'tabela_de_consulta.html', {'form': form})
 
 def noti(request,id):
     return HttpResponse("top")
