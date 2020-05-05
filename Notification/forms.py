@@ -5,7 +5,6 @@ from django.core import validators
 from django.core.exceptions import ValidationError
 from .models import Utilizador
 
-
 class NotificationForm(forms.Form):
 
     Destinatario=forms.CharField(label="Destinatario")
@@ -17,5 +16,5 @@ class NotificationForm(forms.Form):
         fields=['Descricao','Assunto','idutilizadorenvia','Destinatario']
 
     def save(self,request):
-        Not = Notificacao(descricao=request.POST['Descricao'],assunto=request.POST['Assunto'],idutilizadorenvia=request.session['user_id'],utilizadorrecebe=request.POST['Destinatario'])
+        Not = Notificacao(descricao=request.POST['Descricao'],assunto=request.POST['Assunto'],idutilizadorenvia=request.session['user_id'],utilizadorrecebe=request.POST['Destinatario'],estadol=0)
         Not.save()

@@ -17,7 +17,8 @@
   vertical-align: middle;
   border-radius: 4px;
   max-width: 100%;
-  line-height: 22px;
+  width: 100%;
+  line-height: 25px;
   cursor: text;
 }
 .bootstrap-tagsinput input {
@@ -72,7 +73,7 @@
   {% include "navabar-admin.html" %}
   {% elif funcao == "docente Univesitario" %}
   {% include "navabar-dc.hmtl"}
-    {% elif funcao == None %}
+  {% elif funcao == None %}
   {% include "navabar-part.html" %}
   {% endif %}
   <div class="navbar-end">
@@ -140,8 +141,7 @@
               <form method="Post">
                 {% csrf_token %}
                 <div class="field"><label class="">Destinatario</label>
-                  <div class="control is-clearfix"><input type="text" id="{{form.Destinatario.id_for_label}}" name="Destinatario" data-role="tagsinput" placeholder="Add tags" />
-
+                  <div class="control is-clearfix"><input type="text" id="{{form.Destinatario.id_for_label}}" class="input" name="Destinatario" data-role="tagsinput" />
                     <!---->
                     <!---->
                     <!---->
@@ -174,7 +174,7 @@
         </div>
         <div class="column is-8 is-offset-2">
           <div class="level">
-            <div class="level-left"><a href="/minhasatividades" class="button is-outlined" type="button">
+            <div class="level-left"><a href="{% url "check_not" %}" class="button is-outlined" type="button">
                 <!----> <span> Cancelar </span>
                 <!----></a></div>
             <div class="level-right"><button type="submit" class="button is-large is-success is-outlined">

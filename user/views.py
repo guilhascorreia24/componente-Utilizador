@@ -82,7 +82,7 @@ def type_user(data,user_id):
     if data['funcao']=='1':
         if data['curso']!='0' and user_id is not None:
             curso_id=Curso.objects.get(pk=data['curso'].split("_")[1])
-            colab=Colaborador(pk=user_id,curso_idcurso=curso_id,preferencia=data['Perferencias'],dia_aberto_ano=DiaAberto.objects.get(pk=datetime.date.today().year))
+            colab=Colaborador(pk=user_id,curso_idcurso=curso_id,preferencia=data['Perferencias'])
             colab.save()
         elif data['UO']=='0' or data['curso']=='0':
             t=1
@@ -329,7 +329,7 @@ def modify_user(request,id):
         IDUO = Coordenador.objects.get(pk=id).unidade_organica_iduo
         UO=UnidadeOrganica.objects.get(pk=IDUO.pk).sigla
     elif Colaborador.objects.filter(utilizador_idutilizador=id).exists():
-        ano = Colaborador.objects.get(pk=id).dia_aberto_ano.pk
+        ano = Utilizador.objects.get(pk=id).dia_aberto_ano
         funcao = "Colaborador"
         cursoid=Colaborador.objects.get(utilizador_idutilizador=id).curso_idcurso
         UO=Curso.objects.get(pk=cursoid).unidade_organica_iduo.sigla
@@ -343,10 +343,6 @@ def profile(request,id):
     name = Utilizador.objects.get(idutilizador=id).nome
     me=request.session['user_id']
     form = ModifyForm()
-    if Utilizador.objects.get(idutilizador=id).username == '':
-        username = Utilizador.objects.get(idutilizador=id).nome
-    else:
-        username = Utilizador.objects.get(idutilizador=id).username
     email = Utilizador.objects.get(idutilizador=id).email
     telefone = Utilizador.objects.get(idutilizador=id).telefone
     UO=False
@@ -366,12 +362,14 @@ def profile(request,id):
         IDUO = Coordenador.objects.get(pk=id).unidade_organica_iduo
         UO=UnidadeOrganica.objects.get(pk=IDUO.pk).sigla
     elif Colaborador.objects.filter(utilizador_idutilizador=id).exists():
-        ano = Colaborador.objects.get(pk=id).dia_aberto_ano.pk
+        ano = Utilizador.objects.get(pk=id).dia_aberto_ano.pk
         funcao = "Colaborador"
         curso=Colaborador.objects.get(utilizador_idutilizador=id).curso_idcurso
         cursoname=curso.nome
         UO=UnidadeOrganica.objects.get(pk=curso.unidade_organica_iduo.pk).sigla
-    return render(request, 'profile.html', {"form": form, 'nome': name,'UO':UO,'username': username, 'email': email,"ano":ano,
+    elif Participante.objects.filter(pk=id).exists():
+        funcao="Participante"
+    return render(request, 'profile.html', {"form": form, 'nome': name,'UO':UO, 'email': email,"ano":ano,
                     'telefone': telefone, 'funcao': funcao, 'ano': ano, 'curso': cursoname,'dep':dep,"me":signing.dumps(me),'id':signing.dumps(id),'func':user(request)})
 
 
