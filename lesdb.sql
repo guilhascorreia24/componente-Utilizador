@@ -21,9 +21,8 @@ USE `les` ;
 -- Table `les`.`dia_aberto`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `les`.`dia_aberto` (
-  `ano` YEAR NOT NULL,
+  `ano` YEAR Not NULL,
   `descricao` VARCHAR(120) NULL DEFAULT NULL,
-  `datainscricao` DATE NOT NULL,
   `emailDiaAberto` VARCHAR(120) NOT NULL,
   `enderecoPaginaWeb` VARCHAR(60) NOT NULL,
   `dataDiaAbertoInicio` DATE NOT NULL,
@@ -56,7 +55,7 @@ CREATE TABLE IF NOT EXISTS `les`.`utilizador` (
   `password` VARCHAR(255) NOT NULL,
   `validada` TINYINT NOT NULL DEFAULT '0',
   `remember_me` VARCHAR(255) NULL DEFAULT NULL,
-  `dia_aberto_ano` YEAR NOT NULL,
+  `dia_aberto_ano` YEAR NULL,
   PRIMARY KEY (`idutilizador`),
   UNIQUE INDEX `email_UNIQUE` (`email` ASC) VISIBLE,
   UNIQUE INDEX `telefone_UNIQUE` (`telefone` ASC) VISIBLE,
@@ -786,7 +785,7 @@ CREATE TABLE IF NOT EXISTS `les`.`menu` (
   `menu` VARCHAR(45) NOT NULL,
   `Campus_idCampus` INT NOT NULL,
   `horario_has_dia_id_dia_hora` INT NOT NULL,
-  `nralmoçosdisponiveis` INT NOT NULL,
+  `nralmocosdisponiveis` INT NOT NULL,
   PRIMARY KEY (`idMenu`),
   INDEX `fk_Menu_Campus_id` (`Campus_idCampus` ASC) VISIBLE,
   INDEX `fk_menu_horario_has_dia1_idx` (`horario_has_dia_id_dia_hora` ASC) VISIBLE,
