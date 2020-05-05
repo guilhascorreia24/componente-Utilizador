@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from Notification import templates
-from .models import Notificacao, Utilizador, DjangoSession, Participante, ProfessorUniversitario, Administrador, Coordenador, Colaborador
+from .models import Notificacao, Utilizador, DjangoSession, Participante, ProfessorUniversitario, Administrador, Coordenador, Colaborador, UtilizadorHasNotificacao
 from .forms import *
 from django.http import HttpResponse
 from django.contrib.auth.models import User
@@ -28,12 +28,13 @@ def createnot(request):
                 d=request.POST['Descricao']
                 a=request.POST['Assunto']
                 destinatario_pk= int(user_email.pk)
-                Notificacao.objects.create(descricao=d,utilizadorrecebe=destinatario_pk,idutilizadorenvia=request.session['user_id'],criadoem=datetime.now(),assunto=a)
+                noti=Notificacao.objects.create(descricao=d,utilizadorrecebe=destinatario_pk,idutilizadorenvia=request.session['user_id'],criadoem=datetime.now(),assunto=a)
+                UtilizadorHasNotificacao.objects.create(utilizador_idutilizador=user_email,notificacao=noti)
             messages.success(request, 'Successfully sent.')
             return redirect('check_not')
     else:
         form = NotificationForm()
-    return render(request, 'compor_not.html', {'form': form,'me_id':me_id,'funcao':funcao})
+    return render(request, 'compor_not.html', {'form': form,'me_id':signing.dumps(me_id),'funcao':funcao})
 
 def checknot(request):
     me_id=request.session['user_id']

@@ -136,6 +136,9 @@ def curso():
         print(dep.value)
     return deps
 def register(request):
+    me=None
+    if 'user_id' in request.session:
+        me=request.session['user_id']
     UOs=UnidadeOrganica.objects.all()
     deps=dep()
     cursos=curso()
@@ -181,9 +184,9 @@ def register(request):
                 error2 = "Passwords nao coincidem"
             if password_check(request.POST['password1']) != True:
                 error1 = password_check(request.POST['password1']) 
-            return render(request, 'register.html', {'form': form,'cursos':cursos,'UOs':UOs,'deps':deps,'error1': error, 'error2': error1, 'error3': error2, 'error4': error3,'error5':type_user(data,None)})
+            return render(request, 'register.html', {'me':signing.dumps(me),'form': form,'cursos':cursos,'UOs':UOs,'deps':deps,'error1': error, 'error2': error1, 'error3': error2, 'error4': error3,'error5':type_user(data,None)})
     form = UserRegisterForm()
-    return render(request, 'register.html', {'form': form,'UOs':UOs,'deps':deps,'cursos':cursos,"func":user(request)})
+    return render(request, 'register.html', {'form': form,'UOs':UOs,'deps':deps,'cursos':cursos,"func":user(request),'me':signing.dumps(me)})
 
 #*----------------------------------------------------------login---------------------------------------
 def login_request(request):
