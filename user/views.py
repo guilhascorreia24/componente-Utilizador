@@ -156,7 +156,7 @@ def register(request):
             form.save()
             user_id=Utilizador.objects.get(email=request.POST['email']).idutilizador
             type_user(data,user_id)
-            messages.success(request, f'Registo feito com Sucesso!')
+            messages.success(request, f'Registo efetuado com Sucesso!')
             return redirect('blog-home')
         else:
             error=False
