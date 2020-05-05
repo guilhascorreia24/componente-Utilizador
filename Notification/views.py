@@ -47,14 +47,14 @@ def checknot(request):
 
 def deletenot(request):
 
+    pressed = request.POST.getlist('{{forloop.count}}')
+
     if request.method == 'POST':
-        id_list = request.POST.getlist('forloop.count')
-        for not_id in id_list:
-            Notificacao.objects.get(id=not_id).delete()
-            messages.success(request, 'Successfully deleted.')
-            return redirect('tabela_de_consulta.html')
+        pressed.delete()
+        messages.success(request, 'Successfully deleted.')
+            
     else:
-        return render(request, 'tabela_de_consulta.html', {'id_list': id_list})
+        return render(request, 'tabela_de_consulta.html', {'pressed': pressed})
 
 def enviados(request):
     me_id=request.session['user_id']
