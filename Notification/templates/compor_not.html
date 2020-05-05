@@ -137,6 +137,7 @@
     <div data-v-8716d23a="" class="card-content">
       <div data-v-8716d23a="" id="top">
         <nav aria-label="breadcrumbs" class="breadcrumb" style="background-color: white; margin-bottom: 0%;">
+          {% block content2 %}
           <ul>
             <li><a href="/" class="router-link-active">Início</a></li>
             <li><a href="{% url "check_not" %}" class="">Notificações</a></li>
@@ -151,9 +152,9 @@
             <div class="column">
               <form method="Post">
                 {% csrf_token %}
+                {% if form.Destinatario.errors %}
                 <div class="field"><label class="">Destinatario</label>
                   <div class="control is-clearfix">
-                    <input list="brow" class="input" >
                     <datalist id="brow">
                       <option value="Internet Explorer">
                       <option value="Firefox">
@@ -161,19 +162,57 @@
                       <option value="Opera">
                       <option value="Safari">
                     </datalist>
-                    <input class="input" id="{{form.Destinatario.id_for_label}}" class="input"
-                    name="Destinatario" data-role="tagsinput">
+                    <div class="control has-icons-right"><input class="input" id="{{form.Destinatario.id_for_label}}" class="input" name="Destinatario"
+                      data-role="tagsinput" value="{{form.Destinatario.value|default_if_none:''}}">
+                    <!----> <span class="icon is-right has-text-danger"><i
+                        class="mdi mdi-alert-circle mdi-24px"></i></span></div>
+                    <!---->
+                    <!---->
+                    <!---->
+                  </div>
+                  {{form.Destinatario.errors}}
+                  <!---->
+                </div>
+                {% else %}
+                <div class="field"><label class="">Destinatario</label>
+                  <div class="control is-clearfix">
+                    <datalist id="brow">
+                      <option value="Internet Explorer">
+                      <option value="Firefox">
+                      <option value="Chrome">
+                      <option value="Opera">
+                      <option value="Safari">
+                    </datalist>
+                    <input class="input" id="{{form.Destinatario.id_for_label}}" class="input" name="Destinatario"
+                      data-role="tagsinput" value="{{form.Destinatario.value|default_if_none:''}}">
                     <!---->
                     <!---->
                     <!---->
                   </div>
                   <!---->
                 </div>
+                {% endif %}
             </div>
+            {% if form.Assunto.errors %}
+            <div class="column">
+              <div class="field"><label class="">Assunto</label>
+                <div class="control has-icons-right"><input type="text" id="{{form.Assunto.id_for_label}}" name="Assunto"
+                    value="{{form.Assunto.value|default_if_none:''}}" autocomplete="on" class="input">
+                  <!----> <span class="icon is-right has-text-danger"><i
+                      class="mdi mdi-alert-circle mdi-24px"></i></span>
+                  <!---->
+                  <!---->
+                  <!---->
+                </div>
+                {{form.Assunto.errors}}
+                <!---->
+              </div>
+            </div>
+            {% else%}
             <div class="column">
               <div class="field"><label class="">Assunto</label>
                 <div class="control is-clearfix"><input type="text" id="{{form.Assunto.id_for_label}}" name="Assunto"
-                    autocomplete="on" class="input">
+                    value="{{form.Assunto.value|default_if_none:''}}" autocomplete="on" class="input">
                   <!---->
                   <!---->
                   <!---->
@@ -181,18 +220,34 @@
                 <!---->
               </div>
             </div>
+            {% endif %}
           </div>
+          {% if form.Descricao.errors %}
+          <div class="field"><label class="">Descrição</label>
+            <div class="control has-icons-right"><textarea maxlength="300" id="{{form.Descricao.id_for_label}}"
+                value="{{form.Descricao.value|default_if_none:''}}" name="Descricao" class="textarea"></textarea>
+              <!---->
+              <!----> <small class="help counter is-invisible">
+                0 / 300
+              </small></div>
+            <!----> <span class="icon is-right has-text-danger"><i class="mdi mdi-alert-circle mdi-24px"></i></span>
+            {{form.Descricao.errors}}
+            <!---->
+          </div>
+          {% else %}
           <div class="field"><label class="">Descrição</label>
             <div class="control is-clearfix"><textarea maxlength="300" id="{{form.Descricao.id_for_label}}"
-                name="Descricao" class="textarea"></textarea>
+                value="{{form.Descricao.value|default_if_none:''}}" name="Descricao" class="textarea"></textarea>
               <!---->
               <!----> <small class="help counter is-invisible">
                 0 / 300
               </small></div>
             <!---->
           </div>
-          <hr>
+          {% endif %}
+          </tr>
         </div>
+        {% endblock content2 %}
         <div class="column is-8 is-offset-2">
           <div class="level">
             <div class="level-left"><a href="{% url "check_not" %}" class="button is-outlined" type="button">

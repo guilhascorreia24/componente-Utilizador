@@ -23,8 +23,11 @@ def createnot(request):
         if form.is_valid():
             for email in emails:
                 form.cleaned_data['idutilizadorenvia'] = request.session['user_id']
-                if user_views.validateEmail(email):
+                if user_views.validateEmail(email) or not Utilizador.objects.filter(email=email).exists():
                     user_email = Utilizador.objects.get(email=email)
+                else:
+                    messages.error(request,"Email Invalido")
+                    return redirect("create_not")
                 d=request.POST['Descricao']
                 a=request.POST['Assunto']
                 destinatario_pk= int(user_email.pk)
@@ -66,5 +69,6 @@ def enviados(request):
     return render(request,'check.html',{'nots':nots,'me_id':me_id,'funcao':func})
 
 def noti(request,id):
-    return HttpResponse("top")
+    
+    return render(request,"consultar_not.html",{})
 
