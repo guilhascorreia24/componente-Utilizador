@@ -31,7 +31,7 @@ def createnot(request):
                 d=request.POST['Descricao']
                 a=request.POST['Assunto']
                 destinatario_pk= int(user_email.pk)
-                noti=Notificacao.objects.create(descricao=d,utilizadorrecebe=destinatario_pk,idutilizadorenvia=request.session['user_id'],criadoem=datetime.now(),assunto=a)
+                noti=Notificacao.objects.create(descricao=d,utilizadorrecebe=destinatario_pk,idutilizadorenvia=request.session['user_id'],criadoem=datetime.now(),assunto=a,estadol=1)
                 UtilizadorHasNotificacao.objects.create(utilizador_idutilizador=user_email,notificacao=noti)
             messages.success(request, 'Successfully sent.')
             return redirect('check_not')
@@ -41,12 +41,15 @@ def createnot(request):
 
 def checknot(request):
     me_id=request.session['user_id']
+    i=0
     nots=Notificacao.objects.all().annotate(emissor=Value("",CharField()))
     for noti in nots:
+        if noti.utilizadorrecebe==me_id and noti.estadol==1:
+            i+=1
         noti.emissor=Utilizador.objects.get(pk=noti.idutilizadorenvia).email
-        noti.id=signing.dumps(noti.id)
+        noti.pk=signing.dumps(noti.pk)
     func=user_views.user(request)
-    return render(request,'check.html',{'nots':nots,'me_id':me_id,'funcao':func})
+    return render(request,'check.html',{'nots':nots,'me_id':me_id,'funcao':func,'i':i})
 
 def deletenot(request):
 
@@ -61,14 +64,23 @@ def deletenot(request):
 
 def enviados(request):
     me_id=request.session['user_id']
-    nots=Notificacao.objects.filter(idutilizadorenvia = me_id).annotate(emissor=Value("",CharField()))
+    nots=Notificacao.objects.filter(idutilizadorenvia = me_id).annotate(emissor=Value("",CharField()),recept=Value("",CharField()))
+    i=0
     for noti in nots:
-        noti.emissor=Utilizador.objects.get(pk=noti.idutilizadorenvia).email
-        noti.id=signing.dumps(noti.id)
+        if noti.utilizadorrecebe==me_id and noti.estadol==1:
+            i+=1
+        noti.recept=Utilizador.objects.get(pk=noti.utilizadorrecebe).email
+        noti.pk=signing.dumps(noti.pk)
     func=user_views.user(request)
-    return render(request,'check.html',{'nots':nots,'me_id':me_id,'funcao':func})
+    my=True
+    return render(request,'check.html',{'nots':nots,'me_id':me_id,'funcao':func,'my':my,'i':i})
 
 def noti(request,id):
-    
-    return render(request,"consultar_not.html",{})
+    me_id=signing.loads(id)
+    noti=Notificacao.objects.get(pk=me_id)
+    form = NotificationForm()
+    form.Destinatario=Utilizador.objects.get(pk=noti.utilizadorrecebe).email
+    form.Assunto=noti.assunto
+    form.Descricao=noti.descricao
+    return render(request,"consultar_not.html",{'form':form})
 
