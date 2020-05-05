@@ -27,7 +27,7 @@ class UserRegisterForm(forms.Form):
     
     def save(self):
         data = self.cleaned_data
-        if DiaAberto.objects.filter(pk=datetime.date.today().year):
+        if DiaAberto.objects.filter(pk=datetime.date.today().year).exists():
             ano=DiaAberto.objects.filter(pk=datetime.date.today().year).pk
         else:
             ano=None

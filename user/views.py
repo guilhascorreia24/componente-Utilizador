@@ -343,10 +343,6 @@ def profile(request,id):
     name = Utilizador.objects.get(idutilizador=id).nome
     me=request.session['user_id']
     form = ModifyForm()
-    if Utilizador.objects.get(idutilizador=id).username == '':
-        username = Utilizador.objects.get(idutilizador=id).nome
-    else:
-        username = Utilizador.objects.get(idutilizador=id).username
     email = Utilizador.objects.get(idutilizador=id).email
     telefone = Utilizador.objects.get(idutilizador=id).telefone
     UO=False
@@ -371,7 +367,9 @@ def profile(request,id):
         curso=Colaborador.objects.get(utilizador_idutilizador=id).curso_idcurso
         cursoname=curso.nome
         UO=UnidadeOrganica.objects.get(pk=curso.unidade_organica_iduo.pk).sigla
-    return render(request, 'profile.html', {"form": form, 'nome': name,'UO':UO,'username': username, 'email': email,"ano":ano,
+    elif Participante.objects.filter(pk=id).exists():
+        funcao="Participante"
+    return render(request, 'profile.html', {"form": form, 'nome': name,'UO':UO, 'email': email,"ano":ano,
                     'telefone': telefone, 'funcao': funcao, 'ano': ano, 'curso': cursoname,'dep':dep,"me":signing.dumps(me),'id':signing.dumps(id),'func':user(request)})
 
 
