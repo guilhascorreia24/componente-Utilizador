@@ -10,12 +10,11 @@ class NotificationForm(forms.Form):
     Destinatario=forms.CharField(label="Destinatario")
     Assunto=forms.CharField(label="Assunto")
     Descricao=forms.CharField(widget=forms.Textarea(attrs={'width':"100%", 'cols' : "30", 'rows': "3", }))
-    Estado=forms.IntegerField()
-    
+
     class Meta:
         model=Notificacao
         fields=['Descricao','Assunto','idutilizadorenvia','Destinatario']
 
     def save(self,request):
-        Not = Notificacao(descricao=request.POST['Descricao'],assunto=request.POST['Assunto'],idutilizadorenvia=request.session['user_id'],utilizadorrecebe=request.POST['Destinatario'])
+        Not = Notificacao(descricao=request.POST['Descricao'],assunto=request.POST['Assunto'],idutilizadorenvia=request.session['user_id'],utilizadorrecebe=request.POST['Destinatario'],estadol=0)
         Not.save()

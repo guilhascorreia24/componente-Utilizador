@@ -18,8 +18,8 @@ def createnot(request):
     funcao=user_views.user(request)
     if request.method == 'POST':
         form = NotificationForm(request.POST)
-        emails=request.POST['Destinatario'].split(", ")
-        print(emails)
+        emails=request.POST['Destinatario'].split(",")
+        print(form.is_valid())
         if form.is_valid():
             for email in emails:
                 form.cleaned_data['idutilizadorenvia'] = request.session['user_id']
@@ -30,7 +30,7 @@ def createnot(request):
                 destinatario_pk= int(user_email.pk)
                 Notificacao.objects.create(descricao=d,utilizadorrecebe=destinatario_pk,idutilizadorenvia=request.session['user_id'],criadoem=datetime.now(),assunto=a)
             messages.success(request, 'Successfully sent.')
-            return redirect('notification.html')
+            return redirect('check_not')
     else:
         form = NotificationForm()
     return render(request, 'compor_not.html', {'form': form,'me_id':me_id,'funcao':funcao})

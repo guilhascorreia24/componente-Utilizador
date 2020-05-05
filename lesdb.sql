@@ -938,7 +938,7 @@ CREATE TABLE IF NOT EXISTS `les`.`notificacao` (
   `idutilizadorenvia` INT NOT NULL,
   `utilizadorrecebe` INT NOT NULL,
   `assunto` VARCHAR(45) NOT NULL,
-  `estadol` TINYINT NOT NULL,
+  `estadol` TINYINT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
