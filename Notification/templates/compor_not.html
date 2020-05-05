@@ -31,6 +31,7 @@
       margin: 0;
       width: auto;
       max-width: inherit;
+
     }
 
     .bootstrap-tagsinput.form-control input::-moz-placeholder {
@@ -151,16 +152,17 @@
               <form method="Post">
                 {% csrf_token %}
                 <div class="field"><label class="">Destinatario</label>
-                  <div class="control is-clearfix" >
-                    <input list="brow" id="{{form.Destinatario.id_for_label}}" class="input"
-                    name="Destinatario" data-role="tagsinput">
+                  <div class="control is-clearfix">
+                    <input list="brow" class="input" >
                     <datalist id="brow">
                       <option value="Internet Explorer">
                       <option value="Firefox">
                       <option value="Chrome">
                       <option value="Opera">
                       <option value="Safari">
-                    </datalist> 
+                    </datalist>
+                    <input class="input" id="{{form.Destinatario.id_for_label}}" class="input"
+                    name="Destinatario" data-role="tagsinput">
                     <!---->
                     <!---->
                     <!---->
