@@ -4,7 +4,7 @@ from .models import Notificacao
 from django.core import validators
 from django.core.exceptions import ValidationError
 from .models import Utilizador
-from multi_email_field.forms import MultiEmailField
+
 
 class NotificationForm(forms.Form):
 
