@@ -143,7 +143,6 @@ class Campus(models.Model):
 class Colaborador(models.Model):
     preferencia = models.CharField(max_length=255, blank=True, null=True)
     utilizador_idutilizador = models.OneToOneField('Utilizador', models.DO_NOTHING, db_column='Utilizador_idutilizador', primary_key=True)  # Field name made lowercase.
-    dia_aberto_ano = models.ForeignKey('DiaAberto', models.DO_NOTHING, db_column='dia_aberto_ano')
     curso_idcurso = models.ForeignKey('Curso', models.DO_NOTHING, db_column='curso_idcurso', blank=True, null=True)
 
     class Meta:
@@ -230,7 +229,6 @@ class DiaAberto(models.Model):
     administrador_utilizador_idutilizador = models.ForeignKey(Administrador, models.DO_NOTHING, db_column='Administrador_Utilizador_idutilizador')  # Field name made lowercase.
     preco_almoco_estudante = models.FloatField()
     preco_almoco_professor = models.FloatField()
-    utilizador_idutilizador = models.ForeignKey('Utilizador', models.DO_NOTHING, db_column='utilizador_idutilizador')
 
     class Meta:
         managed = False
@@ -589,6 +587,7 @@ class Utilizador(models.Model):
     password = models.CharField(max_length=255)
     validada = models.IntegerField()
     remember_me = models.CharField(max_length=255, blank=True, null=True)
+    dia_aberto_ano = models.ForeignKey(DiaAberto, models.DO_NOTHING, db_column='dia_aberto_ano', blank=True, null=True)
 
     class Meta:
         managed = False

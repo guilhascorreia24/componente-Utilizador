@@ -1,0 +1,51 @@
+{% extends "compor_not.html" %}
+{% block content2 %}
+<div style="padding: 1rem 2vw 0px;">
+    <hr>
+    <h2 class="title has-text-grey is-uppercase" style="font-size: 0.9rem;"> Nova notificação </h2>
+    <div class="columns">
+      <div class="column">
+        <form method="Post">
+          {% csrf_token %}
+          <div class="field"><label class="">Destinatario</label>
+            <div class="control is-clearfix">
+              <datalist id="brow">
+                <option value="Internet Explorer">
+                <option value="Firefox">
+                <option value="Chrome">
+                <option value="Opera">
+                <option value="Safari">
+              </datalist>
+              <input class="input" id="{{form.Destinatario.id_for_label}}" class="input" name="Destinatario"
+                data-role="tagsinput" value="{{form.Destinatario.value|default_if_none:''}}" disabled>
+              <!---->
+              <!---->
+              <!---->
+            </div>
+            <!---->
+          </div>
+      </div>
+      <div class="column">
+        <div class="field"><label class="">Assunto</label>
+          <div class="control is-clearfix"><input type="text" id="{{form.Assunto.id_for_label}}" name="Assunto"
+              value="{{form.Assunto.value|default_if_none:''}}" autocomplete="on" class="input" disabled>
+            <!---->
+            <!---->
+            <!---->
+          </div>
+          <!---->
+        </div>
+      </div>
+    </div>
+    <div class="field"><label class="">Descrição</label>
+      <div class="control is-clearfix"><textarea maxlength="300" id="{{form.Descricao.id_for_label}}"
+          value="{{form.Descricao.value|default_if_none:''}}" name="Descricao" class="textarea" disabled></textarea>
+        <!---->
+        <!----> <small class="help counter is-invisible">
+          0 / 300
+        </small></div>
+      <!---->
+    </div>
+    </tr>
+  </div>
+  {% endblock content2 %}

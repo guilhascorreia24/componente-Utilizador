@@ -1,10 +1,11 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from .models import Utilizador
+from .models import Utilizador,DiaAberto
 from django.core import validators
 from django.core.exceptions import ValidationError
 from django.core import signing
 import hashlib
+import datetime
 
 
 class UserRegisterForm(forms.Form):
@@ -26,8 +27,12 @@ class UserRegisterForm(forms.Form):
     
     def save(self):
         data = self.cleaned_data
+        if DiaAberto.objects.filter(pk=datetime.date.today().year).exists():
+            ano=DiaAberto.objects.filter(pk=datetime.date.today().year).pk
+        else:
+            ano=None
         user=Utilizador(nome=data['name'],
-            email=data['email'],telefone=data['telefone'],password=hashlib.sha256(data['password1'].encode('utf-8')).hexdigest(),validada=5) # encriptar passe quando estiveresmos quse a acabr
+            email=data['email'],telefone=data['telefone'],password=hashlib.sha256(data['password1'].encode('utf-8')).hexdigest(),validada=5,dia_aberto_ano=ano) # encriptar passe quando estiveresmos quse a acabr
         user.save()
     
 

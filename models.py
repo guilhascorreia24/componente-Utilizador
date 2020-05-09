@@ -143,7 +143,6 @@ class Campus(models.Model):
 class Colaborador(models.Model):
     preferencia = models.CharField(max_length=255, blank=True, null=True)
     utilizador_idutilizador = models.OneToOneField('Utilizador', models.DO_NOTHING, db_column='Utilizador_idutilizador', primary_key=True)  # Field name made lowercase.
-    dia_aberto_ano = models.ForeignKey('DiaAberto', models.DO_NOTHING, db_column='dia_aberto_ano')
     curso_idcurso = models.ForeignKey('Curso', models.DO_NOTHING, db_column='curso_idcurso', blank=True, null=True)
 
     class Meta:
@@ -230,7 +229,6 @@ class DiaAberto(models.Model):
     administrador_utilizador_idutilizador = models.ForeignKey(Administrador, models.DO_NOTHING, db_column='Administrador_Utilizador_idutilizador')  # Field name made lowercase.
     preco_almoco_estudante = models.FloatField()
     preco_almoco_professor = models.FloatField()
-    utilizador_idutilizador = models.ForeignKey('Utilizador', models.DO_NOTHING, db_column='utilizador_idutilizador')
 
     class Meta:
         managed = False
@@ -403,7 +401,7 @@ class Menu(models.Model):
     menu = models.CharField(max_length=45)
     campus_idcampus = models.ForeignKey(Campus, models.DO_NOTHING, db_column='Campus_idCampus')  # Field name made lowercase.
     horario_has_dia_id_dia_hora = models.ForeignKey(HorarioHasDia, models.DO_NOTHING, db_column='horario_has_dia_id_dia_hora')
-    nralmoçosdisponiveis = models.IntegerField()
+    nralmocosdisponiveis = models.IntegerField()
 
     class Meta:
         managed = False
@@ -513,8 +511,8 @@ class Tarefa(models.Model):
     hora_inicio = models.TimeField()
     dia_dia = models.ForeignKey(Dia, models.DO_NOTHING, db_column='dia_dia')
     sessao_idsessao = models.ForeignKey(Sessao, models.DO_NOTHING, db_column='sessao_idsessao', blank=True, null=True)
-    buscar = models.ForeignKey(Espaco, models.DO_NOTHING, db_column='buscar', blank=True, null=True)
-    levar = models.ForeignKey(Espaco, models.DO_NOTHING, db_column='levar', blank=True, null=True)
+    buscar = models.ForeignKey(Espaco, models.DO_NOTHING, db_column='buscar', blank=True, null=True,related_name="Tarefa_buscar")
+    levar = models.ForeignKey(Espaco, models.DO_NOTHING, db_column='levar', blank=True, null=True,related_name="Tarefa_levar")
 
     class Meta:
         managed = False
@@ -546,8 +544,8 @@ class TransporteHasInscricao(models.Model):
     transporte_has_inscricao_id = models.AutoField(primary_key=True)
     partida = models.ForeignKey(HorarioHasDia, models.DO_NOTHING, db_column='partida')
     numero_passageiros = models.IntegerField(blank=True, null=True)
-    partida_paragem = models.ForeignKey(Paragem, models.DO_NOTHING, db_column='partida_paragem')
-    chegada_paragem = models.ForeignKey(Paragem, models.DO_NOTHING, db_column='chegada_paragem')
+    partida_paragem = models.ForeignKey(Paragem, models.DO_NOTHING, db_column='partida_paragem',related_name="TransporteHasInscricao_partida_paragem")
+    chegada_paragem = models.ForeignKey(Paragem, models.DO_NOTHING, db_column='chegada_paragem',related_name="TransporteHasInscricao_chegada_paragem")
 
     class Meta:
         managed = False
@@ -589,6 +587,7 @@ class Utilizador(models.Model):
     password = models.CharField(max_length=255)
     validada = models.IntegerField()
     remember_me = models.CharField(max_length=255, blank=True, null=True)
+    dia_aberto_ano = models.ForeignKey(DiaAberto, models.DO_NOTHING, db_column='dia_aberto_ano', blank=True, null=True)
 
     class Meta:
         managed = False

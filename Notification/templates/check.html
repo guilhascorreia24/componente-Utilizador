@@ -15,7 +15,7 @@
             <div data-v-a67fe1ba="" class="is-bottom-left is-mobile-modal dropdown ">
                 <a class="dropdown-toggle" role="button" data-toggle="dropdown">
                     <div role="button" aria-haspopup="true" class="dropdown-trigger"><span data-v-a67fe1ba=""
-                            role="button"><button data-v-a67fe1ba="" type="button" data-badge="0"
+                            role="button"><button data-v-a67fe1ba="" type="button" data-badge="{{i}}"
                                 class="button has-badge-rounded has-badge-warning is-text"
                                 style="margin-right: 0.9rem;">
                                 <!----> <span><span data-v-a67fe1ba="" class="icon"><i
@@ -141,6 +141,17 @@
                         style="margin-bottom: 0.9rem; margin-right: 1rem;text-decoration:none;" ><span
                             class="icon is-small"><i class="mdi mdi-plus"></i></span> <span> Compor Notificação </span>
                         <!----></a>
+                        {% if my %}
+                        <a href="{% url "check_not" %}" class="button is-success is-outlined" type="button"
+                        style="margin-bottom: 0.9rem; margin-right: 1rem;text-decoration:none;" ><span
+                            class="icon is-small"><i class="mdi mdi-send"></i></span> <span> Notificações Recebidas </span>
+                        <!----></a>
+                        {% else %}
+                        <a href="{% url "check_not_enviadas" %}" class="button is-success is-outlined" type="button"
+                        style="margin-bottom: 0.9rem; margin-right: 1rem;text-decoration:none;" ><span
+                            class="icon is-small"><i class="mdi mdi-send"></i></span> <span> Notificações Enviadas </span>
+                        <!----></a>
+                        {% endif %}
                       
                     <div class="b-table">
                         <div class="field table-mobile-sort">
@@ -171,11 +182,11 @@
                             <table id="myTable" class="table table-striped">
                                 <thead>
                                     <tr>
-                                        <th width="20px"></th>
+                                        
                                         <!---->
-
+                                        
                                         <th class="is-sortable">
-                                            <div class="th-wrap th-sm">Emissor <span class="icon is-small"
+                                            <div class="th-wrap th-sm">{% if my %} Receptor {% else %} Emissor {% endif %} <span class="icon is-small"
                                                     style="display: none;"><i class="mdi mdi-menu-up"></i></span>
                                             </div>
                                         </th>
@@ -203,7 +214,9 @@
 
                                 <tbody>
                                     {% for not in nots %}
-                                    {% if not.utilizadorrecebe == me_id %}
+                                    {% if not.idutilizadorenvia == me_id and my%}
+                                    {% include "tabela_de_consulta.html" %}
+                                    {% elif not.utilizadorrecebe == me_id%}
                                     {% include "tabela_de_consulta.html" %}
                                     {% endif %}
                                     </tr>
@@ -270,7 +283,7 @@
             "bLengthChange": false,
             "aLengthMenu": [[5, 10, 25, -1], [5, 10, 25, "All"]],
             "columnDefs": [
-    { "orderable": false, "targets": [0,4] }
+    { "orderable": false, "targets": [0,3] }
   ]
         });
     });
