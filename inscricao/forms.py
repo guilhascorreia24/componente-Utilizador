@@ -69,20 +69,20 @@ class Form_Almocos_Per_Campus:
         menus = models.Menu.objects.filter(campus_idcampus = campus)
         if request != 0 and request.method == 'POST':
             for menu in menus:
-                form = Form_Prato(request.POST,prefix= "almoco_" + str(menu.idmenu))
+                form = Form_Prato(request.POST,prefix= "almoco_" + str(menu.idmenu),menu=menu)
                 self.pratos.append((form,menu))
 
         else:
             for menu in menus:
-                form = Form_Prato(prefix= "almoco_" + str(menu.idmenu))
+                form = Form_Prato(prefix= "almoco_" + str(menu.idmenu),menu = menu)
                 self.pratos.append((form,menu))
     
     def save(self,inscricao):
         for prato,menu in self.pratos:
-            prat = prato.save(menu)
+            prat = prato.save()
             if prat.nralmocos>0:
                 query = models.InscricaoHasPrato(inscricao_idinscricao = inscricao,prato_idprato=prat)
-            query.save()
+                query.save()
 
     def is_valid(self):
         value = True
@@ -110,27 +110,28 @@ class Form_Almoco:
         for c in self.campus:
             c.save(inscricao) 
 
-
-#ERROR HANDLING STILL NEEDED   
+ 
 class Form_Prato(ModelForm):
+
     def __init__(self, *args, **kwargs):
+        self.menu = kwargs.pop('menu')
         super(Form_Prato, self).__init__(*args, **kwargs)
-        self.fields['nralmocos'].required = False
 
-    def set_menu(self,menu):
-        self.menu = menu
-
-    def save(self,menu):
+    def save(self):
         base = super(Form_Prato, self).save(commit=False)
-        base.menu_idmenu = menu
+        base.menu_idmenu = self.menu
         if(base.nralmocos == 0):
             return base
-        else: 
-            base.save()
+        base.save()
         return base
     
     def clean(self):
         super().clean()
+        if self.menu.nralmoçosdisponiveis < self.cleaned_data['nralmocos']:
+            raise ValidationError({'nralmocos': ["Numero de almoços disponiveis não é suficiente"]})
+
+        if(self.cleaned_data['nralmocos'] < 0):
+            raise ValidationError({'nralmocos': ["Numero de almoços não pode ser negativo"]})
 
     class Meta:
         model = models.Prato
@@ -146,7 +147,9 @@ class Form_Sessao(ModelForm):
     def save(self,inscricao):
         base = super(Form_Sessao, self).save(commit=False)
         base.inscricao_idinscricao = inscricao
-        base.sessao_idsessao = models.Sessao.objects.get(idsessao=self.cleaned_data['sessao_id'])
+        sessao = models.Sessao.objects.get(idsessao=self.cleaned_data['sessao_id'])
+        #print(sessao)
+        base.sessao_idsessao = sessao
         base.save()
         return base
 
@@ -159,8 +162,8 @@ class Form_Sessao(ModelForm):
         except models.Sessao.DoesNotExist:
             raise ValidationError("Sessão não existe")
        
-        if cleaned_data['nr_inscritos'] > sessao.capacidade - sessao.nrinscritos:
-           raise ValidationError("Sessão não têm vagas suficientes")
+        if sessao.capacidade - sessao.nrinscritos  < cleaned_data['nr_inscritos']:
+            raise ValidationError({'nr_inscritos': ["Não há vagas suficientes"]})
         
         #return True
     class Meta:
@@ -186,11 +189,10 @@ class CustomForm:
             self.sessao = Sessao(prefix='sessao_set',queryset=models.InscricaoHasSessao.objects.none())
             self.responsaveis = Responsaveis(prefix='responsaveis_set',queryset=models.Responsaveis.objects.none())
             self.transportes = Transportes(prefix='transportes_set',queryset=models.TransporteHasInscricao.objects.none())
-
-        print(len(self.sessao))
         
     
     def is_valid(self):
+        print(self.sessao.is_valid())
         value = all([self.escola.is_valid(), self.inscricao.is_valid(), self.responsaveis.is_valid(), self.almoco.is_valid(),self.sessao.is_valid(),self.transportes.is_valid()])
         if len(self.sessao)<1:
             self.sessao.errors.append(SESSAO_MIN_ERROR)
