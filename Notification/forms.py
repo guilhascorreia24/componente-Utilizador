@@ -14,7 +14,3 @@ class NotificationForm(forms.Form):
     class Meta:
         model=Notificacao
         fields=['Descricao','Assunto','idutilizadorenvia','Destinatario']
-
-    def save(self,request):
-        Not = Notificacao(descricao=request.POST['Descricao'],assunto=request.POST['Assunto'],idutilizadorenvia=request.session['user_id'],utilizadorrecebe=request.POST['Destinatario'],estadol=0)
-        Not.save()

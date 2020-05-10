@@ -6,6 +6,9 @@
 #   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
+from inscricao.validators import email_validator, not_zero_validator, telefone_validator
+from django.dispatch import receiver
+from django.db.models import F
 
 
 class Administrador(models.Model):
@@ -370,10 +373,19 @@ class InscricaoHasSessao(models.Model):
     inscricao_has_sessao_id = models.AutoField(primary_key=True)
     nr_inscritos = models.IntegerField()
 
+    def save(self, *args, **kwargs):
+        Sessao.objects.filter(idsessao=self.sessao_idsessao.pk).update(nrinscritos=F('nrinscritos')+self.nr_inscritos)
+        print(self.nr_inscritos)
+        return super(InscricaoHasSessao, self).save(*args, **kwargs)
+
+
     class Meta:
         managed = False
         db_table = 'inscricao_has_sessao'
 
+@receiver(models.signals.post_delete, sender=InscricaoHasSessao)
+def delete_sessao_inscricao(sender, instance, using, **kwargs):
+    Sessao.objects.filter(idsessao=instance.sessao_idsessao).update(nrinscritos=F('nrinscritos')-self.nr_inscritos)
 
 class InscricaoIndividual(models.Model):
     nracompanhades = models.IntegerField()
@@ -401,7 +413,7 @@ class Menu(models.Model):
     menu = models.CharField(max_length=45)
     campus_idcampus = models.ForeignKey(Campus, models.DO_NOTHING, db_column='Campus_idCampus')  # Field name made lowercase.
     horario_has_dia_id_dia_hora = models.ForeignKey(HorarioHasDia, models.DO_NOTHING, db_column='horario_has_dia_id_dia_hora')
-    nralmocosdisponiveis = models.IntegerField()
+    nralmoçosdisponiveis = models.IntegerField()
 
     class Meta:
         managed = False
@@ -442,10 +454,23 @@ class Prato(models.Model):
     nralmocos = models.IntegerField()
     descricao = models.CharField(max_length=125)
     menu_idmenu = models.ForeignKey(Menu, models.DO_NOTHING, db_column='Menu_idMenu')  # Field name made lowercase.
+    
+
+    def save(self, *args, **kwargs):
+        obj = Menu.objects.get(idmenu=self.menu_idmenu.pk)
+
+        if(obj.nralmoçosdisponiveis<self.nralmocos):
+            raise ValidationError("Outro grupo rgistou-se primeiro e não há mais almoços disponiveis")
+        Menu.objects.filter(idmenu=self.menu_idmenu.pk).update(nralmoçosdisponiveis=F('nralmoçosdisponiveis')-self.nralmocos)
+        return super(Prato, self).save(*args, **kwargs)
 
     class Meta:
         managed = False
         db_table = 'prato'
+
+@receiver(models.signals.post_delete, sender=Prato)
+def delete_prato(sender, instance, using, **kwargs):
+    Menu.objects.filter(idmenu=instance.menu_idmenu).update(nralmoçosdisponiveis=F('nralmoçosdisponiveis')-instance.nralmocos)
 
 
 class ProfessorUniversitario(models.Model):

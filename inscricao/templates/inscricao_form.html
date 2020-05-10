@@ -2914,10 +2914,12 @@
                                                         
                                                         <div style="display:none" id="sessao_start_info">
                                                         {% for curr_sessao in form.sessao %}
+                                                        {% if curr_sessao.nr_inscritos.errors|length == 0 %}
                                                         <div>
                                                         {{curr_sessao.nr_inscritos}}
                                                         {{curr_sessao.sessao_id}}
                                                         </div>
+                                                        {% endif %}
                                                         {% endfor %}
                                                         </div>
                                                         <table class="table has-mobile-cards" id="sessao_escolhida">

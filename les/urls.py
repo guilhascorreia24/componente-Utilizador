@@ -24,6 +24,7 @@ urlpatterns = [
     path('notificacao/',notificacao_views.checknot,name="check_not"),
     path('delete/',notificacao_views.deletenot,name="del_not"),
     path('notificacao/<str:id>/',notificacao_views.noti,name="noti"),
+    path('notificacao/enviadas',notificacao_views.enviados,name="check_not_enviadas"),
     path('register/', user_views.register, name='register'),
     path('login/',user_views.login_request,name='login'),
     path('logout/',user_views.logout_request,name='logout'),
