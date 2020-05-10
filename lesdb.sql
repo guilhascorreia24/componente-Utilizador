@@ -21,7 +21,7 @@ USE `les` ;
 -- Table `les`.`dia_aberto`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `les`.`dia_aberto` (
-  `ano` YEAR Not NULL,
+  `ano` YEAR NOT NULL,
   `descricao` VARCHAR(120) NULL DEFAULT NULL,
   `emailDiaAberto` VARCHAR(120) NOT NULL,
   `enderecoPaginaWeb` VARCHAR(60) NOT NULL,
@@ -55,18 +55,16 @@ CREATE TABLE IF NOT EXISTS `les`.`utilizador` (
   `password` VARCHAR(255) NOT NULL,
   `validada` TINYINT NOT NULL DEFAULT '0',
   `remember_me` VARCHAR(255) NULL DEFAULT NULL,
-  `dia_aberto_ano` YEAR NULL,
+  `dia_aberto_ano` YEAR NULL DEFAULT NULL,
   PRIMARY KEY (`idutilizador`),
   UNIQUE INDEX `email_UNIQUE` (`email` ASC) VISIBLE,
   UNIQUE INDEX `telefone_UNIQUE` (`telefone` ASC) VISIBLE,
   INDEX `fk_utilizador_dia_aberto1_idx` (`dia_aberto_ano` ASC) VISIBLE,
   CONSTRAINT `fk_utilizador_dia_aberto1`
     FOREIGN KEY (`dia_aberto_ano`)
-    REFERENCES `les`.`dia_aberto` (`ano`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    REFERENCES `les`.`dia_aberto` (`ano`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 41
+AUTO_INCREMENT = 43
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -324,7 +322,7 @@ CREATE TABLE IF NOT EXISTS `les`.`django_content_type` (
   PRIMARY KEY (`id`),
   UNIQUE INDEX `django_content_type_app_label_model_76bd3d3b_uniq` (`app_label` ASC, `model` ASC) VISIBLE)
 ENGINE = InnoDB
-AUTO_INCREMENT = 581
+AUTO_INCREMENT = 807
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -343,7 +341,7 @@ CREATE TABLE IF NOT EXISTS `les`.`auth_permission` (
     FOREIGN KEY (`content_type_id`)
     REFERENCES `les`.`django_content_type` (`id`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 2321
+AUTO_INCREMENT = 3225
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -457,7 +455,6 @@ COLLATE = utf8mb4_0900_ai_ci;
 -- Table `les`.`colaborador`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `les`.`colaborador` (
-  `preferencia` VARCHAR(255) NULL DEFAULT NULL,
   `Utilizador_idutilizador` INT NOT NULL,
   `curso_idcurso` INT NULL DEFAULT NULL,
   PRIMARY KEY (`Utilizador_idutilizador`),
@@ -657,7 +654,7 @@ CREATE TABLE IF NOT EXISTS `les`.`django_migrations` (
   `applied` DATETIME(6) NOT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 74
+AUTO_INCREMENT = 102
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -938,7 +935,7 @@ CREATE TABLE IF NOT EXISTS `les`.`notificacao` (
   `idutilizadorenvia` INT NOT NULL,
   `utilizadorrecebe` INT NOT NULL,
   `assunto` VARCHAR(45) NOT NULL,
-  `estadol` TINYINT NULL,
+  `estadol` TINYINT NULL DEFAULT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
@@ -1206,6 +1203,37 @@ CREATE TABLE IF NOT EXISTS `les`.`utilizador_has_notificacao` (
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `les`.`Disponibilidade`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `les`.`Disponibilidade` (
+  `TIpo_tarefa` VARCHAR(255) NOT NULL,
+  `colaborador_Utilizador_idutilizador` INT NOT NULL,
+  `horario_hora` TIME NOT NULL,
+  `dia_dia` DATE NOT NULL,
+  `Disponibilidade_id` INT NOT NULL,
+  INDEX `fk_table1_colaborador1_idx` (`colaborador_Utilizador_idutilizador` ASC) VISIBLE,
+  INDEX `fk_table1_horario1_idx` (`horario_hora` ASC) VISIBLE,
+  INDEX `fk_Disponibilidade_dia1_idx` (`dia_dia` ASC) VISIBLE,
+  PRIMARY KEY (`Disponibilidade_id`),
+  CONSTRAINT `fk_table1_colaborador1`
+    FOREIGN KEY (`colaborador_Utilizador_idutilizador`)
+    REFERENCES `les`.`colaborador` (`Utilizador_idutilizador`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_table1_horario1`
+    FOREIGN KEY (`horario_hora`)
+    REFERENCES `les`.`horario` (`hora`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Disponibilidade_dia1`
+    FOREIGN KEY (`dia_dia`)
+    REFERENCES `les`.`dia` (`dia`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
 
 
 SET SQL_MODE=@OLD_SQL_MODE;
