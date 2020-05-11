@@ -27,17 +27,8 @@
                         <div data-v-a67fe1ba="" role="menuitem" tabindex="0" class="dropdown-item"><strong
                                 data-v-a67fe1ba="">Notificações</strong></div>
                         <hr data-v-a67fe1ba="" class="dropdown-divider">
-                        <div data-v-a67fe1ba="">
-                            {% for noti in not_checked %}
-                            {% if noti.estado == 0 %}
-                            <div data-v-a67fe1ba="" tabindex="0" class="dropdown-item">
-                                <div data-v-a67fe1ba="" class="has-text-grey"> {{noti.assunto}}
-                                </div>
-                            </div>
-                            <hr data-v-a67fe1ba="" class="dropdown-divider">
-                            {% endif %}
-                            {% endfor %}
-                        </div><a data-v-a67fe1ba="" tabindex="0" class="dropdown-item"><u data-v-a67fe1ba="">Ver todas
+                        {% include "dropdow_noti.html" %}
+                        <a data-v-a67fe1ba="" tabindex="0" class="dropdown-item"><u data-v-a67fe1ba="">Ver todas
                                 as notificações</u></a>
                     </div>
                 </div>

@@ -13,6 +13,7 @@ import base64
 import logging
 import traceback
 from django.conf import settings
+from Notification.views import noti_not_checked
 
 def encrypt(txt):
         # convert integer etc to string first
@@ -186,9 +187,9 @@ def register(request):
                 error2 = "Passwords nao coincidem"
             if password_check(request.POST['password1']) != True:
                 error1 = password_check(request.POST['password1']) 
-            return render(request, 'register.html', {'me':signing.dumps(me),"func":user(request),'form': form,'cursos':cursos,'UOs':UOs,'deps':deps,'error1': error, 'error2': error1, 'error3': error2, 'error4': error3,'error5':type_user(data,None)})
+            return render(request, 'register.html', {'me':signing.dumps(me),"func":user(request),'form': form,'cursos':cursos,'UOs':UOs,'deps':deps,'error1': error, 'error2': error1, 'error3': error2, 'error4': error3,'error5':type_user(data,None),'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
     form = UserRegisterForm()
-    return render(request, 'register.html', {'form': form,'UOs':UOs,'deps':deps,'cursos':cursos,"func":user(request),'me':signing.dumps(me)})
+    return render(request, 'register.html', {'form': form,'UOs':UOs,'deps':deps,'cursos':cursos,"func":user(request),'me':signing.dumps(me),'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
 
 #*----------------------------------------------------------login---------------------------------------
 def login_request(request):
@@ -312,7 +313,7 @@ def modify_user(request,id):
                 error = "Email ja existe"
             if Utilizador.objects.filter(telefone=request.POST['telefone']).exists() and Utilizador.objects.get(telefone=request.POST['telefone']).idutilizador!=id:
                 error3 = "telefone ja existe"
-            return render(request, 'profile_modify.html', {'email':email,'UO':UO,'telefone':telefone,'funcao':funcao,'curso':curso,'dep':dep,"form": form,'error4':error3,"error1":error,'me':signing.dumps(me),'id':signing.dumps(id),'nome':name,'ano':ano})
+            return render(request, 'profile_modify.html', {'email':email,'UO':UO,'telefone':telefone,'funcao':funcao,'curso':curso,'dep':dep,"form": form,'error4':error3,"error1":error,'me':signing.dumps(me),'id':signing.dumps(id),'nome':name,'ano':ano,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
     else:
         form = ModifyForm()
         email = Utilizador.objects.get(idutilizador=id).email
@@ -341,7 +342,7 @@ def modify_user(request,id):
     elif Participante.objects.filter(utilizador_idutilizador=id).exists():
         funcao = "Participante"
     return render(request, 'profile_modify.html', {"form": form, 'nome': name,'UO':UO, 'email': email, "ano":ano,
-                    'telefone': telefone, 'funcao': funcao, 'ano': ano, 'curso': curso,'dep':dep,"me":signing.dumps(me),'id':signing.dumps(id),'func':user(request)})
+                    'telefone': telefone, 'funcao': funcao, 'ano': ano, 'curso': curso,'dep':dep,"me":signing.dumps(me),'id':signing.dumps(id),'func':user(request),'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
 
 def profile(request,id):
     id=signing.loads(id)
@@ -375,7 +376,7 @@ def profile(request,id):
     elif Participante.objects.filter(pk=id).exists():
         funcao="Participante"
     return render(request, 'profile.html', {"form": form, 'nome': name,'UO':UO, 'email': email,"ano":ano,
-                    'telefone': telefone, 'funcao': funcao, 'ano': ano, 'curso': cursoname,'dep':dep,"me":signing.dumps(me),'id':signing.dumps(id),'func':user(request)})
+                    'telefone': telefone, 'funcao': funcao, 'ano': ano, 'curso': cursoname,'dep':dep,"me":signing.dumps(me),'id':signing.dumps(id),'func':user(request),'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
 
 
 
@@ -425,7 +426,7 @@ def profile_list(request):
     me_id=signing.dumps(user_id)
     campus=Campus.objects.all()
     uos=uo()
-    return render(request,"list_users.html",{"users":users,"funcao":funcao,"me":me,"me_id":me_id,"campus":campus,"uos":uos})
+    return render(request,"list_users.html",{"users":users,"funcao":funcao,"me":me,"me_id":me_id,"campus":campus,"uos":uos,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
 #--------------------------------------------recuperaçao de password---------------------------------
 def change_password(request, id):
     id_deccryp=signing.loads(id)

@@ -21,9 +21,9 @@ def createnot(request):
         #print(form.is_valid())
         if form.is_valid():
             for email in emails:
-                #print("noti:"+str(user_views.validateEmail(email) is True and not Utilizador.objects.filter(email=email).exists()))
+                print("noti:"+str(user_views.validateEmail(email) is True) +" "+str(Utilizador.objects.filter(email=email).exists()))
                 form.cleaned_data['idutilizadorenvia'] = request.session['user_id']
-                if user_views.validateEmail(email) is True and not Utilizador.objects.filter(email=email).exists():
+                if user_views.validateEmail(email) is True and Utilizador.objects.filter(email=email).exists():
                     user_email = Utilizador.objects.get(email=email)
                 else:
                     form.add_error('Destinatario','email invalido ou não existe')
@@ -38,7 +38,7 @@ def createnot(request):
             return redirect('check_not')
     else:
         form = NotificationForm()
-    return render(request, 'compor_not.html', {'form': form,'me_id':signing.dumps(me_id),'funcao':funcao})
+    return render(request, 'compor_not.html', {'form': form,'me_id':signing.dumps(me_id),'funcao':funcao,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
 
 def checknot(request):
     me_id=request.session['user_id']
@@ -64,30 +64,30 @@ def deletenot(request):
 def enviados(request):
     me_id=request.session['user_id']
     nots=Notificacao.objects.filter(idutilizadorenvia = me_id).annotate(emissor=Value("",CharField()),recept=Value("",CharField()))
-    i=0
     for noti in nots:
-        if noti.utilizadorrecebe==me_id and noti.estadol==1:
-            i+=1
         noti.recept=Utilizador.objects.get(pk=noti.utilizadorrecebe).email
         noti.pk=signing.dumps(noti.pk)
     func=user_views.user(request)
     my=True
-    return render(request,'check.html',{'nots':nots,'me_id':me_id,'funcao':func,'my':my,'i':i})
+    i=len(noti_not_checked(request))
+    return render(request,'check.html',{'nots':nots,'me_id':me_id,'funcao':func,'my':my,'i':i,'not_checked':noti_not_checked(request)})
 
 def noti(request,id):
     me_id=signing.loads(id)
     noti=Notificacao.objects.get(pk=me_id)
     form = NotificationForm(initial={'Destinatario':Utilizador.objects.get(pk=noti.utilizadorrecebe).email,'Assunto':noti.assunto,'Descricao':noti.descricao})
     print(form)
-    return render(request,"consultar_not.html",{'form':form,'me_id':signing.dumps(me_id),'funcao':user_views.user(request)})
+    UtilizadorHasNotificacao.objects.filter(notificacao=noti).update(estado=1)
+    return render(request,"consultar_not.html",{'form':form,'me_id':signing.dumps(me_id),'funcao':user_views.user(request),'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
 
 def noti_not_checked(request):
     user_id=request.session['user_id']
     user=Utilizador.objects.get(pk=user_id)
-    my_noti=Notificacao.objects.annotate(estado=Value(1,IntegerField())).get(utilizadorrecebe=user_id)
-    
-    for noti in my_noti:
-        if UtilizadorHasNotificacao.objects.filter(notificacao=noti).exists():
-            noti.estado=0
-    return my_noti
+    my_noti=UtilizadorHasNotificacao.objects.all()
+    noti=[]
+    for n in my_noti:
+        if n.notificacao.utilizadorrecebe==user.pk and n.estado==0:
+            n.notificacao.pk=signing.dumps(n.notificacao.pk)
+            noti.append(n.notificacao)
+    return noti
 

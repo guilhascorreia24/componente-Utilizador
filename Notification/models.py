@@ -435,7 +435,7 @@ class Notificacao(models.Model):
     criadoem = models.DateTimeField()
     idutilizadorenvia = models.IntegerField()
     utilizadorrecebe = models.IntegerField()
-    assunto = models.CharField(max_length=45)
+    assunto = models.CharField(max_length=300)
 
     class Meta:
         managed = False
