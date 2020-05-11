@@ -25,7 +25,7 @@ def home(request):
             funcao = "coord"
         elif Colaborador.objects.filter(utilizador_idutilizador=id1).exists():
             funcao = "colab"
-        id=encrypt(id1)
+        id=signing.dumps    (id1)
         print(id)
         return render(request, 'homepage.html', context={'id':id,'funcao':funcao})
     else:
