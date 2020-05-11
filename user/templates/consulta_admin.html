@@ -12,13 +12,25 @@
 
     <td data-label="Estado" class="form-group ">
         {% if funcao == "administardor" %}{% if user.cargo == "Colaborador" %}
+        {% if user.estado == 'Pendente' %}
         <span class="tag" style="background-color: grey;color: white; width: 7rem; font-size: small;" disabaled><i
             class="mdi mdi-block-helper mdi-18px"></i>
         </span></td>
-    {% elif user.cargo == "Docente Universitario" %}
-    <span class="tag" style="width: 7rem; font-size: small;background-color: grey;color: white;"><i
-        class="mdi mdi-block-helper mdi-24px"></i>
+        {% else %}
+        <span class="tag is-success"
+        style="width: 7rem; font-size: small;"> {{user.estado}}
     </span></td>
+    {% endif %}
+    {% elif user.cargo == "Docente Universitario" %}
+    {% if user.estado == 'Pendente' %}
+    <span class="tag" style="background-color: grey;color: white; width: 7rem; font-size: small;" disabaled><i
+        class="mdi mdi-block-helper mdi-18px"></i>
+    </span></td>
+    {% else %}
+    <span class="tag is-success"
+    style="width: 7rem; font-size: small;"> {{user.estado}}
+</span></td>
+{% endif %}
     {% elif user.estado == 'Pendente' %}
     {% include "validacao.html" %}
     {% else %}

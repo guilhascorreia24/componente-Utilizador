@@ -581,7 +581,7 @@ class TransporteUniversitario(models.Model):
 
 class UnidadeOrganica(models.Model):
     iduo = models.AutoField(db_column='idUO', primary_key=True)  # Field name made lowercase.
-    sigla = models.CharField(max_length=5)
+    sigla = models.CharField(max_length=255)
     campus_idcampus = models.ForeignKey(Campus, models.DO_NOTHING, db_column='Campus_idCampus')  # Field name made lowercase.
 
     class Meta:

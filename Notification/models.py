@@ -424,7 +424,7 @@ class Notificacao(models.Model):
     idutilizadorenvia = models.IntegerField()
     utilizadorrecebe = models.IntegerField()
     assunto = models.CharField(max_length=45)
-    estadol = models.IntegerField(blank=True, null=True)
+
 
     class Meta:
         managed = False
@@ -581,7 +581,7 @@ class TransporteUniversitario(models.Model):
 
 class UnidadeOrganica(models.Model):
     iduo = models.AutoField(db_column='idUO', primary_key=True)  # Field name made lowercase.
-    sigla = models.CharField(max_length=5)
+    sigla = models.CharField(max_length=255)
     campus_idcampus = models.ForeignKey(Campus, models.DO_NOTHING, db_column='Campus_idCampus')  # Field name made lowercase.
 
     class Meta:
@@ -608,6 +608,8 @@ class UtilizadorHasNotificacao(models.Model):
     utilizador_idutilizador = models.ForeignKey(Utilizador, models.DO_NOTHING, db_column='Utilizador_idutilizador')  # Field name made lowercase.
     notificacao = models.ForeignKey(Notificacao, models.DO_NOTHING)
     utilizador_has_notificacao_id = models.AutoField(primary_key=True)
+    estado = models.IntegerField()
+
 
     class Meta:
         managed = False

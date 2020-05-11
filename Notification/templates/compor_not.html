@@ -170,7 +170,7 @@
                     <!---->
                     <!---->
                   </div>
-                  {{form.Destinatario.errors}}
+                  <p class="help is-danger">{{form.Destinatario.errors}}</p>
                   <!---->
                 </div>
                 {% else %}
@@ -247,7 +247,6 @@
           {% endif %}
           </tr>
         </div>
-        {% endblock content2 %}
         <div class="column is-8 is-offset-2">
           <div class="level">
             <div class="level-left"><a href="{% url "check_not" %}" class="button is-outlined" type="button">
@@ -257,6 +256,7 @@
                 <!----> <span> Enviar </span> <span class="icon is-medium"><i
                     class="mdi mdi-forward mdi-36px"></i></span></button></div>
             </form>
+            {% endblock content2 %}
           </div>
         </div>
       </div>

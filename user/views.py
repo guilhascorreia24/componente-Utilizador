@@ -82,7 +82,7 @@ def type_user(data,user_id):
     if data['funcao']=='1':
         if data['curso']!='0' and user_id is not None:
             curso_id=Curso.objects.get(pk=data['curso'].split("_")[1])
-            colab=Colaborador(pk=user_id,curso_idcurso=curso_id,preferencia=data['Perferencias'])
+            colab=Colaborador(pk=user_id,curso_idcurso=curso_id)
             colab.save()
         elif data['UO']=='0' or data['curso']=='0':
             t=1
@@ -159,6 +159,8 @@ def register(request):
             form.save()
             user_id=Utilizador.objects.get(email=request.POST['email']).idutilizador
             type_user(data,user_id)
+            if 'user_id' in request.session:
+                validacoes(request,1,signing.dumps(user_id))
             messages.success(request, f'Registo efetuado com Sucesso!')
             return redirect('blog-home')
         else:
@@ -184,7 +186,7 @@ def register(request):
                 error2 = "Passwords nao coincidem"
             if password_check(request.POST['password1']) != True:
                 error1 = password_check(request.POST['password1']) 
-            return render(request, 'register.html', {'me':signing.dumps(me),'form': form,'cursos':cursos,'UOs':UOs,'deps':deps,'error1': error, 'error2': error1, 'error3': error2, 'error4': error3,'error5':type_user(data,None)})
+            return render(request, 'register.html', {'me':signing.dumps(me),"func":user(request),'form': form,'cursos':cursos,'UOs':UOs,'deps':deps,'error1': error, 'error2': error1, 'error3': error2, 'error4': error3,'error5':type_user(data,None)})
     form = UserRegisterForm()
     return render(request, 'register.html', {'form': form,'UOs':UOs,'deps':deps,'cursos':cursos,"func":user(request),'me':signing.dumps(me)})
 

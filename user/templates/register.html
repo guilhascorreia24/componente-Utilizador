@@ -119,8 +119,8 @@
                                         {% csrf_token %}
                                         <div class="column is-offset-3 is-6">
                                             {% if form.name.errors %}
-                                            <div class="field"><label class=""
-                                                    for={{form.name.id_for_label}}>Nome</label>
+                                            <div class="field"><p class=""
+                                                    for={{form.name.id_for_label}}>Nome</p>
                                                 <div class="control has-icons-right"><input type="text" name="name"
                                                         id={{form.name.id_for_label}} autocomplete="on"
                                                         class="input is-danger">
@@ -345,22 +345,6 @@
                                                                         <!---->
                                                                     </div>
                                                                     {% endif %}
-                                                                    <div class="field">
-                                                                        <p class=""
-                                                                            for="{{form.Perferencias.id_for_label}}">
-                                                                            Perferencias</p>
-                                                                        <div class="control is-clearfix"><textarea
-                                                                                name="Perferencias"
-                                                                                value="{{form.Perferencias.value|default_if_none:""}}"
-                                                                                id="{{form.Perferencias.id_for_label}}"
-                                                                                class="textarea"></textarea>
-                                                                            <!---->
-                                                                            <!----> <small
-                                                                                class="help counter is-invisible">
-                                                                                0 / 300
-                                                                            </small></div>
-                                                                        <!---->
-                                                                    </div>
                                                                 </div>
                                                                 <p id="de"></p>
                                                                 <div id="hidden_div3" {% if form.funcao.value == '3' %}

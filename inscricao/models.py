@@ -413,7 +413,7 @@ class Menu(models.Model):
     menu = models.CharField(max_length=45)
     campus_idcampus = models.ForeignKey(Campus, models.DO_NOTHING, db_column='Campus_idCampus')  # Field name made lowercase.
     horario_has_dia_id_dia_hora = models.ForeignKey(HorarioHasDia, models.DO_NOTHING, db_column='horario_has_dia_id_dia_hora')
-    nralmoçosdisponiveis = models.IntegerField()
+    nralmocosdisponiveis = models.IntegerField()
 
     class Meta:
         managed = False
@@ -596,7 +596,7 @@ class TransporteUniversitario(models.Model):
 
 class UnidadeOrganica(models.Model):
     iduo = models.AutoField(db_column='idUO', primary_key=True)  # Field name made lowercase.
-    sigla = models.CharField(max_length=5)
+    sigla = models.CharField(max_length=255)
     campus_idcampus = models.ForeignKey(Campus, models.DO_NOTHING, db_column='Campus_idCampus')  # Field name made lowercase.
 
     class Meta:

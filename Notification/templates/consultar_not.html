@@ -17,7 +17,7 @@
                 <option value="Safari">
               </datalist>
               <input class="input" id="{{form.Destinatario.id_for_label}}" class="input" name="Destinatario"
-                data-role="tagsinput" value="{{form.Destinatario.value|default_if_none:''}}" disabled>
+                 value="{{form.Destinatario.value|default_if_none:''}}" disabled>
               <!---->
               <!---->
               <!---->
@@ -39,7 +39,7 @@
     </div>
     <div class="field"><label class="">Descrição</label>
       <div class="control is-clearfix"><textarea maxlength="300" id="{{form.Descricao.id_for_label}}"
-          value="{{form.Descricao.value|default_if_none:''}}" name="Descricao" class="textarea" disabled></textarea>
+           name="Descricao" class="textarea" disabled>{{form.Descricao.value|default_if_none:''}}</textarea>
         <!---->
         <!----> <small class="help counter is-invisible">
           0 / 300
@@ -48,4 +48,10 @@
     </div>
     </tr>
   </div>
+  <div class="column is-8 is-offset-2">
+    <div class="level">
+      <div class="level-left"><a href="{% url "check_not" %}" class="button is-outlined" type="button">
+          <!----> <span> Cancelar </span>
+          <!----></a></div>
+      </form>
   {% endblock content2 %}

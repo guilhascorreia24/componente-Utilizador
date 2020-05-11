@@ -148,7 +148,7 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE=True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'diabertoworking@gmail.com'
-EMAIL_HOST_PASSWORD = '*************'
+EMAIL_HOST_PASSWORD = 'diaaberto1234'
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
 
