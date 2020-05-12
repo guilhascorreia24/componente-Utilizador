@@ -102,13 +102,8 @@
             <div data-v-a67fe1ba="" role="menuitem" tabindex="0" class="dropdown-item"><strong
                 data-v-a67fe1ba="">Notificações</strong></div>
             <hr data-v-a67fe1ba="" class="dropdown-divider">
-            <div data-v-a67fe1ba="">
-              <div data-v-a67fe1ba="" tabindex="0" class="dropdown-item">
-                <div data-v-a67fe1ba="" class="has-text-grey"> Não tem novas notificações!
-                </div>
-              </div>
-              <hr data-v-a67fe1ba="" class="dropdown-divider">
-            </div><a data-v-a67fe1ba="" tabindex="0" class="dropdown-item"><u data-v-a67fe1ba="">Ver todas
+            {% include "dropdow_noti.html" %}
+            <a data-v-a67fe1ba="" tabindex="0" class="dropdown-item"><u data-v-a67fe1ba="">Ver todas
                 as notificações</u></a>
           </div>
         </div>
@@ -170,7 +165,7 @@
                     <!---->
                     <!---->
                   </div>
-                  {{form.Destinatario.errors}}
+                  <p class="help is-danger">{{form.Destinatario.errors}}</p>
                   <!---->
                 </div>
                 {% else %}
@@ -247,7 +242,6 @@
           {% endif %}
           </tr>
         </div>
-        {% endblock content2 %}
         <div class="column is-8 is-offset-2">
           <div class="level">
             <div class="level-left"><a href="{% url "check_not" %}" class="button is-outlined" type="button">
@@ -257,6 +251,7 @@
                 <!----> <span> Enviar </span> <span class="icon is-medium"><i
                     class="mdi mdi-forward mdi-36px"></i></span></button></div>
             </form>
+            {% endblock content2 %}
           </div>
         </div>
       </div>

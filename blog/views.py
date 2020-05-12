@@ -7,6 +7,7 @@ import base64
 import logging
 import traceback
 from django.conf import settings
+from Notification.views import noti_not_checked
 def home(request):
     if 'cookie_id' in request.COOKIES:
         cookie=request.COOKIES['cookie_id']
@@ -25,9 +26,9 @@ def home(request):
             funcao = "coord"
         elif Colaborador.objects.filter(utilizador_idutilizador=id1).exists():
             funcao = "colab"
-        id=encrypt(id1)
+        id=signing.dumps    (id1)
         print(id)
-        return render(request, 'homepage.html', context={'id':id,'funcao':funcao})
+        return render(request, 'homepage.html', context={'id':id,'funcao':funcao,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
     else:
         id=None
     return render(request, 'homepage.html', context={'id':id})

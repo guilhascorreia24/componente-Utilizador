@@ -6,6 +6,9 @@
 #   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
+from inscricao.validators import email_validator, not_zero_validator, telefone_validator
+from django.dispatch import receiver
+from django.db.models import F
 
 
 class Administrador(models.Model):
@@ -141,7 +144,6 @@ class Campus(models.Model):
 
 
 class Colaborador(models.Model):
-    preferencia = models.CharField(max_length=255, blank=True, null=True)
     utilizador_idutilizador = models.OneToOneField('Utilizador', models.DO_NOTHING, db_column='Utilizador_idutilizador', primary_key=True)  # Field name made lowercase.
     curso_idcurso = models.ForeignKey('Curso', models.DO_NOTHING, db_column='curso_idcurso', blank=True, null=True)
 
@@ -233,7 +235,16 @@ class DiaAberto(models.Model):
         managed = False
         db_table = 'dia_aberto'
 
+class Disponibilidade(models.Model):
+    tipo_tarefa = models.CharField(db_column='TIpo_tarefa', max_length=255)  # Field name made lowercase.
+    colaborador_utilizador_idutilizador = models.ForeignKey(Colaborador, models.DO_NOTHING, db_column='colaborador_Utilizador_idutilizador')  # Field name made lowercase.
+    horario_hora = models.ForeignKey('Horario', models.DO_NOTHING, db_column='horario_hora')
+    dia_dia = models.ForeignKey(Dia, models.DO_NOTHING, db_column='dia_dia')
+    disponibilidade_id = models.IntegerField(db_column='Disponibilidade_id', primary_key=True)  # Field name made lowercase.
 
+    class Meta:
+        managed = False
+        db_table = 'disponibilidade'
 class DjangoAdminLog(models.Model):
     action_time = models.DateTimeField()
     object_id = models.TextField(blank=True, null=True)
@@ -362,6 +373,10 @@ class InscricaoHasPrato(models.Model):
         managed = False
         db_table = 'inscricao_has_prato'
 
+@receiver(models.signals.pre_delete, sender=InscricaoHasPrato)
+def delete_Inscricao_prato(sender, instance, using, **kwargs):
+    instance.prato_idprato.delete()
+
 
 class InscricaoHasSessao(models.Model):
     inscricao_idinscricao = models.ForeignKey(Inscricao, models.DO_NOTHING, db_column='inscricao_idinscricao')
@@ -369,10 +384,18 @@ class InscricaoHasSessao(models.Model):
     inscricao_has_sessao_id = models.AutoField(primary_key=True)
     nr_inscritos = models.IntegerField()
 
+    def save(self, *args, **kwargs):
+        Sessao.objects.filter(idsessao=self.sessao_idsessao.pk).update(nrinscritos=F('nrinscritos')+self.nr_inscritos)
+        return super(InscricaoHasSessao, self).save(*args, **kwargs)
+
+
     class Meta:
         managed = False
         db_table = 'inscricao_has_sessao'
 
+@receiver(models.signals.post_delete, sender=InscricaoHasSessao)
+def delete_sessao_inscricao(sender, instance, using, **kwargs):
+    Sessao.objects.filter(idsessao=instance.sessao_idsessao.pk).update(nrinscritos=F('nrinscritos')-instance.nr_inscritos)
 
 class InscricaoIndividual(models.Model):
     nracompanhades = models.IntegerField()
@@ -400,7 +423,7 @@ class Menu(models.Model):
     menu = models.CharField(max_length=45)
     campus_idcampus = models.ForeignKey(Campus, models.DO_NOTHING, db_column='Campus_idCampus')  # Field name made lowercase.
     horario_has_dia_id_dia_hora = models.ForeignKey(HorarioHasDia, models.DO_NOTHING, db_column='horario_has_dia_id_dia_hora')
-    nralmocosdisponiveis = models.IntegerField()
+    nralmoçosdisponiveis = models.IntegerField(db_column='nralmocosdisponiveis')
 
     class Meta:
         managed = False
@@ -413,7 +436,6 @@ class Notificacao(models.Model):
     idutilizadorenvia = models.IntegerField()
     utilizadorrecebe = models.IntegerField()
     assunto = models.CharField(max_length=45)
-    estadol = models.IntegerField()
 
     class Meta:
         managed = False
@@ -441,10 +463,23 @@ class Prato(models.Model):
     nralmocos = models.IntegerField()
     descricao = models.CharField(max_length=125)
     menu_idmenu = models.ForeignKey(Menu, models.DO_NOTHING, db_column='Menu_idMenu')  # Field name made lowercase.
+    
+
+    def save(self, *args, **kwargs):
+        obj = Menu.objects.get(idmenu=self.menu_idmenu.pk)
+
+        if(obj.nralmoçosdisponiveis<self.nralmocos):
+            raise ValidationError("Outro grupo rgistou-se primeiro e não há mais almoços disponiveis")
+        Menu.objects.filter(idmenu=self.menu_idmenu.pk).update(nralmoçosdisponiveis=F('nralmoçosdisponiveis')-self.nralmocos)
+        return super(Prato, self).save(*args, **kwargs)
 
     class Meta:
         managed = False
         db_table = 'prato'
+
+@receiver(models.signals.post_delete, sender=Prato)
+def delete_prato(sender, instance, using, **kwargs):
+    Menu.objects.filter(idmenu=instance.menu_idmenu.pk).update(nralmoçosdisponiveis=F('nralmoçosdisponiveis')-instance.nralmocos)
 
 
 class ProfessorUniversitario(models.Model):
@@ -482,7 +517,7 @@ class Sala(models.Model):
 class Sessao(models.Model):
     idsessao = models.AutoField(primary_key=True)
     nrinscritos = models.IntegerField()
-    vagas = models.IntegerField()
+    capacidade = models.IntegerField(db_column='vagas')
     atividade_idatividade = models.ForeignKey(Atividade, models.DO_NOTHING, db_column='Atividade_idAtividade')  # Field name made lowercase.
     horario_has_dia_id_dia_hora = models.ForeignKey(HorarioHasDia, models.DO_NOTHING, db_column='horario_has_dia_id_dia_hora')
 
@@ -570,7 +605,7 @@ class TransporteUniversitario(models.Model):
 
 class UnidadeOrganica(models.Model):
     iduo = models.AutoField(db_column='idUO', primary_key=True)  # Field name made lowercase.
-    sigla = models.CharField(max_length=5)
+    sigla = models.CharField(max_length=255)
     campus_idcampus = models.ForeignKey(Campus, models.DO_NOTHING, db_column='Campus_idCampus')  # Field name made lowercase.
 
     class Meta:
@@ -597,6 +632,7 @@ class UtilizadorHasNotificacao(models.Model):
     utilizador_idutilizador = models.ForeignKey(Utilizador, models.DO_NOTHING, db_column='Utilizador_idutilizador')  # Field name made lowercase.
     notificacao = models.ForeignKey(Notificacao, models.DO_NOTHING)
     utilizador_has_notificacao_id = models.AutoField(primary_key=True)
+    estado = models.IntegerField()
 
     class Meta:
         managed = False

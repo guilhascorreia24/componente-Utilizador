@@ -90,10 +90,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'les',
         'USER': 'root',
-
-
-        'PASSWORD': '1234',
-
+        'PASSWORD': '1999',
         'HOST': '127.0.0.1',
         'PORT': '3306',
     }
@@ -148,7 +145,7 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE=True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'diabertoworking@gmail.com'
-EMAIL_HOST_PASSWORD = '*************'
+EMAIL_HOST_PASSWORD = 'diaaberto1234'
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
 
