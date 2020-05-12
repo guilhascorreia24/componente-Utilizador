@@ -429,16 +429,16 @@
                                                     </div>
                                                     <div class="column">
                                                         <div class="field has-numberinput has-numberinput-compact">
-                                                            
                                                             <div class="b-numberinput field has-addons">
-                                                                <p class="control">
-                                                                    <button type="button" class="button is-primary"><span class="icon"><i class="mdi mdi-minus mdi-24px"></i></span></button>
+                                                                <p class="control"><button type="button"
+                                                                        class="button is-primary"><span class="icon"><i
+                                                                                class="mdi mdi-minus mdi-24px"></i></span></button>
                                                                 </p>
-                                                                <div class="control is-clearfix">
-                                                                    {{form.transportes.empty_form.numero_passageiros|addcss:"input"}}
+                                                                <div class="control is-clearfix"> {{form.transportes.empty_form.numero_passageiros|addcss:"input"}}
                                                                 </div>
-                                                                <p class="control">
-                                                                    <button type="button" class="button is-primary"><span class="icon"><i class="mdi mdi-plus mdi-24px"></i></span></button>
+                                                                <p class="control"><button type="button"
+                                                                        class="button is-primary"><span class="icon"><i
+                                                                                class="mdi mdi-plus mdi-24px"></i></span></button>
                                                                 </p>
                                                             </div>
                                                             <!---->
@@ -2919,6 +2919,9 @@
                                                         {{curr_sessao.nr_inscritos}}
                                                         {{curr_sessao.sessao_id}}
                                                         </div>
+                                                        {% else %}
+                                                        {{ curr_sessao.nr_inscritos.errors.0}}
+                                                        <p>Esta mensagem precisa de ser Costumizada</p>
                                                         {% endif %}
                                                         {% endfor %}
                                                         </div>
@@ -3370,7 +3373,15 @@
 
         	var form_idx = $('#table_transporte').children().length;
             var template = $('#template_transporte').clone(true);
-        	$('#table_transporte').append(template.html().replace(/__prefix__/g, form_idx));
+            template.removeAttr('id');
+            template.show();
+            template.find('[name*=__prefix__]').each(function(){
+                var name = $(this).attr('name').replace(/__prefix__/g, value);
+                var id = $(this).attr('id').replace(/__prefix__/g, value);
+                $(this).attr('name',name);
+                $(this).attr('id',id);
+            });
+        	$('#table_transporte').append(template);
         }
 
         function delete_transporte() {

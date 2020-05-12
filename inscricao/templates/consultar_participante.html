@@ -168,9 +168,15 @@
                                         {{ inscricao.inscricao.escola }}
                                     </td>  
                                     <td data-label="Ações" class="has-text-centered">
-                                        <a><span class=""> 
-                                            <button class="icon" style="background-color:green" data-toggle="modal" data-target="#{{ forloop.counter }}"><svg xmlns="http://www.w3.org/2000/svg" viewBox="200 200 200 200"></svg></button>
-                                        </span></a>
+                                        <a role="button" href={% url 'inscricao:delete' inscricao=inscricao.inscricao.idinscricao  %}>
+                                            <span class="icon has-text-danger"> <i class="mdi mdi-close-box mdi-24px"></i></button></span>
+                                        </a>
+                                        <a role="button" data-toggle="modal" data-target="#{{ forloop.counter }}">
+                                            <span class="icon has-text-success"> <i class="mdi mdi-account-search mdi-24px"></i></button></span>
+                                        </a>
+                                        <a role="button" href="">
+                                            <span class="icon has-text-success"> <i class="mdi mdi-pencil mdi-24px"></i></button></span>
+                                        </a>
                                     </td>                           
                                 </td>
                                 {% endfor inscricao %}  

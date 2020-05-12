@@ -17,10 +17,33 @@ def list_sessao():
     .values('idsessao','capacidade',hora=F('horario_has_dia_id_dia_hora__horario_hora__hora'),idatividade=F('atividade_idatividade__idatividade'),titulo=F('atividade_idatividade__titulo'),duracao=F('atividade_idatividade__duracao'),descricao=F('atividade_idatividade__descricao'),unidade_organica=F('atividade_idatividade__unidade_organica_iduo__sigla'),campus=F('atividade_idatividade__unidade_organica_iduo__campus_idcampus__nome'),departamento=F('atividade_idatividade__departamento_iddepartamento__nome'),tematica=F('atividade_idatividade__tematica'),docente = F('atividade_idatividade__professor_universitario_utilizador_idutilizador__utilizador_idutilizador__nome'),espaco = F('atividade_idatividade__espaco_idespaco__nome'))
     return test
 
-def inscricao_delete(request):
-    if request.method == 'GET':
-        return None
 
+
+
+def inscricao_delete(request,inscricao):
+    user = userValidation.getLoggedUser(request)
+    if user._type == userValidation.PARTICIPANTE:
+        insc = models.InscricaoColetiva.objects.get(participante_utilizador_idutilizador = user.pk, inscricao_idinscricao=inscricao)
+        if insc == None:
+            insc = models.InscricaoIndividual.objects.get(participante_utilizador_idutilizador = user.pk, inscricao_idinscricao=inscricao)
+        
+        if insc == None:
+            return HttpResponse("<h1>Inscrição não existe</h1>")
+
+        delete_inscricao(insc)
+
+
+    return consultar_inscricao(request)
+
+#Precisa de ser inscricao individual ou coletiva
+def delete_inscricao(inscricao):
+    models.InscricaoHasPrato.objects.filter(inscricao_idinscricao = inscricao.inscricao_idinscricao).delete()
+    #models.Prato.objects.filter(inscricao_idinscricao = inscricao.inscricao_idinscricao).delete()
+    models.TransporteHasInscricao.objects.filter(inscricao_idinscricao = inscricao.inscricao_idinscricao).delete()
+    models.InscricaoHasSessao.objects.filter(inscricao_idinscricao = inscricao.inscricao_idinscricao).delete()
+    models.Responsaveis.objects.filter(idinscricao = inscricao.inscricao_idinscricao).delete()
+    models.Inscricao.objects.filter(idinscricao = inscricao.inscricao_idinscricao.pk).delete()
+    inscricao.delete()
 
 
 def inscricao_form(request):

@@ -53,6 +53,7 @@ class Form_Transportes(ModelForm):
     def save(self, idinscricao):
         base = super(Form_Transportes, self).save(commit=False)
         base.inscricao_idinscricao = idinscricao
+        print(self.cleaned_data["numero_passageiros"])
         base.save()
         return base
 
@@ -204,7 +205,6 @@ class CustomForm:
         escola = self.escola.save()
         inscricao = self.inscricao.save(part,escola,len(self.responsaveis))
         self.almoco.save(inscricao)
-        origem ,created = models.Paragem.objects.get_or_create(paragem = escola.local)
 
         for each in self.transportes:
             each.save(inscricao)

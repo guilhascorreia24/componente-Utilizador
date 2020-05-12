@@ -366,6 +366,10 @@ class InscricaoHasPrato(models.Model):
         managed = False
         db_table = 'inscricao_has_prato'
 
+@receiver(models.signals.pre_delete, sender=InscricaoHasPrato)
+def delete_Inscricao_prato(sender, instance, using, **kwargs):
+    instance.prato_idprato.delete()
+
 
 class InscricaoHasSessao(models.Model):
     inscricao_idinscricao = models.ForeignKey(Inscricao, models.DO_NOTHING, db_column='inscricao_idinscricao')
@@ -375,7 +379,6 @@ class InscricaoHasSessao(models.Model):
 
     def save(self, *args, **kwargs):
         Sessao.objects.filter(idsessao=self.sessao_idsessao.pk).update(nrinscritos=F('nrinscritos')+self.nr_inscritos)
-        print(self.nr_inscritos)
         return super(InscricaoHasSessao, self).save(*args, **kwargs)
 
 
@@ -385,7 +388,7 @@ class InscricaoHasSessao(models.Model):
 
 @receiver(models.signals.post_delete, sender=InscricaoHasSessao)
 def delete_sessao_inscricao(sender, instance, using, **kwargs):
-    Sessao.objects.filter(idsessao=instance.sessao_idsessao).update(nrinscritos=F('nrinscritos')-self.nr_inscritos)
+    Sessao.objects.filter(idsessao=instance.sessao_idsessao.pk).update(nrinscritos=F('nrinscritos')-instance.nr_inscritos)
 
 class InscricaoIndividual(models.Model):
     nracompanhades = models.IntegerField()
@@ -413,7 +416,7 @@ class Menu(models.Model):
     menu = models.CharField(max_length=45)
     campus_idcampus = models.ForeignKey(Campus, models.DO_NOTHING, db_column='Campus_idCampus')  # Field name made lowercase.
     horario_has_dia_id_dia_hora = models.ForeignKey(HorarioHasDia, models.DO_NOTHING, db_column='horario_has_dia_id_dia_hora')
-    nralmoçosdisponiveis = models.IntegerField()
+    nralmoçosdisponiveis = models.IntegerField(db_column='nralmocosdisponiveis')
 
     class Meta:
         managed = False
@@ -470,7 +473,7 @@ class Prato(models.Model):
 
 @receiver(models.signals.post_delete, sender=Prato)
 def delete_prato(sender, instance, using, **kwargs):
-    Menu.objects.filter(idmenu=instance.menu_idmenu).update(nralmoçosdisponiveis=F('nralmoçosdisponiveis')-instance.nralmocos)
+    Menu.objects.filter(idmenu=instance.menu_idmenu.pk).update(nralmoçosdisponiveis=F('nralmoçosdisponiveis')-instance.nralmocos)
 
 
 class ProfessorUniversitario(models.Model):
@@ -508,7 +511,7 @@ class Sala(models.Model):
 class Sessao(models.Model):
     idsessao = models.AutoField(primary_key=True)
     nrinscritos = models.IntegerField()
-    vagas = models.IntegerField()
+    capacidade = models.IntegerField(db_column='vagas')
     atividade_idatividade = models.ForeignKey(Atividade, models.DO_NOTHING, db_column='Atividade_idAtividade')  # Field name made lowercase.
     horario_has_dia_id_dia_hora = models.ForeignKey(HorarioHasDia, models.DO_NOTHING, db_column='horario_has_dia_id_dia_hora')
 
