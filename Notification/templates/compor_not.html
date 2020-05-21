@@ -172,11 +172,9 @@
                 <div class="field"><label class="">Destinatario</label>
                   <div class="control is-clearfix">
                     <datalist id="brow">
-                      <option value="Internet Explorer">
-                      <option value="Firefox">
-                      <option value="Chrome">
-                      <option value="Opera">
-                      <option value="Safari">
+                      {% for contact in contacts %}
+                      <option value={{contact}}>
+                      {% endfor %}
                     </datalist>
                     <input class="input" id="{{form.Destinatario.id_for_label}}" class="input" name="Destinatario"
                       data-role="tagsinput" value="{{form.Destinatario.value|default_if_none:''}}">
@@ -308,7 +306,7 @@
       this.inputSize = Math.max(1, this.placeholderText.length);
 
       this.$container = $('<div class="bootstrap-tagsinput"></div>');
-      this.$input = $('<input type="text" placeholder="' + this.placeholderText + '"/>').appendTo(this.$container);
+      this.$input = $('<input type="text" placeholder="' + this.placeholderText + '" list="brow"/>').appendTo(this.$container);
 
       this.$element.before(this.$container);
 
@@ -908,4 +906,8 @@
     });
   })(window.jQuery);
 </script>
+
+<script>
+    document.getElementsByClassName("bootstrap-tagsinput")[0].getElementsByClassName("INPUT").setAttribute("list", "brow"); 
+  </script>
 {% endblock content %}

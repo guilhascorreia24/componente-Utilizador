@@ -1,5 +1,13 @@
 {% extends "compor_not.html" %}
 {% block content2 %}
+<nav aria-label="breadcrumbs" class="breadcrumb" style="background-color: white; margin-bottom: 0%;">
+          
+  <ul>
+    <li><a href="/" class="router-link-active">Início</a></li>
+    <li><a href="/notificacao/" class="">Notificações</a></li>
+    <li class="is-active"><a href="/create/" class="router-link-exact-active router-link-active">{{form.Assunto.value}}</a></li>
+  </ul>
+</nav>
 <div style="padding: 1rem 2vw 0px;">
     <hr>
     <h2 class="title has-text-grey is-uppercase" style="font-size: 0.9rem;"> Nova notificação </h2>
@@ -51,7 +59,10 @@
   <div class="column is-8 is-offset-2">
     <div class="level">
       <div class="level-left"><a href="{% url "check_not" %}" class="button is-outlined" type="button">
-          <!----> <span> Cancelar </span>
-          <!----></a></div>
+        <!----> <span style="color: black;"> Anterior </span>
+        <!----></a></div>
+          <div class="level-right"><button type="submit" class="button is-large is-success is-outlined">
+            <!----> <span> Responder </span> <span class="icon is-medium"><i
+                class="mdi mdi-forward mdi-36px"></i></span></button></div>
       </form>
   {% endblock content2 %}

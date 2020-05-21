@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from Notification import templates
-from .models import Notificacao, Utilizador, DjangoSession, Participante, ProfessorUniversitario, Administrador, Coordenador, Colaborador, UtilizadorHasNotificacao
+from .models import Notificacao, Departamento, Utilizador, DjangoSession, Participante, ProfessorUniversitario, Administrador, Coordenador, Colaborador, UtilizadorHasNotificacao, UnidadeOrganica
 from .forms import *
 from django.http import HttpResponse
 from django.contrib.auth.models import User
@@ -11,10 +11,13 @@ from user import views as user_views
 from django.db.models import CharField, Value,IntegerField
 from datetime import datetime
 from django.db.models.functions import Cast
+from Notification.models import Curso
 
+list=[]
 def createnot(request):
     me_id=request.session['user_id']
     funcao=user_views.user(request)
+    contacts=get_my_lists(request)
     if request.method == 'POST':
         form = NotificationForm(request.POST)
         emails=request.POST['Destinatario'].split(",")
@@ -23,23 +26,54 @@ def createnot(request):
             for email in emails:
                 print("noti:"+str(user_views.validateEmail(email) is True) +" "+str(Utilizador.objects.filter(email=email).exists()))
                 form.cleaned_data['idutilizadorenvia'] = request.session['user_id']
-                if user_views.validateEmail(email) is True and Utilizador.objects.filter(email=email).exists():
-                    user_email = Utilizador.objects.get(email=email)
+                if user_views.validateEmail(email) is True and (Utilizador.objects.filter(email=email).exists() or email in list):
+                    if Utilizador.objects.filter(email=email).exists():
+                        user_email = Utilizador.objects.get(email=email)
                 else:
                     form.add_error('Destinatario','email invalido ou não existe')
                     messages.error(request,"Email Invalido")
-                    return render(request, 'compor_not.html', {'form': form,'me_id':signing.dumps(me_id),'funcao':funcao})
-                d=request.POST['Descricao']
-                a=request.POST['Assunto']
-                destinatario_pk= int(user_email.pk)
-                noti=Notificacao.objects.create(descricao=d,utilizadorrecebe=destinatario_pk,idutilizadorenvia=request.session['user_id'],criadoem=datetime.now(),assunto=a)
-                UtilizadorHasNotificacao.objects.create(utilizador_idutilizador=user_email,notificacao=noti,estado=0)
+                    return render(request, 'compor_not.html', {'form': form,'me_id':signing.dumps(me_id),'funcao':funcao,'contacts':contacts})
+                if email in list:
+                    send_to_org(email,request)
+                else:
+                    d=request.POST['Descricao']
+                    a=request.POST['Assunto']
+                    destinatario_pk= int(user_email.pk)
+                    noti=Notificacao.objects.create(descricao=d,utilizadorrecebe=destinatario_pk,idutilizadorenvia=request.session['user_id'],criadoem=datetime.now(),assunto=a)
+                    UtilizadorHasNotificacao.objects.create(utilizador_idutilizador=user_email,notificacao=noti,estado=0)
             messages.success(request, 'Successfully sent.')
             return redirect('check_not')
     else:
         form = NotificationForm()
-    return render(request, 'compor_not.html', {'form': form,'me_id':signing.dumps(me_id),'funcao':funcao,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
+    return render(request, 'compor_not.html', {'form': form,'me_id':signing.dumps(me_id),'funcao':funcao,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request),'contacts':contacts})
 
+def send_to_org(email,request):
+    email=email.split("@")[0]
+    email=email.split(".")
+    if email[0]=="Docentes":
+        users_send=ProfessorUniversitario.objects.all()
+        if len(email)==2:
+            users_send=ProfessorUniversitario.objects.get(departamento_iddepartamento=Departamento.objects.get(unidade_organica_iduo=UnidadeOrganica.objects.get(sigla=email[1])))
+    if email[0]=="Coordenadores":
+        users_send=Coordenador.objects.all()
+        if len(email)==2:
+            users_send=Coordenador.objects.get(unidade_organica_iduo=UnidadeOrganica.objects.get(sigla=email[1]))
+    if email[0]=="Colaboradores":
+        users_send=Colaborador.objects.all()
+        if len(email)==2:
+            users_send=Colaborador.objects.get(curso_idcurso=Curso.objects.get(unidade_organica_iduo=email[1]))
+    if email[0]=="Administradores":
+        users_send=Administrador.objects.all()
+    if email[0]=="Participantes":
+        users_send=Participante.objects.all()
+    for user in users_send:
+        d=request.POST['Descricao']
+        a=request.POST['Assunto']
+        destinatario_pk= int(user.pk)
+        noti=Notificacao.objects.create(descricao=d,utilizadorrecebe=destinatario_pk,idutilizadorenvia=request.session['user_id'],criadoem=datetime.now(),assunto=a)
+        UtilizadorHasNotificacao.objects.create(utilizador_idutilizador=Utilizador.objects.get(pk=user.pk),notificacao=noti,estado=0)
+
+    
 def checknot(request):
     me_id=request.session['user_id']
     i=len(noti_not_checked(request))
@@ -81,13 +115,47 @@ def noti(request,id):
     return render(request,"consultar_not.html",{'form':form,'me_id':signing.dumps(me_id),'funcao':user_views.user(request),'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
 
 def noti_not_checked(request):
-    user_id=request.session['user_id']
-    user=Utilizador.objects.get(pk=user_id)
-    my_noti=UtilizadorHasNotificacao.objects.all()
     noti=[]
-    for n in my_noti:
-        if n.notificacao.utilizadorrecebe==user.pk and n.estado==0:
-            n.notificacao.pk=signing.dumps(n.notificacao.pk)
-            noti.append(n.notificacao)
+    if 'user_id' in request.session:
+        user_id=request.session['user_id']
+        user=Utilizador.objects.get(pk=user_id)
+        my_noti=UtilizadorHasNotificacao.objects.all()
+        for n in my_noti:
+            if n.notificacao.utilizadorrecebe==user.pk and n.estado==0:
+                n.notificacao.pk=signing.dumps(n.notificacao.pk)
+                noti.append(n.notificacao)
     return noti
 
+def get_my_lists(request):
+    me=Utilizador.objects.get(pk=request.session['user_id'])
+    list.append("Administradores@ualg.pt")
+    if  me.validada==4:
+        list.append("Participantes@ualg.pt")
+        list.append("Coordenadores@ualg.pt")
+        list.append("Colaboradores@ualg.pt")
+        list.append("Docentes@ualg.pt")
+        list.append("UOs@ualg.pt")
+        uos=UnidadeOrganica.objects.all()
+        dus=ProfessorUniversitario.objects.all()
+        coords=Coordenador.objects.all()
+        colabs=Colaborador.objects.all()
+        joins(uos,"Docentes")
+        joins(uos,"Coordenadores")
+        joins(uos,"Colaboradores")
+    if me.validada==2:
+        uos=me.unidade_organica_iduo
+        dus=ProfessorUniversitario.objects.all()
+        coords=Coordenador.objects.all()
+        colabs=Colaborador.objects.all()
+        joins(uos,"Docentes")
+        joins(uos,"Coordenadores")
+        joins(uos,"Colaboradores")
+    return list
+
+
+
+def joins(uos,x):
+    for uo in uos:
+        print(str(x+uo.sigla+"@ualg.pt"))
+        if not str(x+uo.sigla+"@ualg.pt") in list:
+            list.append(str(x+"."+uo.sigla+"@ualg.pt"))

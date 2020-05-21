@@ -126,7 +126,7 @@ def dep():
     for dep in deps:
         uo=dep.unidade_organica_iduo
         dep.value=str(uo.pk)+"_"+str(dep.pk)
-        print(dep.value)
+       # print(dep.value)
     return deps
 
 def curso():
@@ -138,6 +138,7 @@ def curso():
     return deps
 def register(request):
     me=None
+    print('user_id' in request.session)
     if 'user_id' in request.session:
         me=request.session['user_id']
     UOs=UnidadeOrganica.objects.all()
