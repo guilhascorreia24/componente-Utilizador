@@ -48,7 +48,8 @@ INSTALLED_APPS = [
     'cryptography',
     'user.apps.UserConfig',
     'inscricao.apps.InscricaoConfig',
-    'Notification.apps.NotificationConfig'
+    'Notification.apps.NotificationConfig',
+    'tarefas.apps.TarefasConfig'
 ]
 
 MIDDLEWARE = [
