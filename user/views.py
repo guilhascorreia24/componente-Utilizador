@@ -223,6 +223,8 @@ def login_request(request):
     else:
         tentatives=5
         form = AuthenticationForm()
+    if tentatives<0:
+        tentatives=5
     return render(request=request, template_name="login.html", context={"form": form,"tentatives":tentatives})
 
 
