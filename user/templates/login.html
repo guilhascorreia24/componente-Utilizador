@@ -56,11 +56,12 @@
                                         {% if messages %}
                                         {% for message in messages %}
                                         <input type="hidden" name="tentatives" value={{tentatives}}>
+                                        {% if tentatives != 0 %}
                                         <h1 class="help is-danger" style="text-align: center;">{{message}}</h1>
-                                        {% endfor %}
+                                        {% else %}
+                                        <h1 class="help is-danger" style="text-align: center;">Espere: <span id="time"></span></h1>
                                         {% endif %}
-                                        {% if tentatives == 0 %}
-                                        <h1 class="help is-danger count1" style="text-align: center;" id="demo"></h1>
+                                        {% endfor %}
                                         {% endif %}
                                         <div class="column is-offset-3 is-6">
                                             {% if form.email.errors %}
@@ -68,7 +69,7 @@
                                                     for={{form.email.id_for_label}}>Email</p>
                                                 <div class="control has-icons-right"><input type="email" name="email"
                                                         id={{form.email.id_for_label}} autocomplete="on"
-                                                        class="input is-danger" {% if tentatives == 0 %} disabled {% endif %}>
+                                                        class="input is-danger" >
                                                     <!----> <span class="icon is-right has-text-danger"><i
                                                             class="mdi mdi-alert-circle mdi-24px"></i></span>
                                                     <!---->
@@ -78,7 +79,7 @@
                                                 <div class="field"><p class=""
                                                         for={{form.email.id_for_label}}>Email</p>
                                                     <div class="control is-clearfix"><input type="email" name="email"
-                                                            id={{form.email.id_for_label}} class="input"{% if tentatives == 0 %} disabled {% endif %}>
+                                                            id={{form.email.id_for_label}} class="input">
                                                     </div>
                                                 </div>
                                                 {% endif %}
@@ -87,7 +88,7 @@
                                                         for={{form.password.id_for_label}}>Password</p>
                                                     <div class="control has-icons-right"><input type="password"
                                                          id={{form.password.id_for_label}} name="password"
-                                                            autocomplete="on" class="input is-danger" {% if tentatives == 0 %} disabled {% endif %}>
+                                                            autocomplete="on" class="input is-danger" >
                                                         <!----> <span class="icon is-right has-text-danger"><i
                                                                 class="mdi mdi-alert-circle mdi-24px"></i></span>
                                                         <!---->
@@ -98,7 +99,7 @@
                                                             for={{form.password.id_for_label}}>Password</p>
                                                         <div class="control is-clearfix"><input type="password"
                                                                 id={{form.password.id_for_label}} name="password"
-                                                                class="input" {% if tentatives == 0 %} disabled {% endif %}>
+                                                                class="input">
                                                         </div>
                                                     </div>
                                                     {% endif %}
@@ -117,7 +118,7 @@
                                         <!----></a></div>
                                 <div class="level-right"><button type="submit" 
                                         class="button is-large is-success is-outlined" 
-                                        {% if tentatives == 0 %} disabled {% endif %}>
+                                         id="submit">
                                         <!----> <span> Submeter </span>
                                         <!----></button></div>
                             </div>
@@ -152,12 +153,36 @@
         </div>
 </div>
 <script>
-    $(document).ready(function () {
-    var nowPlus30Seconds = moment().add('300', 'seconds').format('YYYY/MM/DD HH:mm:ss');
-    
-    $('.count1').countdown(nowPlus30Seconds)
-    .on('update.countdown', function (event) { $(this).html(event.strftime('%Y : %D : %H : %M : %S')); })
-    .on('finish.countdown', function () { $('#exp_div').hide(); });
-    });
+function startTimer(duration, display) {
+    var timer = duration, minutes, seconds;
+    setInterval(function () {
+        minutes = parseInt(timer / 60, 10);
+        seconds = parseInt(timer % 60, 10);
+
+        minutes = minutes < 10 ? "0" + minutes : minutes;
+        seconds = seconds < 10 ? "0" + seconds : seconds;
+
+        display.textContent = minutes + ":" + seconds;
+        if(timer>0){
+            document.getElementById("id_email").disabled=true;
+            document.getElementById("id_email").value="";
+            document.getElementById("id_password").disabled=true;
+            document.getElementById("id_password").value="";
+            document.getElementById("submit").disabled=true;
+            timer--;
+        }
+        else{
+            document.getElementById("id_email").disabled=false;
+            document.getElementById("id_password").disabled=false;
+            document.getElementById("submit").disabled=false;
+        }
+    }, 1000);
+}
+
+window.onload = function () {
+    var fiveMinutes = 60 * 1,
+        display = document.querySelector('#time');
+    startTimer(fiveMinutes, display);
+};
     </script>
 {% endblock content %}
