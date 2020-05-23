@@ -194,6 +194,7 @@ def register(request):
 
 #*----------------------------------------------------------login---------------------------------------
 def login_request(request):
+    time=0
     if request.method == 'POST':
         form = AuthenticationForm(request.POST)
         tentatives=int(request.POST['tentatives'])
@@ -223,7 +224,10 @@ def login_request(request):
     else:
         tentatives=5
         form = AuthenticationForm()
-    return render(request=request, template_name="login.html", context={"form": form,"tentatives":tentatives})
+    if tentatives==0 and time==0:
+        time=datetime.timedelta(minutes=5)
+    print(time)
+    return render(request=request, template_name="login.html", context={"form": form,"tentatives":tentatives,'time':time})
 
 
 def logout_request(request):

@@ -377,7 +377,6 @@ class InscricaoHasPrato(models.Model):
 def delete_Inscricao_prato(sender, instance, using, **kwargs):
     instance.prato_idprato.delete()
 
-
 class InscricaoHasSessao(models.Model):
     inscricao_idinscricao = models.ForeignKey(Inscricao, models.DO_NOTHING, db_column='inscricao_idinscricao')
     sessao_idsessao = models.ForeignKey('Sessao', models.DO_NOTHING, db_column='sessao_idsessao')
@@ -388,11 +387,9 @@ class InscricaoHasSessao(models.Model):
         Sessao.objects.filter(idsessao=self.sessao_idsessao.pk).update(nrinscritos=F('nrinscritos')+self.nr_inscritos)
         return super(InscricaoHasSessao, self).save(*args, **kwargs)
 
-
     class Meta:
         managed = False
         db_table = 'inscricao_has_sessao'
-
 @receiver(models.signals.post_delete, sender=InscricaoHasSessao)
 def delete_sessao_inscricao(sender, instance, using, **kwargs):
     Sessao.objects.filter(idsessao=instance.sessao_idsessao.pk).update(nrinscritos=F('nrinscritos')-instance.nr_inscritos)
@@ -463,7 +460,6 @@ class Prato(models.Model):
     nralmocos = models.IntegerField()
     descricao = models.CharField(max_length=125)
     menu_idmenu = models.ForeignKey(Menu, models.DO_NOTHING, db_column='Menu_idMenu')  # Field name made lowercase.
-    
 
     def save(self, *args, **kwargs):
         obj = Menu.objects.get(idmenu=self.menu_idmenu.pk)
@@ -541,12 +537,13 @@ class Tarefa(models.Model):
     nome = models.CharField(max_length=255)
     concluida = models.IntegerField()
     coordenador_utilizador_idutilizador = models.ForeignKey(Coordenador, models.DO_NOTHING, db_column='Coordenador_Utilizador_idutilizador')  # Field name made lowercase.
-    colaborador_utilizador_idutilizador = models.ForeignKey(Colaborador, models.DO_NOTHING, db_column='colaborador_Utilizador_idutilizador')  # Field name made lowercase.
-    hora_inicio = models.TimeField()
-    dia_dia = models.ForeignKey(Dia, models.DO_NOTHING, db_column='dia_dia')
+    colaborador_utilizador_idutilizador = models.ForeignKey(Colaborador, models.DO_NOTHING, db_column='colaborador_Utilizador_idutilizador', blank=True, null=True)  # Field name made lowercase.
+    hora_inicio = models.TimeField(blank=True, null=True)
+    dia_dia = models.ForeignKey(Dia, models.DO_NOTHING, db_column='dia_dia', blank=True, null=True)
     sessao_idsessao = models.ForeignKey(Sessao, models.DO_NOTHING, db_column='sessao_idsessao', blank=True, null=True)
     buscar = models.ForeignKey(Espaco, models.DO_NOTHING, db_column='buscar', blank=True, null=True,related_name="Tarefa_buscar")
     levar = models.ForeignKey(Espaco, models.DO_NOTHING, db_column='levar', blank=True, null=True,related_name="Tarefa_levar")
+    inscricao_coletiva_inscricao_idinscricao = models.ForeignKey(InscricaoColetiva, models.DO_NOTHING, db_column='inscricao_coletiva_inscricao_idinscricao', blank=True, null=True)
 
     class Meta:
         managed = False
