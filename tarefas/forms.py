@@ -3,6 +3,9 @@ from django import forms
 from tarefas import models
 
 class Form_Disponibilidade(ModelForm):
+    Dia=forms.DateField()
+    Horario=forms.TimeField()
+    Tipo_tarefa=forms.CharField()
 
     def save(self, colaborador_utilizador_idutilizador):
         base = super(Form_Disponibilidade, self).save(commit=False)

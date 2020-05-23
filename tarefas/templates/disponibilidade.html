@@ -76,8 +76,13 @@
                             <section class="step-content">
                                 <div class="step-item" style="">
                                     <div style="padding: 1rem 2vw 0px;">
-                                        <hr> 
-                    <form id = "regForm" method="POST"></form>
+                                        <hr style="
+                                        margin-bottom: 0px;
+                                        margin-top: 0px;
+                                    "> 
+                    <form id = "regForm" method="POST" style="
+                    margin-bottom: 0px;
+                ">
                     {% csrf_token %}
                         <table id="myTable" class="table table-striped">
                                 <thead>
@@ -108,7 +113,7 @@
                                     <!---->
                                     <!---->
                                 </thead>                                 
-                                <tbody>
+                                <tbody id="responsavel_form">
                                     {{ form.management_form }}
                                     {% for disponibilidade in form %}
                                         <tr draggable="false" class="" scope="row">
@@ -138,9 +143,9 @@
                                     <!---->
                                     <!---->
                                 </tbody>
-                            </form>
                             <!---->
                         </table>
+
 
                         <!--TEMPLATE FOR ADD MORE REPONSAVEIS-->
                         <div id="responsavel_template" style="display:none">
@@ -170,7 +175,7 @@
                         </div>
                         <!--END TEMPLATE-->
 
-                        <button type="button" class="button" onclick="myFunction()">
+                        <button type="button" class="button" onclick="add_responsavel()">
                             <span class="icon is-small"><i class="mdi mdi-plus"></i></span>
                             <span>Adicionar disponibilidade</span>
                         </button>
@@ -180,19 +185,34 @@
                                 <span>Remover disponibilidade</span><span class="icon is-small"><i class="mdi mdi-minus"></i></span>
                             </button>
                         </span>
+                        <div class="column is-8 is-offset-2">
+                            <div class="level">
+                                <div class="level-left"><a href=".." class="button is-outlined" type="button">
+                                        <!----> <span> Cancelar </span>
+                                        <!----></a></div>
+                                <div class="level-right"><button type="button"
+                                        class="button is-large is-success is-outlined" data-toggle="modal"
+                                        data-target="#exampleModal" data-backdrop="false">
+                                        <!----> <span> Submeter </span>
+                                        <!----></button></div>
+                            </div>
                     </form>
                 </div>
             </div>
         </div>
     </div>
 </div>
+</div>
+</div>
+</div>
+
 
 
 <script>
 function add_responsavel() 
 {
-    var value = parseInt($('#id_responsaveis_set-TOTAL_FORMS').val());
-    $('#id_responsaveis_set-TOTAL_FORMS').val(value+1);
+    var value = parseInt($('#id_tarefa-TOTAL_FORMS').val());
+    $("#id_tarefa-TOTAL_FORMS").val(value+1);
 
     var form_idx = $('#responsavel_form').children().length;
     var template = $('#responsavel_template').clone(true);
@@ -207,14 +227,6 @@ function delete_responsavel()
         $('#id_responsaveis_set-TOTAL_FORMS').val(value-1);
         $('#responsavel_form > .responsavel').last().remove();
     }
-}
-function myFunction() {
-  var table = document.getElementById("myTable");
-  var row = table.insertRow(1);
-  var cell1 = row.insertCell(0);
-  var cell2 = row.insertCell(1);
-  var cell3=row.insertCell(2);
-  var cell4=row.insertCell(3);
 }
 </script>
 

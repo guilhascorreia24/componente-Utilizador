@@ -517,7 +517,7 @@ class Sala(models.Model):
 class Sessao(models.Model):
     idsessao = models.AutoField(primary_key=True)
     nrinscritos = models.IntegerField()
-    capacidade = models.IntegerField(db_column='vagas')
+    capacidade = models.IntegerField(db_column='capacidade')
     atividade_idatividade = models.ForeignKey(Atividade, models.DO_NOTHING, db_column='Atividade_idAtividade')  # Field name made lowercase.
     horario_has_dia_id_dia_hora = models.ForeignKey(HorarioHasDia, models.DO_NOTHING, db_column='horario_has_dia_id_dia_hora')
 
