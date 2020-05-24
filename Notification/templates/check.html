@@ -147,6 +147,10 @@
                             class="icon is-small"><i class="mdi mdi-send"></i></span> <span> Notificações Enviadas </span>
                         <!----></a>
                         {% endif %}
+                        <a href="{% url "check_not" %}" class="button is-success is-outlined" id="text" type="button"
+                        style="margin-bottom: 0.9rem; margin-right: 1rem;text-decoration:none;display:none" ><span
+                            class="icon is-small"><i class="mdi mdi-send"></i></span> <span>Eliminar notificaçoes </span>
+                        <!----></a>
                       
                     <div class="b-table">
                         <div class="field table-mobile-sort">
@@ -421,4 +425,15 @@
             .change();
     });
 </script>
+<script>
+    function myFunctionslect() {
+      var checkBox = document.getElementById("myCheck");
+      var text = document.getElementById("text");
+      if (checkBox.checked == true){
+        text.style.display = "block";
+      } else {
+         text.style.display = "none";
+      }
+    }
+    </script>
 {% endblock content %}

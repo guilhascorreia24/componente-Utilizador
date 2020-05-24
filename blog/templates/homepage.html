@@ -23,6 +23,9 @@
         .modal-backdrop {
   z-index: -1;
 }
+.modal-open {
+    padding-right: 0px !important;
+}
         .green {
             background-color: #23d160;
             color: white;
@@ -80,8 +83,7 @@
             enable it to continue.</strong></noscript>
     <div data-v-8716d23a="" id="app">
         <nav data-v-a67fe1ba="" data-v-8716d23a="" role="navigation" aria-label="main navigation" class="navbar" style="
-        margin: 0%;padding:0%;border-bottom: 0%;border-top: 0%;
-    ">
+        margin: 0%;padding:0%;border-bottom: 0%;border-top: 0%;">
             <div class="navbar-brand" style="padding:0%"><a data-v-a67fe1ba="" href="/" class="navbar-item logo"><img
                         src="{% static "img/logo-navbar.1a946f02.png" %}" data-v-a67fe1ba="" alt="Dia Aberto"></a><a
                     role="button" aria-label="menu" class="navbar-burger burger"><span aria-hidden="true"></span> <span
@@ -96,6 +98,8 @@
                 {% include "navabar-dc.hmtl"}
                 {% elif funcao == "part" %}
                 {% include "navabar-part.html" %}
+                {% elif funcao == "colab" %}
+                {% include "navabar-colab.html" %}
                 {% endif %}
                 <div class="navbar-end">
                     {% if id == None %}

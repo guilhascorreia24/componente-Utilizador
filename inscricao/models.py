@@ -406,11 +406,9 @@ class InscricaoHasSessao(models.Model):
         Sessao.objects.filter(idsessao=self.sessao_idsessao.pk).update(nrinscritos=F('nrinscritos')+delta)
         super(InscricaoHasSessao,self).update(*args, **kwargs)
 
-
     class Meta:
         managed = False
         db_table = 'inscricao_has_sessao'
-
 @receiver(models.signals.post_delete, sender=InscricaoHasSessao)
 def delete_sessao_inscricao(sender, instance, using, **kwargs):
     Sessao.objects.filter(idsessao=instance.sessao_idsessao.pk).update(nrinscritos=F('nrinscritos')-instance.nr_inscritos)
@@ -482,7 +480,6 @@ class Prato(models.Model):
     nralmocos = models.IntegerField()
     descricao = models.CharField(max_length=125)
     menu_idmenu = models.ForeignKey(Menu, models.DO_NOTHING, db_column='Menu_idMenu')  # Field name made lowercase.
-    
 
 
     def save(self, *args, **kwargs):
