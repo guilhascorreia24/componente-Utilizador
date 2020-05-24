@@ -174,7 +174,7 @@
                                         <a role="button" data-toggle="modal" data-target="#{{ forloop.counter }}">
                                             <span class="icon has-text-success"> <i class="mdi mdi-account-search mdi-24px"></i></button></span>
                                         </a>
-                                        <a role="button" href="">
+                                        <a role="button" href={% url 'inscricao:alterar' inscricao=inscricao.inscricao.idinscricao  %}>
                                             <span class="icon has-text-success"> <i class="mdi mdi-pencil mdi-24px"></i></button></span>
                                         </a>
                                     </td>                           
