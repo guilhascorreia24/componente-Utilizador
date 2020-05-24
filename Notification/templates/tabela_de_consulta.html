@@ -1,13 +1,13 @@
 <tr class="" scope="row">
-    <td data-label="Nome" class="">{% if not.idutilizadorenvia == me_id and my %}
+    <td data-label="Nome" class="">{% if not.notificacao.idutilizadorenvia == me_id and my %}
         {{not.recept}}
         {% else %}
         {{not.emissor}}
         {% endif %}
     </td>
-    <td data-label="Nome" class=""> {{not.assunto}}
+    <td data-label="Nome" class=""> {{not.notificacao.assunto}}
     </td>
-    <td data-label="Nome" class=""> {{not.criadoem|date:'Y-m-d H:i'}}
+    <td data-label="Nome" class=""> {{not.notificacao.criadoem|date:'Y-m-d H:i'}}
 
     <td data-label="Ações" class="has-text-centered">
         <a role="button" href="{% url "noti" not.pk %}"><span class="icon has-text-success"><i
