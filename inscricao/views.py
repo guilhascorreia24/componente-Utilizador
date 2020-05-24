@@ -32,8 +32,10 @@ def inscricao_delete(request,inscricao):
 
         delete_inscricao(insc)
 
-
     return consultar_inscricao(request)
+
+def inscricao_alterar(request,inscricao):
+    return inscricao_form(request,inscricao)
 
 #Precisa de ser inscricao individual ou coletiva
 def delete_inscricao(inscricao):
@@ -46,13 +48,13 @@ def delete_inscricao(inscricao):
     inscricao.delete()
 
 
-def inscricao_form(request):
+def inscricao_form(request,inscricao=None):
     user = userValidation.getLoggedUser(request)
     if user._type != userValidation.PARTICIPANTE:
         return HttpResponse("<html>User needs to be a Participante</html>")
 
     if request.method == 'POST':
-        form = forms.CustomForm(request)
+        form = forms.CustomForm(request,inscricao=inscricao)
         if form.is_valid():
             form.save(user)
             return HttpResponse("<html>Sucess</html>")
@@ -61,7 +63,7 @@ def inscricao_form(request):
             return render(request,'inscricao_form.html',{'form': form, 'atividades_sessao' : sessoes})
         
     else:
-        form = forms.CustomForm()
+        form = forms.CustomForm(inscricao=inscricao)
         sessoes = list_sessao()
         return render(request,'inscricao_form.html',{'form': form, 'atividades_sessao' : sessoes})
     

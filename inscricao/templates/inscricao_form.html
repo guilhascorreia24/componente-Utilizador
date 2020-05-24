@@ -102,6 +102,20 @@
                                                         </div>
                                                     {% endfor %}
                                                 {% endif %}
+                                                {% if form.inscricao_coletiva.errors %}
+                                                    {% for field in form.inscricao_coletiva %}
+                                                        {% for error in field.errors %}
+                                                            <div class="alert alert-danger">
+                                                                <strong>{{field.label}} {{ error|escape }}</strong>
+                                                            </div>
+                                                        {% endfor %}
+                                                    {% endfor %}
+                                                    {% for error in form.inscricao_coletiva.non_field_errors %}
+                                                        <div class="alert alert-danger">
+                                                            <strong>{{ error|escape }}</strong>
+                                                        </div>
+                                                    {% endfor %}
+                                                {% endif %}
                                                 {% if form.inscricao.errors %}
                                                     {% for field in form.inscricao %}
                                                         {% for error in field.errors %}
@@ -269,9 +283,9 @@
                                                     </div>
                                                     <div class="column">
                                                         <div class="field"><label class="label">Turma</label>
-                                                            <div class="control is-clearfix">{{form.inscricao.turma|addcss:"input"}}
+                                                            <div class="control is-clearfix">{{form.inscricao_coletiva.turma|addcss:"input"}}
                                                             </div>
-                                                            <p class="help is-danger">{{form.inscricao.turma.errors.0}}</p>
+                                                            <p class="help is-danger">{{form.inscricao_coletiva.turma.errors.0}}</p>
                                                         </div>
                                                     </div>
                                                     <div class="column">
@@ -282,14 +296,14 @@
                                                                         class="button is-primary"><span class="icon"><i
                                                                                 class="mdi mdi-minus mdi-24px"></i></span></button>
                                                                 </p>
-                                                                <div class="control is-clearfix">{{form.inscricao.participantes|addcss:"input"}}
+                                                                <div class="control is-clearfix">{{form.inscricao_coletiva.nparticipantes|addcss:"input"}}
                                                                 </div>
                                                                 <p class="control"><button type="button"
                                                                         class="button is-primary"><span class="icon"><i
                                                                                 class="mdi mdi-plus mdi-24px"></i></span></button>
                                                                 </p>
                                                             </div>
-                                                            <p class="help is-danger">{{form.inscricao.participantes.errors.0}}</p>
+                                                            <p class="help is-danger">{{form.inscricao_coletiva.nparticipantes.errors.0}}</p>
                                                             <!---->
                                                         </div>
                                                     </div>
@@ -344,22 +358,11 @@
                                                 <div class="columns">
                                                     <div class="column">
                                                         <div class="field">
-                                                            <div class="control is-expanded">
-                                                            <span class="select is-fullwidth is-empty select-transporte">
-                                                            {{transporte.partida_paragem}}
-                                                            </span>
-                                                            <p class="help is-danger">{{form.transportes.partida_paragem.errors.0}}</p>
-                                                            </div>
-                                                            <!---->
-                                                        </div>
-                                                    </div>
-                                                    <div class="column">
-                                                        <div class="field">
                                                             <div class="control is-expanded"><span
                                                                     class="select is-fullwidth is-empty select-transporte">
-                                                                    {{transporte.chegada_paragem}}
+                                                                    {{transporte.horario}}
                                                                     </span>
-                                                                    <p class="help is-danger">{{form.transportes.chegada_paragem.errors.0}}</p>
+                                                                    <p class="help is-danger">{{form.transportes.horario.errors.0}}</p>
                                                                 <!---->
                                                             </div>
                                                             <!---->
@@ -373,33 +376,13 @@
                                                                     <button type="button" class="button is-primary"><span class="icon"><i class="mdi mdi-minus mdi-24px"></i></span></button>
                                                                 </p>
                                                                 <div class="control is-clearfix">
-                                                                    {{transporte.numero_passageiros|addcss:"input"}}
+                                                                    {{transporte.n_passageiros|addcss:"input"}}
                                                                 </div>
                                                                 <p class="control">
                                                                     <button type="button" class="button is-primary"><span class="icon"><i class="mdi mdi-plus mdi-24px"></i></span></button>
                                                                 </p>
                                                             </div>
-                                                            <p class="help is-danger">{{form.transportes.numero_passageiros.errors.0}}</p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="column">
-                                                        <div class="field">
-                                                            <div class="timepicker control">
-                                                                <div class="dropdown is-mobile-modal">
-                                                                    <div role="button" aria-haspopup="true"
-                                                                        class="dropdown-trigger">
-                                                                        <div
-                                                                            class="control has-icons-left is-clearfix">
-                                                                            <span
-                                                                            class="select is-fullwidth is-empty">
-                                                                            {{transporte.partida|addcss:"input"}}
-                                                                            </span>
-                                                                            <span class="icon is-left"><i class="mdi mdi-clock mdi-24px"></i></span>
-                                                                            <p class="help is-danger">{{form.transportes.partida_paragem.errors.0}}</p>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
+                                                            <p class="help is-danger">{{form.transportes.n_passageiros.errors.0}}</p>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -412,16 +395,7 @@
                                                     <div class="column">
                                                         <div class="field">
                                                             <div class="control is-expanded"><span
-                                                                    class="select is-fullwidth is-empty select-transporte">{{form.transportes.empty_form.partida_paragem}}</span>
-                                                                <!---->
-                                                            </div>
-                                                            <!---->
-                                                        </div>
-                                                    </div>
-                                                    <div class="column">
-                                                        <div class="field">
-                                                            <div class="control is-expanded"><span
-                                                                    class="select is-fullwidth is-empty select-transporte">{{form.transportes.empty_form.chegada_paragem}}</span>
+                                                                    class="select is-fullwidth is-empty select-transporte">{{form.transportes.empty_form.horario}}</span>
                                                                 <!---->
                                                             </div>
                                                             <!---->
@@ -434,7 +408,7 @@
                                                                         class="button is-primary"><span class="icon"><i
                                                                                 class="mdi mdi-minus mdi-24px"></i></span></button>
                                                                 </p>
-                                                                <div class="control is-clearfix"> {{form.transportes.empty_form.numero_passageiros|addcss:"input"}}
+                                                                <div class="control is-clearfix"> {{form.transportes.empty_form.n_passageiros|addcss:"input"}}
                                                                 </div>
                                                                 <p class="control"><button type="button"
                                                                         class="button is-primary"><span class="icon"><i
@@ -2917,7 +2891,7 @@
                                                         {% if curr_sessao.nr_inscritos.errors|length == 0 %}
                                                         <div>
                                                         {{curr_sessao.nr_inscritos}}
-                                                        {{curr_sessao.sessao_id}}
+                                                        {{curr_sessao.sessao_idsessao.value}}
                                                         </div>
                                                         {% else %}
                                                         {{ curr_sessao.nr_inscritos.errors.0}}
@@ -2964,7 +2938,7 @@
                                                             <tbody>
                                                                 <!--TEMPLATE -->
                                                                 <tr draggable="false" id="templateTableSessoes" style="display:none;">
-                                                                    <td data-label="id" style="display:none">{{form.sessao.empty_form.sessao_id}}</td>
+                                                                    <td data-label="id" style="display:none">{{form.sessao.empty_form.sessao_idsessao}}</td>
                                                                     <td data-label="Horário"></td>
                                                                     <td data-label="Inscrever">
                                                                         <div class="field has-numberinput has-numberinput-compact">
@@ -3218,7 +3192,7 @@
                 id.closest('.sessao_table').children("td[data-label='Inscrever']").find('input').val(inscritos).change();
             });
 
-            $("#sessao_start_info").remove();
+            //$("#sessao_start_info").remove();
 
 
             $("#nextBtn").click(nextTab);
