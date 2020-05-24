@@ -91,8 +91,8 @@ def consultar_inscricao(request):
             .values(campus=F('prato_idprato__menu_idmenu__campus_idcampus__nome'),menu=F('prato_idprato__menu_idmenu__menu'),tipo=F('prato_idprato__menu_idmenu__tipo'),descricao=F('prato_idprato__descricao'),nralmocos=F('prato_idprato__nralmocos'))\
             .order_by('prato_idprato__menu_idmenu__campus_idcampus__nome','prato_idprato__menu_idmenu__tipo')
         
-        row['transportes'] = models.TransporteHasInscricao.objects.select_related('paragem','horario_has_dia').filter(inscricao_idinscricao=query[i].inscricao_idinscricao)\
-            .values('partida_paragem','chegada_paragem',passageiros=F('numero_passageiros'),hora=F('partida'))
+        row['transportes'] = models.TransporteHasInscricao.objects.select_related('paragem','horario').filter(inscricao_idinscricao=query[i].inscricao_idinscricao)\
+            .values(partida_paragem=F('horario__origem'),chegada_paragem=F('horario__destino'),passageiros=F('n_passageiros'),hora=F('horario__horario_has_dia_id_dia_hora'))
 
         row['responsaveis'] = models.Responsaveis.objects.filter(idinscricao=query[i].inscricao_idinscricao)\
             .values('nome','telefone','email')

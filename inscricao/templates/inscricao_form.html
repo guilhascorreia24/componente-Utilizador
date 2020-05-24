@@ -324,14 +324,7 @@
                                                     Informação de transporte </h2>
                                                 <div class="columns">
                                                     <div class="column">
-                                                        <div class="field"><label class="label">Local de Origem</label>
-                                                            <div class="control is-expanded">
-                                                            </div>
-                                                            <!---->
-                                                        </div>
-                                                    </div>
-                                                    <div class="column">
-                                                        <div class="field"><label class="label">Local de Chegada</label>
+                                                        <div class="field"><label class="label">Transporte</label>
                                                             <div class="control is-expanded">
                                                             </div>
                                                             <!---->
@@ -344,100 +337,75 @@
                                                             <!---->
                                                         </div>
                                                     </div>
-                                                    <div class="column">
-                                                        <div class="field"><label class="label">Hora de Partida</label>
-                                                            <div class="control is-expanded">
-                                                            </div>
-                                                            <!---->
-                                                        </div>
-                                                    </div>
                                                 </div>
                                                 <div id="table_transporte" style="padding-bottom:2%">
                                                 {{ form.transportes.management_form }}
                                                 {% for transporte in form.transportes %}
-                                                <div class="columns">
-                                                    <div class="column">
-                                                        <div class="field">
-                                                            <div class="control is-expanded"><span
-                                                                    class="select is-fullwidth is-empty select-transporte">
-                                                                    {{transporte.horario}}
-                                                                    </span>
-                                                                    <p class="help is-danger">{{form.transportes.horario.errors.0}}</p>
+                                                    <div class="columns">
+                                                        <div class="column">
+                                                            <div class="field">
+                                                                <div class="control is-expanded"><span
+                                                                        class="select is-fullwidth is-empty select-transporte">
+                                                                        {{transporte.horario}}
+                                                                        </span>
+                                                                        <p class="help is-danger">{{form.transportes.horario.errors.0}}</p>
+                                                                    <!---->
+                                                                </div>
                                                                 <!---->
                                                             </div>
-                                                            <!---->
                                                         </div>
-                                                    </div>
-                                                    <div class="column">
-                                                        <div class="field has-numberinput has-numberinput-compact">
-                                                            
-                                                            <div class="b-numberinput field has-addons">
-                                                                <p class="control">
-                                                                    <button type="button" class="button is-primary"><span class="icon"><i class="mdi mdi-minus mdi-24px"></i></span></button>
-                                                                </p>
-                                                                <div class="control is-clearfix">
-                                                                    {{transporte.n_passageiros|addcss:"input"}}
+                                                        <div class="column">
+                                                            <div class="field has-numberinput has-numberinput-compact">
+
+                                                                <div class="b-numberinput field has-addons">
+                                                                    <p class="control">
+                                                                        <button type="button" class="button is-primary"><span class="icon"><i class="mdi mdi-minus mdi-24px"></i></span></button>
+                                                                    </p>
+                                                                    <div class="control is-clearfix">
+                                                                        {{transporte.n_passageiros|addcss:"input"}}
+                                                                    </div>
+                                                                    <p class="control">
+                                                                        <button type="button" class="button is-primary"><span class="icon"><i class="mdi mdi-plus mdi-24px"></i></span></button>
+                                                                    </p>
                                                                 </div>
-                                                                <p class="control">
-                                                                    <button type="button" class="button is-primary"><span class="icon"><i class="mdi mdi-plus mdi-24px"></i></span></button>
-                                                                </p>
+                                                                <p class="help is-danger">{{form.transportes.n_passageiros.errors.0}}</p>
                                                             </div>
-                                                            <p class="help is-danger">{{form.transportes.n_passageiros.errors.0}}</p>
                                                         </div>
                                                     </div>
-                                                </div>
                                                 {% endfor %}
                                                 </div>
 
                                                 <!--TEMPLATE-->
                                                 <div id="template_transporte" style="display:none">
-                                                <div class="columns">
-                                                    <div class="column">
-                                                        <div class="field">
-                                                            <div class="control is-expanded"><span
-                                                                    class="select is-fullwidth is-empty select-transporte">{{form.transportes.empty_form.horario}}</span>
+                                                    <div class="columns">
+                                                        <div class="column">
+                                                            <div class="field">
+                                                                <div class="control is-expanded"><span
+                                                                        class="select is-fullwidth is-empty select-transporte">{{form.transportes.empty_form.horario}}</span>
+                                                                    <!---->
+                                                                </div>
                                                                 <!---->
                                                             </div>
-                                                            <!---->
                                                         </div>
-                                                    </div>
-                                                    <div class="column">
-                                                        <div class="field has-numberinput has-numberinput-compact">
-                                                            <div class="b-numberinput field has-addons">
-                                                                <p class="control"><button type="button"
-                                                                        class="button is-primary"><span class="icon"><i
-                                                                                class="mdi mdi-minus mdi-24px"></i></span></button>
-                                                                </p>
-                                                                <div class="control is-clearfix"> {{form.transportes.empty_form.n_passageiros|addcss:"input"}}
-                                                                </div>
-                                                                <p class="control"><button type="button"
-                                                                        class="button is-primary"><span class="icon"><i
-                                                                                class="mdi mdi-plus mdi-24px"></i></span></button>
-                                                                </p>
-                                                            </div>
-                                                            <!---->
-                                                        </div>
-                                                    </div>
-                                                    <div class="column">
-                                                        <div class="field">
-                                                            <div class="timepicker control">
-                                                                <div class="dropdown is-mobile-modal">
-                                                                    <div role="button" aria-haspopup="true"
-                                                                        class="dropdown-trigger">
-                                                                        <div
-                                                                            class="control has-icons-left is-clearfix">
-                                                                            <span
-                                                                            class="select is-fullwidth is-empty">
-                                                                            {{form.transportes.empty_form.partida|addcss:"input"}}
-                                                                            </span>
-                                                                            <span class="icon is-left"><i class="mdi mdi-clock mdi-24px"></i></span>
-                                                                        </div>
+                                                        <div class="column">
+                                                            <div class="field has-numberinput has-numberinput-compact">
+                                                                <div class="b-numberinput field has-addons">
+                                                                    <p class="control"><button type="button"
+                                                                            class="button is-primary"><span class="icon"><i
+                                                                                    class="mdi mdi-minus mdi-24px"></i></span></button>
+                                                                    </p>
+                                                                    <div class="control is-clearfix"> {{form.transportes.empty_form.n_passageiros|addcss:"input"}}
                                                                     </div>
+                                                                    <p class="control"><button type="button"
+                                                                            class="button is-primary"><span class="icon"><i
+                                                                                    class="mdi mdi-plus mdi-24px"></i></span></button>
+                                                                    </p>
                                                                 </div>
+                                                                <!---->
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div></div>
+                                                </div>
                                                 <!--END TEMPLATE-->
 
 

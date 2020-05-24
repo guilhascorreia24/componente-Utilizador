@@ -17,7 +17,7 @@ class Form_Responsaveis(ModelForm):
 
 class Form_InscricaoColetiva(ModelForm):
     def save(self, idUtilizador, idEscola, nresponsaveis, inscricao):
-        base = super(Form_Inscricao, self).save(commit=False)
+        base = super(Form_InscricaoColetiva, self).save(commit=False)
         base.local = "Empty"
         base.nresponsaveis = nresponsaveis
         base.participante_utilizador_idutilizador_id = idUtilizador.pk
@@ -180,7 +180,7 @@ class Form_Prato(ModelForm):
     
     def clean(self):
         super().clean()
-        if self.menu.nralmoçosdisponiveis < self.cleaned_data['nralmocos']:
+        if self.menu.nralmocosdisponiveis < self.cleaned_data['nralmocos']:
             raise ValidationError({'nralmocos': ["Numero de almoços disponiveis não é suficiente"]})
 
         if(self.cleaned_data['nralmocos'] < 0):
@@ -200,9 +200,8 @@ class Form_Sessao(ModelForm):
     def save(self,inscricao):
         base = super(Form_Sessao, self).save(commit=False)
         base.inscricao_idinscricao = inscricao
-        sessao = models.Sessao.objects.get(idsessao=self.cleaned_data['sessao_idsessao'])
-        #print(sessao)
-        base.sessao_idsessao = sessao
+        #sessao = models.Sessao.objects.get(idsessao=self.cleaned_data['sessao_idsessao'])
+        #base.sessao_idsessao = sessao
         base.save()
         return base
 
@@ -289,7 +288,7 @@ class CustomForm:
     def save(self,part):
         escola = self.escola.save()
         inscricao = self.inscricao.save()
-        inscricao_coletiva.save(part,escola,len(self.responsaveis))
+        self.inscricao_coletiva.save(part,escola,len(self.responsaveis),inscricao)
         self.almoco.save(inscricao)
 
         for each in self.transportes:

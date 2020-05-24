@@ -9,6 +9,7 @@ from django.db import models
 from inscricao.validators import email_validator, not_zero_validator, telefone_validator
 from django.dispatch import receiver
 from django.db.models import F
+from django.core.exceptions import ObjectDoesNotExist, ValidationError
 
 
 class Administrador(models.Model):
@@ -213,8 +214,8 @@ class Departamento(models.Model):
 class Dia(models.Model):
     dia = models.DateField(primary_key=True)
 
-    def __str__():
-        return self.dia
+    def __str__(self):
+        return str(self.dia)
 
     class Meta:
         managed = False
@@ -243,8 +244,8 @@ class Disponibilidade(models.Model):
     colaborador_utilizador_idutilizador = models.ForeignKey(Colaborador, models.DO_NOTHING, db_column='colaborador_Utilizador_idutilizador')  # Field name made lowercase.
     disponibilidade_id = models.IntegerField(db_column='Disponibilidade_id', primary_key=True)  # Field name made lowercase.
     dia_dia = models.ForeignKey(Dia, models.DO_NOTHING, db_column='dia_dia')
-    horario_hora = models.ForeignKey('Horario', models.DO_NOTHING, db_column='horario_hora',related_name="horario_hora1")
-    horario_hora1 = models.ForeignKey('Horario', models.DO_NOTHING, db_column='horario_hora1',related_name="horario_hora1")
+    horario_hora = models.ForeignKey('Horario', models.DO_NOTHING, db_column='horario_hora',related_name="disponibilidade_hora_inicio")
+    horario_hora1 = models.ForeignKey('Horario', models.DO_NOTHING, db_column='horario_hora1',related_name="disponibilidade_hora_fim")
     tipo_de_tarefa = models.CharField(max_length=45, blank=True, null=True)
 
     class Meta:
@@ -321,8 +322,8 @@ class Espaco(models.Model):
 class Horario(models.Model):
     hora = models.TimeField(primary_key=True)
 
-    def __str__():
-        return self.hora
+    def __str__(self):
+        return str(self.hora)
 
     class Meta:
         managed = False
@@ -334,8 +335,8 @@ class HorarioHasDia(models.Model):
     dia_dia = models.ForeignKey(Dia, models.DO_NOTHING, db_column='Dia_dia')  # Field name made lowercase.
     id_dia_hora = models.AutoField(primary_key=True)
 
-    def __str__():
-        return self.horario_hora + " de " + self.dia_dia
+    def __str__(self):
+        return self.horario_hora.__str__() + " de " + self.dia_dia.__str__()
 
     class Meta:
         managed = False
@@ -485,15 +486,15 @@ class Prato(models.Model):
     def save(self, *args, **kwargs):
         obj = Menu.objects.get(idmenu=self.menu_idmenu.pk)
 
-        if(obj.nralmoçosdisponiveis<self.nralmocos):
+        if(obj.nralmocosdisponiveis<self.nralmocos):
             raise ValidationError("Outro grupo rgistou-se primeiro e não há mais almoços disponiveis")
-        Menu.objects.filter(idmenu=self.menu_idmenu.pk).update(nralmoçosdisponiveis=F('nralmoçosdisponiveis')-self.nralmocos)
+        Menu.objects.filter(idmenu=self.menu_idmenu.pk).update(nralmocosdisponiveis=F('nralmocosdisponiveis')-self.nralmocos)
         return super(Prato, self).save(*args, **kwargs)
     
     def update(self, *args, **kwargs):
         insc = Prato.objects.filter(inscricao_idinscricao=self.inscricao_idinscricao).nralmocos
         delta = self.nralmocos-insc
-        Menu.objects.filter(idmenu=self.menu_idmenu.pk).update(nralmoçosdisponiveis=F('nralmoçosdisponiveis')-delta)
+        Menu.objects.filter(idmenu=self.menu_idmenu.pk).update(nralmocosdisponiveis=F('nralmocosdisponiveis')-delta)
         super(Prato,self).update(*args, **kwargs)
 
     class Meta:
@@ -502,7 +503,7 @@ class Prato(models.Model):
 
 @receiver(models.signals.post_delete, sender=Prato)
 def delete_prato(sender, instance, using, **kwargs):
-    Menu.objects.filter(idmenu=instance.menu_idmenu.pk).update(nralmoçosdisponiveis=F('nralmoçosdisponiveis')-instance.nralmocos)
+    Menu.objects.filter(idmenu=instance.menu_idmenu.pk).update(nralmocosdisponiveis=F('nralmocosdisponiveis')-instance.nralmocos)
 
 
 class ProfessorUniversitario(models.Model):
@@ -590,13 +591,13 @@ class Transporte(models.Model):
 class TransporteHasHorario(models.Model):
     transporte_idtransporte = models.ForeignKey(Transporte, models.DO_NOTHING, db_column='transporte_idtransporte')
     id_transporte_has_horario = models.IntegerField(primary_key=True)
-    origem = models.ForeignKey(Paragem, models.DO_NOTHING, db_column='origem')
-    destino = models.ForeignKey(Paragem, models.DO_NOTHING, db_column='destino')
+    origem = models.ForeignKey(Paragem, models.DO_NOTHING, db_column='origem',related_name="origem")
+    destino = models.ForeignKey(Paragem, models.DO_NOTHING, db_column='destino',related_name="destino")
     horario_has_dia_id_dia_hora = models.ForeignKey(HorarioHasDia, models.DO_NOTHING, db_column='horario_has_dia_id_dia_hora')
     n_passageiros = models.IntegerField(blank=True, null=True)
 
     def __str__(self):
-        return self.origem.paragem + " -> " + self.destino.paragem + " às " + self.horario_has_dia_id_dia_hora
+        return self.origem.paragem + " -> " + self.destino.paragem + " às " + self.horario_has_dia_id_dia_hora.__str__()
 
     class Meta:
         managed = False
@@ -611,7 +612,7 @@ class TransporteHasInscricao(models.Model):
     n_passageiros = models.IntegerField()
 
     def save(self, *args, **kwargs):
-        TransporteHasHorario.objects.filter(id_transporte_has_horario=self.horario).update(n_passageiros=F('n_passageiros')+self.n_passageiros)
+        TransporteHasHorario.objects.filter(id_transporte_has_horario=self.horario.pk).update(n_passageiros=F('n_passageiros')+self.n_passageiros)
         return super(TransporteHasInscricao, self).save(*args, **kwargs)
     
     def update(self, *args, **kwargs):
@@ -622,16 +623,17 @@ class TransporteHasInscricao(models.Model):
     
     def clean(self):
         super().clean()
-        data = TransporteHasHorario.objects.select_related('transporte_idtransporte').get(id_transporte_has_horario=self.horario)
-        delta = self.data.n_passageiros - self.data.transporte_idtransporte.capacidade
+        data = TransporteHasHorario.objects.select_related('transporte_idtransporte').get(id_transporte_has_horario=self.horario.pk)
+        delta = data.transporte_idtransporte.capacidade - data.n_passageiros
+        print(str(data.n_passageiros) + " - " + str(data.transporte_idtransporte.capacidade))
         if delta < self.n_passageiros:
             try:
-                curr = TransporteHasInscricao.objects.filter(transporte_has_inscricao_id=self.transporte_has_inscricao_id).n_passageiros
+                curr = TransporteHasInscricao.objects.get(transporte_has_inscricao_id=self.transporte_has_inscricao_id).n_passageiros
                 passageiros = self.n_passageiros - curr
                 if delta < passageiros:
                     raise ValidationError('Não existem vagas para este transporte') 
 
-            except DoesNotExists:
+            except ObjectDoesNotExist:
                  raise ValidationError('Não existem vagas para este transporte') 
     class Meta:
         managed = False
@@ -639,7 +641,7 @@ class TransporteHasInscricao(models.Model):
 
 @receiver(models.signals.post_delete, sender=TransporteHasInscricao)
 def delete_prato(sender, instance, using, **kwargs):
-    TransporteHasHorario.objects.filter(id_transporte_has_horario=self.horario).update(n_passageiros=F('n_passageiros')-instance.n_passageiros)
+    TransporteHasHorario.objects.filter(id_transporte_has_horario=instance.horario.pk).update(n_passageiros=F('n_passageiros')-instance.n_passageiros)
 
 
 class TransportePessoal(models.Model):
