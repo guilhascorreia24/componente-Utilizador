@@ -32,8 +32,10 @@ def inscricao_delete(request,inscricao):
 
         delete_inscricao(insc)
 
-
     return consultar_inscricao(request)
+
+def inscricao_alterar(request,inscricao):
+    return inscricao_form(request,inscricao)
 
 #Precisa de ser inscricao individual ou coletiva
 def delete_inscricao(inscricao):
@@ -46,13 +48,13 @@ def delete_inscricao(inscricao):
     inscricao.delete()
 
 
-def inscricao_form(request):
+def inscricao_form(request,inscricao=None):
     user = userValidation.getLoggedUser(request)
     if user._type != userValidation.PARTICIPANTE:
         return HttpResponse("<html>User needs to be a Participante</html>")
 
     if request.method == 'POST':
-        form = forms.CustomForm(request)
+        form = forms.CustomForm(request,inscricao=inscricao)
         if form.is_valid():
             form.save(user)
             return HttpResponse("<html>Sucess</html>")
@@ -61,7 +63,7 @@ def inscricao_form(request):
             return render(request,'inscricao_form.html',{'form': form, 'atividades_sessao' : sessoes})
         
     else:
-        form = forms.CustomForm()
+        form = forms.CustomForm(inscricao=inscricao)
         sessoes = list_sessao()
         return render(request,'inscricao_form.html',{'form': form, 'atividades_sessao' : sessoes})
     
@@ -89,8 +91,8 @@ def consultar_inscricao(request):
             .values(campus=F('prato_idprato__menu_idmenu__campus_idcampus__nome'),menu=F('prato_idprato__menu_idmenu__menu'),tipo=F('prato_idprato__menu_idmenu__tipo'),descricao=F('prato_idprato__descricao'),nralmocos=F('prato_idprato__nralmocos'))\
             .order_by('prato_idprato__menu_idmenu__campus_idcampus__nome','prato_idprato__menu_idmenu__tipo')
         
-        row['transportes'] = models.TransporteHasInscricao.objects.select_related('paragem','horario_has_dia').filter(inscricao_idinscricao=query[i].inscricao_idinscricao)\
-            .values('partida_paragem','chegada_paragem',passageiros=F('numero_passageiros'),hora=F('partida'))
+        row['transportes'] = models.TransporteHasInscricao.objects.select_related('paragem','horario').filter(inscricao_idinscricao=query[i].inscricao_idinscricao)\
+            .values(partida_paragem=F('horario__origem'),chegada_paragem=F('horario__destino'),passageiros=F('n_passageiros'),hora=F('horario__horario_has_dia_id_dia_hora'))
 
         row['responsaveis'] = models.Responsaveis.objects.filter(idinscricao=query[i].inscricao_idinscricao)\
             .values('nome','telefone','email')
