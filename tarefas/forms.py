@@ -15,4 +15,4 @@ class Form_Disponibilidade(ModelForm):
 
     class Meta:
         model = models.Disponibilidade
-        fields = ['dia_dia','horario_hora','tipo_tarefa']
+        fields = ['dia_dia','horario_hora','tipo_de_tarefa']
