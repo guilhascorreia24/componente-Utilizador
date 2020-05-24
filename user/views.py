@@ -5,6 +5,7 @@ from django.core.mail import message, send_mail
 from django.core import signing
 from .models import UnidadeOrganica, DiaAberto,Departamento, Utilizador, Participante, ProfessorUniversitario, Administrador, Coordenador, Colaborador, DjangoSession, Curso, InscricaoColetiva, InscricaoIndividual, Atividade, Tarefa, Campus
 from django.db.models import CharField, Value
+from Notification import views as noti_views
 import datetime
 import re
 import hashlib
@@ -493,6 +494,7 @@ def validacoes(request,acao,id):
         subject="Validação da conta"
         message="A sua conta foi aceite. Bem-vindo ao site do dia aberto. "
         send_mail(subject,message,'a61098@ualg.pt',[recepient])
+        noti_views.new_noti(request,user.pk,'Bem-vindo','Seja bem-vindo ao site do dia aberto')
         messages.success(request,f'Utilizador {user.nome} validado com sucesso.')
     else:
         recepient=user.email

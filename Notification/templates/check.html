@@ -35,8 +35,8 @@
             </div>
             <div data-v-a67fe1ba="" class="dropdown is-bottom-left is-mobile-modal">
                 <div role="button" aria-haspopup="true" class="dropdown-trigger"><a
-                        href="{% url "profile_edit" me_id %}"><button data-v-a67fe1ba="" type="button" class="button is-text"
-                            style="margin-right: 0.9rem;">
+                        href="{% url "profile_edit" me_id %}"><button data-v-a67fe1ba="" type="button"
+                            class="button is-text" style="margin-right: 0.9rem;">
                             <!----> <span><span data-v-a67fe1ba="" class="icon"><i
                                         class="mdi mdi-account-circle mdi-24px"></i></span></span>
                             <!----></button></a></div>
@@ -119,7 +119,19 @@
                                     </div>
                                     <!---->
                                 </div>
-
+                                <div class="column">
+                                    <button class="button button4 is-grey is-outlined" type="button"
+                                        style="margin: 0.7rem;text-decoration:none;" onclick="checkAll()"><span
+                                            class="icon is-small"><i class="mdi mdi-select-all"></i></span> <span>
+                                            Selecionar Todas/Nenhuma </span>
+                                        <!----></button>
+                                    <button class="button button4 is-danger is-outlined" type="submit" form="myform"
+                                        style="margin: 0.7rem;text-decoration:none; padding-right: 20%;"><span
+                                            class="icon is-small"><i class="mdi mdi-close"></i></span> <span> Eliminar
+                                            selecionadas </span>
+                                        <!----></button>
+                                    
+                                </div>
                             </ul>
                         </div>
                     </div>
@@ -133,25 +145,24 @@
                         </ul>
                     </nav>
                     <a href="{% url "create_not" %}" class="button is-success is-outlined" type="button"
-                        style="margin-bottom: 0.9rem; margin-right: 1rem;text-decoration:none;" ><span
+                        style="margin-bottom: 0.9rem; margin-right: 1rem;text-decoration:none;"><span
                             class="icon is-small"><i class="mdi mdi-plus"></i></span> <span> Compor Notificação </span>
                         <!----></a>
-                        {% if my %}
-                        <a href="{% url "check_not" %}" class="button is-success is-outlined" type="button"
-                        style="margin-bottom: 0.9rem; margin-right: 1rem;text-decoration:none;" ><span
-                            class="icon is-small"><i class="mdi mdi-send"></i></span> <span> Notificações Recebidas </span>
+                    {% if my %}
+                    <a href="{% url "check_not" %}" class="button is-success is-outlined" type="button"
+                        style="margin-bottom: 0.9rem; margin-right: 1rem;text-decoration:none;"><span
+                            class="icon is-small"><i class="mdi mdi-send"></i></span> <span> Notificações Recebidas
+                        </span>
                         <!----></a>
-                        {% else %}
-                        <a href="{% url "check_not_enviadas" %}" class="button is-success is-outlined" type="button"
-                        style="margin-bottom: 0.9rem; margin-right: 1rem;text-decoration:none;" ><span
-                            class="icon is-small"><i class="mdi mdi-send"></i></span> <span> Notificações Enviadas </span>
+                    {% else %}
+                    <a href="{% url "check_not_enviadas" %}" class="button is-success is-outlined" type="button"
+                        style="margin-bottom: 0.9rem; margin-right: 1rem;text-decoration:none;"><span
+                            class="icon is-small"><i class="mdi mdi-send"></i></span> <span> Notificações Enviadas
+                        </span>
                         <!----></a>
-                        {% endif %}
-                        <a href="{% url "check_not" %}" class="button is-success is-outlined" id="text" type="button"
-                        style="margin-bottom: 0.9rem; margin-right: 1rem;text-decoration:none;display:none" ><span
-                            class="icon is-small"><i class="mdi mdi-send"></i></span> <span>Eliminar notificaçoes </span>
-                        <!----></a>
-                      
+                    {% endif %}
+
+
                     <div class="b-table">
                         <div class="field table-mobile-sort">
                             <div class="field has-addons">
@@ -177,59 +188,62 @@
                             </div>
                         </div>
                         <!---->
-                        <div class="table-wrapper">
-                            <table id="myTable" class="table table-striped">
-                                <thead>
-                                    <tr>
-                                        
+                        <form method='POST' id="myform">
+                            {% csrf_token %}
+                            <div class="table-wrapper">
+                                <table id="myTable" class="table table-striped">
+                                    <thead>
+                                        <tr>
+
+                                            <!---->
+
+                                            <th class="is-sortable">
+                                                <div class="th-wrap th-sm">{% if my %} Receptor {% else %} Emissor
+                                                    {% endif %} <span class="icon is-small" style="display: none;"><i
+                                                            class="mdi mdi-menu-up"></i></span>
+                                                </div>
+                                            </th>
+                                            <th class="is-sortable">
+                                                <div class="th-wrap th-sm">Titulo da Notificação<span
+                                                        class="icon is-small" style="display: none;"><i
+                                                            class="mdi mdi-menu-up"></i></span>
+                                                </div>
+                                            </th>
+                                            <th class="is-sortable th-sm">
+                                                <div class="th-wrap th-sm"> Data Emissão <span class="icon is-small"
+                                                        style="display: none;"><i class="mdi mdi-menu-up"></i></span>
+                                                </div>
+                                            </th>
+                                            <th class="">
+                                                <div class="th-wrap is-centered">Ações <span class="icon is-small"
+                                                        style="display: none;"><i class="mdi mdi-menu-up"></i></span>
+                                                </div>
+                                            </th>
+                                            <!---->
+                                        </tr>
                                         <!---->
-                                        
-                                        <th class="is-sortable">
-                                            <div class="th-wrap th-sm">{% if my %} Receptor {% else %} Emissor {% endif %} <span class="icon is-small"
-                                                    style="display: none;"><i class="mdi mdi-menu-up"></i></span>
-                                            </div>
-                                        </th>
-                                        <th class="is-sortable">
-                                            <div class="th-wrap th-sm">Titulo da Notificação<span class="icon is-small"
-                                                    style="display: none;"><i class="mdi mdi-menu-up"></i></span>
-                                            </div>
-                                        </th>
-                                        <th class="is-sortable th-sm">
-                                            <div class="th-wrap th-sm"> Data Emissão <span class="icon is-small"
-                                                    style="display: none;"><i class="mdi mdi-menu-up"></i></span>
-                                            </div>
-                                        </th>
-                                        <th class="">
-                                            <div class="th-wrap is-centered">Ações <span class="icon is-small"
-                                                    style="display: none;"><i class="mdi mdi-menu-up"></i></span>
-                                            </div>
-                                        </th>
                                         <!---->
-                                    </tr>
-                                    <!---->
-                                    <!---->
-                                </thead>
+                                    </thead>
+                                    <tbody>
+                                        {% for not in nots %}
+                                        {% if not.idutilizadorenvia == me_id and my%}
+                                        {% include "tabela_de_consulta.html" %}
+                                        {% elif not.utilizadorrecebe == me_id%}
+                                        {% include "tabela_de_consulta.html" %}
+                                        {% endif %}
+                                        </tr>
+                                        <!---->
+                                        <!---->
+                                        <!---->
+                                        <!---->
+                                        {% endfor %}
 
 
-                                <tbody>
-                                    {% for not in nots %}
-                                    {% if not.idutilizadorenvia == me_id and my%}
-                                    {% include "tabela_de_consulta.html" %}
-                                    {% elif not.utilizadorrecebe == me_id%}
-                                    {% include "tabela_de_consulta.html" %}
-                                    {% endif %}
-                                    </tr>
+                                    </tbody>
                                     <!---->
-                                    <!---->
-                                    <!---->
-                                    <!---->
-                                    {% endfor %}
-
-
-                                </tbody>
-                                <!---->
-                            </table>
-                        </div>
+                                </table>
+                            </div>
+                        </form>
                         <div class="level">
                             <div class="level-left"></div>
                             <div class="level-right">
@@ -263,14 +277,14 @@
 </div>
 <script>
     $('#exampleModal').on('show.bs.modal', function (event) {
-  var button = $(event.relatedTarget) // Button that triggered the modal
-  var recipient = button.data('whatever') // Extract info from data-* attributes
-  // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
-  // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
-  var modal = $(this)
-  modal.find('.modal-title').text('New message to ' + recipient)
-  modal.find('.modal-body input').val(recipient)
-})
+        var button = $(event.relatedTarget) // Button that triggered the modal
+        var recipient = button.data('whatever') // Extract info from data-* attributes
+        // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+        // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+        var modal = $(this)
+        modal.find('.modal-title').text('New message to ' + recipient)
+        modal.find('.modal-body input').val(recipient)
+    })
 </script>
 
 <script>
@@ -282,8 +296,8 @@
             "bLengthChange": false,
             "aLengthMenu": [[5, 10, 25, -1], [5, 10, 25, "All"]],
             "columnDefs": [
-    { "orderable": false, "targets": [0,3] }
-  ]
+                { "orderable": false, "targets": [0, 3] }
+            ]
         });
     });
 </script>
@@ -397,13 +411,11 @@
         </section>
         <footer class="modal-card-foot"><button class="button" data-dismiss="modal">
                 Cancelar
-            </button><a href="" style="text-decoration: none;"> <button
-                    class="button is-success" type="submit">
+            </button><a href="" style="text-decoration: none;"> <button class="button is-success" type="submit">
                     Confirmar
                 </button></a></footer>
     </div>
 </div>
-</form>
 {% endfor %}
 <script>
     {% for user in users %}
@@ -412,7 +424,7 @@
         $("#color_me").attr("class", color);
     });
     {% endfor %}
-    </script>
+</script>
 <script>
     $(function () {
         $('#campus').on('change', function () {
@@ -427,13 +439,33 @@
 </script>
 <script>
     function myFunctionslect() {
-      var checkBox = document.getElementById("myCheck");
-      var text = document.getElementById("text");
-      if (checkBox.checked == true){
-        text.style.display = "block";
-      } else {
-         text.style.display = "none";
-      }
+        var checkBox = document.getElementById("myCheck");
+        var text = document.getElementById("text");
+        if (checkBox.checked == true) {
+            text.style.display = "block";
+        } else {
+            text.style.display = "none";
+        }
     }
-    </script>
+    var isChecked = false;
+    function checkAll() {
+        var checkboxes = document.getElementsByTagName('input');
+        if (isChecked) {
+            for (var i = 0; i < checkboxes.length; i++) {
+                if (checkboxes[i].type == 'checkbox') {
+                    checkboxes[i].checked = true;
+                }
+            }
+        } else {
+            for (var i = 0; i < checkboxes.length; i++) {
+                console.log(i)
+                if (checkboxes[i].type == 'checkbox') {
+                    checkboxes[i].checked = false;
+                }
+            }
+        }
+        isChecked = !isChecked;
+    }
+</script>
+
 {% endblock content %}

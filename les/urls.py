@@ -23,7 +23,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('create/',notificacao_views.createnot,name="create_not"),
     path('notificacao/',notificacao_views.checknot,name="check_not"),
-    path('delete/',notificacao_views.deletenot,name="del_not"),
     path('notificacao/<str:id>/',notificacao_views.noti,name="noti"),
     path('notificacao/enviadas',notificacao_views.enviados,name="check_not_enviadas"),
     path('register/', user_views.register, name='register'),
