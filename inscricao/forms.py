@@ -234,13 +234,12 @@ class CustomForm:
             self.curr_inscricao = models.Inscricao.objects.get(pk=kwargs['inscricao'])
 
         Sessao = modelformset_factory(models.InscricaoHasSessao,form = Form_Sessao,extra=0,can_delete=True)
-        Responsaveis = modelformset_factory(models.Responsaveis,form = Form_Responsaveis,extra=1,min_num=1,can_delete=True)
+        Responsaveis = modelformset_factory(models.Responsaveis,form = Form_Responsaveis,min_num=1,extra=0,can_delete=True)
         Transportes = modelformset_factory(models.TransporteHasInscricao,form = Form_Transportes,extra=0,can_delete=True)
 
 
         if request != 0 and request.method == 'POST':
             if self.curr_inscricao != None:
-                Responsaveis = modelformset_factory(models.Responsaveis,form = Form_Responsaveis,extra=0,min_num=1,can_delete=True)
                 insc = models.InscricaoColetiva.objects.get(inscricao_idinscricao=self.curr_inscricao)
                 self.escola = Form_Escola(request.POST,prefix="escola",instance=insc.escola_idescola)
                 self.inscricao_coletiva = Form_InscricaoColetiva(request.POST,prefix="inscricao_coletiva",instance=insc)
@@ -259,7 +258,6 @@ class CustomForm:
                 self.almoco = Form_Almoco(request)
         else:
             if self.curr_inscricao != None:
-                Responsaveis = modelformset_factory(models.Responsaveis,form = Form_Responsaveis,extra=0, min_num=1,can_delete=True)
                 insc = models.InscricaoColetiva.objects.get(inscricao_idinscricao=self.curr_inscricao)
                 self.escola = Form_Escola(prefix="escola",instance=insc.escola_idescola)
                 self.inscricao_coletiva = Form_InscricaoColetiva(prefix="inscricao_coletiva",instance=insc)
