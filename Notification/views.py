@@ -79,14 +79,12 @@ def checknot(request):
     me_id=request.session['user_id']
     i=len(noti_not_checked(request))
     notis=[]
-    nots=UtilizadorHasNotificacao.objects.all().annotate(emissor=Value("",CharField()),assunto=Value('',CharField()),criadoem=Value(':ss[.uuuuuu]][TZ] format.',DateTimeField()))
+    nots=UtilizadorHasNotificacao.objects.all().annotate(emissor=Value("",CharField()))
     deletenot(request)
     for noti in nots:
         if noti.utilizador_idutilizador.pk==me_id:
             noti.emissor=Utilizador.objects.get(pk=noti.notificacao.idutilizadorenvia).email
             noti.pk=signing.dumps(noti.pk)
-            noti.assunto=noti.notificacao.assunto
-            noti.criadoem=noti.notificacao.criadoem
             notis.append(noti)
     func=user_views.user(request)
     return render(request,'check.html',{'nots':notis,'me_id':me_id,'funcao':func,'i':i,'not_checked':noti_not_checked(request)})
@@ -97,20 +95,24 @@ def deletenot(request):
         print(request.POST.getlist('noti'))
         pressed = request.POST.getlist('noti')
         for press in pressed:
-            UtilizadorHasNotificacao.objects.get(pk=signing.loads(press)).delete()
+            UtilizadorHasNotificacao.objects.filter(pk=signing.loads(press)).delete()
         messages.success(request, 'Successfully deleted.')
             
 
 def enviados(request):
     me_id=request.session['user_id']
-    nots=Notificacao.objects.filter(idutilizadorenvia = me_id).annotate(emissor=Value("",CharField()),recept=Value("",CharField()))
+    notis=[]
+    nots=UtilizadorHasNotificacao.objects.all().annotate(emissor=Value("",CharField()),recept=Value("",CharField()))
+    deletenot(request)
     for noti in nots:
-        noti.recept=Utilizador.objects.get(pk=noti.utilizadorrecebe).email
-        noti.pk=signing.dumps(noti.pk)
+        if noti.notificacao.idutilizadorenvia==me_id:
+            noti.recept=Utilizador.objects.get(pk=noti.notificacao.utilizadorrecebe).email
+            noti.pk=signing.dumps(noti.pk)
+            notis.append(noti)
     func=user_views.user(request)
     my=True
     i=len(noti_not_checked(request))
-    return render(request,'check.html',{'nots':nots,'me_id':me_id,'funcao':func,'my':my,'i':i,'not_checked':noti_not_checked(request)})
+    return render(request,'check.html',{'nots':notis,'me_id':me_id,'funcao':func,'my':my,'i':i,'not_checked':noti_not_checked(request)})
 
 def noti(request,id):
     me_id=signing.loads(id)

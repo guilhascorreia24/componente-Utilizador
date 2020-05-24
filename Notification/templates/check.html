@@ -198,7 +198,7 @@
                                             <!---->
 
                                             <th class="is-sortable">
-                                                <div class="th-wrap th-sm">{% if my %} Receptor {% else %} Emissor
+                                                <div class="th-wrap th-sm">{% if my %} Emissor {% else %} Receptor
                                                     {% endif %} <span class="icon is-small" style="display: none;"><i
                                                             class="mdi mdi-menu-up"></i></span>
                                                 </div>
@@ -226,9 +226,9 @@
                                     </thead>
                                     <tbody>
                                         {% for not in nots %}
-                                        {% if not.idutilizadorenvia == me_id and my%}
+                                        {% if not.notificacao.idutilizadorenvia == me_id and my%}
                                         {% include "tabela_de_consulta.html" %}
-                                        {% elif not.utilizadorrecebe == me_id%}
+                                        {% elif not.notificacao.utilizadorrecebe == me_id%}
                                         {% include "tabela_de_consulta.html" %}
                                         {% endif %}
                                         </tr>
