@@ -16,9 +16,9 @@ class Form_Responsaveis(ModelForm):
         fields = ['nome','email','telefone']
 
 class Form_InscricaoColetiva(ModelForm):
-    def save(self, idUtilizador, idEscola, nresponsaveis, inscricao):
+    def save(self, idUtilizador, idEscola, nresponsaveis, inscricao, local):
         base = super(Form_InscricaoColetiva, self).save(commit=False)
-        base.local = "Empty"
+        base.local = local
         base.nresponsaveis = nresponsaveis
         base.participante_utilizador_idutilizador_id = idUtilizador.pk
         base.escola_idescola = idEscola
@@ -46,9 +46,9 @@ class Form_Inscricao(ModelForm):#numero de participantes precia de ser checkado
     )
 )
 
-    def save(self):
+    def save(self,local):
         base = super(Form_Inscricao, self).save(commit=False)
-        base.local = "Empty"
+        base.local = local
         base.save()
         return base
 
@@ -285,8 +285,8 @@ class CustomForm:
 
     def save(self,part):
         escola = self.escola.save()
-        inscricao = self.inscricao.save()
-        self.inscricao_coletiva.save(part,escola,len(self.responsaveis),inscricao)
+        inscricao = self.inscricao.save(escola.local)
+        self.inscricao_coletiva.save(part,escola,len(self.responsaveis),inscricao,escola.local)
         self.almoco.save(inscricao)
 
         for each in self.transportes:
