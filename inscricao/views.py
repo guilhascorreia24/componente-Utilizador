@@ -23,13 +23,15 @@ def list_sessao():
 def inscricao_delete(request,inscricao):
     user = userValidation.getLoggedUser(request)
     if user._type == userValidation.PARTICIPANTE:
-        insc = models.InscricaoColetiva.objects.get(participante_utilizador_idutilizador = user.pk, inscricao_idinscricao=inscricao)
-        if insc == None:
-            insc = models.InscricaoIndividual.objects.get(participante_utilizador_idutilizador = user.pk, inscricao_idinscricao=inscricao)
-        
-        if insc == None:
-            return HttpResponse("<h1>Inscrição não existe</h1>")
-
+        insc = None
+        try:
+            insc = models.InscricaoColetiva.objects.get(participante_utilizador_idutilizador = user.pk, inscricao_idinscricao=inscricao)
+        except:
+            try:
+                insc = models.InscricaoIndividual.objects.get(participante_utilizador_idutilizador = user.pk, inscricao_idinscricao=inscricao)
+            except:
+                return HttpResponse("<h1>Inscrição não existe</h1>")
+                
         delete_inscricao(insc)
 
     return consultar_inscricao(request)
