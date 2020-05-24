@@ -49,7 +49,7 @@ INSTALLED_APPS = [
     'user.apps.UserConfig',
     'inscricao.apps.InscricaoConfig',
     'Notification.apps.NotificationConfig',
-    'tarefas.apps.TarefasConfig'
+    'tarefas.apps.TarefasConfig',
 ]
 
 MIDDLEWARE = [

@@ -38,7 +38,7 @@ urlpatterns = [
     path("profile_edit/<str:id>",user_views.modify_user,name="profile_edit"),
     path("profiles_list/delete/<str:id>/",user_views.delete_user,name="delete"),
     path('validacoes/<int:acao>/<str:id>',user_views.validacoes,name="validacoes"),
-    path('tarefas',include('tarefas.urls')),
-   # path('config_campus',name="facul_campus"),
+    path('tarefas/',include('tarefas.urls')),
+    #path('config_campus/',include('Campus.url',namespace="campus")),
     path('', include("blog.urls"))
 ]
