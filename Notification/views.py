@@ -74,7 +74,7 @@ def send_to_org(email,request):
         UtilizadorHasNotificacao.objects.create(utilizador_idutilizador=Utilizador.objects.get(pk=user.pk),notificacao=noti,estado=0)
         UtilizadorHasNotificacao.objects.create(utilizador_idutilizador=Utilizador.objects.get(pk=request.session['user_id']),notificacao=noti,estado=0)
 
-    
+
 def checknot(request):
     me_id=request.session['user_id']
     i=len(noti_not_checked(request))
