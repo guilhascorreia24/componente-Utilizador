@@ -8,7 +8,7 @@ from django.contrib.auth import authenticate
 from django.core import signing
 from django.contrib import messages
 from user import views as user_views
-from django.db.models import CharField, Value,IntegerField
+from django.db.models import CharField, Value,IntegerField, DateTimeField
 from datetime import datetime
 from django.db.models.functions import Cast
 from Notification.models import Curso
@@ -78,13 +78,18 @@ def send_to_org(email,request):
 def checknot(request):
     me_id=request.session['user_id']
     i=len(noti_not_checked(request))
-    nots=Notificacao.objects.all().annotate(emissor=Value("",CharField()))
+    notis=[]
+    nots=UtilizadorHasNotificacao.objects.all().annotate(emissor=Value("",CharField()),assunto=Value('',CharField()),criadoem=Value(':ss[.uuuuuu]][TZ] format.',DateTimeField()))
     deletenot(request)
     for noti in nots:
-        noti.emissor=Utilizador.objects.get(pk=noti.idutilizadorenvia).email
-        noti.pk=signing.dumps(noti.pk)
+        if noti.utilizador_idutilizador.pk==me_id:
+            noti.emissor=Utilizador.objects.get(pk=noti.notificacao.idutilizadorenvia).email
+            noti.pk=signing.dumps(noti.pk)
+            noti.assunto=noti.notificacao.assunto
+            noti.criadoem=noti.notificacao.criadoem
+            notis.append(noti)
     func=user_views.user(request)
-    return render(request,'check.html',{'nots':nots,'me_id':me_id,'funcao':func,'i':i,'not_checked':noti_not_checked(request)})
+    return render(request,'check.html',{'nots':notis,'me_id':me_id,'funcao':func,'i':i,'not_checked':noti_not_checked(request)})
 
 def deletenot(request):
 
@@ -93,7 +98,6 @@ def deletenot(request):
         pressed = request.POST.getlist('noti')
         for press in pressed:
             UtilizadorHasNotificacao.objects.get(pk=signing.loads(press)).delete()
-            Notificacao.objects.get(pk=signing.loads(press)).delete()
         messages.success(request, 'Successfully deleted.')
             
 
