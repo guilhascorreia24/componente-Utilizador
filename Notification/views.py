@@ -24,7 +24,7 @@ def createnot(request):
         #print(form.is_valid())
         if form.is_valid():
             for email in emails:
-                print("noti:"+str(user_views.validateEmail(email) is True) +" "+str(Utilizador.objects.filter(email=email).exists()))
+                #print("noti:"+str(user_views.validateEmail(email) is True) +" "+str(Utilizador.objects.filter(email=email).exists()))
                 form.cleaned_data['idutilizadorenvia'] = request.session['user_id']
                 if user_views.validateEmail(email) is True and (Utilizador.objects.filter(email=email).exists() or email in list):
                     if Utilizador.objects.filter(email=email).exists():
@@ -72,12 +72,14 @@ def send_to_org(email,request):
         destinatario_pk= int(user.pk)
         noti=Notificacao.objects.create(descricao=d,utilizadorrecebe=destinatario_pk,idutilizadorenvia=request.session['user_id'],criadoem=datetime.now(),assunto=a)
         UtilizadorHasNotificacao.objects.create(utilizador_idutilizador=Utilizador.objects.get(pk=user.pk),notificacao=noti,estado=0)
+        UtilizadorHasNotificacao.objects.create(utilizador_idutilizador=Utilizador.objects.get(pk=request.session['user_id']),notificacao=noti,estado=0)
 
     
 def checknot(request):
     me_id=request.session['user_id']
     i=len(noti_not_checked(request))
     nots=Notificacao.objects.all().annotate(emissor=Value("",CharField()))
+    deletenot(request)
     for noti in nots:
         noti.emissor=Utilizador.objects.get(pk=noti.idutilizadorenvia).email
         noti.pk=signing.dumps(noti.pk)
@@ -86,14 +88,14 @@ def checknot(request):
 
 def deletenot(request):
 
-    pressed = request.POST.getlist('{{forloop.count}}')
-
     if request.method == 'POST':
-        pressed.delete()
+        print(request.POST.getlist('noti'))
+        pressed = request.POST.getlist('noti')
+        for press in pressed:
+            UtilizadorHasNotificacao.objects.get(pk=signing.loads(press)).delete()
+            Notificacao.objects.get(pk=signing.loads(press)).delete()
         messages.success(request, 'Successfully deleted.')
             
-    else:
-        return render(request, 'tabela_de_consulta.html', {'pressed': pressed})
 
 def enviados(request):
     me_id=request.session['user_id']
@@ -152,6 +154,10 @@ def get_my_lists(request):
         joins(uos,"Colaboradores")
     return list
 
+def new_noti(request,destinatario_pk,assunto,texto):
+    noti=Notificacao.objects.create(descricao=texto,utilizadorrecebe=destinatario_pk,idutilizadorenvia=request.session['user_id'],criadoem=datetime.now(),assunto=assunto)
+    UtilizadorHasNotificacao.objects.create(utilizador_idutilizador=Utilizador.objects.get(pk=destinatario_pk),notificacao=noti,estado=0)
+    UtilizadorHasNotificacao.objects.create(utilizador_idutilizador=Utilizador.objects.get(pk=request.session['user_id']),notificacao=noti,estado=0)
 
 
 def joins(uos,x):
