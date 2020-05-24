@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import path,include
 from user import views as user_views
 from Notification import views as notificacao_views
+from tarefas import urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -37,6 +38,7 @@ urlpatterns = [
     path("profile_edit/<str:id>",user_views.modify_user,name="profile_edit"),
     path("profiles_list/delete/<str:id>/",user_views.delete_user,name="delete"),
     path('validacoes/<int:acao>/<str:id>',user_views.validacoes,name="validacoes"),
+    path('tarefas',include('tarefas.urls')),
    # path('config_campus',name="facul_campus"),
     path('', include("blog.urls"))
 ]

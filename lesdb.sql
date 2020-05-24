@@ -622,9 +622,10 @@ COLLATE = utf8mb4_0900_ai_ci;
 -- Table `les`.`disponibilidade`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `les`.`disponibilidade` (
-  `TIpo_tarefa` VARCHAR(255) NOT NULL,
+  `Tipo_tarefa` VARCHAR(255) NOT NULL,
   `colaborador_Utilizador_idutilizador` INT NOT NULL,
-  `horario_hora` TIME NOT NULL,
+  `horario_hora_inicio` TIME NOT NULL,
+  `horario_hora_final` TIME NOT NULL,
   `dia_dia` DATE NOT NULL,
   `Disponibilidade_id` INT NOT NULL,
   PRIMARY KEY (`Disponibilidade_id`),
@@ -1052,9 +1053,9 @@ CREATE TABLE IF NOT EXISTS `les`.`tarefa` (
   `nome` VARCHAR(255) NOT NULL,
   `concluida` TINYINT NOT NULL,
   `Coordenador_Utilizador_idutilizador` INT NOT NULL,
-  `colaborador_Utilizador_idutilizador` INT NOT NULL,
-  `hora_inicio` TIME NOT NULL,
-  `dia_dia` DATE NOT NULL,
+  `colaborador_Utilizador_idutilizador` INT NULL,
+  `hora_inicio` TIME NULL DEFAULT NULL,
+  `dia_dia` DATE NULL DEFAULT NULL,
   `sessao_idsessao` INT NULL DEFAULT NULL,
   `buscar` INT NULL DEFAULT NULL,
   `levar` INT NULL DEFAULT NULL,
