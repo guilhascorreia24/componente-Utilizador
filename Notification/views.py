@@ -41,7 +41,12 @@ def createnot(request):
                     destinatario_pk= int(user_email.pk)
                     noti=Notificacao.objects.create(descricao=d,utilizadorrecebe=destinatario_pk,idutilizadorenvia=request.session['user_id'],criadoem=datetime.now(),assunto=a)
                     UtilizadorHasNotificacao.objects.create(utilizador_idutilizador=user_email,notificacao=noti,estado=0)
-            messages.success(request, 'Successfully sent.')
+            '''d='Notificação enviada com sucesso'
+            a='Notificação'
+            destinatario_pk= request.session['user_id']
+            noti=Notificacao.objects.create(descricao=d,utilizadorrecebe=destinatario_pk,idutilizadorenvia=-1,criadoem=datetime.now(),assunto=a)
+            UtilizadorHasNotificacao.objects.create(utilizador_idutilizador=Utilizador.objects.get(pk=request.session['user_id']),notificacao=noti,estado=0)'''
+            messages.success(request, 'Notificação enviada com sucesso')
             return redirect('check_not')
     else:
         form = NotificationForm()
@@ -67,14 +72,14 @@ def send_to_org(email,request):
     if email[0]=="Participantes":
         users_send=Participante.objects.all()
     for user in users_send:
-        d=request.POST['Descricao']
-        a=request.POST['Assunto']
-        destinatario_pk= int(user.pk)
-        noti=Notificacao.objects.create(descricao=d,utilizadorrecebe=destinatario_pk,idutilizadorenvia=request.session['user_id'],criadoem=datetime.now(),assunto=a)
-        UtilizadorHasNotificacao.objects.create(utilizador_idutilizador=Utilizador.objects.get(pk=user.pk),notificacao=noti,estado=0)
-        UtilizadorHasNotificacao.objects.create(utilizador_idutilizador=Utilizador.objects.get(pk=request.session['user_id']),notificacao=noti,estado=0)
-
-
+        if user.pk != request.session['user_id']:
+            d=request.POST['Descricao']
+            a=request.POST['Assunto']
+            destinatario_pk= int(user.pk)
+            noti=Notificacao.objects.create(descricao=d,utilizadorrecebe=destinatario_pk,idutilizadorenvia=request.session['user_id'],criadoem=datetime.now(),assunto=a)
+            UtilizadorHasNotificacao.objects.create(utilizador_idutilizador=Utilizador.objects.get(pk=user.pk),notificacao=noti,estado=0)
+            UtilizadorHasNotificacao.objects.create(utilizador_idutilizador=Utilizador.objects.get(pk=request.session['user_id']),notificacao=noti,estado=1)
+   
 def checknot(request):
     me_id=request.session['user_id']
     i=len(noti_not_checked(request))
@@ -82,30 +87,32 @@ def checknot(request):
     nots=UtilizadorHasNotificacao.objects.all().annotate(emissor=Value("",CharField()))
     deletenot(request)
     for noti in nots:
-        if noti.utilizador_idutilizador.pk==me_id:
-            noti.emissor=Utilizador.objects.get(pk=noti.notificacao.idutilizadorenvia).email
+        print(noti.notificacao in notis)
+        if noti.utilizador_idutilizador.pk==me_id and not(noti.notificacao.pk in notis):
+            if Utilizador.objects.filter(pk=noti.notificacao.idutilizadorenvia).exists():
+                noti.emissor=Utilizador.objects.get(pk=noti.notificacao.idutilizadorenvia).email
+            else:
+                noti.emissor='Diaaberto@ualg.pt'
             noti.pk=signing.dumps(noti.pk)
             notis.append(noti)
     func=user_views.user(request)
     return render(request,'check.html',{'nots':notis,'me_id':me_id,'funcao':func,'i':i,'not_checked':noti_not_checked(request)})
 
 def deletenot(request):
-
     if request.method == 'POST':
         print(request.POST.getlist('noti'))
         pressed = request.POST.getlist('noti')
         for press in pressed:
             UtilizadorHasNotificacao.objects.filter(pk=signing.loads(press)).delete()
         messages.success(request, 'Successfully deleted.')
-            
-
+         
 def enviados(request):
     me_id=request.session['user_id']
     notis=[]
     nots=UtilizadorHasNotificacao.objects.all().annotate(emissor=Value("",CharField()),recept=Value("",CharField()))
     deletenot(request)
     for noti in nots:
-        if noti.notificacao.idutilizadorenvia==me_id:
+        if noti.notificacao.idutilizadorenvia==me_id and noti.utilizador_idutilizador.pk==noti.notificacao.utilizadorrecebe:
             noti.recept=Utilizador.objects.get(pk=noti.notificacao.utilizadorrecebe).email
             noti.pk=signing.dumps(noti.pk)
             notis.append(noti)
@@ -116,7 +123,7 @@ def enviados(request):
 
 def noti(request,id):
     me_id=signing.loads(id)
-    noti=Notificacao.objects.get(pk=me_id)
+    noti=pk=UtilizadorHasNotificacao.objects.get(pk=me_id).notificacao
     form = NotificationForm(initial={'Destinatario':Utilizador.objects.get(pk=noti.utilizadorrecebe).email,'Assunto':noti.assunto,'Descricao':noti.descricao})
     print(form)
     UtilizadorHasNotificacao.objects.filter(notificacao=noti).update(estado=1)

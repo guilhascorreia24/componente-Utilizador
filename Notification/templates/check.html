@@ -28,7 +28,7 @@
                                 data-v-a67fe1ba="">Notificações</strong></div>
                         <hr data-v-a67fe1ba="" class="dropdown-divider">
                         {% include "dropdow_noti.html" %}
-                        <a data-v-a67fe1ba="" tabindex="0" class="dropdown-item"><u data-v-a67fe1ba="">Ver todas
+                        <a data-v-a67fe1ba="" tabindex="0" class="dropdown-item" href="{% url 'check_not' %}"><u data-v-a67fe1ba="">Ver todas
                                 as notificações</u></a>
                     </div>
                 </div>
@@ -120,16 +120,6 @@
                                     <!---->
                                 </div>
                                 <div class="column">
-                                    <button class="button button4 is-grey is-outlined" type="button"
-                                        style="margin: 0.7rem;text-decoration:none;" onclick="checkAll()"><span
-                                            class="icon is-small"><i class="mdi mdi-select-all"></i></span> <span>
-                                            Selecionar Todas/Nenhuma </span>
-                                        <!----></button>
-                                    <button class="button button4 is-danger is-outlined" type="submit" form="myform"
-                                        style="margin: 0.7rem;text-decoration:none; padding-right: 20%;"><span
-                                            class="icon is-small"><i class="mdi mdi-close"></i></span> <span> Eliminar
-                                            selecionadas </span>
-                                        <!----></button>
                                     
                                 </div>
                             </ul>
@@ -144,6 +134,16 @@
                                     class="router-link-exact-active router-link-active">Notificações</a></li>
                         </ul>
                     </nav>
+                    <button class="button button4 is-black is-outlined" type="button"
+                    style="margin-bottom: 0.9rem; margin-right: 1rem;text-decoration:none;" onclick="checkAll()"><span
+                        class="icon is-small"><i class="mdi mdi-select-all"></i></span> <span>
+                        Selecionar Todas/Nenhuma </span>
+                    <!----></button>
+                    <button class="button button4 is-danger is-outlined" type="submit" form="myform"
+                    style="margin-bottom: 0.9rem; margin-right: 1rem;text-decoration:none;"><span
+                        class="icon is-small"><i class="mdi mdi-close"></i></span> <span> Eliminar
+                        selecionadas </span>
+                    <!----></button>
                     <a href="{% url "create_not" %}" class="button is-success is-outlined" type="button"
                         style="margin-bottom: 0.9rem; margin-right: 1rem;text-decoration:none;"><span
                             class="icon is-small"><i class="mdi mdi-plus"></i></span> <span> Compor Notificação </span>
@@ -198,7 +198,7 @@
                                             <!---->
 
                                             <th class="is-sortable">
-                                                <div class="th-wrap th-sm">{% if my %} Emissor {% else %} Receptor
+                                                <div class="th-wrap th-sm">{% if my %} Receptor {% else %} Emissor
                                                     {% endif %} <span class="icon is-small" style="display: none;"><i
                                                             class="mdi mdi-menu-up"></i></span>
                                                 </div>
