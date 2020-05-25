@@ -72,6 +72,7 @@ def send_to_org(email,request):
     if email[0]=="Participantes":
         users_send=Participante.objects.all()
     for user in users_send:
+<<<<<<< HEAD
         if user.pk != request.session['user_id']:
             d=request.POST['Descricao']
             a=request.POST['Assunto']
@@ -80,6 +81,16 @@ def send_to_org(email,request):
             UtilizadorHasNotificacao.objects.create(utilizador_idutilizador=Utilizador.objects.get(pk=user.pk),notificacao=noti,estado=0)
             UtilizadorHasNotificacao.objects.create(utilizador_idutilizador=Utilizador.objects.get(pk=request.session['user_id']),notificacao=noti,estado=1)
    
+=======
+        d=request.POST['Descricao']
+        a=request.POST['Assunto']
+        destinatario_pk= int(user.pk)
+        noti=Notificacao.objects.create(descricao=d,utilizadorrecebe=destinatario_pk,idutilizadorenvia=request.session['user_id'],criadoem=datetime.now(),assunto=a)
+        UtilizadorHasNotificacao.objects.create(utilizador_idutilizador=Utilizador.objects.get(pk=user.pk),notificacao=noti,estado=0)
+        UtilizadorHasNotificacao.objects.create(utilizador_idutilizador=Utilizador.objects.get(pk=request.session['user_id']),notificacao=noti,estado=0)
+
+
+>>>>>>> 98fe999c4f3151be86a36bb17cbf88095685b34a
 def checknot(request):
     me_id=request.session['user_id']
     i=len(noti_not_checked(request))
