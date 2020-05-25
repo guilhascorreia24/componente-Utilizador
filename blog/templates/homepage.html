@@ -205,7 +205,7 @@
         {% if messages %}
         {% for message in messages %}
         {% if message.tags == 'success' %}
-        <div role="alert" class="toast is-dark is-top" aria-hidden="true" style="">
+        <div role="alert" class="toast is-dark is-top" aria-hidden="true" style="" id="allert">
             <div>{{message}}</div>
         </div>
         {% endif %}
@@ -215,5 +215,15 @@
     <div class="notices is-bottom"></div>
     <script src="/js/chunk-vendors.63f37e79.js"></script>
 </body>
-
+<script>
+$(document).ready(function () {
+ 
+ window.setTimeout(function() {
+     $(".toast").fadeTo(1000, 0).slideUp(1000, function(){
+         $(this).remove(); 
+     });
+ }, 5000);
+  
+ });
+</script>
 </html>
