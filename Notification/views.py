@@ -141,7 +141,7 @@ def noti_not_checked(request):
         user=Utilizador.objects.get(pk=user_id)
         my_noti=UtilizadorHasNotificacao.objects.all()
         for n in my_noti:
-            if n.notificacao.utilizadorrecebe==user.pk and n.estado==0:
+            if n.notificacao.utilizadorrecebe==user.pk and n.estado==0 and n.utilizador_idutilizador==user:
                 n.notificacao.pk=signing.dumps(n.notificacao.pk)
                 noti.append(n.notificacao)
     return noti
@@ -168,9 +168,9 @@ def get_my_lists(request,list):
         dus=ProfessorUniversitario.objects.all()
         coords=Coordenador.objects.all()
         colabs=Colaborador.objects.all()
-        list.append(str('Docentes'+"."+uos.sigla+"@ualg.pt"))
-        list.append(str('Coordenadores'+"."+uos.sigla+"@ualg.pt"))
-        list.append(str('Colaboradores'+"."+uos.sigla+"@ualg.pt"))
+        list.append(str('Docentes'+"."+uos.sigla+""))
+        list.append(str('Coordenadores'+"."+uos.sigla+""))
+        list.append(str('Colaboradores'+"."+uos.sigla+""))
     return list
 
 def new_noti(request,destinatario_pk,assunto,texto):
@@ -181,6 +181,6 @@ def new_noti(request,destinatario_pk,assunto,texto):
 
 def joins(uos,x,list):
     for uo in uos:
-        print(str(x+uo.sigla+"@ualg.pt"))
-        if not str(x+uo.sigla+"@ualg.pt") in list:
-            list.append(str(x+"."+uo.sigla+"@ualg.pt"))
+        print(str(x+uo.sigla+""))
+        if not str(x+uo.sigla+"") in list:
+            list.append(str(x+"."+uo.sigla+""))

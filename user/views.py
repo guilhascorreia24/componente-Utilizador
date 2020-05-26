@@ -285,7 +285,6 @@ def modify_user(request,id):
         if (request.POST['name']!="")  and (request.POST['email']!="") and not(Utilizador.objects.filter(email=request.POST['email']).exists() and Utilizador.objects.get(email=request.POST['email']).idutilizador!=id) and not( Utilizador.objects.filter(telefone=request.POST['telefone']).exists() and Utilizador.objects.get(telefone=request.POST['telefone']).idutilizador!=id) and (request.POST['telefone']!="") and (validateEmail(request.POST['email'])):
             t=Utilizador.objects.get(pk=id)
             t.nome=request.POST['name']
-            t.username=request.POST['username']
             t.email=request.POST['email']
             t.telefone=request.POST['telefone']
             if t.validada==5:
@@ -342,7 +341,7 @@ def modify_user(request,id):
         ano = Utilizador.objects.get(pk=id).dia_aberto_ano
         funcao = "Colaborador"
         cursoid=Colaborador.objects.get(utilizador_idutilizador=id).curso_idcurso
-        UO=Curso.objects.get(pk=cursoid).unidade_organica_iduo.sigla
+        UO=Curso.objects.get(pk=cursoid.pk).unidade_organica_iduo.sigla
     elif Participante.objects.filter(utilizador_idutilizador=id).exists():
         funcao = "Participante"
     return render(request, 'profile_modify.html', {"form": form, 'nome': name,'UO':UO, 'email': email, "ano":ano,
@@ -433,7 +432,7 @@ def profile_list(request):
     return render(request,"list_users.html",{"users":users,"funcao":funcao,"me":me,"me_id":me_id,"campus":campus,"uos":uos,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
 #--------------------------------------------recuperaçao de password---------------------------------
 def change_password(request, id):
-    id_deccryp=signing.loads(id)
+    id_deccryp=decrypt(id)
     if request.method=='POST':
         form=PasswordChangeForm(request.POST)
         passwd=request.POST['password']
