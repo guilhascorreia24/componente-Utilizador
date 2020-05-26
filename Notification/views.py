@@ -158,13 +158,14 @@ def get_my_lists(request):
         joins(uos,"Coordenadores")
         joins(uos,"Colaboradores")
     if me.validada==2:
+        me=Coordenador.objects.get(utilizador_idutilizador=me)
         uos=me.unidade_organica_iduo
         dus=ProfessorUniversitario.objects.all()
         coords=Coordenador.objects.all()
         colabs=Colaborador.objects.all()
-        joins(uos,"Docentes")
-        joins(uos,"Coordenadores")
-        joins(uos,"Colaboradores")
+        list.append(str('Docentes'+"."+uos.sigla+"@ualg.pt"))
+        list.append(str('Coordenadores'+"."+uos.sigla+"@ualg.pt"))
+        list.append(str('Colaboradores'+"."+uos.sigla+"@ualg.pt"))
     return list
 
 def new_noti(request,destinatario_pk,assunto,texto):
