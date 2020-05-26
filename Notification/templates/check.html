@@ -28,7 +28,8 @@
                                 data-v-a67fe1ba="">Notificações</strong></div>
                         <hr data-v-a67fe1ba="" class="dropdown-divider">
                         {% include "dropdow_noti.html" %}
-                        <a data-v-a67fe1ba="" tabindex="0" class="dropdown-item" href="{% url 'check_not' %}"><u data-v-a67fe1ba="">Ver todas
+                        <a data-v-a67fe1ba="" tabindex="0" class="dropdown-item" href="{% url 'check_not' %}"><u
+                                data-v-a67fe1ba="">Ver todas
                                 as notificações</u></a>
                     </div>
                 </div>
@@ -61,24 +62,12 @@
                         <div data-v-1513178e="" class="menu">
                             <p data-v-1513178e="" class="menu-label">Filtros Utilizador</p>
                             <ul data-v-1513178e="" class="menu-list">
+
                                 <div data-v-1513178e="" class="field">
                                     <!---->
                                     <div data-v-1513178e="" class="autocomplete control">
                                         <div class="control has-icons-left is-clearfix"><input type="text" id="myInput"
                                                 onkeyup="myFunction()" autocomplete="off"
-                                                placeholder="Nome do Utilizador" class="input">
-                                            <span class="icon is-left"><i class="mdi mdi-magnify mdi-24px"></i></span>
-                                            <!---->
-                                            <!---->
-                                        </div>
-                                    </div>
-                                    <!---->
-                                </div>
-                                <div data-v-1513178e="" class="field">
-                                    <!---->
-                                    <div data-v-1513178e="" class="autocomplete control">
-                                        <div class="control has-icons-left is-clearfix"><input type="text" id="myInput2"
-                                                onkeyup="myFunction2()" autocomplete="off"
                                                 placeholder="Email do Utilizador" class="input">
                                             <span class="icon is-left"><i class="mdi mdi-magnify mdi-24px"></i></span>
                                             <!---->
@@ -100,27 +89,97 @@
                                     </div>
                                     <!---->
                                 </div>
-                                <div class="field">
-                                    <!---->
-                                    <div class="control is-expanded has-icons-left"><span
-                                            class="select is-fullwidth is-empty"><select id="myInput4"
-                                                onchange="myFunction4()">
-                                                <option hidden value=""> Cargo do Utilizador
-                                                </option>
-                                                <option value="Administrador">Administrador</option>
-                                                <option value="Coordenador">Coordenador</option>
-                                                <option value="Participante">Participante</option>
-                                                <option value="Colaborador">Colaborador</option>
-                                                <option value="Docente Univesitario">Docente Univesitario
-                                                </option>
-                                            </select></span><span class="icon is-left"><i
-                                                class="mdi mdi-magnify mdi-24px"></i></span>
-                                        <!---->
-                                    </div>
-                                    <!---->
-                                </div>
+                                <li class="is-not-menu"><a class="is-active" onclick="press()">
+                                        <!----> <span class="icon is-pulled-right"><i id="plus"
+                                                class="mdi mdi-plus mdi-24px"></i></span><small>Mais Filtros de
+                                            Atividade</small></a>
+                                    <ul style="display: none;" id="panel">
+                                        <div class="field">
+                                            <!---->
+                                            <div class="datepicker control">
+                                                <div class="dropdown is-mobile-modal">
+                                                    <div role="button" aria-haspopup="true" class="dropdown-trigger">
+                                                        <div class="control has-icons-left is-clearfix input-daterange">
+                                                            <input type="date" id="datefilterfrom" data-date-split-input="true"
+                                                                class="input"> <span class="icon is-left"><i
+                                                                    class="mdi mdi-calendar-today mdi-24px"></i></span>
+                                                            <!---->
+                                                            <!---->
+                                                        </div>
+                                                    </div>
+                                                    <div class="background" style="display: none;" aria-hidden="true">
+                                                    </div>
+                                                    <div class="dropdown-menu" style="display: none;"
+                                                        aria-hidden="true">
+                                                        <div class="dropdown-content">
+                                                            <div tabindex="0" class="dropdown-item">
+                                                                <header class="datepicker-header">
+                                                                    <div class="pagination field is-centered"><a
+                                                                            role="button" href="#"
+                                                                            class="pagination-previous"><span
+                                                                                class="icon has-text-primary is"><i
+                                                                                    class="mdi mdi-chevron-left mdi-24px"></i></span></a>
+                                                                        <a role="button" href="#"
+                                                                            class="pagination-next"><span
+                                                                                class="icon has-text-primary is"><i
+                                                                                    class="mdi mdi-chevron-right mdi-24px"></i></span></a>
+                                                                        <!---->
+                                                                    </div>
+                                                                </header>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!---->
+                                            </div>
+                                            <br>
+                                            <div class="field">
+                                                <!---->
+                                                <div class="datepicker control">
+                                                    <div class="dropdown is-mobile-modal">
+                                                        <div role="button" aria-haspopup="true"
+                                                            class="dropdown-trigger">
+                                                            <div class="control has-icons-left is-clearfix"><input
+                                                                    type="date" id="datefilterto" data-date-split-input="true" class="input">
+                                                                <span class="icon is-left date-range-filter"><i
+                                                                        class="mdi mdi-calendar-today mdi-24px"></i></span>
+                                                                <!---->
+                                                                <!---->
+                                                                <div aria-hidden="true" class="background"
+                                                                    style="display: none;">
+                                                                </div>
+                                                                <div aria-hidden="true" class="dropdown-menu"
+                                                                    style="display: none;">
+                                                                    <div class="dropdown-content">
+                                                                        <div tabindex="0" class="dropdown-item">
+                                                                            <header class="datepicker-header">
+                                                                                <div
+                                                                                    class="pagination field is-centered">
+                                                                                    <a role="button" href="#"
+                                                                                        class="pagination-previous"><span
+                                                                                            class="icon has-text-primary is"><i
+                                                                                                class="mdi mdi-chevron-left mdi-24px"></i></span></a>
+                                                                                    <a role="button" href="#"
+                                                                                        class="pagination-next"><span
+                                                                                            class="icon has-text-primary is"><i
+                                                                                                class="mdi mdi-chevron-right mdi-24px"></i></span></a>
+                                                                                    <!---->
+                                                                                </div>
+                                                                            </header>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <!---->
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </ul>
+                                </li>
                                 <div class="column">
-                                    
+
                                 </div>
                             </ul>
                         </div>
@@ -134,16 +193,17 @@
                                     class="router-link-exact-active router-link-active">Notificações</a></li>
                         </ul>
                     </nav>
-                    <button class="button button4 is-black is-outlined" type="button"
-                    style="margin-bottom: 0.9rem; margin-right: 1rem;text-decoration:none;" onclick="checkAll()"><span
-                        class="icon is-small"><i class="mdi mdi-select-all"></i></span> <span>
-                        Selecionar Todas/Nenhuma </span>
-                    <!----></button>
+                    <a class="button button4 is-black is-outlined" type="button"
+                        style="margin-bottom: 0.9rem; margin-right: 1rem;text-decoration:none;"
+                        onclick="checkAll()"><span class="icon is-small"><i class="mdi mdi-select-all"></i></span>
+                        <span>
+                            Selecionar Todas/Nenhuma </span>
+                        <!----></a>
                     <button class="button button4 is-danger is-outlined" type="submit" form="myform"
-                    style="margin-bottom: 0.9rem; margin-right: 1rem;text-decoration:none;"><span
-                        class="icon is-small"><i class="mdi mdi-close"></i></span> <span> Eliminar
-                        selecionadas </span>
-                    <!----></button>
+                        style="margin-bottom: 0.9rem; margin-right: 1rem;text-decoration:none;"><span
+                            class="icon is-small"><i class="mdi mdi-close"></i></span> <span> Eliminar
+                            selecionadas </span>
+                        <!----></button>
                     <a href="{% url "create_not" %}" class="button is-success is-outlined" type="button"
                         style="margin-bottom: 0.9rem; margin-right: 1rem;text-decoration:none;"><span
                             class="icon is-small"><i class="mdi mdi-plus"></i></span> <span> Compor Notificação </span>
@@ -342,11 +402,11 @@
     function myFunction5() {
         var input, filter, table, tr, td, i, txtValue;
         input = document.getElementById("myInput5");
-        filter = input.value.toUpperCase();
+        filter = input.value;
         table = document.getElementById("myTable");
         tr = table.getElementsByTagName("tr");
         for (i = 0; i < tr.length; i++) {
-            td = tr[i].getElementsByTagName("td")[4];
+            td = tr[i].getElementsByTagName("td")[3];
             if (td) {
                 txtValue = td.textContent || td.innerText;
                 if (txtValue.toUpperCase().indexOf(filter) > -1) {
@@ -382,7 +442,7 @@
         table = document.getElementById("myTable");
         tr = table.getElementsByTagName("tr");
         for (i = 0; i < tr.length; i++) {
-            td = tr[i].getElementsByTagName("td")[3];
+            td = tr[i].getElementsByTagName("td")[2];
             if (td) {
                 txtValue = td.textContent || td.innerText;
                 if (txtValue.toUpperCase().indexOf(filter) > -1) {
@@ -466,6 +526,37 @@
         }
         isChecked = !isChecked;
     }
+    function press() {
+        if (document.getElementById('panel').style.display == 'none'){
+            document.getElementById("panel").style.display = "block";
+            document.getElementById('plus').classList.remove("mdi-plus");
+            document.getElementById('plus').classList.add('mdi-minus');}
+
+        else{
+            document.getElementById("panel").style.display = "none";
+            document.getElementById('plus').classList.remove("mdi-minus");
+            document.getElementById('plus').classList.add('mdi-plus');}
+
+    }
+    function filterRows() {
+        var from = $('#datefilterfrom').val();
+        var to = $('#datefilterto').val();
+
+        from = from || '1970-01-01'; // default from to a old date if it is not set
+        to = to || '2999-12-31';
+        var dateFrom = moment(from)
+        var dateTo = moment(to)
+        //document.write(dateFrom);
+        $('#myTable tr').each(function (i, tr) {
+            var val = $(tr).find("td:nth-child(3)").text();
+            var dateVal = moment(val, "DD/MM/YYYY");
+            var visible = (dateVal.isBetween(dateFrom, dateTo, null, [])) ? "" : "none"; // [] for inclusive
+            $(tr).css('display', visible);
+        });
+    }
+
+    $('#datefilterfrom').on("change", filterRows);
+    $('#datefilterto').on("change", filterRows);
 </script>
 
 {% endblock content %}

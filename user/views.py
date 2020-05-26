@@ -214,7 +214,7 @@ def login_request(request):
                     return r
                 else:
                     tentatives-=1
-                    messages.error(request, f"Sua conta ainda não validada pelo administrador")
+                    messages.error(request, f"Sua conta ainda não validada")
             else:
                 tentatives-=1
                 messages.error(request, f"Username e/ou palavra-passe. Tem mais {tentatives} tentativas")
@@ -372,7 +372,7 @@ def profile(request,id):
         IDUO = Coordenador.objects.get(pk=id).unidade_organica_iduo
         UO=UnidadeOrganica.objects.get(pk=IDUO.pk).sigla
     elif Colaborador.objects.filter(utilizador_idutilizador=id).exists():
-        ano = Utilizador.objects.get(pk=id).dia_aberto_ano.pk
+        #ano = Utilizador.objects.get(pk=id).dia_aberto_ano.pk 
         funcao = "Colaborador"
         curso=Colaborador.objects.get(utilizador_idutilizador=id).curso_idcurso
         cursoname=curso.nome

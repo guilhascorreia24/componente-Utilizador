@@ -50,39 +50,14 @@
 <div data-v-8716d23a="" id="top-hero" class="hero is-primary is-bold">
     <div data-v-8716d23a="" id="top-hero-body" class="hero-body"></div>
 </div>
+
+
 <div data-v-8716d23a="" id="page-content">
     <div data-v-8716d23a="" class="card">
         <div data-v-8716d23a="" class="card-content">
-                <div data-v-8716d23a="" id="top">
-                    <nav aria-label="breadcrumbs" class="breadcrumb" style="background-color:white">
-                        <ul>
-                            <li><a href="/" class="router-link-active">Início</a></li>
-                            <li class="is-active"><a href="" class="router-link-exact-active router-link-active">Disponibilidade</a>
-                            </li>
-                        </ul>
-                    </nav>
-                    <div style="padding: 3rem 2vw 1rem;">
-                        <div class="b-steps">
-                            <nav class="steps is-success">
-                                <ul class="step-items">
-                                    <li class="step-item is-success is-active"><a class="step-link" >
-                                            <div class="step-marker"><span class="icon"><i
-                                                        class="mdi mdi-book mdi-24px"></i></span></div>
-                                            <div class="step-details"><span class="step-title">Disponibilidade</span>
-                                            </div>
-                                        </a></li>
-                                </ul>
-                            </nav>
-                            <section class="step-content">
-                                <div class="step-item" style="">
-                                    <div style="padding: 1rem 2vw 0px;">
-                                        <hr style="
-                                        margin-bottom: 0px;
-                                        margin-top: 0px;
-                                    "> 
-                    <form id = "regForm" method="POST" style="
-                    margin-bottom: 0px;
-                ">
+            <div data-v-8716d23a="" class="columns">
+                <div class="table-wrapper">
+                    <form id = "regForm" method="POST">
                     {% csrf_token %}
                         <table id="myTable" class="table table-striped">
                                 <thead>
@@ -94,7 +69,12 @@
                                             </div>
                                         </th>
                                         <th class="is-sortable">
-                                            <div class="th-wrap" > Hora <span class="icon is-small"
+                                            <div class="th-wrap" > Hora Início <span class="icon is-small"
+                                                    style="display: none;"><i class="mdi mdi-menu-up"></i></span>
+                                            </div>
+                                        </th>
+                                        <th class="is-sortable">
+                                            <div class="th-wrap" > Hora Final <span class="icon is-small"
                                                     style="display: none;"><i class="mdi mdi-menu-up"></i></span>
                                             </div>
                                         </th>
@@ -103,26 +83,24 @@
                                                     style="display: none;"><i class="mdi mdi-menu-up"></i></span>
                                             </div>
                                         </th>
-                                        <th class="is-sortable">
-                                            <div class="th-wrap"> Ações <span class="icon is-small"
-                                                    style="display: none;"><i class="mdi mdi-menu-up"></i></span>
-                                            </div>
-                                        </th>
                                         <!---->
                                     </tr>
                                     <!---->
                                     <!---->
-                                </thead>                                 
-                                <tbody id="responsavel_form">
-                                    {{ form.management_form }}
+                                </thead>  
+                                {{ form.management_form }}                               
+                                <tbody id="disponibilidade">
                                     {% for disponibilidade in form %}
                                         <tr draggable="false" class="" scope="row">
                                         <!---->
                                             <td data-label="Dia" class="">
-                                                {{disponibilidade.dia_dia}}
+                                                {{ disponibilidade.dia_dia }}
                                             </td>
-                                            <td data-label="Hora" class="">
-                                                {{disponibilidade.horario_hora}}
+                                            <td data-label="Hora Início" class="">
+                                                {{ disponibilidade.horario_hora }}
+                                            </td>
+                                            <td data-label="Hora Final" class="">
+                                                {{ disponibilidade.horario_hora1 }}
                                             </td>
                                             <td data-label="Tipo Tarefa" class=""> 
                                                 <select name={{ tipo_tarefa.html_name }} id={{ tipo_tarefa.id_for_label }}>
@@ -133,11 +111,9 @@
                                                     <option value="Ajudar Docente">Ajudar Docente</option>
 
                                                 </select>
-                                            </td>                        
-                                            <td data-label="Ações" class="has-text">
-                                                <a role="button"><span class="icon has-text-danger"><i
-                                                            class="mdi mdi-close mdi-24px"></i></span></a></td>
-                                        {% endfor %}  
+                                            </td>                 
+                                        </tr>
+                                    {% endfor %}  
                                     <!---->
                                     <!---->
                                     <!---->
@@ -146,89 +122,79 @@
                             <!---->
                         </table>
 
-
                         <!--TEMPLATE FOR ADD MORE REPONSAVEIS-->
-                        <div id="responsavel_template" style="display:none">
-                            <div class="columns responsavel">
-                                <div class="column">
-                                    <div class="field">
-                                        <div class="control is-clearfix">
+                        <table style="display:none">
+                            <tbody id="template_disponibilidade">
+                            <tr draggable="false" class="" scope="row">
+                                    <!---->
+                                    <td data-label="Dia" class="">
                                             {{form.empty_form.dia_dia}}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="column">
-                                    <div class="field">
-                                        <div class="control is-clearfix">
-                                            {{form.responsaveis.empty_form.horario_hora}}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="column">
-                                    <div class="field">
-                                        <div class="control is-clearfix">
-                                            {{form.empty_form.tipo_tarefa}}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!--END TEMPLATE-->
+                                    </td>
+                                    <td data-label="Hora Início" class="">
+                                            {{form.empty_form.horario_hora}}
+                                    </td>
+                                    <td data-label="Hora Final" class="">
+                                            {{form.empty_form.horario_hora1}}
+                                    </td>
+                                    <td data-label="Tipo Tarefa" class=""> 
+                                        <select name="{{ form.empty_form.tipo_tarefa.html_name }}" id="{{ form.empty_form.tipo_tarefa.id_for_label }}">
+                                            <option value="" selected="">---------</option>
 
+                                            <option value="Guiar Grupo">Guiar Grupo</option>
+
+                                            <option value="Ajudar Docente">Ajudar Docente</option>
+
+                                        </select>
+                                    </td>
+                            </tr> 
+                            </tbody>
+                        </table>
+
+                        <!--END TEMPLATE-->
+                        <br>
+                        <div>
+                            <input type="submit" style="text-align:center">
+                        </div>
+                        <br>
                         <button type="button" class="button" onclick="add_responsavel()">
                             <span class="icon is-small"><i class="mdi mdi-plus"></i></span>
                             <span>Adicionar disponibilidade</span>
                         </button>
-
                         <span>
                             <button type="button" class="button" style="float:right" onclick="delete_responsavel()">
-                                <span>Remover disponibilidade</span><span class="icon is-small"><i class="mdi mdi-minus"></i></span>
+                                <span class="icon is-small"><i class="mdi mdi-minus"></i></span>
+                                <span>Remover disponibilidade</span>
                             </button>
                         </span>
-                        <div class="column is-8 is-offset-2">
-                            <div class="level">
-                                <div class="level-left"><a href=".." class="button is-outlined" type="button">
-                                        <!----> <span> Cancelar </span>
-                                        <!----></a></div>
-                                <div class="level-right"><button type="button"
-                                        class="button is-large is-success is-outlined" data-toggle="modal"
-                                        data-target="#exampleModal" data-backdrop="false">
-                                        <!----> <span> Submeter </span>
-                                        <!----></button></div>
-                            </div>
                     </form>
                 </div>
             </div>
         </div>
     </div>
 </div>
-</div>
-</div>
-</div>
-
 
 
 <script>
 function add_responsavel() 
 {
     var value = parseInt($('#id_tarefa-TOTAL_FORMS').val());
-    $("#id_tarefa-TOTAL_FORMS").val(value+1);
+    $('#id_tarefa-TOTAL_FORMS').val(value+1);
 
-    var form_idx = $('#responsavel_form').children().length;
-    var template = $('#responsavel_template').clone(true);
-    $('#responsavel_form').append(template.html().replace(/__prefix__/g, form_idx));
+    var form_idx = $('#disponibilidade').children().length;
+    var template = $('#template_disponibilidade').clone(true);
+
+    $('#disponibilidade').append(template.html().replace(/__prefix__/g, form_idx));
 }
 
 function delete_responsavel() 
 {
-    if($('#responsavel_form > .responsavel').length > 1)
+    if($('#id_tarefa-TOTAL_FORMS').val() > 1)
     {
-        var value = parseInt($('#id_responsaveis_set-TOTAL_FORMS').val());
-        $('#id_responsaveis_set-TOTAL_FORMS').val(value-1);
-        $('#responsavel_form > .responsavel').last().remove();
+        var value = parseInt($('#id_tarefa-TOTAL_FORMS').val());
+        $('#id_tarefa-TOTAL_FORMS').val(value-1);
+        $('#disponibilidade').children().last().remove();
     }
 }
 </script>
-
 
 {% endblock content %}
