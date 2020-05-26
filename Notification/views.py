@@ -13,11 +13,11 @@ from datetime import datetime
 from django.db.models.functions import Cast
 from Notification.models import Curso
 
-list=[]
 def createnot(request):
+    list=[]
     me_id=request.session['user_id']
     funcao=user_views.user(request)
-    contacts=get_my_lists(request)
+    contacts=get_my_lists(request,list)
     if request.method == 'POST':
         form = NotificationForm(request.POST)
         emails=request.POST['Destinatario'].split(",")
@@ -124,10 +124,15 @@ def enviados(request):
 def noti(request,id):
     me_id=signing.loads(id)
     noti=pk=UtilizadorHasNotificacao.objects.get(pk=me_id).notificacao
-    form = NotificationForm(initial={'Destinatario':Utilizador.objects.get(pk=noti.utilizadorrecebe).email,'Assunto':noti.assunto,'Descricao':noti.descricao})
+    destinatario=noti.utilizadorrecebe
+    tipo="Destinatario"
+    if request.session['user_id']==noti.utilizadorrecebe:
+        destinatario=noti.idutilizadorenvia
+        tipo="Emissor"
+    form = NotificationForm(initial={'Destinatario':Utilizador.objects.get(pk=destinatario).email,'Assunto':noti.assunto,'Descricao':noti.descricao})
     print(form)
     UtilizadorHasNotificacao.objects.filter(notificacao=noti).update(estado=1)
-    return render(request,"consultar_not.html",{'form':form,'me_id':signing.dumps(me_id),'funcao':user_views.user(request),'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
+    return render(request,"consultar_not.html",{'form':form,'me_id':signing.dumps(me_id),'funcao':user_views.user(request),'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request),'tipo':tipo})
 
 def noti_not_checked(request):
     noti=[]
@@ -141,7 +146,7 @@ def noti_not_checked(request):
                 noti.append(n.notificacao)
     return noti
 
-def get_my_lists(request):
+def get_my_lists(request,list):
     me=Utilizador.objects.get(pk=request.session['user_id'])
     list.append("Administradores@ualg.pt")
     if  me.validada==4:
@@ -154,9 +159,9 @@ def get_my_lists(request):
         dus=ProfessorUniversitario.objects.all()
         coords=Coordenador.objects.all()
         colabs=Colaborador.objects.all()
-        joins(uos,"Docentes")
-        joins(uos,"Coordenadores")
-        joins(uos,"Colaboradores")
+        joins(uos,"Docentes",list)
+        joins(uos,"Coordenadores",list)
+        joins(uos,"Colaboradores",list)
     if me.validada==2:
         me=Coordenador.objects.get(utilizador_idutilizador=me)
         uos=me.unidade_organica_iduo
@@ -174,7 +179,7 @@ def new_noti(request,destinatario_pk,assunto,texto):
     UtilizadorHasNotificacao.objects.create(utilizador_idutilizador=Utilizador.objects.get(pk=request.session['user_id']),notificacao=noti,estado=0)
 
 
-def joins(uos,x):
+def joins(uos,x,list):
     for uo in uos:
         print(str(x+uo.sigla+"@ualg.pt"))
         if not str(x+uo.sigla+"@ualg.pt") in list:
