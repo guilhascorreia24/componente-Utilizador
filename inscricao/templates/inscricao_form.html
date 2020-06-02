@@ -348,7 +348,7 @@
                                                                         class="select is-fullwidth is-empty select-transporte">
                                                                         {{transporte.horario}}
                                                                         </span>
-                                                                        <p class="help is-danger">{{form.transportes.horario.errors.0}}</p>
+                                                                        <p class="help is-danger">{{transportes.horario.errors.0}}</p>
                                                                     <!---->
                                                                 </div>
                                                                 <!---->
@@ -368,7 +368,7 @@
                                                                         <button type="button" class="button is-primary"><span class="icon"><i class="mdi mdi-plus mdi-24px"></i></span></button>
                                                                     </p>
                                                                 </div>
-                                                                <p class="help is-danger">{{form.transportes.n_passageiros.errors.0}}</p>
+                                                                <p class="help is-danger">{{transporte.n_passageiros.errors.0}}</p>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -431,14 +431,12 @@
                                         <div class="step-item" style="display:none;">
                                             <div data-v-f5fe8f88="" style="padding: 1rem 2vw 0px;">
                                                 <hr data-v-f5fe8f88="">
-                                                {% for camp in form.almoco.campus %}
+                                                {% for prato in form.almoco.prato %}
                                                 <h2 data-v-f5fe8f88="" class="title has-text-grey is-uppercase"
-                                                    style="font-size: 0.9rem;"> Informação de almoço - Campus {{camp.nome}} </h2>
-
-                                                {% for prato,menu in camp.pratos %}
+                                                    style="font-size: 0.9rem;"> Informação de almoço - Campus {{prato.menu.campus_idcampus}} </h2>
                                                 
                                                 <div data-v-f5fe8f88="" class="field has-numberinput has-numberinput-compact"><label
-                                                        >{{menu.tipo}} - {{menu.menu}}</label>
+                                                        >{{prato.menu.tipo}} - {{prato.menu.menu}}</label>
                                                     <div data-v-f5fe8f88="" class="b-numberinput field has-addons">
                                                         <p class="control"><button type="button"
                                                                 class="button is-primary"><span class="icon"><i
@@ -453,7 +451,6 @@
                                                     </div>
                                                     <p class="help is-danger">{{prato.nralmocos.errors.0}}</p>
                                                 </div>
-                                                {% endfor %}
                                                 <hr data-v-f5fe8f88="">
                                                 {% endfor %}
                                             </div>
@@ -2858,8 +2855,8 @@
                                                         {% for curr_sessao in form.sessao %}
                                                         {% if curr_sessao.nr_inscritos.errors|length == 0 %}
                                                         <div>
-                                                        {{curr_sessao.nr_inscritos}}
-                                                        {{curr_sessao.sessao_idsessao.value}}
+                                                        <p>{{curr_sessao.nr_inscritos.value}}</p>
+                                                        <p>{{curr_sessao.sessao_idsessao.value}}</p>
                                                         </div>
                                                         {% else %}
                                                         {{ curr_sessao.nr_inscritos.errors.0}}
@@ -2994,20 +2991,6 @@
         var currentTab = 0; // Current tab is set to be the first tab (0)
         $(document).ready(function() {
 
-            //Fix plus button
-            $(".b-numberinput > .control > .button > span > .mdi-minus").click(function(){
-                var input = $(this).parents(".b-numberinput").first().find("input");
-                var value = parseInt(input.val());
-                if(value<=0 || isNaN(value)){
-                    value = 0;
-                    input.val(value);
-                    return;
-                }else{
-                    value-=1;
-                }
-                input.val(value).change();
-            });
-
             //Start all number inputs at 0
             $(".b-numberinput").find(".input").each(function(){
                 var value = parseInt($(this).val());
@@ -3016,28 +2999,10 @@
                 }
             })
 
-            //Add school option to transportes
-            /*$(".select-transporte").find("select").append('<option value=0 class="escola-option">Escola</option>');
-            $("#local-escola > input").on("change",function(){
-                var local = $(this);
-                $(".escola-option").each(function(index){
-                    $(this).text(local.val());
-                    $(this).val(local.val());
-                });
-            });*/
-
-            //Fix minus button
-            $(".b-numberinput > .control > .button > span > .mdi-plus").click(function(){
-                var input = $(this).parents(".b-numberinput").first().find("input");
-                var value = parseInt(input.val());
-                if(value<0 || isNaN(value)){
-                    value = 0;
-                    input.val(value);
-                    return;
-                }else{
-                    value+=1;
-                }
-                input.val(value).change();
+            $(".b-numberinput").each(function(){
+                var buttons = $(this).find('.control > button');
+                buttons.last().click(plusButton);
+                buttons.first().click(minusButton);
             });
 
             //Expand Cards
@@ -3100,7 +3065,33 @@
                 }
             });
 
-            //Fix numeration
+            function minusButton(){
+                var input = $(this).parents(".b-numberinput").first().find("input");
+                var value = parseInt(input.val());
+                if(value<=0 || isNaN(value)){
+                    value = 0;
+                    input.val(value);
+                    return;
+                }else{
+                    value-=1;
+                }
+                input.val(value).change();
+            }
+
+            function plusButton(){
+                var input = $(this).parents(".b-numberinput").first().find("input");
+                var value = parseInt(input.val());
+                if(value<0 || isNaN(value)){
+                    value = 0;
+                    input.val(value);
+                    return;
+                }else{
+                    value+=1;
+                }
+                input.val(value).change();
+            }
+
+            //Fix numeration dinamic table
             function fixSetNumeration(name,start_number=0){
                 var s = 'input[name="' + name + '-TOTAL_FORMS"]';
                 var max_number = parseInt($(s).val());
@@ -3148,19 +3139,19 @@
 
             var sessoes = $(".sessao_table");
 
+            console.log($('#sessao_start_info').html());
 
             //Handle starting table
             $('#id_sessao_set-TOTAL_FORMS').val(0);
             $('#sessao_start_info').children().each(function(){
                 //window.alert($(this).html());
-                var value = "input[value='"+$(this).children().last().val()+"']";
-                //console.log($(this));
-                var inscritos = parseInt($(this).children().first().val());
+                var value = "input[value='"+$(this).children().last().text()+"']";
+                var inscritos = parseInt($(this).children().first().text());
                 var id = sessoes.children("td[data-label='id']").children(value);
                 id.closest('.sessao_table').children("td[data-label='Inscrever']").find('input').val(inscritos).change();
             });
 
-            //$("#sessao_start_info").remove();
+            $("#sessao_start_info").remove();
 
 
             $("#nextBtn").click(nextTab);

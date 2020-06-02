@@ -16,6 +16,21 @@
         });
     }
 
+    function removeEmptySelectOptions(){
+        $('select').each(function(){
+            var a = $(this).find('option:contains("---------")');
+            if(a.length > 0){
+                if(a.hasAttr('selected')){
+                    a.remove();
+                    $(this).val($(this).children('option').first().val());
+                    return;
+                }
+                a.remove();
+            }
+        });
+    }
     $(document).ready(function(){
-        errorHandler();
+        //alert("TEST");
+        //errorHandler();
+        //removeEmptySelectOptions();
     });
