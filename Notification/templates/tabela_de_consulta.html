@@ -1,15 +1,15 @@
 <tr class="" scope="row">
-    <td data-label="Nome" class="">{% if not.idutilizadorenvia == me_id and my %}
+    <td data-label="Nome" class="">{% if not.notificacao.idutilizadorenvia == me_id and my %}
         {{not.recept}}
         {% else %}
         {{not.emissor}}
         {% endif %}
     </td>
-    <td data-label="Nome" class=""> {{not.assunto}}
+    <td data-label="Nome" class=""> {{not.notificacao.assunto}}
     </td>
-    <td data-label="Nome" class=""> {{not.criadoem|date:'Y-m-d H:i'}}
+    <td data-label="Nome" class=""> {{not.notificacao.criadoem|date:'d/m/Y H:i'}}
 
     <td data-label="Ações" class="has-text-centered">
         <a role="button" href="{% url "noti" not.pk %}"><span class="icon has-text-success"><i
-                    class="mdi mdi-email-open mdi-24px"></i></span></a>
-        <input type="checkbox" name='noti' value={{not.pk}}></td>
+                    {% if not.estado == 1  or not.notificacao.idutilizadorenvia == me_id %}class="mdi mdi-email-open mdi-24px"{% else %}class="mdi mdi-email mdi-24px"{% endif %}></i></span></a>
+        <input type="checkbox" name='noti' value={{not.pk}} style="transform: scale(1.5);"></td>

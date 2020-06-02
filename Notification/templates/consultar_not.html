@@ -15,7 +15,7 @@
       <div class="column">
         <form method="Post">
           {% csrf_token %}
-          <div class="field"><label class="">Destinatario</label>
+          <div class="field"><label class="">{{tipo}}</label>
             <div class="control is-clearfix">
               <datalist id="brow">
                 <option value="Internet Explorer">
@@ -24,7 +24,7 @@
                 <option value="Opera">
                 <option value="Safari">
               </datalist>
-              <input class="input" id="{{form.Destinatario.id_for_label}}" class="input" name="Destinatario"
+              <input class="input" id="{{form.Destinatario.id_for_label}}" class="input" style="color: black;" name="Destinatario"
                  value="{{form.Destinatario.value|default_if_none:''}}" disabled>
               <!---->
               <!---->
@@ -36,7 +36,7 @@
       <div class="column">
         <div class="field"><label class="">Assunto</label>
           <div class="control is-clearfix"><input type="text" id="{{form.Assunto.id_for_label}}" name="Assunto"
-              value="{{form.Assunto.value|default_if_none:''}}" autocomplete="on" class="input" disabled>
+              value="{{form.Assunto.value|default_if_none:''}}" style="color: black;" autocomplete="on" class="input" disabled>
             <!---->
             <!---->
             <!---->
@@ -47,7 +47,7 @@
     </div>
     <div class="field"><label class="">Descrição</label>
       <div class="control is-clearfix"><textarea maxlength="300" id="{{form.Descricao.id_for_label}}"
-           name="Descricao" class="textarea" disabled>{{form.Descricao.value|default_if_none:''}}</textarea>
+           name="Descricao" class="textarea" style="color: black;" disabled>{{form.Descricao.value|default_if_none:''}}</textarea>
         <!---->
         <!----> <small class="help counter is-invisible">
           0 / 300
@@ -61,8 +61,6 @@
       <div class="level-left"><a href="{% url "check_not" %}" class="button is-outlined" type="button">
         <!----> <span style="color: black;"> Anterior </span>
         <!----></a></div>
-          <div class="level-right"><button type="submit" class="button is-large is-success is-outlined">
-            <!----> <span> Responder </span> <span class="icon is-medium"><i
-                class="mdi mdi-forward mdi-36px"></i></span></button></div>
+
       </form>
   {% endblock content2 %}
