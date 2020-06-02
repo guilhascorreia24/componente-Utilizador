@@ -302,7 +302,7 @@ class Escola(models.Model):
     nome = models.CharField(max_length=255)
     local = models.CharField(max_length=45)
     telefone = models.CharField(max_length=45)
-    email = models.CharField(max_length=255, blank=True, null=True)
+    email = models.EmailField(max_length=255, blank=True, null=True)
 
     class Meta:
         managed = False
@@ -518,7 +518,7 @@ class ProfessorUniversitario(models.Model):
 class Responsaveis(models.Model):
     idresponsavel = models.AutoField(primary_key=True)
     nome = models.CharField(max_length=255)
-    email = models.CharField(max_length=255)
+    email = models.EmailField(max_length=255)
     telefone = models.CharField(max_length=45)
     idinscricao = models.ForeignKey(Inscricao, models.DO_NOTHING, db_column='idInscricao')  # Field name made lowercase.
 
@@ -674,7 +674,7 @@ class UnidadeOrganica(models.Model):
 class Utilizador(models.Model):
     idutilizador = models.AutoField(primary_key=True)
     nome = models.CharField(max_length=255)
-    email = models.CharField(unique=True, max_length=255)
+    email = models.EmailField(unique=True, max_length=255)
     telefone = models.CharField(unique=True, max_length=45)
     password = models.CharField(max_length=255)
     validada = models.IntegerField()
