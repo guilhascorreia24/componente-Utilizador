@@ -228,13 +228,6 @@
                     <form class="well form-horizontal ">
                         <div class="input-group col-sm-12">
                             <div class="input-group-prepend labelForm">
-                                <span class="input-group-text w-100">Nome do Responsável</span>
-                            </div>
-                            <input disabled="" class="form-control bg-light" type="text" value="{{ inscricao.inscricao.nome }}">
-                        </div>
-                        <br>
-                        <div class="input-group col-sm-12">
-                            <div class="input-group-prepend labelForm">
                                 <span class="input-group-text w-100">Ano Escolar</span>
                             </div>
                             <input disabled="" class="form-control col-sm-2 bg-light" type="text" value="{{ inscricao.inscricao.ano }}">
@@ -339,6 +332,158 @@
                                             <td data-label="Nº Inscritos" class=""> 
                                                 {{ atividade.nr_inscritos }}
                                             </td>                         
+                                        </tr>
+                                    {% endfor %}
+                                    <!---->
+                                </tbody>
+                                <!---->
+                            </table>
+                        </div>
+                    </div>
+                    <h1 class="mx-3"> Transportes </h1>
+                    <div class="panel panel-default panel-table">
+                        <div class="table-wrapper">
+                            <table id="myTable2" class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <!---->
+                                        <th class="is-sortable">
+                                            <div class="th-wrap" > Origem <span class="icon is-small"
+                                                    style="display: none;"><i class="mdi mdi-menu-up"></i></span>
+                                            </div>
+                                        </th>
+                                        <th class="is-sortable">
+                                            <div class="th-wrap" > Destino <span class="icon is-small"
+                                                    style="display: none;"><i class="mdi mdi-menu-up"></i></span>
+                                            </div>
+                                        </th>
+                                        <th class="is-sortable">
+                                            <div class="th-wrap" > Passageiros <span class="icon is-small"
+                                                    style="display: none;"><i class="mdi mdi-menu-up"></i></span>
+                                            </div>
+                                        </th>
+                                        <th class="is-sortable">
+                                            <div class="th-wrap"> Hora <span class="icon is-small"
+                                                    style="display: none;"><i class="mdi mdi-menu-up"></i></span>
+                                            </div>
+                                        </th>
+                                        <!---->
+                                    </tr>
+                                    <!---->
+                                    <!---->
+                                </thead>                                 
+                                <tbody>
+                                    {% for transporte in inscricao.transportes %}
+                                        <tr draggable="false" class="" scope="row">
+                                        <!---->
+                                            <td data-label="Partida" class="">
+                                                {{ transporte.partida_paragem }}
+                                            </td>
+                                            <td data-label="Chegada" class="">
+                                                {{ transporte.chegada_paragem }}
+                                            </td>
+                                            <td data-label="Passageiros" class=""> 
+                                                {{ transporte.passageiros }}
+                                            </td>
+                                            <td data-label="Hora" class=""> 
+                                                {{ transporte.hora }}
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    <!---->
+                                </tbody>
+                                <!---->
+                            </table>
+                        </div>
+                    </div>
+                    <h1 class="mx-3"> Responsaveis </h1>
+                    <div class="panel panel-default panel-table">
+                        <div class="table-wrapper">
+                            <table id="myTable2" class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <!---->
+                                        <th class="is-sortable">
+                                            <div class="th-wrap" > Nome <span class="icon is-small"
+                                                    style="display: none;"><i class="mdi mdi-menu-up"></i></span>
+                                            </div>
+                                        </th>
+                                        <th class="is-sortable">
+                                            <div class="th-wrap" > Email <span class="icon is-small"
+                                                    style="display: none;"><i class="mdi mdi-menu-up"></i></span>
+                                            </div>
+                                        </th>
+                                        <th class="is-sortable">
+                                            <div class="th-wrap" > Telemovel <span class="icon is-small"
+                                                    style="display: none;"><i class="mdi mdi-menu-up"></i></span>
+                                            </div>
+                                        </th>
+                                        <!---->
+                                    </tr>
+                                    <!---->
+                                    <!---->
+                                </thead>                                 
+                                <tbody>
+                                    {% for responsavel in inscricao.responsaveis %}
+                                        <tr draggable="false" class="" scope="row">
+                                        <!---->
+                                            <td data-label="Nome" class="">
+                                                {{ responsavel.nome }}
+                                            </td>
+                                            <td data-label="Espaço" class="">
+                                                {{ responsavel.email }}
+                                            </td>
+                                            <td data-label="Telemovel" class=""> 
+                                                {{ responsavel.telefone }}
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    <!---->
+                                </tbody>
+                                <!---->
+                            </table>
+                        </div>
+                    </div>
+                    <h1 class="mx-3"> Almoços </h1>
+                    <div class="panel panel-default panel-table">
+                        <div class="table-wrapper">
+                            <table id="myTable2" class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <!---->
+                                        <th class="is-sortable">
+                                            <div class="th-wrap" > Numero de Almoços <span class="icon is-small"
+                                                    style="display: none;"><i class="mdi mdi-menu-up"></i></span>
+                                            </div>
+                                        </th>
+                                        <th class="is-sortable">
+                                            <div class="th-wrap" > Campus <span class="icon is-small"
+                                                    style="display: none;"><i class="mdi mdi-menu-up"></i></span>
+                                            </div>
+                                        </th>
+                                        <th class="is-sortable">
+                                            <div class="th-wrap" > Tipo <span class="icon is-small"
+                                                    style="display: none;"><i class="mdi mdi-menu-up"></i></span>
+                                            </div>
+                                        </th>
+                                        <!---->
+                                    </tr>
+                                    <!---->
+                                    <!---->
+                                </thead>                                 
+                                <tbody>
+                                    {% for almoco in inscricao.almoco %}
+                                        <tr draggable="false" class="" scope="row">
+                                        <!---->
+                                            <td data-label="Numero de Almoços" class="">
+                                                {{ almoco.nralmocos }}
+                                            </td>
+                                            <td data-label="Campus" class="">
+                                                {{ almoco.campus }}
+                                            </td>
+                                            <td data-label="Tipo" class=""> 
+                                                {{ almoco.tipo }}
+                                            </td>
                                         </tr>
                                     {% endfor %}
                                     <!---->

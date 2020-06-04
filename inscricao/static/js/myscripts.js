@@ -16,6 +16,28 @@
         });
     }
 
+    function removeEmptySelectOptions(){
+        $('select').each(function(){
+            var a = $(this).find('option:contains("---------")');
+            if(a.length > 0){
+                if(a.is('[selected]')){
+                    a.remove();
+                    $(this).val($(this).children('option').first().val());
+                    return;
+                }
+                a.remove();
+            }
+        });
+    }
+
+    //Tables with class sortable
+    function enableSort(){
+        $('.sortable').DataTable();
+    }
+
     $(document).ready(function(){
+        //alert("TEST");
         errorHandler();
+        removeEmptySelectOptions();
+        enableSort();
     });

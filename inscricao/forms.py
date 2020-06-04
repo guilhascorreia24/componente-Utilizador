@@ -2,6 +2,8 @@ from django.forms import ModelForm,modelformset_factory,Form,inlineformset_facto
 from django import forms
 from inscricao import models
 from inscricao.validators import email_validator, not_zero_validator, telefone_validator, SESSAO_MIN_ERROR
+from django.db.models import F
+from inscricao import validators
 
 class Form_Responsaveis(ModelForm):
 
@@ -16,9 +18,9 @@ class Form_Responsaveis(ModelForm):
         fields = ['nome','email','telefone']
 
 class Form_InscricaoColetiva(ModelForm):
-    def save(self, idUtilizador, idEscola, nresponsaveis, inscricao):
+    def save(self, idUtilizador, idEscola, nresponsaveis, inscricao, local):
         base = super(Form_InscricaoColetiva, self).save(commit=False)
-        base.local = "Empty"
+        base.local = local
         base.nresponsaveis = nresponsaveis
         base.participante_utilizador_idutilizador_id = idUtilizador.pk
         base.escola_idescola = idEscola
@@ -46,9 +48,9 @@ class Form_Inscricao(ModelForm):#numero de participantes precia de ser checkado
     )
 )
 
-    def save(self):
+    def save(self,local):
         base = super(Form_Inscricao, self).save(commit=False)
-        base.local = "Empty"
+        base.local = local
         base.save()
         return base
 
@@ -60,9 +62,15 @@ class Form_Escola(ModelForm):
 
 ###################### TRANSPORTES ########################################
 
-#Cannot be null
 #Check if is full
 class Form_Transportes(ModelForm):
+
+    def __init__(self, **kwargs):
+        super(Form_Transportes, self).__init__(**kwargs)
+        #Ignore full transportes NEEDS CHECK
+        self.fields['horario'].queryset = models.TransporteHasHorario.objects.annotate(ratio=F('transporte_idtransporte__capacidade')-F('n_passageiros')).filter(ratio__gt=0)
+
+
     def save(self, idinscricao):
         base = super(Form_Transportes, self).save(commit=False)
         base.inscricao_idinscricao = idinscricao
@@ -76,96 +84,89 @@ class Form_Transportes(ModelForm):
 
 ########################Almoços###########################
 
-class Form_Almocos_Per_Campus:
-    def __init__(self,campus,request = 0,**kwargs):
-        self.nome = campus.nome
-        self.pratos = list()
+
+class Form_Almoco:
+    def __init__(self, request=0,**kwargs):
         if 'instance' in kwargs:
             self.curr_insc = kwargs['instance']
         else:
             self.curr_insc = None
 
-        menus = models.Menu.objects.filter(campus_idcampus = campus)
-        if request != 0 and request.method == 'POST':
-            #Preciso para quando é necessária uma alteração no numero
-            if self.curr_insc != None:
-                pratos = models.InscricaoHasPrato.objects.select_related('prato_idprato').filter(inscricao_idinscricao=self.curr_insc)
+        campus = models.Campus.objects.all()
+        menus = list()
+        self.prato = list()
+        for camp in campus:
+            queryset = models.Menu.objects.filter(campus_idcampus = camp)
+            for query in queryset:
+                menus.append(query)
+
+        #New BD entry
+        if(self.curr_insc == None):
+            if request != 0 and request.method == 'POST':
+                for menu in menus:
+                    self.prato.append(Form_Prato(request.POST,menu=menu,prefix='menu_'+str(menu.pk)))
             else:
-                pratos = []
-            for menu in menus:
-
-                found = None
-                for x in pratos:
-                    if x.prato_idprato.menu_idmenu.pk == menu.pk:
-                        found = x
-                        break
-
-                if found != None:
-                    form = Form_Prato(request.POST,prefix= "almoco_" + str(menu.idmenu),menu=menu,instance=found.prato_idprato)
-                else:
-                    form = Form_Prato(request.POST,prefix= "almoco_" + str(menu.idmenu),menu=menu)
-                self.pratos.append((form,menu))
-
+                for menu in menus:
+                    self.prato.append(Form_Prato(menu=menu,prefix='menu_'+str(menu.pk)))
+        
+        #Change BD Entry
         else:
-            if self.curr_insc != None:
-                pratos = models.InscricaoHasPrato.objects.select_related('prato_idprato').filter(inscricao_idinscricao=self.curr_insc)
+            instances = models.InscricaoHasPrato.objects.select_related('prato_idprato').filter(inscricao_idinscricao = self.curr_insc)
+            self.instances_dict = dict()
+            for instance in instances:
+                self.instances_dict[instance.prato_idprato.menu_idmenu.pk] = instance.prato_idprato
+                print(instance.prato_idprato.menu_idmenu.pk)
+            if request != 0 and request.method == 'POST':
+                for menu in menus:
+                    if menu.pk in self.instances_dict:
+                        self.prato.append(Form_Prato(request.POST,menu=menu,instance=self.instances_dict[menu.pk],prefix='menu_'+str(menu.pk)))
+                    else:
+                        self.prato.append(Form_Prato(request.POST,menu=menu,prefix='menu_'+str(menu.pk)))
             else:
-                pratos = []
-            for menu in menus:
-                found = None
-                for x in pratos:
-                    if x.prato_idprato.menu_idmenu.pk == menu.pk:
-                        found = x
-                        break
+                for menu in menus:
+                    if menu.pk in self.instances_dict:
+                        self.prato.append(Form_Prato(menu=menu,instance=self.instances_dict[menu.pk],prefix='menu_'+str(menu.pk)))
+                    else:
+                        self.prato.append(Form_Prato(menu=menu,prefix='menu_'+str(menu.pk)))
 
-                if found != None:
-                    form = Form_Prato(prefix= "almoco_" + str(menu.idmenu),menu=menu,instance=found.prato_idprato)
-                else:
-                    form = Form_Prato(prefix= "almoco_" + str(menu.idmenu),menu=menu)
-
-                self.pratos.append((form,menu))
-    
-    #Bug when change is requested, and one entry is set to 0
-    def save(self,inscricao):
-        for prato,menu in self.pratos:
-            prat = prato.save()
-            if prat.nralmocos>0:
-                if not models.InscricaoHasPrato.objects.filter(prato_idprato=prat).exists():
-                    query = models.InscricaoHasPrato(inscricao_idinscricao = inscricao,prato_idprato=prat)
-                    query.save()
-            else:
-                model =  models.InscricaoHasPrato.objects.filter(prato_idprato=prat).delete()
-                    
-
+    #Check 0 values while other errors occurr
     def is_valid(self):
         value = True
-        for prato,menu in self.pratos:
+        for prato in self.prato:
             if not prato.is_valid():
                 value = False
-        return value
-    
-#Save method doesn't return
-class Form_Almoco:
-    def __init__(self,request,**kwargs):
-        campus = models.Campus.objects.all()
-        self.campus = list()
-        for camp in campus:
-            self.campus.append(Form_Almocos_Per_Campus(camp,request,**kwargs))
-    
-    def is_valid(self):
-        value = True
-        for c in self.campus:
-            if not c.is_valid():
-                value = False
+        
         return value
 
+#If prato already exists and new one has 0 almocos, delete the older one
+#If has 0 almocos and doesn't exist skip it
+#If isn't zero, add it or update-it
     def save(self,inscricao):
-        for c in self.campus:
-            c.save(inscricao) 
+        if self.curr_insc != None:
+            for prato in self.prato:
+                nr = prato.cleaned_data['nralmocos']
+                if(nr == 0):
+                    if prato.menu.pk in self.instances_dict:
+                        self.instances_dict[prato.menu.pk].delete()
+                    else:
+                        continue
+                else:
+                    if prato.menu.pk in self.instances_dict:
+                        prato.save()
+                    else:
+                        prato_result = prato.save()
+                        models.InscricaoHasPrato(inscricao_idinscricao=inscricao,prato_idprato=prato_result).save()
 
- 
+        else:
+            for prato in self.prato:
+                if(prato.cleaned_data['nralmocos'] == 0):
+                    continue
+                else:
+                    prato_result = prato.save()
+                    models.InscricaoHasPrato(inscricao_idinscricao=inscricao,prato_idprato=prato_result).save()
+
+
 class Form_Prato(ModelForm):
-
     def __init__(self, *args, **kwargs):
         self.menu = kwargs.pop('menu')
         super(Form_Prato, self).__init__(*args, **kwargs)
@@ -180,15 +181,19 @@ class Form_Prato(ModelForm):
     
     def clean(self):
         super().clean()
-        if self.menu.nralmocosdisponiveis < self.cleaned_data['nralmocos']:
-            raise ValidationError({'nralmocos': ["Numero de almoços disponiveis não é suficiente"]})
-
-        if(self.cleaned_data['nralmocos'] < 0):
-            raise ValidationError({'nralmocos': ["Numero de almoços não pode ser negativo"]})
+        if self.instance.pk != None:
+            almocos = self.menu.nralmocosdisponiveis - self.instance.nralmocos
+        else:
+            almocos = self.menu.nralmocosdisponiveis
+        if almocos < self.cleaned_data['nralmocos']:
+            msg = validators.ALMOCOS_FULL.replace('_NUM_',str(self.menu.nralmocosdisponiveis))
+            raise ValidationError({'nralmocos': msg})
 
     class Meta:
         model = models.Prato
         fields = ['nralmocos']
+
+
 ###################################################END ALMOÇO #########################################
 
 ###################################################SESSOES#############################################
@@ -236,8 +241,6 @@ class CustomForm:
         Sessao = modelformset_factory(models.InscricaoHasSessao,form = Form_Sessao,extra=0,can_delete=True)
         Responsaveis = modelformset_factory(models.Responsaveis,form = Form_Responsaveis,min_num=1,extra=0,can_delete=True)
         Transportes = modelformset_factory(models.TransporteHasInscricao,form = Form_Transportes,extra=0,can_delete=True)
-
-
         if request != 0 and request.method == 'POST':
             if self.curr_inscricao != None:
                 insc = models.InscricaoColetiva.objects.get(inscricao_idinscricao=self.curr_inscricao)
@@ -265,7 +268,7 @@ class CustomForm:
                 self.responsaveis = Responsaveis(prefix='responsaveis_set',queryset=models.Responsaveis.objects.filter(idinscricao = self.curr_inscricao))
                 self.sessao = Sessao(prefix='sessao_set',queryset=models.InscricaoHasSessao.objects.filter(inscricao_idinscricao = self.curr_inscricao))
                 self.transportes = Transportes(prefix='transportes_set',queryset=models.TransporteHasInscricao.objects.filter(inscricao_idinscricao = self.curr_inscricao))
-                self.almoco = Form_Almoco(request,instance=self.curr_inscricao)
+                self.almoco = Form_Almoco(instance=self.curr_inscricao)
             else:
                 self.escola = Form_Escola(prefix="escola")
                 self.inscricao_coletiva = Form_InscricaoColetiva(prefix="inscricao_coletiva")
@@ -273,7 +276,7 @@ class CustomForm:
                 self.responsaveis = Responsaveis(prefix='responsaveis_set',queryset=models.Responsaveis.objects.none())
                 self.sessao = Sessao(prefix='sessao_set',queryset=models.InscricaoHasSessao.objects.none())
                 self.transportes = Transportes(prefix='transportes_set',queryset=models.TransporteHasInscricao.objects.none())
-                self.almoco = Form_Almoco(request)
+                self.almoco = Form_Almoco()
         
     
     def is_valid(self):
@@ -285,8 +288,8 @@ class CustomForm:
 
     def save(self,part):
         escola = self.escola.save()
-        inscricao = self.inscricao.save()
-        self.inscricao_coletiva.save(part,escola,len(self.responsaveis),inscricao)
+        inscricao = self.inscricao.save(escola.local)
+        self.inscricao_coletiva.save(part,escola,len(self.responsaveis),inscricao,escola.local)
         self.almoco.save(inscricao)
 
         for each in self.transportes:
@@ -311,9 +314,9 @@ class CustomForm:
 #   - sessao
 #   - responsaveis
 #   - almoco
-#       - campus (array)
-#           - nome (nome do campus)
-#           - (prato,menu) (array de tuppples)
+#           - prato (array)
+#               - menu
+#               - nralmocos
 #   - transportes
 #       -campus (array)
 #           - nome  (nome do campus)
