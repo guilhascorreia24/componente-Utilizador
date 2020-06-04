@@ -29,8 +29,15 @@
             }
         });
     }
+
+    //Tables with class sortable
+    function enableSort(){
+        $('.sortable').DataTable();
+    }
+
     $(document).ready(function(){
         //alert("TEST");
         errorHandler();
         removeEmptySelectOptions();
+        enableSort();
     });

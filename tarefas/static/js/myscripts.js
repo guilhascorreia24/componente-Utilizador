@@ -31,6 +31,6 @@
     }
     $(document).ready(function(){
         //alert("TEST");
-        //errorHandler();
-        //removeEmptySelectOptions();
+        errorHandler();
+        removeEmptySelectOptions();
     });
