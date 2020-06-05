@@ -3,3 +3,9 @@
     background:none;
     /*And other css to remove the default button property */    
 }
+
+a.current{
+    background-color: #3273dc;
+    border-color: #3273dc;
+    color: #fff;
+}

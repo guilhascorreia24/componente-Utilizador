@@ -14,7 +14,7 @@ def list_sessao():
     .select_related('atividade_idatividade','atividade_idatividade__departamento_iddepartamento','atividade_idatividade__campus','atividade_idatividade__unidade_organica_iduo__campus_idcampus','atividade_idatividade__unidade_organica_iduo','horario_has_dia_id_dia_hora__horario_hora','atividade_idatividade__professor_universitario_utilizador_idutilizador__utilizador_idutilizador','atividade_idatividade__espaco_idespaco')\
     .filter(atividade_idatividade__validada=1)\
     .order_by('atividade_idatividade__titulo','horario_has_dia_id_dia_hora__horario_hora__hora')\
-    .values('idsessao','capacidade',hora=F('horario_has_dia_id_dia_hora__horario_hora__hora'),idatividade=F('atividade_idatividade__idatividade'),titulo=F('atividade_idatividade__titulo'),duracao=F('atividade_idatividade__duracao'),descricao=F('atividade_idatividade__descricao'),unidade_organica=F('atividade_idatividade__unidade_organica_iduo__sigla'),campus=F('atividade_idatividade__unidade_organica_iduo__campus_idcampus__nome'),departamento=F('atividade_idatividade__departamento_iddepartamento__nome'),tematica=F('atividade_idatividade__tematica'),docente = F('atividade_idatividade__professor_universitario_utilizador_idutilizador__utilizador_idutilizador__nome'),espaco = F('atividade_idatividade__espaco_idespaco__nome'))
+    .values('idsessao','capacidade',vagas=F('capacidade')-F('nrinscritos'),hora=F('horario_has_dia_id_dia_hora__horario_hora__hora'),idatividade=F('atividade_idatividade__idatividade'),titulo=F('atividade_idatividade__titulo'),duracao=F('atividade_idatividade__duracao'),descricao=F('atividade_idatividade__descricao'),unidade_organica=F('atividade_idatividade__unidade_organica_iduo__sigla'),campus=F('atividade_idatividade__unidade_organica_iduo__campus_idcampus__nome'),departamento=F('atividade_idatividade__departamento_iddepartamento__nome'),tematica=F('atividade_idatividade__tematica'),docente = F('atividade_idatividade__professor_universitario_utilizador_idutilizador__utilizador_idutilizador__nome'),espaco = F('atividade_idatividade__espaco_idespaco__nome'))
     return test
 
 
@@ -61,13 +61,16 @@ def inscricao_form(request,inscricao=None):
             form.save(user)
             return HttpResponse("<html>Sucess</html>")
         else:
+            campus = models.Campus.objects.all()
             sessoes = list_sessao()
-            return render(request,'inscricao_form.html',{'form': form, 'atividades_sessao' : sessoes})
+            return render(request,'inscricao_form.html',{'form': form, 'atividades_sessao' : sessoes, 'campus':campus})
         
     else:
+        campus = models.Campus.objects.all()
         form = forms.CustomForm(inscricao=inscricao)
         sessoes = list_sessao()
-        return render(request,'inscricao_form.html',{'form': form, 'atividades_sessao' : sessoes})
+        print(campus)
+        return render(request,'inscricao_form.html',{'form': form, 'atividades_sessao' : sessoes,'campus':campus})
     
     
 def test(request):
