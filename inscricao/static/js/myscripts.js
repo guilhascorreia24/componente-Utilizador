@@ -55,21 +55,27 @@
                 var selects = $(this).find('.control>.select>select');
                 var hours = selects.first();
                 var minutes = selects.last();
-                console.log(minutes.html());
 
                 for(var i = 0; i<24;i++){
-                    hours.append('<option value="' + i + '">' + i + '</option>');
+                    var value = i;
+                    if(i<10)
+                        value = '0'+value;
+
+                    hours.append('<option value="' + value + '">' + value + '</option>');
                 }
 
                 for(var i = 0; i<4;i++){
                     var value = i*15;
+                    if(value<10)
+                        value = '0'+value;
                     minutes.append('<option value="' + value + '">' + value + '</option>');
                 }
+                minutes.append('<option value=59>59</option>');
             });   
         }
         var timers = $('.timepicker.control');
         
-        //set as hide
+        //set events
         timers.each(function(){
             $(this).children('.dropdown').removeClass('is-active');
             //$(this).find('.background').hide();
@@ -85,6 +91,7 @@
                 }
                 var result = $(this).val() + input.val().substr(2,3);
                 input.val(result);
+                input.trigger('change');
             });
 
             minutes.on('change', function(){
@@ -94,14 +101,16 @@
                 }
                 var result = input.val().substr(0,3)+ $(this).val();
                 input.val(result);
+                input.trigger('change');
             });
 
-            input.on('change', function(){
+            input.on('change keyup', function(){
                 var hour = $(this).val().substr(0,2);
                 var min = $(this).val().substr(3,2);
+                console.log("changed");
 
                 minutes.val(min);
-                hour.val(min);
+                hours.val(hour);
             });
             
         });

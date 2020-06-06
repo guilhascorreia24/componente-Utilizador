@@ -525,46 +525,6 @@
                                                             </div>
                                                             <!---->
                                                         </div>
-                                                        <div class="field">
-                                                            <!---->
-                                                            <div class="datepicker control">
-                                                                <div class="dropdown is-mobile-modal">
-                                                                    <div role="button" aria-haspopup="true" class="dropdown-trigger">
-                                                                        <div class="control has-icons-left is-clearfix">
-                                                                            <input type="text" autocomplete="off" placeholder="Submetido antes de..." readonly="readonly" class="input">
-                                                                            <span class="icon is-left"><i
-                                                                                class="mdi mdi-calendar-today mdi-24px"></i></span>
-                                                                            <!---->
-                                                                            <!---->
-                                                                        </div>
-                                                                    </div>
-                                                                    <div aria-hidden="true" class="dropdown-menu" style="display: none;">
-                                                                        <div class="dropdown-content">
-                                                                            <div tabindex="0" class="dropdown-item">
-                                                                                <div class="field field is-grouped-centered is-grouped">
-                                                                                    <!---->
-                                                                                    <div class="control">
-                                                                                        <span class="select"><select>
-                                                                                        </select></span>
-                                                                                        <!---->
-                                                                                    </div>
-                                                                                    <span class="control is-colon">:</span>
-                                                                                    <div class="control">
-                                                                                        <span class="select"><select>
-                                                                                            <!---->
-                                                                                        </select></span>
-                                                                                        <!---->
-                                                                                    </div>
-                                                                                            <!---->
-                                                                                </div>
-                                                                                <!---->
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <!---->
-                                                        </div>
                                                     </ul>
                                                 </ul>
                                             </div>
@@ -578,7 +538,7 @@
                                                                 <div class="dropdown is-active is-mobile-modal">
                                                                     <div role="button" aria-haspopup="true" class="dropdown-trigger">
                                                                         <div class="control has-icons-left is-clearfix">
-                                                                            <input type="text" autocomplete="off" placeholder="De" class="input">
+                                                                            <input id="filter_time_start" type="text" autocomplete="off" placeholder="De" class="input">
                                                                             <span class="icon is-left"><i class="mdi mdi-clock mdi-24px"></i></span>
                                                                         </div>
                                                                     </div> 
@@ -611,7 +571,7 @@
                                                                 <div class="dropdown is-active is-mobile-modal">
                                                                     <div role="button" aria-haspopup="true" class="dropdown-trigger">
                                                                         <div class="control has-icons-left is-clearfix">
-                                                                            <input type="text" autocomplete="off" placeholder="De" class="input">
+                                                                            <input id="filter_time_end" type="text" autocomplete="off" placeholder="Até" class="input">
                                                                             <span class="icon is-left"><i class="mdi mdi-clock mdi-24px"></i></span>
                                                                         </div>
                                                                     </div> 
@@ -645,7 +605,7 @@
                                                             <p class="control"><button type="button" class="button is-primary"><span class="icon"><i
                                                                         class="mdi mdi-minus mdi-24px"></i></span></button>
                                                             </p>
-                                                            <div class="control is-clearfix"><input type="number" autocomplete="on" step="1" min="0" class="input">
+                                                            <div class="control is-clearfix"><input id='filter_vagas' type="number" autocomplete="on" step="1" min="0" class="input">
                                                                 <!---->
                                                                 <!---->
                                                                 <!---->
@@ -700,7 +660,7 @@
                                                 </div>
                                                 <!--TEMPLATE ATIVIDADE-->
                                                 {% for at in atividade_group %} {% if at.list %} {% with at.list.0 as atividade %}
-                                                <div class="detail" id="detail_{{ forloop.counter0 }}" style="display: none;">
+                                                <div class="detail detail-atividade-static" id="detail_{{ forloop.counter0 }}" style="display: none;">
                                                     <div class="detail-container dropdown-item">
                                                         <div class="content">
                                                             <div style="font-size: 15px;">
@@ -767,13 +727,11 @@
                                                                                     <td data-label="id" style="display:none" class="" value="{{sessao.idsessao}}">
                                                                                         <input value={{sessao.idsessao}}>
                                                                                     </td>
-                                                                                    <td data-label="Horário" class="">
-                                                                                        {{sessao.hora}}
-                                                                                    </td>
+                                                                                    <td data-label="Horário" class="sessao_table_horario">{{sessao.hora|date:"H:i"}}</td>
                                                                                     <td data-label="Duração" class="">
                                                                                         {{sessao.duracao}}
                                                                                     </td>
-                                                                                    <td data-label="Vagas" class="">
+                                                                                    <td data-label="Vagas" class="sessao_table_vagas">
                                                                                         {{sessao.vagas}}
                                                                                     </td>
                                                                                     <td data-label="Espaço" class="">
@@ -987,6 +945,47 @@
             "pageLength": 10
         });
 
+        //Set Time Initial
+        $('#filter_time_end').val('23:59');
+        $('#filter_time_start').val('00:00');
+        $('#filter_time_end').change();
+        $('#filter_time_start').change();
+
+        //Minmum vagas filter
+        $.fn.dataTable.ext.search.push(function( settings, data, dataIndex ) {
+            var tr = table.row(dataIndex).nodes().to$();
+            var index = tr.attr('id').replace('table_', '');
+            var _str = "#detail_" + index;
+            var min_vagas = parseInt($('#filter_vagas').val());
+            var details_sessao = $(_str).find('.sessao_table');
+
+            for(var i = 0; i<details_sessao.length;i++){
+                var vagas = parseInt(details_sessao.eq(i).find('.sessao_table_vagas').text());
+                if(vagas>min_vagas){
+                    return true;
+                }
+            }
+            return false;
+        });
+
+        //Time sessao filter
+        $.fn.dataTable.ext.search.push(function( settings, data, dataIndex ) {
+            var tr = table.row(dataIndex).nodes().to$();
+            var index = tr.attr('id').replace('table_', '');
+            var _str = "#detail_" + index;
+            var time_start = stringToTimeDate($('#filter_time_start').val());
+            var time_end = stringToTimeDate($('#filter_time_end').val());
+            var details_sessao = $(_str).find('.sessao_table');
+
+            for(var i = 0; i<details_sessao.length;i++){
+                var time = stringToTimeDate(details_sessao.eq(i).find('.sessao_table_horario').text());
+                if(time>time_start && time<time_end){
+                    return true;
+                }
+            }
+            return false;
+        });
+
 
 
         //Expand table
@@ -1024,6 +1023,20 @@
         $('#filter_campus').on('change',function(){
             table.column(3).search($(this).val()).draw();
         });
+        $('#filter_vagas').on('keyup change',function(){
+            table.draw();
+        });
+
+        $('#filter_time_start').on('change keyup',function(){
+            table.draw();
+        });
+        $('#filter_time_end').on('change keyup',function(){
+            table.draw();
+        });
+
+
+        table.draw();
+
         //Start all number inputs at 0
         $(".b-numberinput").find(".input").each(function() {
             var value = parseInt($(this).val());
@@ -1032,7 +1045,7 @@
             }
         })
 
-        //Fix input numvers
+        //Fix input numbers buttons
         $(".b-numberinput").each(function() {
             var buttons = $(this).find('.control > button');
             buttons.last().on('click', plusButton);
@@ -1166,6 +1179,31 @@
         $("#prevBtn").click(previousTab);
     });
     showTab(currentTab); // Display the current tab
+
+    //String in format HH:MM
+    function stringToTimeDate(string){
+        var time = string.split(':');
+        if(time.length != 2)
+            return false;
+        
+        if(parseInt(time[0])>23 || parseInt(time[1])>59)
+            return false;
+        var date = new Date();
+        date.setHours(time[0]);
+        date.setMinutes(time[1]);
+
+        return date;
+    }
+
+    function timeDeltaValid(){
+        var start_date = stringToTimeDate($('#filter_time_start').val());
+        var end_date = stringToTimeDate($('#filter_time_end').val());
+
+        if(end_date == false || start_date == false)
+            return false;
+
+        return start_date < end_date;
+    }
 
     //replace a pattern for id and name of a specified elemnt 
     function replaceIdName(elem, pattern, replace) {
