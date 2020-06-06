@@ -428,7 +428,7 @@
                 </div>
                 <div class="step-item" style="display:none;">
                     <div data-v-dac68d9e="" style="padding: 1rem 2vw 0px;">
-                        {% if form.sessao|length < 1 %} {{form.sessao.errors.0}} {% endif %} <hr data-v-dac68d9e="">
+                     <hr data-v-dac68d9e="">
                             <h2 data-v-dac68d9e="" class="title has-text-grey is-uppercase" style="font-size: 0.9rem;">
                                 Sessões Disponíveis </h2>
                             <div data-v-1b91368a="" data-v-dac68d9e="">
@@ -783,20 +783,25 @@
                             <h2 data-v-dac68d9e="" class="title has-text-grey is-uppercase" style="font-size: 0.9rem;">
                                 Sessões Escolhidas </h2>
                             <div data-v-dac68d9e="" class="b-table">
+                                {% if form.sessao|length < 1 %}
+                                <div class="alert alert-danger">
+                                    {{form.sessao.errors.0}} 
+                                </div>
+                                <p> </p>
+                                {% endif %}
                                 <!---->
                                 <!---->
                                 <div class="table-wrapper">
                                     {{ form.sessao.management_form }}
 
                                     <div style="display:none" id="sessao_start_info">
-                                        {% for curr_sessao in form.sessao %} {% if curr_sessao.nr_inscritos.errors|length == 0 %}
+                                        {% for curr_sessao in form.sessao %}
                                         <div>
                                             <p>{{curr_sessao.nr_inscritos.value}}</p>
                                             <p>{{curr_sessao.sessao_idsessao.value}}</p>
+                                            <p>{{curr_sessao.nr_inscritos.errors.0}}</p>
                                         </div>
-                                        {% else %} {{ curr_sessao.nr_inscritos.errors.0}}
-                                        <p>Esta mensagem precisa de ser Costumizada</p>
-                                        {% endif %} {% endfor %}
+                                        {% endfor %}
                                     </div>
                                     <table class="table has-mobile-cards" id="sessao_escolhida">
                                         <thead style="display:none;">
@@ -840,7 +845,7 @@
                                             </tr>
                                         </thead>
 
-                                        <tbody>
+                                        <tbody id="sessao_submit_table">
                                             <!--TEMPLATE -->
                                             <tr draggable="false" id="templateTableSessoes" style="display:none;">
                                                 <td data-label="id" style="display:none">
@@ -861,6 +866,7 @@
                                                                         class="mdi mdi-plus mdi-24px"></i></span></button>
                                                             </p>
                                                         </div>
+                                                        <p class="help is-danger"></p>
                                                     </div>
                                                 </td>
                                                 <td data-label="Titulo"></td>
@@ -1160,19 +1166,34 @@
 
         var sessoes = $(".sessao_table");
 
-        console.log($('#sessao_start_info').html());
-
         //Handle starting table
         $('#id_sessao_set-TOTAL_FORMS').val(0);
         $('#sessao_start_info').children().each(function() {
             //window.alert($(this).html());
-            var value = "input[value='" + $(this).children().last().text() + "']";
-            var inscritos = parseInt($(this).children().first().text());
+            var childs = $(this).children();
+            var value = "input[value='" + childs.eq(1).text() + "']";
+            var valueInt = parseInt(childs.eq(1).text());
+            var inscritos = parseInt(childs.eq(0).text());
             var id = sessoes.children("td[data-label='id']").children(value);
             id.closest('.sessao_table').children("td[data-label='Inscrever']").find('input').val(inscritos).change();
+            
+            //console.log($('#sessao_submit_table').html());
+            if(childs.length >= 3){
+                var id_input_element = $('#sessao_submit_table').children('tr').children("td[data-label='id']");
+                for(var i = 0; i<id_input_element.length;i++){
+                    var this_id = parseInt(id_input_element.eq(i).children('input').val());
+                    console.log($("#id_sessao_set-0-sessao_idsessao").val());
+                    
+                    if(this_id == valueInt){
+                        var el = id_input_element.eq(i).closest('tr').children("td[data-label='Inscrever']");
+                        setError(el,childs.eq(2).text(),false);
+                        break;
+                    }
+                }
+            }
         });
 
-        $("#sessao_start_info").remove();
+        //$("#sessao_start_info").remove();
 
 
         $("#nextBtn").click(nextTab);

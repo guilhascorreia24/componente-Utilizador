@@ -3,6 +3,18 @@
         return !$.trim(el.html())
     }
 
+    function setError(field_element,message,put_sign=true){
+        field_element.append('<p class="help is-danger">' + message + '</p>');
+
+        var input = field_element.find('.input');
+        var control = input.closest('.control');
+        input.addClass('is-danger');
+        if(put_sign){
+            control.addClass('has-icons-right');
+            control.append('<span class="icon is-right has-text-danger"><i class="mdi mdi-alert-circle mdi-24px"></i></span>');
+        }
+    }
+
     function errorHandler(){
         var els = $('.field > .help').each(function(){
             if(isEmpty($(this)))
