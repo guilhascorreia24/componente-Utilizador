@@ -1,6 +1,6 @@
 from django import forms
 from django.forms.models import ModelMultipleChoiceField
-from les.models import Atividade, Utilizador, Espaco, Campus, UnidadeOrganica, Departamento
+from blog.models import Atividade, Utilizador, Espaco, Campus, UnidadeOrganica, Departamento
 
 
 class AtividadeForm(forms.ModelForm):
@@ -13,15 +13,6 @@ class AtividadeForm(forms.ModelForm):
             "capacidade",
             "duracao",
             "tematica",
-        ]
-
-
-class LoginForm(forms.ModelForm):
-    class Meta:
-        model = Utilizador
-        fields = [
-            "username",
-            # "password"
         ]
 
 
