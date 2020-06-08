@@ -2,7 +2,7 @@
 {% block content %}
 <nav class="breadcrumb" aria-label="breadcrumbs">
   <ul>
-    <li><a href="{% url 'atividades:home_page' %}">Início</a></li>
+    <li><a href="{% url 'blog:blog-home' %}">Início</a></li>
     <li class="is-active"><a href="{% url 'atividades:consultar_minhas_atividades' %}" aria-current="page">Minhas Atividades</a></li>
     <li class="is-active"><a href="{% url 'atividades:ver_sessoes' activity.idatividade %}" aria-current="page">Sessões</a></li>
     <li class="is-active"><a href="" aria-current="page">Apagar Sessão</a></li>
