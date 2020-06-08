@@ -42,6 +42,6 @@ urlpatterns = [
     path('validacoes/<int:acao>/<str:id>',user_views.validacoes,name="validacoes"),
     path('tarefas/',include('tarefas.urls')),
     #path('config_campus/',include('Campus.url',namespace="campus")),
-    path('', include("blog.urls"))
-    path('atividades/', include('atividades.urls')),
-]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    path('', include("blog.urls")),
+    path('atividades/', include('atividades.urls'))
+]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
