@@ -1,0 +1,101 @@
+{% extends '../atividades/assets/home.html' %}
+{% block content %}
+<nav class="breadcrumb" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="{% url 'atividades:home_page' %}">Início</a></li>
+    <li class="is-active"><a href="" aria-current="page">Minhas Atividades</a></li>
+  </ul>
+    <button data-v-5aa16ff8="" type="button" class="button is-success" style="margin-top:40px" >
+        <a href="{% url 'atividades:criar_atividade' %}" style="color:white;">
+        <span class="icon is-small">
+            <i class="mdi mdi-plus"></i>
+        </span>
+        <span >Criar Atividade</span>
+        </a>
+    </button>
+</nav>
+
+        <div class="table "></div>
+            <div class="table-wrapper">
+                <table class="table has-mobile-cards is-hoverable is-fullwidth">
+                    <thead>
+                            <th>
+                                Titulo:
+                            </th>
+                            <th>
+                                Temática:
+                            </th>
+                            <th>
+                                Número participantes:
+                            </th>
+                            <th>
+                                Duração (em minutos):
+                            </th>
+                            <th>
+                                Campus:
+                            </th>
+                            <th>
+                                Local:
+                            </th>
+                            <th>
+                                Estado:
+                            </th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+
+                            {% for activity in list %}
+                            <tr>
+                                <td>{{activity.titulo}}</td>
+                                <td>{{activity.tematica}}</td>
+                                <td>{{activity.capacidade}}</td>
+                                <td>{{activity.duracao|floatformat:0}}</td>
+                                <td>{{activity.unidade_organica_iduo.campus_idcampus.nome}}</td>
+                                <td>
+                                    {%if not activity.espaco_idespaco.nome %} [a ser definido]
+                                    {% else %} <a href="{% url 'atividades:display_image' activity.espaco_idespaco.idespaco %}" target="_blank">
+                                    {{activity.espaco_idespaco.nome}}</a>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                {% if activity.validada == 0 or activity.validada == 2 %}
+                                    <span class="tag next is-warning" style="width: 7 rem;font-size: small;">Pendente</span>
+                                {% elif activity.validada == 1 %}
+                                    <span class="tag next is-success" style="width: 7 rem;font-size: small;">Concluída</span>
+                                {% elif activity.validada == -1 %}
+                                    <span class="tag next is-danger" style="width: 7 rem;font-size: small;">Rejeitada</span>
+                                {% endif %}
+                                </td>
+                                <td>
+                                    <form method="POST">
+                                        <a href="{% url 'atividades:apagar_atividade' activity.idatividade %}">
+                                            <span class="icon is-small">
+                                                <i class="mdi mdi-delete mdi-24px"></i>
+                                            </span>
+                                        </a>
+                                    </form>
+                                </td>
+                                <td>
+                                    <form method="POST">
+                                        <a href="{% url 'atividades:editar_atividade' activity.idatividade %}">
+                                            <span class="icon is-small">
+                                                <i class="mdi mdi-tooltip-edit mdi-24px"></i>
+                                            </span>
+                                        </a>
+                                    </form>
+                                </td>
+                                <td>
+                                    <form method="POST">
+                                        <a href="{% url 'atividades:ver_mais_atividade' activity.idatividade %}">
+                                            <span class="icon is-small">
+                                                <i class="mdi mdi-dots-horizontal-circle mdi-24px"></i>
+                                            </span>
+                                        </a>
+                                    </form>
+                                </td>
+                            {% endfor %}
+                    </thead>
+                </table>
+
+     
+{% endblock content %}

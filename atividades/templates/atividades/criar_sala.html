@@ -1,0 +1,116 @@
+{% extends '../atividades/assets/home.html' %}
+{% block content %}
+{% load static %}
+<nav class="breadcrumb" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="{% url 'atividades:home_page' %}">Início</a></li>
+    <li class="is-active"><a href="" aria-current="page">Salas</a></li>
+  </ul>
+</nav>
+<div class="table "></div>
+            <div class="table-wrapper">
+                <table class="table has-mobile-cards is-hoverable is-fullwidth">
+                    <thead>
+                            <th>
+                                Campus:
+                            </th>
+                            <th>
+                                Espaço:
+                            </th>
+                            <th></th>
+                            <th></th>
+                            </tr>
+                    </thead>
+                            {% for local in espaco %}
+                            <tr>
+                                <td>{{local.campus_idcampus.nome}}</td>
+                                <td>
+                                    {% if local.img %}
+                                    <a href="{% url 'atividades:display_image' local.idespaco %}" target="_blank">{{local.nome}}</a>
+                                    {% else %}
+                                    {{local.nome}}
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <form method="POST">
+                                        <a href="{% url 'atividades:apagar_local' local.idespaco %}">
+                                            <span class="icon is-small">
+                                                <i class="mdi mdi-delete mdi-24px"></i>
+                                            </span>
+                                        </a>
+                                    </form>
+                                </td>
+                                <td>
+                                    {% if local not in list %}
+                                    <form method="POST">
+                                        <a href="{% url 'atividades:especificar_espaco' local.idespaco %}">
+                                            Especificar Tipo
+                                        </a>
+                                    </form>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                </table>
+                 <form method="POST" id="addEspaco" enctype="multipart/form-data"> {% csrf_token %}
+                    <div class="table "></div>
+                    <div class="table-wrapper">
+                    <table class="table has-mobile-cards is-hoverable is-fullwidth">
+                        <h3>Adicionar Local: </h3>
+                    <thead>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+
+                    <tr>
+                        <td>
+                    <div class="column">
+                        <div class="control is-expanded">
+                            <label class="label">Campus:</label>
+                            <div class="control">
+                                {{form.campus_idcampus}}
+                            </div>
+                        </div>
+                    </div>
+                        </td>
+                        <td>
+                    <div class="column">
+                        <label class="label">Nome:</label>
+                        <div class="control is-expanded">
+                            {{form.nome}}
+                        </div>
+                    </div>
+                        </td>
+                        <td>
+                    <div class="column">
+                        <label class="label">Mapa do local:</label>
+                        <div class="control is-expanded">
+                            {{form.img}}
+                        </div>
+                    </div>
+                        </td>
+                        <td>
+                        <button data-v-5aa16ff8="" type="button submit" form="addEspaco" class="button is-success" style="margin-top:40px" >
+                        <span class="icon is-small">
+                            <i class="mdi mdi-plus"></i>
+                        </span>
+                        <span>Adicionar Local</span>
+                    </button>
+                        </td>
+                    </tr>
+                    </thead>
+                    </table>
+                    </div>
+                </form>
+                <div  align="center">
+                <button data-v-5aa16ff8="" type="button" class="button is-success" style="margin-top:40px">
+                    <a href="{% url 'atividades:home_page' %}" style="color:white;">
+                    <span class="icon is-small">
+                        <i class="mdi mdi-check"></i>
+                    </span>
+                    <span >Finalizar</span>
+                    </a>
+                </button>
+                </div>
+{% endblock content%}

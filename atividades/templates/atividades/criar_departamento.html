@@ -1,0 +1,92 @@
+{% extends '../atividades/assets/home.html' %}
+{% block content %}
+{% load static %}
+<nav class="breadcrumb" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="{% url 'atividades:home_page' %}">Início</a></li>
+    <li class="is-active"><a href="" aria-current="page">Departamento</a></li>
+  </ul>
+</nav>
+<div class="table "></div>
+            <div class="table-wrapper">
+                <table class="table has-mobile-cards is-hoverable is-fullwidth">
+                    <thead>
+                            <th>
+                                Sigla:
+                            </th>
+                            <th>
+                                Campus:
+                            </th>
+                            <th></th>
+                            </tr>
+                    </thead>
+                            {% for dpt in departamento %}
+                            <tr>
+                                <td>{{dpt.nome}}</td>
+                                <td>{{dpt.unidade_organica_iduo.sigla}}</td>
+                                <td>
+                                    <form method="POST">
+                                        <a href="{% url 'atividades:apagar_departamento' dpt.iddepartamento %}">
+                                            <span class="icon is-small">
+                                                <i class="mdi mdi-delete mdi-24px"></i>
+                                            </span>
+                                        </a>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                </table>
+                 <form method="POST" id="addDepartamento" enctype="multipart/form-data"> {% csrf_token %}
+                    <div class="table "></div>
+                    <div class="table-wrapper">
+                    <table class="table has-mobile-cards is-hoverable is-fullwidth">
+                        <h3>Adicionar Unidade Orgânica: </h3>
+                    <thead>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+
+                    <tr>
+                         <td>
+                    <div class="column">
+                        <div class="control is-expanded">
+                            <label class="label">Unidade Orgânica:</label>
+                            <div class="control">
+                                {{form.unidade_organica_iduo}}
+                            </div>
+                        </div>
+                    </div>
+                        </td>
+                        <td>
+                    <div class="column">
+                        <label class="label">Nome:</label>
+                        <div class="control is-expanded">
+                            {{form.nome}}
+                        </div>
+                    </div>
+                        </td>
+                        <td>
+                        <button data-v-5aa16ff8="" type="button submit" form="addDepartamento" class="button is-success" style="margin-top:40px" >
+                        <span class="icon is-small">
+                            <i class="mdi mdi-plus"></i>
+                        </span>
+                        <span>Adicionar Departamento</span>
+                    </button>
+                        </td>
+                    </tr>
+                    </thead>
+                    </table>
+                    </div>
+                </form>
+                <div  align="center">
+                <button data-v-5aa16ff8="" type="button" class="button is-success" style="margin-top:40px">
+                    <a href="{% url 'atividades:home_page' %}" style="color:white;">
+                    <span class="icon is-small">
+                        <i class="mdi mdi-check"></i>
+                    </span>
+                    <span >Finalizar</span>
+                    </a>
+                </button>
+                </div>
+{% endblock content%}

@@ -1,0 +1,165 @@
+{% extends '../atividades/assets/home.html' %}
+{% block content %}
+<nav class="breadcrumb" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="{% url 'atividades:home_page' %}">Início</a></li>
+    <li class="is-active"><a href="" aria-current="page">Atividades</a></li>
+  </ul>
+</nav>
+<div class="columns">
+    <div class="column is-3">
+        <div style="padding: 3rem 2vw 1rem">
+            <label class="label">Consulta Por Filtros </label>
+            <hr>
+        <form method="Post" id="filtro"> {% csrf_token %}
+                <div class="column">
+                        <div class="field">
+                            <label class="label" style="font-size:14px">Filtrar por campus:</label>
+                            <div class="control">
+                                <div class="select is-fullwidth">
+                                <select name="campus" id="campus">
+                                    <option value="" disabled selected>Selecione campus</option>
+                                    {% for campi in campus %}
+                                    <option value="{{campi.idcampus}}" {% if campi.idcampus == campus_filter %} selected {% endif %} >{{campi.nome}}</option>
+                                    {% endfor %}
+                                </select>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+                <div class="column">
+                        <div class="field">
+                            <label class="label" style="font-size:14px">Filtrar por unidade orgânica:</label>
+                            <div class="control">
+                                <div class="select is-fullwidth">
+                                <select name="unidade_organica" id="unidade_organica">
+                                    <option value="" disabled selected>Selecione unidade orgânica</option>
+                                    {% for unidade in uo %}
+                                    <option value="{{unidade.iduo}}"  {% if unidade.iduo == uo_filter %} selected {% endif %}>{{unidade.sigla}}</option>
+                                    {% endfor %}
+                                </select>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+                <div class="column">
+                        <div class="field">
+                            <label class="label" style="font-size:14px">Filtrar por departamento:</label>
+                            <div class="control">
+                                <div class="select is-fullwidth">
+                                <select name="departamento" id="departamento">
+                                    <option value="" disabled selected>Selecione departamento</option>
+                                    {% for departamento in departamentos %}
+                                    <option value="{{departamento.iddepartamento}}" {% if departamento.iddepartamento == departamento_filter %} selected {% endif %}>{{departamento.nome}}</option>
+                                    {% endfor %}
+                                </select>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+                <div class="column">
+                    <div class="field">
+                        <label class="label" style="font-size:14px">Filtrar por tema:</label>
+                        <div class="control">
+                            <input type="text" autocomplete="off" placeholder="Tema da Atividade" class="input" name="temaAtividade" id="temaAtividade" value="{{tema_filter}}">
+                        </div>
+                    </div>
+                </div>
+                 <div class="column">
+                    <div class="field">
+                        <label class="label" style="font-size:14px">Filtrar por titulo:</label>
+                        <div class="control">
+                            <input type="text" autocomplete="off" placeholder="Nome da Atividade" class="input" name="nomeAtividade" id="nomeAtividade" value="{{titulo_filter}}">
+                        </div>
+                    </div>
+                </div>
+
+
+            <button  type="submit" form="filtro" class="button" style="margin-right: 1rem; color: blue"><!----> <span>Pesquisar</span> <!----></button>
+            <button onclick="clearField()" class="button" style="margin-right: 1rem;"><!----> <span>Limpar</span> <!----></button>
+
+        </form>
+        </div>
+</div>
+    <div class="column">
+        <div class="table "></div>
+            <div class="table-wrapper">
+                <table class="table has-mobile-cards is-hoverable is-fullwidth">
+                    <thead>
+                            <th>
+                                Titulo:
+                            </th>
+                            <th>
+                                Descrição:
+                            </th>
+                            <th>
+                                Temática:
+                            </th>
+                            <th>
+                                Publico Alvo:
+                            </th>
+                            <th>
+                                Duração (em minutos):
+                            </th>
+                            <th>
+                                Unidade Orgânica:
+                            </th>
+                            <th>
+                                Departamento:
+                            </th>
+                            <th>
+                                Campus:
+                            </th>
+                            <th>
+                                Local:
+                            </th>
+                            <th></th>
+                            {% if not list %}
+                            <tr>
+                                <td>Sem atividades disponivéis no momento</td>
+                                <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                            </tr>
+                            {%else%}
+
+                            {% for activity in list %}
+                            <tr>
+                                <td>{{activity.titulo}}</td>
+                                <td>{{activity.descricao}}</td>
+                                <td>{{activity.tematica}}</td>
+                                <td>{{activity.publico_alvo}}</td>
+                                <td>{{activity.duracao|floatformat:0}}</td>
+                                <td>{{activity.unidade_organica_iduo.sigla}}</td>
+                                <td>{{activity.departamento_iddepartamento.nome}}</td>
+                                <td>{{activity.unidade_organica_iduo.campus_idcampus.nome}}</td>
+                                 <td>
+                                    {%if not activity.espaco_idespaco.nome %} [a ser definido]
+                                    {% else %} <a href="{% url 'atividades:display_image' activity.espaco_idespaco.idespaco %}" target="_blank">
+                                     {{activity.espaco_idespaco.nome}}</a>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <form method="POST">
+                                        <a href="{% url 'atividades:ver_sessoes' activity.idatividade %}">
+                                            <span class="icon is-small">
+                                                <i class="mdi mdi-dots-horizontal-circle mdi-24px"></i>
+                                            </span>
+                                        </a>
+                                    </form>
+                                </td>
+                            {% endfor %}
+                            {% endif %}
+                    </thead>
+                </table>
+    </div>
+
+        <script>
+            function clearField(){
+                document.getElementById('campus').value = '';
+                document.getElementById('unidade_organica').value = '';
+                document.getElementById('departamento').value = '';
+                document.getElementById('temaAtividade').value = '';
+                document.getElementById('nomeAtividade').value = '';
+            }
+
+        </script>
+{% endblock content %}

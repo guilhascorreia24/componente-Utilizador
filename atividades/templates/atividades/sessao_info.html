@@ -1,0 +1,87 @@
+{% extends '../atividades/assets/home.html' %}
+{% block content %}
+<nav class="breadcrumb" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="{% url 'atividades:home_page' %}">Início</a></li>
+    <li class="is-active"><a href="" aria-current="page">Sessões de {{activity.titulo}}</a></li>
+  </ul>
+</nav>
+        <div class="table "></div>
+            <div class="table-wrapper">
+                <table class="table has-mobile-cards is-hoverable is-fullwidth">
+                    <thead>
+                            <th>
+                                Dia:
+                            </th>
+                            <th>
+                                Hora:
+                            </th>
+                            <th>
+                                Número inscritos:
+                            </th>
+                            <th>
+                                Total de Vagas:
+                            </th>
+                            <th></th>
+
+                            {% for session in list %}
+                            <tr>
+                                <td>{{session.horario_has_dia_id_dia_hora.dia_dia.dia}}</td>
+                                <td>{{session.horario_has_dia_id_dia_hora.horario_hora.hora}}</td>
+                                <td>{{session.nrinscritos}}</td>
+                                <td>{{session.vagas}}</td>
+                                <td>
+                                    {% if account != 'professor' and account != 'coordinator' %}
+                                    <a>Inscrever-se</a>
+                                    {% endif %}
+                                </td>
+
+
+                            </tr>
+                            {% endfor %}
+                            <tr>
+                                <td>
+                                    <form method="POST">
+                                       <a href="{% url 'atividades:ver_mais_atividade' activity.idatividade %}">
+                                            <span class="icon is-small">
+                                                <i class="mdi mdi-arrow-left-drop-circle mdi-24px"></i>
+                                            </span>
+                                        </a>
+                                    </form>
+                                </td>
+                                <td></td>
+                                <td></td>
+                                <td>
+                                    {% if account == 'professor' %}
+                                    <form method="POST">
+                                        <a href="{% url 'atividades:editar_sessao' activity.idatividade %}">
+                                            <span class="icon is-small">
+                                                <i class="mdi mdi-tooltip-edit mdi-24px"></i>
+                                            </span>
+                                        </a>
+                                    </form>
+                                    {% endif %}
+
+                                </td>
+                                <td></td>
+
+                            </tr>
+                    </thead>
+                </table>
+                {% if account == 'coordinator' and activity.validada == 0 or activity.validada == 2 %}
+                <a class="button is-success" type="button" style="margin-left: 500px" href="{% url 'atividades:aceitar_atividade' activity.idatividade %}">
+                <span class="icon is-small">
+                    <i class="mdi mdi-check"></i>
+                </span>
+                <span>Aceitar</span>
+                </a>
+                <a class="button is-danger" type="button" style="margin-left: 50px" href="{% url 'atividades:recusar_atividade' activity.idatividade %}">
+                <span class="icon is-small">
+                    <i class="mdi mdi-delete"></i>
+                </span>
+                <span>Rejeitar</span>
+                </a>
+                {% endif %}
+
+
+{% endblock content %}

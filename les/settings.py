@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'inscricao.apps.InscricaoConfig',
     'Notification.apps.NotificationConfig',
     'tarefas.apps.TarefasConfig',
+    'atividades'
 ]
 
 MIDDLEWARE = [
@@ -63,6 +64,8 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'les.urls'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'images')
+MEDIA_URL = '/images/'
 
 TEMPLATES = [
     {
