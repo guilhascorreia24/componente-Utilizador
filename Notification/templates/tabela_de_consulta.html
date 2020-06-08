@@ -12,4 +12,4 @@
     <td data-label="Ações" class="has-text-centered">
         <a role="button" href="{% url "noti" not.pk %}"><span class="icon has-text-success"><i
                     {% if not.estado == 1  or not.notificacao.idutilizadorenvia == me_id %}class="mdi mdi-email-open mdi-24px"{% else %}class="mdi mdi-email mdi-24px"{% endif %}></i></span></a>
-        <input type="checkbox" name='noti' value={{not.pk}} style="transform: scale(1.5);"></td>
+        <input type="checkbox" name='noti' value={{not.pk}} style="transform: scale(1.2);"></td>

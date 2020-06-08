@@ -18,6 +18,9 @@ from django.urls import path,include
 from user import views as user_views
 from Notification import views as notificacao_views
 from tarefas import urls
+from django.contrib.staticfiles.urls import static
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+from . import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -39,5 +42,6 @@ urlpatterns = [
     path('validacoes/<int:acao>/<str:id>',user_views.validacoes,name="validacoes"),
     path('tarefas/',include('tarefas.urls')),
     #path('config_campus/',include('Campus.url',namespace="campus")),
-    path('', include("blog.urls"))
-]
+    path('', include("blog.urls")),
+    path('atividades/', include('atividades.urls'))
+]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,0 +1,82 @@
+{% extends '../atividades/assets/home.html' %}
+{% block content %}
+{% load static %}
+<nav class="breadcrumb" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="{% url 'blog:blog-home' %}">Início</a></li>
+    <li class="is-active"><a href="" aria-current="page">Criar Campus</a></li>
+  </ul>
+</nav>
+<div class="table "></div>
+            <div class="table-wrapper">
+                <table class="table has-mobile-cards is-hoverable is-fullwidth">
+                    <thead>
+                            <th>
+                                Nome:
+                            </th>
+                            <th></th>
+                            </tr>
+                    </thead>
+                            {% for campi in campus %}
+                            <tr>
+                                <td>{{campi.nome}}</td>
+                                <td>
+                                    <form method="POST">
+                                        <a href="{% url 'atividades:apagar_campus' campi.idcampus %}">
+                                            <span class="icon is-small">
+                                                <i class="mdi mdi-delete mdi-24px"></i>
+                                            </span>
+                                        </a>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                </table>
+                 <form method="POST" id="addCampus" enctype="multipart/form-data"> {% csrf_token %}
+                    <div class="table "></div>
+                    <div class="table-wrapper">
+                    <table class="table has-mobile-cards is-hoverable is-fullwidth">
+                        <h3>Adicionar campus: </h3>
+                    <thead>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+
+                    <tr>
+                        <td>
+                    <div class="column">
+                        <label class="label">Nome:</label>
+                        <div class="control is-expanded">
+                            <input type="text" class="input" name="nome">
+                        </div>
+                    </div>
+                        </td>
+                        <td>
+                        <button data-v-5aa16ff8="" type="button submit" form="addCampus" class="button is-success" style="margin-top:40px" >
+                        <span class="icon is-small">
+                            <i class="mdi mdi-plus"></i>
+                        </span>
+                        <span>Adicionar Campus</span>
+                    </button>
+                        </td>
+                    </tr>
+                    </thead>
+                    </table>
+                    </div>
+                </form>
+                <div  align="center">
+                <button data-v-5aa16ff8="" type="button" class="button is-success" style="margin-top:40px">
+<<<<<<< HEAD
+                    <a href="{% url "blog:blog-home" %}" style="color:white;">
+=======
+                    <a href="{% url 'blog:blog-home' %}" style="color:white;">
+>>>>>>> a2ccef700b16c6852e686f1a1d2094593f05ee9c
+                    <span class="icon is-small">
+                        <i class="mdi mdi-check"></i>
+                    </span>
+                    <span >Finalizar</span>
+                    </a>
+                </button>
+                </div>
+{% endblock content%}
