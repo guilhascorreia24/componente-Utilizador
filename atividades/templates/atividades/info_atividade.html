@@ -1,0 +1,133 @@
+{% extends '../atividades/assets/home.html' %}
+{% block content %}
+<nav class="breadcrumb" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="{% url 'atividades:home_page' %}">Início</a></li>
+    <li><a href="{% url 'atividades:consultar_minhas_atividades' %}">Minhas atividades</a></li>
+    <li class="is-active"><a href="" aria-current="page">{{activity.titulo}}</a></li>
+  </ul>
+</nav>
+        <div class="table "></div>
+            <div class="table-wrapper">
+                <table class="table has-mobile-cards is-hoverable is-fullwidth">
+                    <thead>
+                            <th></th>
+                            <th></th>
+                            <tr>
+                                <td><b>Titulo:</b></td>
+                                <td>{{activity.titulo}}</td>
+                            </tr>
+                            <tr>
+                                <td><b>Descrição:</b></td>
+                                <td>{{activity.descricao}}</td>
+                            </tr>
+                            <tr>
+                                <td><b>Tema:</b></td>
+                                <td>{{activity.tematica}}</td>
+                            </tr>
+                            <tr>
+                                <td><b>Publico Alvo:</b></td>
+                                <td>{{activity.publico_alvo}}</td>
+                            </tr>
+                            <tr>
+                                <td><b>Número de participantes:</b></td>
+                                <td>{{activity.capacidade}}</td>
+                            </tr>
+                            <tr>
+                                <td><b>Duração (em minutos):</b></td>
+                                <td>{{activity.duracao|floatformat:0}}</td>
+                            </tr>
+                            <tr>
+                                <td><b>Campus:</b></td>
+                                <td>{{activity.unidade_organica_iduo.campus_idcampus.nome}}</td>
+                            </tr>
+                            <tr>
+                                <td><b>Local:</b></td>
+                                <td>
+                                    {% if account == 'coordinator' %}
+                                    <a href="{% url 'atividades:editar_local' activity.idatividade %}">
+                                        {%if not activity.espaco_idespaco.nome %} [a ser definido]
+                                        {% else %} {{activity.espaco_idespaco.nome}}
+                                        {% endif %}
+                                    </a>
+                                    {% else %}
+                                        {%if not activity.espaco_idespaco.nome %} [a ser definido]
+                                        {% else %} <a href="{% url 'atividades:display_image' activity.espaco_idespaco.idespaco %}" target="_blank">
+                                    {{activity.espaco_idespaco.nome}}</a>
+                                        {% endif %}
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><b>Estado:</b></td>
+                                <td>
+                                {% if activity.validada == 0 or activity.validada == 2 %}
+                                    <span class="tag next is-warning" style="width: 7 rem;font-size: small;">Pendente</span>
+                                {% elif activity.validada == 1 %}
+                                    <span class="tag next is-success" style="width: 7 rem;font-size: small;">Concluída</span>
+                                {% elif activity.validada == -1 %}
+                                    <span class="tag next is-danger" style="width: 7 rem;font-size: small;">Rejeitada</span>
+                                {% endif %}
+                                </td>
+                            </tr>
+                            {% if account == 'professor' %}
+                            <tr>
+                                <td>
+                                    <form method="POST">
+                                        <a href="{% url 'atividades:apagar_atividade' activity.idatividade %}">
+                                            <span class="icon is-small">
+                                                <i class="mdi mdi-delete mdi-24px"></i>
+                                            </span>
+                                        </a>
+                                    </form>
+                                </td>
+                                <td>
+                                    <form method="POST">
+                                        <a href="{% url 'atividades:editar_atividade' activity.idatividade %}">
+                                            <span class="icon is-small">
+                                                <i class="mdi mdi-tooltip-edit mdi-24px"></i>
+                                            </span>
+                                        </a>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% endif %}
+                            <tr>
+                                {% if account == 'professor' %}
+                                <td>
+                                <form method="POST">
+                                        <a href="{% url 'atividades:consultar_minhas_atividades' %}">
+                                            <span class="icon is-small">
+                                                <i class="mdi mdi-arrow-left-drop-circle mdi-24px"></i>
+                                            </span>
+                                        </a>
+                                    </form>
+                                </td>
+                                <td><b><a href="{% url 'atividades:criar_editar_sessao' activity.idatividade %}">Ver sessões</a></b></td>
+                                {% elif account == 'coordinator' %}
+                                <td>
+                                <form method="POST">
+                                        <a href="{% url 'atividades:consultar_atividades_coodernador'%}">
+                                            <span class="icon is-small">
+                                                <i class="mdi mdi-arrow-left-drop-circle mdi-24px"></i>
+                                            </span>
+                                        </a>
+                                    </form>
+                                </td>
+                                <td><b><a href="{% url 'atividades:ver_sessoes' activity.idatividade %}">Ver sessões</a></b></td>
+                                {% else %}
+                                <td>
+                                <form method="POST">
+                                        <a href="{% url 'atividades:consultar_atividades'%}">
+                                            <span class="icon is-small">
+                                                <i class="mdi mdi-arrow-left-drop-circle mdi-24px"></i>
+                                            </span>
+                                        </a>
+                                    </form>
+                                </td>
+                                <td><b><a href="{% url 'atividades:ver_sessoes' activity.idatividade %}">Ver sessões</a></b></td>
+                                {% endif %}
+                            </tr>
+                    </thead>
+                </table>
+{% endblock content %}
