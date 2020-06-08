@@ -56,7 +56,7 @@
                     <div style="padding: 1rem 2vw 0px;">
                         {% if form.responsaveis.errors %} {% for field in form.responsaveis %} {% for error in field.errors %}
                         <div class="alert alert-danger">
-                            <strong>{{ error|escape }}</strong>
+                            <strong>{{ field|escape }}</strong>
                         </div>
                         {% endfor %} {% endfor %} {% for error in form.responsaveis.non_field_errors %}
                         <div class="alert alert-danger">
@@ -72,7 +72,7 @@
                         </div>
                         {% endfor %} {% endif %} {% if form.sessao.errors %} {% for field in form.sessao %} {% for error in field.errors %}
                         <div class="alert alert-danger">
-                            <strong>{{ error|escape }}</strong>
+                            <strong>{{ field|escape }}</strong>
                         </div>
                         {% endfor %} {% endfor %} {% for error in form.sessao.non_field_errors %}
                         <div class="alert alert-danger">
@@ -107,17 +107,17 @@
                         <h2 class="title has-text-grey is-uppercase" style="font-size: 0.9rem;">
                             Docentes responsáveis</h2>
                         <div class="columns">
-                            <div class="column">
+                            <div class="column is-4">
                                 <div class="field"><label class="label">Nome</label>
                                     <!---->
                                 </div>
                             </div>
-                            <div class="column">
+                            <div class="column is-4">
                                 <div class="field"><label class="label">E-mail</label>
                                     <!---->
                                 </div>
                             </div>
-                            <div class="column">
+                            <div class="column is-4">
                                 <div class="field"><label class="label">Telemóvel/Telefone</label>
                                     <!---->
                                 </div>
@@ -125,8 +125,11 @@
                         </div>
                         <div id="responsavel_form" style="padding-bottom:2%">
                             {{ form.responsaveis.management_form }} {% for responsavel in form.responsaveis%}
+                            {% for hidden in responsavel.hidden_fields %}
+                            {{ hidden }}
+                            {% endfor %}
                             <div class="columns responsavel">
-                                <div class="column">
+                                <div class="column is-4">
                                     <div class="field">
                                         <div class="control is-clearfix">{{responsavel.nome|addcss:"input"}}
                                         </div>
@@ -134,7 +137,7 @@
 
                                     </div>
                                 </div>
-                                <div class="column">
+                                <div class="column is-4">
                                     <div class="field">
                                         <div class="control is-clearfix">{{responsavel.email|addcss:"input"}}
 
@@ -143,7 +146,7 @@
                                         <!---->
                                     </div>
                                 </div>
-                                <div class="column">
+                                <div class="column is-4">
                                     <div class="field">
                                         <div class="control is-clearfix">{{responsavel.telefone|addcss:"input"}}
                                         </div>
@@ -151,6 +154,11 @@
                                         <!---->
                                     </div>
                                 </div>
+                                <div class="column is-1">
+                                    <a class= "align-middle" id="remove_button"><span class="icon has-text-danger"><i class="mdi mdi-close-box mdi-24px"></i></span></a>
+                                    {{responsavel.DELETE|addcss:"hide"}}
+                                </div>
+
                             </div>
                             {% endfor %}
                         </div>
@@ -314,6 +322,9 @@
                         </div>
                         <div id="table_transporte" style="padding-bottom:2%">
                             {{ form.transportes.management_form }} {% for transporte in form.transportes %}
+                            {% for hidden in transporte.hidden_fields %}
+                            {{ hidden }}
+                            {% endfor %}
                             <div class="columns">
                                 <div class="column">
                                     <div class="field">
@@ -783,7 +794,7 @@
                             <h2 data-v-dac68d9e="" class="title has-text-grey is-uppercase" style="font-size: 0.9rem;">
                                 Sessões Escolhidas </h2>
                             <div data-v-dac68d9e="" class="b-table">
-                                {% if form.sessao|length < 1 %}
+                                {% if form.sessao.errors|length > 1 %}
                                 <div class="alert alert-danger">
                                     {{form.sessao.errors.0}} 
                                 </div>
@@ -799,7 +810,13 @@
                                         <div>
                                             <p>{{curr_sessao.nr_inscritos.value}}</p>
                                             <p>{{curr_sessao.sessao_idsessao.value}}</p>
-                                            <p>{{curr_sessao.nr_inscritos.errors.0}}</p>
+                                            {% if curr_sessao.nr_inscritos.errors %}
+                                            <p class="sessao_error">{{curr_sessao.nr_inscritos.errors.0}}</p>
+                                            {% endif %}
+                                            {% for hidden in curr_sessao.hidden_fields %}
+                                            <p>{{ hidden }}</p>
+                                            {% endfor %}
+                                            
                                         </div>
                                         {% endfor %}
                                     </div>
@@ -1178,11 +1195,11 @@
             id.closest('.sessao_table').children("td[data-label='Inscrever']").find('input').val(inscritos).change();
             
             //console.log($('#sessao_submit_table').html());
-            if(childs.length >= 3){
+            //Error set
+            if($(this).children('.sessao_error').length >= 1){
                 var id_input_element = $('#sessao_submit_table').children('tr').children("td[data-label='id']");
                 for(var i = 0; i<id_input_element.length;i++){
                     var this_id = parseInt(id_input_element.eq(i).children('input').val());
-                    console.log($("#id_sessao_set-0-sessao_idsessao").val());
                     
                     if(this_id == valueInt){
                         var el = id_input_element.eq(i).closest('tr').children("td[data-label='Inscrever']");
@@ -1357,7 +1374,7 @@
         var value = parseInt($('#id_responsaveis_set-TOTAL_FORMS').val());
         $('#id_responsaveis_set-TOTAL_FORMS').val(value + 1);
 
-        var form_idx = $('#responsavel_form').children().length;
+        var form_idx = value;
         var template = $('#responsavel_template').clone(true);
         $('#responsavel_form').append(template.html().replace(/__prefix__/g, form_idx));
     }
@@ -1374,7 +1391,7 @@
         var value = parseInt($('#id_transportes_set-TOTAL_FORMS').val());
         $('#id_transportes_set-TOTAL_FORMS').val(value + 1);
 
-        var form_idx = $('#table_transporte').children().length;
+        var form_idx = value;
         var template = $('#template_transporte').clone(true);
         template.removeAttr('id');
         template.show();

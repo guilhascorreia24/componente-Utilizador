@@ -69,7 +69,6 @@ def inscricao_form(request,inscricao=None):
         campus = models.Campus.objects.all()
         form = forms.CustomForm(inscricao=inscricao)
         sessoes = list_sessao()
-        print(campus)
         return render(request,'inscricao_form.html',{'form': form, 'atividades_sessao' : sessoes,'campus':campus})
     
     

@@ -408,6 +408,7 @@ class InscricaoHasSessao(models.Model):
         return super(InscricaoHasSessao, self).save(*args, **kwargs)
     
     def update(self, *args, **kwargs):
+        print("TEST")
         insc = InscricaoHasSessao.objects.filter(inscricao_idinscricao=self.inscricao_idinscricao).nr_inscritos
         delta = self.nr_inscritos-insc
         Sessao.objects.filter(idsessao=self.sessao_idsessao.pk).update(nrinscritos=F('nrinscritos')+delta)
@@ -490,8 +491,13 @@ class Prato(models.Model):
 
 
     def save(self, *args, **kwargs):
-        obj = Menu.objects.get(idmenu=self.menu_idmenu.pk)
-        Menu.objects.filter(idmenu=self.menu_idmenu.pk).update(nralmocosdisponiveis=F('nralmocosdisponiveis')-self.nralmocos)
+        print("Test")
+        try:
+            insc = Prato.objects.get(inscricao_idinscricao=self.inscricao_idinscricao).nralmocos
+        except:
+            insc = 0
+        delta = self.nralmocos-insc
+        Menu.objects.filter(idmenu=self.menu_idmenu.pk).update(nralmocosdisponiveis=F('nralmocosdisponiveis')-delta)
         return super(Prato, self).save(*args, **kwargs)
     
     def update(self, *args, **kwargs):
