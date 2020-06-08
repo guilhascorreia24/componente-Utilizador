@@ -9,3 +9,7 @@ a.current{
     border-color: #3273dc;
     color: #fff;
 }
+
+.hide{
+    display: none;
+}

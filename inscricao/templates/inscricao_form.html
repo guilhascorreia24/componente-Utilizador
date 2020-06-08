@@ -117,7 +117,7 @@
                                     <!---->
                                 </div>
                             </div>
-                            <div class="column is-4">
+                            <div class="column is-3">
                                 <div class="field"><label class="label">Telemóvel/Telefone</label>
                                     <!---->
                                 </div>
@@ -128,7 +128,7 @@
                             {% for hidden in responsavel.hidden_fields %}
                             {{ hidden }}
                             {% endfor %}
-                            <div class="columns responsavel">
+                            <div class="columns responsavel row">
                                 <div class="column is-4">
                                     <div class="field">
                                         <div class="control is-clearfix">{{responsavel.nome|addcss:"input"}}
@@ -146,7 +146,7 @@
                                         <!---->
                                     </div>
                                 </div>
-                                <div class="column is-4">
+                                <div class="column is-3">
                                     <div class="field">
                                         <div class="control is-clearfix">{{responsavel.telefone|addcss:"input"}}
                                         </div>
@@ -155,7 +155,7 @@
                                     </div>
                                 </div>
                                 <div class="column is-1">
-                                    <a class= "align-middle" id="remove_button"><span class="icon has-text-danger"><i class="mdi mdi-close-box mdi-24px"></i></span></a>
+                                    <a class="table_remove_button"><span class="icon has-text-danger"><i style = "padding-top: 8px;"class="mdi mdi-close-box mdi-24px"></i></span></a>
                                     {{responsavel.DELETE|addcss:"hide"}}
                                 </div>
 
@@ -165,27 +165,31 @@
 
                         <!--TEMPLATE FOR ADD MORE REPONSAVEIS-->
                         <div id="responsavel_template" style="display:none">
-                            <div class="columns responsavel">
-                                <div class="column">
+                            <div class="columns responsavel row">
+                                <div class="column is-4">
                                     <div class="field">
                                         <div class="control is-clearfix">
                                             {{form.responsaveis.empty_form.nome|addcss:"input"}}
                                         </div>
                                     </div>
                                 </div>
-                                <div class="column">
+                                <div class="column is-4">
                                     <div class="field">
                                         <div class="control is-clearfix">
                                             {{form.responsaveis.empty_form.email|addcss:"input"}}
                                         </div>
                                     </div>
                                 </div>
-                                <div class="column">
+                                <div class="column is-3">
                                     <div class="field">
                                         <div class="control is-clearfix">
                                             {{form.responsaveis.empty_form.telefone|addcss:"input"}}
                                         </div>
                                     </div>
+                                </div>
+                                <div class="column is-1">
+                                    <a class="table_remove_button"><span class="icon has-text-danger"><i style = "padding-top: 8px;"class="mdi mdi-close-box mdi-24px"></i></span></a>
+                                    {{form.responsaveis.empty_form.DELETE|addcss:"hide"}}
                                 </div>
                             </div>
                         </div>
@@ -195,13 +199,6 @@
                             <span class="icon is-small"><i class="mdi mdi-plus"></i></span>
                             <span>Adicionar docente</span>
                         </button>
-
-                        <span><button type="button" class="button" style="float:right"
-                                onclick="delete_responsavel()"><span>Remover docente</span><span class="icon is-small"><i class="mdi mdi-minus"></i></span>
-
-                        <!---->
-                        </button>
-                        </span>
                         <hr>
                     </div>
                 </div>
@@ -210,7 +207,7 @@
                         <hr>
                         <h2 class="title has-text-grey is-uppercase" style="font-size: 0.9rem;">
                             Informação da Escola </h2>
-                        <div class="columns">
+                        <div class="columns row">
                             <div class="column">
                                 <div class="field"><label class="label">Nome da escola</label>
                                     <div class="control is-clearfix">{{form.escola.nome|addcss:"input"}}
@@ -248,7 +245,7 @@
                         <h2 class="title has-text-grey is-uppercase" style="font-size: 0.9rem;">
                             Informação da Turma </h2>
                         <div class="columns">
-                            <div class="column">
+                            <div class="column is-2">
                                 <div class="field has-numberinput has-numberinput-compact">
                                     <label class="label">Ano</label>
                                     <div class="b-numberinput field has-addons">
@@ -264,14 +261,14 @@
                                     <p class="help is-danger">{{form.inscricao.ano.errors.0}}</p>
                                 </div>
                             </div>
-                            <div class="column">
+                            <div class="column is-1">
                                 <div class="field"><label class="label">Turma</label>
                                     <div class="control is-clearfix">{{form.inscricao_coletiva.turma|addcss:"input"}}
                                     </div>
                                     <p class="help is-danger">{{form.inscricao_coletiva.turma.errors.0}}</p>
                                 </div>
                             </div>
-                            <div class="column">
+                            <div class="column is-2">
                                 <div class="field has-numberinput has-numberinput-compact">
                                     <label class="label">Número de alunos</label>
                                     <div class="b-numberinput field has-addons">
@@ -305,14 +302,14 @@
                         <h2 class="title has-text-grey is-uppercase" style="font-size: 0.9rem;">
                             Informação de transporte </h2>
                         <div class="columns">
-                            <div class="column">
+                            <div class="column is-8">
                                 <div class="field"><label class="label">Transporte</label>
                                     <div class="control is-expanded">
                                     </div>
                                     <!---->
                                 </div>
                             </div>
-                            <div class="column">
+                            <div class="column is-2">
                                 <div class="field"><label class="label">Numero de Passageiros</label>
                                     <div class="control is-expanded">
                                     </div>
@@ -325,8 +322,8 @@
                             {% for hidden in transporte.hidden_fields %}
                             {{ hidden }}
                             {% endfor %}
-                            <div class="columns">
-                                <div class="column">
+                            <div class="columns row">
+                                <div class="column is-8">
                                     <div class="field">
                                         <div class="control is-expanded"><span class="select is-fullwidth is-empty select-transporte">
                                                 {{transporte.horario}}
@@ -337,9 +334,8 @@
                                         <!---->
                                     </div>
                                 </div>
-                                <div class="column">
+                                <div class="column is-3">
                                     <div class="field has-numberinput has-numberinput-compact">
-
                                         <div class="b-numberinput field has-addons">
                                             <p class="control">
                                                 <button type="button" class="button is-primary"><span class="icon"><i
@@ -356,14 +352,18 @@
                                         <p class="help is-danger">{{transporte.n_passageiros.errors.0}}</p>
                                     </div>
                                 </div>
+                                <div class="column is-1">
+                                    <a class="table_remove_button"><span class="icon has-text-danger"><i style = "padding-top: 8px;"class="mdi mdi-close-box mdi-24px"></i></span></a>
+                                    {{transporte.DELETE|addcss:"hide"}}
+                                </div>
                             </div>
                             {% endfor %}
                         </div>
 
                         <!--TEMPLATE-->
                         <div id="template_transporte" style="display:none">
-                            <div class="columns">
-                                <div class="column">
+                            <div class="columns row">
+                                <div class="column is-8">
                                     <div class="field">
                                         <div class="control is-expanded"><span class="select is-fullwidth is-empty select-transporte">{{form.transportes.empty_form.horario}}</span>
                                             <!---->
@@ -371,7 +371,7 @@
                                         <!---->
                                     </div>
                                 </div>
-                                <div class="column">
+                                <div class="column is-3">
                                     <div class="field has-numberinput has-numberinput-compact">
                                         <div class="b-numberinput field has-addons">
                                             <p class="control"><button type="button" class="button is-primary"><span
@@ -389,6 +389,10 @@
                                         <!---->
                                     </div>
                                 </div>
+                                <div class="column is-1">
+                                    <a class="table_remove_button"><span class="icon has-text-danger"><i style = "padding-top: 8px;"class="mdi mdi-close-box mdi-24px"></i></span></a>
+                                    {{form.transportes.empty_form.DELETE|addcss:"hide"}}
+                                </div>
                             </div>
                         </div>
                         <!--END TEMPLATE-->
@@ -397,11 +401,6 @@
                         <button type="button" class="button" onclick="add_transporte()">
                             <span class="icon is-small"><i class="mdi mdi-plus"></i></span>
                             <span>Adicionar transporte</span>
-                        </button>
-
-                        <button type="button" class="button" style="float:right" onclick="delete_transporte()">
-                            <span>Remover transporte </span>
-                            <span class="icon is-small"><i class="mdi mdi-minus"></i></span>
                         </button>
                         <hr>
                         <p style="display: inline-block; padding-right: 2rem;"> Precisam de transporte para efectuar as visitas entre os 3 Campos? </p>
@@ -1212,11 +1211,24 @@
 
         //$("#sessao_start_info").remove();
 
+        $('.table_remove_button').each(function(){
+            applyClickRemoveRow($(this));
+        });
+
 
         $("#nextBtn").click(nextTab);
         $("#prevBtn").click(previousTab);
     });
     showTab(currentTab); // Display the current tab
+
+    //Aply the remove button to the tables
+    function applyClickRemoveRow(el){
+        el.on('click',function(){
+            $(this).next('input').prop( "checked", true );
+            $(this).next('input').val(1);
+            $(this).closest('.row').hide();
+        });
+    }
 
     //String in format HH:MM
     function stringToTimeDate(string){
@@ -1272,7 +1284,7 @@
 
     function removeEntry(entry) {
 
-        if (entry.siblings().length == 2) {
+        if (entry.siblings().length == 2 ) {
             var table = entry.closest('table');
             table.children('thead').hide();
             table.children('tbody').children('.is-empty').show();
@@ -1375,16 +1387,9 @@
         $('#id_responsaveis_set-TOTAL_FORMS').val(value + 1);
 
         var form_idx = value;
-        var template = $('#responsavel_template').clone(true);
-        $('#responsavel_form').append(template.html().replace(/__prefix__/g, form_idx));
-    }
-
-    function delete_responsavel() {
-        if ($('#responsavel_form > .responsavel').length > 1) {
-            var value = parseInt($('#id_responsaveis_set-TOTAL_FORMS').val());
-            $('#id_responsaveis_set-TOTAL_FORMS').val(value - 1);
-            $('#responsavel_form > .responsavel').last().remove();
-        }
+        var template = $('#responsavel_template').clone(true).html().replace(/__prefix__/g, form_idx);
+        var added = $('#responsavel_form').append(template);
+        applyClickRemoveRow(added.find('.table_remove_button'));
     }
 
     function add_transporte() {
