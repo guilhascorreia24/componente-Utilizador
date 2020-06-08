@@ -681,6 +681,9 @@ class UnidadeOrganica(models.Model):
     sigla = models.CharField(max_length=255)
     campus_idcampus = models.ForeignKey(Campus, models.DO_NOTHING, db_column='Campus_idCampus')  # Field name made lowercase.
 
+    def __str__(self):
+        return self.sigla
+
     class Meta:
         managed = False
         db_table = 'unidade_organica'
