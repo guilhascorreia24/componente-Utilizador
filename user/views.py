@@ -165,7 +165,7 @@ def register(request):
             if 'user_id' in request.session:
                 validacoes(request,1,signing.dumps(user_id))
             messages.success(request, f'Registo efetuado com Sucesso!')
-            return redirect('blog-home')
+            return redirect('blog:blog-home')
         else:
             error=False
             error3=False
@@ -207,7 +207,7 @@ def login_request(request):
                 if username.validada != int(5):
                     messages.success(request, f"Bem-vindo {username.nome}")
                     request.session['user_id'] = Utilizador.objects.get(email=request.POST['email']).idutilizador
-                    r = redirect('blog-home')
+                    r = redirect('blog:blog-home')
                     if 'check' in request.POST and request.POST['check'] == '1':
                         Utilizador.objects.filter(pk=request.session['user_id']).update(remember_me=encrypt(request.session['user_id']))
                         r.set_cookie('cookie_id', encrypt(request.session['user_id']), 7 * 24 * 60 * 60)
@@ -230,7 +230,7 @@ def login_request(request):
 
 
 def logout_request(request):
-    r = redirect("blog-home")
+    r = redirect("blog:blog-home")
     del request.session['user_id']
     if 'cookie_id' in request.COOKIES:
         r.delete_cookie('cookie_id')
@@ -290,7 +290,7 @@ def modify_user(request,id):
             if t.validada==5:
                 t.validada=0
             t.save()
-            return redirect('blog-home')
+            return redirect('blog:blog-home')
         else:
             error=False
             error3=False
@@ -410,7 +410,7 @@ def profile_list(request):
         elif ProfessorUniversitario.objects.filter(pk=u.idutilizador).exists():
             u.cargo="Docente Universitario"
             dep=ProfessorUniversitario.objects.get(pk=u.idutilizador).departamento_iddepartamento
-            u.UO=UnidadeOrganica.objects.get(pk=dep.pk).sigla
+            u.UO=UnidadeOrganica.objects.get(pk=dep.unidade_organica_iduo.pk).sigla
             if u.validada==3:
                 u.estado="Validado"
         elif Administrador.objects.filter(pk=u.pk).exists():
@@ -441,7 +441,7 @@ def change_password(request, id):
             t.password=encrypt(passwd)
             t.save()
             messages.success(request, f'Password alterada com sucesso')
-            return redirect('blog-home')
+            return redirect('blog:blog-home')
         else:
             messages.error(request,password_check(passwd))
             if request.POST['confirm_password']!=passwd:
@@ -471,7 +471,7 @@ def reset(request):
 #-------------------------------------------------validacoes---------------------------------------------------------------
 def validacoes(request,acao,id):
     if not Administrador.objects.filter(pk=request.session['user_id']).exists() or not Coordenador.objects.filter(pk=request.session['user_id']).exists():
-        redirect("blog-home")
+        redirect("blog:blog-home")
     id=signing.loads(id)
     user=Utilizador.objects.get(pk=id)
     if acao==1:

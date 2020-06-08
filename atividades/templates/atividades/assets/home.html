@@ -27,7 +27,7 @@
 	<div id="app">
         <nav class="navbar" role="navigation" aria-label="main navigation">
   <div class="navbar-brand">
-    <a class="navbar-item" href="{% url 'atividades:home_page' %}">
+    <a class="navbar-item" href="{% url 'blog:blog-home' %}">
       <img src="{% static 'imgs/logo-navbar.png' %}">
     </a>
 
@@ -45,7 +45,7 @@
         {% elif account == "coordinator" %}
         {% include "navbar-coord.html" %}
         {% elif account == "adm" %}
-        {% include "navbar-admin.html" %}
+        {% include "navabar-admin.html" %}
         {% else %}
         {% include "navbar-part.html" %}
         {% endif %}
@@ -94,7 +94,7 @@
             </div>
           </div>
         </div>
-        <a href="{% url 'atividades:logout' %}">
+        <a href="{% url 'logout' %}">
         <div type="button" class="button">
           <span class="icon is-small">
             <i class="mdi mdi-login-variant"></i>

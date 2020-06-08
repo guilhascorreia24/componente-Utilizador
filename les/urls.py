@@ -43,10 +43,5 @@ urlpatterns = [
     path('tarefas/',include('tarefas.urls')),
     #path('config_campus/',include('Campus.url',namespace="campus")),
     path('', include("blog.urls")),
-<<<<<<< HEAD
     path('atividades/', include('atividades.urls'))
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-=======
-    path('atividades/', include('atividades.urls')),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
->>>>>>> 410d4045859037a7a9dd0c7ec443228f4cb952a1
