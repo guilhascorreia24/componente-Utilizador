@@ -401,7 +401,7 @@ class InscricaoHasSessao(models.Model):
     inscricao_idinscricao = models.ForeignKey(Inscricao, models.DO_NOTHING, db_column='inscricao_idinscricao')
     sessao_idsessao = models.ForeignKey('Sessao', models.DO_NOTHING, db_column='sessao_idsessao')
     inscricao_has_sessao_id = models.AutoField(primary_key=True)
-    nr_inscritos = models.IntegerField(validators=[smaller_zero_validator,not_zero_validator])
+    nr_inscritos = models.IntegerField(validators=[smaller_zero_validator])
 
     def save(self, *args, **kwargs):
         insc = 0
@@ -607,7 +607,7 @@ class TransporteHasHorario(models.Model):
     origem = models.ForeignKey(Paragem, models.DO_NOTHING, db_column='origem',related_name="origem")
     destino = models.ForeignKey(Paragem, models.DO_NOTHING, db_column='destino',related_name="destino")
     horario_has_dia_id_dia_hora = models.ForeignKey(HorarioHasDia, models.DO_NOTHING, db_column='horario_has_dia_id_dia_hora')
-    n_passageiros = models.IntegerField(blank=True, null=True,validators=[not_zero_validator,smaller_zero_validator])
+    n_passageiros = models.IntegerField(blank=True, null=True,validators=[smaller_zero_validator])
 
     def __str__(self):
         return self.origem.paragem + " -> " + self.destino.paragem + " | " + self.horario_has_dia_id_dia_hora.__str__() + " | Lugares restantes: " + str(self.transporte_idtransporte.capacidade - self.n_passageiros)
