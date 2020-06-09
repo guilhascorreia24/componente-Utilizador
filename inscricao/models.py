@@ -495,7 +495,6 @@ class Prato(models.Model):
 
 
     def save(self, *args, **kwargs):
-        print("Test")
         try:
             insc = Prato.objects.get(inscricao_idinscricao=self.inscricao_idinscricao).nralmocos
         except:
@@ -647,7 +646,6 @@ class TransporteHasInscricao(models.Model):
         except:
             raise ValidationError({'horario': "Opção inválida"})
         capacidade = data.transporte_idtransporte.capacidade - data.n_passageiros
-        print(str(data.n_passageiros) + " - " + str(data.transporte_idtransporte.capacidade))
         if capacidade < self.n_passageiros:
             #Check for equal entry already in database
             try:
@@ -669,6 +667,7 @@ class TransporteHasInscricao(models.Model):
 @receiver(models.signals.post_delete, sender=TransporteHasInscricao)
 def delete_transporte(sender, instance, using, **kwargs):
     TransporteHasHorario.objects.filter(id_transporte_has_horario=instance.horario.pk).update(n_passageiros=F('n_passageiros')-instance.n_passageiros)
+    print(instance.horario.pk)
 
 
 class TransportePessoal(models.Model):
