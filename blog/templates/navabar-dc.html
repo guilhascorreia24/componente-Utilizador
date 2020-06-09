@@ -1,1 +1,4 @@
-<div class="navbar-start"><a data-v-a67fe1ba="" href="/inscricao" class="navbar-item is-tab router-link"> Minha Atividades </a></div>
+<div class="navbar-start"><a data-v-a67fe1ba="" href="/inscricao" class="navbar-item is-tab router-link"> Minha Atividades </a>
+<a href="{% url 'atividades:consultar_minhas_atividades' %}" class="navbar-item">Minhas Atividades</a>
+<a href="{% url 'atividades:criar_atividade' %}" class="navbar-item">Criar Atividade</a>
+</div>

@@ -6,8 +6,14 @@
     <meta content="IE=edge" http-equiv="X-UA-Compatible">
     <meta content="width=device-width,initial-scale=1" name="viewport">
     <link href="{% static "img/favicon.ico" %}" rel="icon">
-    <link rel="stylesheet" href="//cdn.materialdesignicons.com/4.9.95/css/materialdesignicons.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <!--<script type="text/javascript" src={% static "js/all.js" %}></script>!-->
+    <!--<link href="{% static "css/all.css" %}" rel="stylesheet">  Overrites next line and some icons disappear !--> 
+    <link href="{% static "css/solid.css" %}" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href={% static "dataTables/datatables.min.css" %}>
+    <script type="text/javascript" src={% static "dataTables/datatables.min.js" %}></script>
+    <link rel="stylesheet" type="text/css" href={% static "css/bootstrap.min.css" %}>
+    <script type="text/javascript" src={% static "js/bootstrap.min.js" %}></script>
     <title>Dia Aberto</title>
     <style>
         body,
@@ -25,7 +31,6 @@
             display: none;
         }
     </style>
-    <link href="{% static "css/all.css" %}" rel="stylesheet">
     <link href="{% static "css/mycss.css" %}" rel="stylesheet">
     <link href="{% static "css/atividades.320507fe.css" %}" rel="prefetch">
     <link href="{% static "css/colaboradores.2c4c9dc5.css" %}" rel="prefetch">
@@ -67,12 +72,8 @@
         src="{% static "js/colaboradores~departamentoatividades~inscricao~proporatividade~tarefas~transportes.38d827a4.js" %}"></script>
     <link rel="stylesheet" type="text" {% static "css" href=""{% static "css/proporatividade.dbff9dac.css" %}">
     <script charset="utf-8" src="{% static "js/proporatividade.46ad7021.js" %}"></script>
-    <link rel="stylesheet" type="text" {% static "css" href=""{% static "css/inscricao.1e7f0088.css" %}">
+    <link rel="stylesheet" type="text" {% static "css" href="{% static "css/inscricao.1e7f0088.css" %}">
     <script charset="utf-8" src="{% static "js/inscricao.689ad7a7.js" %}"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    <script type="text/javascript"  src="http://cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js"></script>
-    <script tyep="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
 </head>
 
 <body><noscript><strong>We're sorry but dia_aberto_frontend doesn't work properly without JavaScript enabled. Please

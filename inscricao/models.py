@@ -404,18 +404,22 @@ class InscricaoHasSessao(models.Model):
     nr_inscritos = models.IntegerField(validators=[smaller_zero_validator,not_zero_validator])
 
     def save(self, *args, **kwargs):
-        Sessao.objects.filter(idsessao=self.sessao_idsessao.pk).update(nrinscritos=F('nrinscritos')+self.nr_inscritos)
-        return super(InscricaoHasSessao, self).save(*args, **kwargs)
-    
-    def update(self, *args, **kwargs):
-        insc = InscricaoHasSessao.objects.filter(inscricao_idinscricao=self.inscricao_idinscricao).nr_inscritos
+        insc = 0
+        try:
+            insc = InscricaoHasSessao.objects.get(inscricao_has_sessao_id=self.inscricao_has_sessao_id).nr_inscritos
+        except:
+            insc = 0
+        
         delta = self.nr_inscritos-insc
         Sessao.objects.filter(idsessao=self.sessao_idsessao.pk).update(nrinscritos=F('nrinscritos')+delta)
-        super(InscricaoHasSessao,self).update(*args, **kwargs)
+        return super(InscricaoHasSessao, self).save(*args, **kwargs)
+    
+
 
     class Meta:
         managed = False
         db_table = 'inscricao_has_sessao'
+
 @receiver(models.signals.post_delete, sender=InscricaoHasSessao)
 def delete_sessao_inscricao(sender, instance, using, **kwargs):
     Sessao.objects.filter(idsessao=instance.sessao_idsessao.pk).update(nrinscritos=F('nrinscritos')-instance.nr_inscritos)
@@ -489,9 +493,15 @@ class Prato(models.Model):
     menu_idmenu = models.ForeignKey(Menu, models.DO_NOTHING, db_column='Menu_idMenu')  # Field name made lowercase.
 
 
+
     def save(self, *args, **kwargs):
-        obj = Menu.objects.get(idmenu=self.menu_idmenu.pk)
-        Menu.objects.filter(idmenu=self.menu_idmenu.pk).update(nralmocosdisponiveis=F('nralmocosdisponiveis')-self.nralmocos)
+        print("Test")
+        try:
+            insc = Prato.objects.get(inscricao_idinscricao=self.inscricao_idinscricao).nralmocos
+        except:
+            insc = 0
+        delta = self.nralmocos-insc
+        Menu.objects.filter(idmenu=self.menu_idmenu.pk).update(nralmocosdisponiveis=F('nralmocosdisponiveis')-delta)
         return super(Prato, self).save(*args, **kwargs)
     
     def update(self, *args, **kwargs):
@@ -615,14 +625,20 @@ class TransporteHasInscricao(models.Model):
     n_passageiros = models.IntegerField(validators=[smaller_zero_validator])
 
     def save(self, *args, **kwargs):
-        TransporteHasHorario.objects.filter(id_transporte_has_horario=self.horario.pk).update(n_passageiros=F('n_passageiros')+self.n_passageiros)
+        old = 0
+        try:
+            old = TransporteHasInscricao.objects.get(transporte_has_inscricao_id=self.transporte_has_inscricao_id).n_passageiros
+        except:
+            old = 0
+        delta = self.n_passageiros - old
+        TransporteHasHorario.objects.filter(id_transporte_has_horario=self.horario.pk).update(n_passageiros=F('n_passageiros')+delta)
         return super(TransporteHasInscricao, self).save(*args, **kwargs)
     
-    def update(self, *args, **kwargs):
-        old = TransporteHasInscricao.objects.filter(transporte_has_inscricao_id=self.transporte_has_inscricao_id).n_passageiros
-        delta = self.n_passageiros - old
-        TransporteHasHorario.objects.filter(id_transporte_has_horario=self.horario).update(n_passageiros=F('n_passageiros')+delta)
-        super(TransporteHasInscricao,self).update(*args, **kwargs)
+    #def update(self, *args, **kwargs):
+        #old = TransporteHasInscricao.objects.filter(transporte_has_inscricao_id=self.transporte_has_inscricao_id).n_passageiros
+        #delta = self.n_passageiros - old
+        #TransporteHasHorario.objects.filter(id_transporte_has_horario=self.horario).update(n_passageiros=F('n_passageiros')+delta)
+        #super(TransporteHasInscricao,self).update(*args, **kwargs)
     
     def clean(self):
         super().clean()

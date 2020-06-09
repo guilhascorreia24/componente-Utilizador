@@ -7,7 +7,10 @@ from inscricao import validators
 
 class Form_Responsaveis(ModelForm):
 
-    def save(self, idinscricao):
+    def set_inscricao(self,inscricao):
+        self._idinscricao = inscricao
+    def save(self,**kwargs):
+        idinscricao = self._idinscricao
         base = super(Form_Responsaveis, self).save(commit=False)
         base.idinscricao = idinscricao
         base.save()
@@ -70,8 +73,11 @@ class Form_Transportes(ModelForm):
         #Ignore full transportes NEEDS CHECK
         self.fields['horario'].queryset = models.TransporteHasHorario.objects.annotate(ratio=F('transporte_idtransporte__capacidade')-F('n_passageiros')).filter(ratio__gt=0)
 
-
-    def save(self, idinscricao):
+    def set_inscricao(self,inscricao):
+        self._idinscricao = inscricao
+        
+    def save(self,**kwargs):
+        idinscricao = self._idinscricao
         base = super(Form_Transportes, self).save(commit=False)
         base.inscricao_idinscricao = idinscricao
         base.save()
@@ -201,8 +207,11 @@ class Form_Prato(ModelForm):
 class Form_Sessao(ModelForm):
     #sessao_id = forms.IntegerField()
 
+    def set_inscricao(self,inscricao):
+        self._idinscricao = inscricao
 
-    def save(self,inscricao):
+    def save(self,**kwargs):
+        inscricao = self._idinscricao
         base = super(Form_Sessao, self).save(commit=False)
         base.inscricao_idinscricao = inscricao
         #sessao = models.Sessao.objects.get(idsessao=self.cleaned_data['sessao_idsessao'])
@@ -218,8 +227,15 @@ class Form_Sessao(ModelForm):
             sessao = models.Sessao.objects.get(pk=ids.pk)
         except models.Sessao.DoesNotExist:
             raise ValidationError("Sessão não existe")
+
+
+        valid_nr = sessao.capacidade - sessao.nrinscritos
+        if self.instance.pk != None:
+            valid_nr += self.instance.nr_inscritos
+
+
        
-        if sessao.capacidade - sessao.nrinscritos  < cleaned_data['nr_inscritos']:
+        if valid_nr  < cleaned_data['nr_inscritos']:
             raise ValidationError({'nr_inscritos': ["Não há vagas suficientes"]})
         
         #return True
@@ -240,6 +256,7 @@ class CustomForm:
 
         Sessao = modelformset_factory(models.InscricaoHasSessao,form = Form_Sessao,extra=0,can_delete=True)
         Responsaveis = modelformset_factory(models.Responsaveis,form = Form_Responsaveis,min_num=1,extra=0,can_delete=True)
+        print(Responsaveis)
         Transportes = modelformset_factory(models.TransporteHasInscricao,form = Form_Transportes,extra=0,can_delete=True)
         if request != 0 and request.method == 'POST':
             if self.curr_inscricao != None:
@@ -293,15 +310,22 @@ class CustomForm:
         self.almoco.save(inscricao)
 
         for each in self.transportes:
-            each.save(inscricao)
+            each.set_inscricao(inscricao)
 
 
         for each in self.sessao:
-            each.save(inscricao)
+            each.set_inscricao(inscricao)
         
         
         for each in self.responsaveis:
-            each.save(inscricao)
+            each.set_inscricao(inscricao)
+        
+        self.responsaveis.save()
+        self.transportes.save()
+        self.sessao.save()
+
+        #Delete
+
         return self
 
 

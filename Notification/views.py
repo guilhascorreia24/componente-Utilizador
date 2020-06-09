@@ -26,13 +26,16 @@ def createnot(request):
             for email in emails:
                 #print("noti:"+str(user_views.validateEmail(email) is True) +" "+str(Utilizador.objects.filter(email=email).exists()))
                 form.cleaned_data['idutilizadorenvia'] = request.session['user_id']
-                if user_views.validateEmail(email) is True and (Utilizador.objects.filter(email=email).exists() or email in list):
+                if user_views.validateEmail(email) is True and (Utilizador.objects.filter(email=email).exists()):
                     if Utilizador.objects.filter(email=email).exists():
                         user_email = Utilizador.objects.get(email=email)
+                elif email in list:
+                    None
                 else:
                     form.add_error('Destinatario','email invalido ou não existe')
                     messages.error(request,"Email Invalido")
                     return render(request, 'compor_not.html', {'form': form,'me_id':signing.dumps(me_id),'funcao':funcao,'contacts':contacts})
+            for email in emails:
                 if email in list:
                     send_to_org(email,request)
                 else:
@@ -103,8 +106,9 @@ def deletenot(request):
         print(request.POST.getlist('noti'))
         pressed = request.POST.getlist('noti')
         for press in pressed:
+            print(signing.loads(press))
             UtilizadorHasNotificacao.objects.filter(pk=signing.loads(press)).delete()
-        messages.success(request, 'Successfully deleted.')
+        messages.success(request, 'Notificação/Notificações eliminada(s)')
          
 def enviados(request):
     me_id=request.session['user_id']
@@ -148,13 +152,13 @@ def noti_not_checked(request):
 
 def get_my_lists(request,list):
     me=Utilizador.objects.get(pk=request.session['user_id'])
-    list.append("Administradores@ualg.pt")
+    list.append("Administradores")
     if  me.validada==4:
-        list.append("Participantes@ualg.pt")
-        list.append("Coordenadores@ualg.pt")
-        list.append("Colaboradores@ualg.pt")
-        list.append("Docentes@ualg.pt")
-        list.append("UOs@ualg.pt")
+        list.append("Participantes")
+        list.append("Coordenadores")
+        list.append("Colaboradores")
+        list.append("Docentes")
+        list.append("Unidades_Organicas")
         uos=UnidadeOrganica.objects.all()
         dus=ProfessorUniversitario.objects.all()
         coords=Coordenador.objects.all()

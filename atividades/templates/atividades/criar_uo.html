@@ -1,0 +1,92 @@
+{% extends '../atividades/assets/home.html' %}
+{% block content %}
+{% load static %}
+<nav class="breadcrumb" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="{% url 'blog:blog-home' %}">Início</a></li>
+    <li class="is-active"><a href="" aria-current="page">Unidade Orgânica</a></li>
+  </ul>
+</nav>
+<div class="table "></div>
+            <div class="table-wrapper">
+                <table class="table has-mobile-cards is-hoverable is-fullwidth">
+                    <thead>
+                            <th>
+                                Sigla:
+                            </th>
+                            <th>
+                                Campus:
+                            </th>
+                            <th></th>
+                            </tr>
+                    </thead>
+                            {% for unidade in uo %}
+                            <tr>
+                                <td>{{unidade.sigla}}</td>
+                                <td>{{unidade.campus_idcampus.nome}}</td>
+                                <td>
+                                    <form method="POST">
+                                        <a href="{% url 'atividades:apagar_uo' unidade.iduo %}">
+                                            <span class="icon is-small">
+                                                <i class="mdi mdi-delete mdi-24px"></i>
+                                            </span>
+                                        </a>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                </table>
+                 <form method="POST" id="addUo" enctype="multipart/form-data"> {% csrf_token %}
+                    <div class="table "></div>
+                    <div class="table-wrapper">
+                    <table class="table has-mobile-cards is-hoverable is-fullwidth">
+                        <h3>Adicionar Unidade Orgânica: </h3>
+                    <thead>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+
+                    <tr>
+                         <td>
+                    <div class="column">
+                        <div class="control is-expanded">
+                            <label class="label">Campus:</label>
+                            <div class="control">
+                                {{form.campus_idcampus}}
+                            </div>
+                        </div>
+                    </div>
+                        </td>
+                        <td>
+                    <div class="column">
+                        <label class="label">Sigla:</label>
+                        <div class="control is-expanded">
+                            {{form.sigla}}
+                        </div>
+                    </div>
+                        </td>
+                        <td>
+                        <button data-v-5aa16ff8="" type="button submit" form="addUo" class="button is-success" style="margin-top:40px" >
+                        <span class="icon is-small">
+                            <i class="mdi mdi-plus"></i>
+                        </span>
+                        <span>Adicionar Unidade Orgânica</span>
+                    </button>
+                        </td>
+                    </tr>
+                    </thead>
+                    </table>
+                    </div>
+                </form>
+                <div  align="center">
+                <button data-v-5aa16ff8="" type="button" class="button is-success" style="margin-top:40px">
+                    <a href="{% url 'blog:blog-home' %}" style="color:white;">
+                    <span class="icon is-small">
+                        <i class="mdi mdi-check"></i>
+                    </span>
+                    <span >Finalizar</span>
+                    </a>
+                </button>
+                </div>
+{% endblock content%}
