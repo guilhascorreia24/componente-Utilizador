@@ -79,6 +79,10 @@ class Form_Transportes(ModelForm):
     def save(self,**kwargs):
         idinscricao = self._idinscricao
         base = super(Form_Transportes, self).save(commit=False)
+        if self.cleaned_data['n_passageiros'] == 0:
+            if self.instance.pk != None:
+                self.instance.delete()
+            return
         base.inscricao_idinscricao = idinscricao
         base.save()
         return base
@@ -121,7 +125,6 @@ class Form_Almoco:
             self.instances_dict = dict()
             for instance in instances:
                 self.instances_dict[instance.prato_idprato.menu_idmenu.pk] = instance.prato_idprato
-                print(instance.prato_idprato.menu_idmenu.pk)
             if request != 0 and request.method == 'POST':
                 for menu in menus:
                     if menu.pk in self.instances_dict:
@@ -213,9 +216,11 @@ class Form_Sessao(ModelForm):
     def save(self,**kwargs):
         inscricao = self._idinscricao
         base = super(Form_Sessao, self).save(commit=False)
+        if self.cleaned_data['nr_inscritos'] == 0:
+            if self.instance.pk != None:
+                self.instance.delete()
+            return
         base.inscricao_idinscricao = inscricao
-        #sessao = models.Sessao.objects.get(idsessao=self.cleaned_data['sessao_idsessao'])
-        #base.sessao_idsessao = sessao
         base.save()
         return base
 
@@ -256,7 +261,6 @@ class CustomForm:
 
         Sessao = modelformset_factory(models.InscricaoHasSessao,form = Form_Sessao,extra=0,can_delete=True)
         Responsaveis = modelformset_factory(models.Responsaveis,form = Form_Responsaveis,min_num=1,extra=0,can_delete=True)
-        print(Responsaveis)
         Transportes = modelformset_factory(models.TransporteHasInscricao,form = Form_Transportes,extra=0,can_delete=True)
         if request != 0 and request.method == 'POST':
             if self.curr_inscricao != None:
