@@ -365,7 +365,7 @@ def profile(request,id):
         funcao = "Docente Univesitario"
         depid = ProfessorUniversitario.objects.get(utilizador_idutilizador=id).departamento_iddepartamento
         dep= Departamento.objects.get(pk=depid.pk).nome
-        UO=UnidadeOrganica.objects.get(pk=depid.pk).sigla
+        UO=UnidadeOrganica.objects.get(pk=depid.unidade_organica_iduo.pk).sigla
     elif Coordenador.objects.filter(utilizador_idutilizador=id).exists():
         funcao = "Coordenador"
         IDUO = Coordenador.objects.get(pk=id).unidade_organica_iduo
