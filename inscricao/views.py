@@ -59,7 +59,7 @@ def inscricao_form(request,inscricao=None):
         form = forms.CustomForm(request,inscricao=inscricao)
         if form.is_valid():
             form.save(user)
-            return HttpResponse("<html>Sucess</html>")
+            return redirect('inscricao:consulta')
         else:
             campus = models.Campus.objects.all()
             sessoes = list_sessao()

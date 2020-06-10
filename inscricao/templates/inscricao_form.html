@@ -731,10 +731,10 @@
                                                                                     <td data-label="Campus" style="display:none" class="">
                                                                                         {{atividade.campus}}
                                                                                     </td>
-                                                                                    <td data-label="Titulo" style="display:none" class="">
+                                                                                    <td data-label="Titulo" style="display:none">
                                                                                         {{atividade.titulo}}
                                                                                     </td>
-                                                                                    <td data-label="id" style="display:none" class="" value="{{sessao.idsessao}}">
+                                                                                    <td data-label="id" style="display:none" class="sessao_table_id" value="{{sessao.idsessao}}">
                                                                                         <input value={{sessao.idsessao}}>
                                                                                     </td>
                                                                                     <td data-label="Horário" class="sessao_table_horario">{{sessao.hora|date:"H:i"}}</td>
@@ -809,6 +809,7 @@
                                         <div>
                                             <p>{{curr_sessao.nr_inscritos.value}}</p>
                                             <p>{{curr_sessao.sessao_idsessao.value}}</p>
+                                            <p>{{curr_sessao.DELETE.value}}</p>
                                             {% if curr_sessao.nr_inscritos.errors %}
                                             <p class="sessao_error">{{curr_sessao.nr_inscritos.errors.0}}</p>
                                             {% endif %}
@@ -864,7 +865,7 @@
                                         <tbody id="sessao_submit_table">
                                             <!--TEMPLATE -->
                                             <tr draggable="false" id="templateTableSessoes" style="display:none;">
-                                                <td data-label="id" style="display:none">
+                                                <td data-label="id" class = 'template_sessao_id' style="display:none">
                                                     {{form.sessao.empty_form.sessao_idsessao}}
                                                 </td>
                                                 <td data-label="Horário"></td>
@@ -888,15 +889,16 @@
                                                 <td data-label="Titulo"></td>
                                                 <td data-label="Espaço"></td>
                                                 <td data-label="Campus"></td>
-                                                <td data-label="Ações" class="has-text-centered">
-                                                    <a id="remove_button"><span class="icon has-text-danger"><i
+                                                <td data-label="Ações" class="has-text-centered actions">
+                                                    <a class="remove_button"><span class="icon has-text-danger"><i
                                                             class="mdi mdi-close-box mdi-24px"></i></span>
-                                                </a>
+                                                    </a>
+                                                    {{form.sessao.empty_form.DELETE|addcss:"hide"}}
                                                 </td>
                                             </tr>
                                             <!--END TEMPLATE-->
                                             <tr class="is-empty">
-                                                <td colspan="0">
+                                                <td colspan="0" class="no-bottom-border">
                                                     <p class="has-text-grey">Não há sessões escolhidas
                                                     </p>
                                                 </td>
@@ -957,6 +959,7 @@
 </div>
 <script>
     var currentTab = 0; // Current tab is set to be the first tab (0)
+    var dinamicTableNumRows = 0; 
     $(document).ready(function() {
 
         //Table
@@ -1075,13 +1078,28 @@
         });
 
         //Handle Dinamic table
-        $('.escolher_sessao').data('pre', 0);
         $(".escolher_sessao").on("change", function() {
-            var prev = $(this).data('pre');
             var current = $(this).val();
-            $(this).data('pre', current);
+            var id = $(this).closest('tr').find('.sessao_table_id').children('input').val();
+            var tableEntrys = $('#sessao_submit_table > tr');
+            
+            //Check for same session
+            var entry = 0;
+            tableEntrys.each(function(){
+                if($(this).hasClass('is-empty') || $(this).is('#templateTableSessoes') ){
+                    return;
+                }
+                var value = $(this).find('.template_sessao_id > input').val();
+                if(value == id){
+                    entry = $(this);
+                }
 
-            if (current > 0 && prev == 0) {
+                console.log("Id sessao_atividade = " + id + " ID sessao_dinamyc = " + value);
+            });
+
+
+            //If session doesn't exist create new one
+            if (entry == 0) {
                 var parent = $(this).closest("tr");
                 var table = $("#templateTableSessoes").clone(true);
                 table.removeAttr('id');
@@ -1101,25 +1119,50 @@
                 table.find("td[data-label='id']").find('input').val(parseInt(parent.children("td[data-label='id']").children("input").val()));
                 syncInputs(tInput, $(this));
 
-                //Removes entry if button clicked
-                table.find('#remove_button').on("click", function() {
+                //hides entry if button clicked
+                table.find('.remove_button').on("click", function() {
                     $(this).closest('tr').find('.input').val(0).change();
                 });
 
-                //removes the entry if reaches 0
+                //hide the entry if reaches 0
                 tInput.on("change", function() {
-                    if ($(this).val() == 0) {
-                        var value = parseInt($('#id_sessao_set-TOTAL_FORMS').val());
-                        $('#id_sessao_set-TOTAL_FORMS').val(value - 1);
-                        removeEntry($(this).closest('tr'));
-                        fixSetNumeration("sessao_set");
+                    var isVisible = $(this).is(":visible");
+                    var value = $(this).val(); 
+                    var tr = $(this).closest('tr');
+                    if (value == 0 && isVisible ) {
+                        dinamicTableNumRows-=1;
+                        tr.hide();
+                        var delete_field = $('tr > actions').find('input');
+                        delete_field.prop( "checked", true );
+                        delete_field.val(1);
+                        
+                        //fixSetNumeration("sessao_set");
+                    }
+
+                    if(value>0 && !isVisible){
+                        dinamicTableNumRows+=1;
+                        tr.show();
+                        var delete_field = $('tr > actions').find('input');
+                        delete_field.prop( "checked", false );
+                        delete_field.val(0);
+                    }
+
+                    if(dinamicTableNumRows>0){
+                        $('#sessao_submit_table').find('.is-empty').hide();
+                        $('#sessao_escolhida > thead').show();
+                    }else{
+                        $('#sessao_submit_table').find('.is-empty').show();
+                        $('#sessao_escolhida > thead').hide();
                     }
                 });
-                //$("#sessao_escolhida").append(table);
-                //var par = $("#sessao_escolhida");
+
+                //Add new sessao
+                console.log("Sessao add");
                 var value = parseInt($('#id_sessao_set-TOTAL_FORMS').val());
                 $('#id_sessao_set-TOTAL_FORMS').val(value + 1);
-                addEntry(table, $("#sessao_escolhida"));
+                table.show();
+                $('#sessao_submit_table').append(table);
+                tInput.change();
             }
         });
 
@@ -1196,13 +1239,15 @@
             //console.log($('#sessao_submit_table').html());
             //Error set
             if($(this).children('.sessao_error').length >= 1){
-                var id_input_element = $('#sessao_submit_table').children('tr').children("td[data-label='id']");
+                var tr = $('#sessao_submit_table').children('tr');
+                var id_input_element = tr.children("td[data-label='id']");
                 for(var i = 0; i<id_input_element.length;i++){
                     var this_id = parseInt(id_input_element.eq(i).children('input').val());
                     
                     if(this_id == valueInt){
                         var el = id_input_element.eq(i).closest('tr').children("td[data-label='Inscrever']");
-                        setError(el,childs.eq(2).text(),false);
+                        tr.eq(2).find('.actions > input').val(childs.eq(2).text());
+                        setError(el,childs.eq(3).text(),false);
                         break;
                     }
                 }
@@ -1268,28 +1313,6 @@
             //var newName = $(elem).attr('name').replace(curName, parseInt(curName,10)+1);
             $(elem).attr('name', curName);
         }
-    }
-
-    function addEntry(entry, table) {
-        var body = $(table).children('tbody');
-
-        if (body.children().length == 2) {
-            table.children('thead').show();
-            body.children('.is-empty').hide();
-        }
-        body.append(entry);
-        entry.show();
-
-    }
-
-    function removeEntry(entry) {
-
-        if (entry.siblings().length == 2 ) {
-            var table = entry.closest('table');
-            table.children('thead').hide();
-            table.children('tbody').children('.is-empty').show();
-        }
-        entry.remove();
     }
 
 
@@ -1407,14 +1430,6 @@
             $(this).attr('id', id);
         });
         $('#table_transporte').append(template);
-    }
-
-    function delete_transporte() {
-        var value = parseInt($('#id_transportes_set-TOTAL_FORMS').val());
-        if (value > 0) {
-            $('#id_transportes_set-TOTAL_FORMS').val(value - 1);
-            $('#table_transporte').children().last().remove();
-        }
     }
 </script>
 
