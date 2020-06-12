@@ -119,7 +119,6 @@
             input.on('change keyup', function(){
                 var hour = $(this).val().substr(0,2);
                 var min = $(this).val().substr(3,2);
-                console.log("changed");
 
                 minutes.val(min);
                 hours.val(hour);
@@ -148,6 +147,69 @@
 
     }
 
+    function nextStep(b_steps){
+        var steps = b_steps.find('.steps .step-items .step-item');
+        for(var i = 0; i<steps.length-1;i++){
+            var step = steps.eq(i);
+            if(step.hasClass('is-active')){
+                return setStepActive(b_steps,i+1);
+            }
+        }
+    }
+
+    function prevStep(b_steps){
+        var steps = b_steps.find('.steps .step-items .step-item');
+        for(var i = 1; i<steps.length;i++){
+            var step = steps.eq(i);
+            if(step.hasClass('is-active')){
+                return setStepActive(b_steps,i-1);
+            }
+        }
+    }
+
+    function setStepActive(b_steps,index){
+        var steps = b_steps.find('.steps .step-items .step-item');
+        var content = b_steps.find('.step-content .step-item');
+        
+        content.hide();
+        steps.removeClass("is-active");
+        steps.removeClass("is-previous");
+
+        for(var i = 0; i<=index;i++){
+            var step = steps.eq(i);
+
+            if(index == i){
+                step.addClass("is-active");
+                content.eq(i).show();
+            }else{
+                step.addClass("is-previous");
+            }
+        }
+    }
+
+    function focusElementInStep(el){
+        var index = el.closest('.step-item').prevAll('.step-item').length;
+        setStepActive(el.closest('.b-steps'),index);
+    }
+
+    function fixSteps(){
+        $(".b-steps").each(function(){
+            var steps = $(this).find('.steps .step-items .step-item');
+            steps.on("click",function(){
+                var index = $(this).prevAll('.step-item').length;
+                setStepActive($(this).closest(".b-steps"),index);
+            });
+                
+            $(this).find('.next-step').on("click",function(){
+                nextStep($(this).closest(".b-steps"));
+            });
+
+            $(this).find('.prev-step').on("click",function(){
+                prevStep($(this).closest(".b-steps"));
+            });
+        });
+    }
+
     //Tables with class sortable
     function enableSort(){
         $('.sortable').DataTable();
@@ -159,4 +221,5 @@
         removeEmptySelectOptions();
         enableSort();
         fixTimer();
+        fixSteps();
     });
