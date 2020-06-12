@@ -3,7 +3,7 @@
     <div class="b-steps">
         <nav class="steps is-success">
             <ul class="step-items">
-                <li class="step-item is-success">
+                <li class="step-item is-success is-active">
                     <a class="step-link">
                         <div class="step-marker"><span class="icon"><i class="mdi mdi-account mdi-24px"></i></span>
                         </div>
@@ -12,13 +12,13 @@
                     </a>
                 </li>
                 <li class="step-item is-success">
-                    <a class="step-link">
+                    <a class="step-link is-clickable">
                         <div class="step-marker"><span class="icon"><i class="mdi mdi-school mdi-24px"></i></span></div>
                         <div class="step-details"><span class="step-title">Escola</span></div>
                     </a>
                 </li>
                 <li class="step-item is-success">
-                    <a class="step-link">
+                    <a class="step-link is-clickable">
                         <div class="step-marker"><span class="icon"><i class="mdi mdi-train-car mdi-24px"></i></span>
                         </div>
                         <div class="step-details"><span class="step-title">Transporte</span>
@@ -26,21 +26,21 @@
                     </a>
                 </li>
                 <li class="step-item is-success">
-                    <a class="step-link">
+                    <a class="step-link is-clickable">
                         <div class="step-marker"><span class="icon"><i class="mdi mdi-food-apple mdi-24px"></i></span>
                         </div>
                         <div class="step-details"><span class="step-title">Almoço</span></div>
                     </a>
                 </li>
                 <li class="step-item is-success">
-                    <a class="step-link">
+                    <a class="step-link is-clickable">
                         <div class="step-marker"><span class="icon"><i
                                     class="mdi mdi-calendar-check mdi-24px"></i></span></div>
                         <div class="step-details"><span class="step-title">Sessões</span></div>
                     </a>
                 </li>
                 <li class="step-item is-success">
-                    <a class="step-link">
+                    <a class="step-link is-clickable">
                         <div class="step-marker"><span class="icon"><i class="mdi mdi-check mdi-24px"></i></span></div>
                         <div class="step-details"><span class="step-title">Submissão</span>
                         </div>
@@ -51,7 +51,7 @@
         <section class="step-content">
             <form id="regForm" method="POST">
                 {% csrf_token %}
-                <div class="step-item" style="display:none;">
+                <div class="step-item">
                     <!-- prettier-ignore -->
                     <div style="padding: 1rem 2vw 0px;">
                         {% if form.responsaveis.errors %} {% for field in form.responsaveis %} {% for error in field.errors %}
@@ -201,6 +201,21 @@
                         </button>
                         <hr>
                     </div>
+                    <div class="column is-8 is-offset-2">
+                        <div class="level">
+                            <div class="level-left">
+                                <a href="/" class="button router-link-active is-outlined" type="button">
+                                    <!----><span> Cancelar </span>
+                                    <!---->
+                                </a>
+                            </div>
+                            <div class="level-right">
+                                <button type="button" class="button is-large is-success is-outlined next-step">
+                                    <!----> <span> Seguinte </span> <span class="icon is-medium"><i
+                                            class="mdi mdi-forward mdi-36px"></i></span></button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="step-item" style="display:none;">
                     <div style="padding: 1rem 2vw 0px;">
@@ -295,6 +310,21 @@
                         </div>
                         <hr>
                     </div>
+                    <div class="column is-8 is-offset-2">
+                        <div class="level">
+                            <div class="level-left">
+                                <button href="" class="button router-link-active is-outlined prev-step" type="button" id="prevBtn">
+                                    <!----> <span> Anterior </span>
+                                    <!----></button>
+                            </div>
+                            <div class="level-right">
+                                <button type="button" class="button is-large is-success is-outlined next-step">
+                                    <!----> <span> Seguinte </span> <span class="icon is-medium"><i
+                                            class="mdi mdi-forward mdi-36px"></i></span></button>
+                            </div>
+                        </div>
+                    </div>
+                    
                 </div>
                 <div class="step-item" style="display:none;">
                     <div style="padding: 1rem 2vw 0px;">
@@ -410,6 +440,20 @@
                             </span></label> {% endfor %}
                         <hr>
                     </div>
+                    <div class="column is-8 is-offset-2">
+                        <div class="level">
+                            <div class="level-left">
+                                <button href="" class="button router-link-active is-outlined prev-step" type="button" id="prevBtn">
+                                    <!----> <span> Anterior </span>
+                                    <!----></button>
+                            </div>
+                            <div class="level-right">
+                                <button type="button" class="button is-large is-success is-outlined next-step">
+                                    <!----> <span> Seguinte </span> <span class="icon is-medium"><i
+                                            class="mdi mdi-forward mdi-36px"></i></span></button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="step-item" style="display:none;">
                     <div data-v-f5fe8f88="" style="padding: 1rem 2vw 0px;">
@@ -434,6 +478,20 @@
                         </div>
                         {% endfor %}
                         <hr data-v-f5fe8f88=""> {% endfor %}
+                    </div>
+                    <div class="column is-8 is-offset-2">
+                        <div class="level">
+                            <div class="level-left">
+                                <button href="" class="button router-link-active is-outlined prev-step" type="button" id="prevBtn">
+                                    <!----> <span> Anterior </span>
+                                    <!----></button>
+                            </div>
+                            <div class="level-right">
+                                <button type="button" class="button is-large is-success is-outlined next-step">
+                                    <!----> <span> Seguinte </span> <span class="icon is-medium"><i
+                                            class="mdi mdi-forward mdi-36px"></i></span></button>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="step-item" style="display:none;">
@@ -638,7 +696,6 @@
                                                         <thead>
                                                             <tr>
                                                                 <th></th>
-                                                                <!---->
                                                                 <th>Nome</th>
                                                                 <th>Tipo</th>
                                                                 <th>Campus</th>
@@ -911,6 +968,20 @@
                             </div>
                             <hr data-v-dac68d9e="">
                     </div>
+                    <div class="column is-8 is-offset-2">
+                        <div class="level">
+                            <div class="level-left">
+                                <button href="" class="button router-link-active is-outlined prev-step" type="button" id="prevBtn">
+                                    <!----> <span> Anterior </span>
+                                    <!----></button>
+                            </div>
+                            <div class="level-right">
+                                <button type="button" class="button is-large is-success is-outlined next-step">
+                                    <!----> <span> Seguinte </span> <span class="icon is-medium"><i
+                                            class="mdi mdi-forward mdi-36px"></i></span></button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="step-item" style="display:none;">
                     <div>
@@ -923,27 +994,21 @@
                             <!----></button>
                         <hr>
                     </div>
+                    <div class="column is-8 is-offset-2">
+                        <div class="level">
+                            <div class="level-left">
+                                <button href="" class="button router-link-active is-outlined prev-step" type="button" id="prevBtn">
+                                    <!----> <span> Anterior </span>
+                                    <!----></button>
+                            </div>
+                            <div class="level-right">
+                                <div class="button is-large is-success is-outlined" id="submitForm">
+                                    <!----> <span> Submeter </span> <span class="icon is-medium"><i
+                                            class="mdi mdi-forward mdi-36px"></i></span></div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-        <div class="column is-8 is-offset-2">
-            <div class="level">
-                <div class="level-left">
-                    <button href="" style="display:none;" class="button router-link-active is-outlined" type="button" id="prevBtn">
-                        <!----> <span> Anterior </span>
-                        <!----></button>
-                    <a href="/" class="button router-link-active is-outlined" type="button" id="cancelBtn">
-                        <!----><span> Cancelar </span>
-                        <!---->
-                    </a>
-                </div>
-                <div class="level-right">
-                    <button type="button" class="button is-large is-success is-outlined" id="nextBtn">
-                        <!----> <span> Seguinte </span> <span class="icon is-medium"><i
-                                class="mdi mdi-forward mdi-36px"></i></span></button>
-                    <button type="submit" style="display:none;" class="button is-large is-success is-outlined" id="submitBtn">
-                        <!----> <span> Submeter </span> <span class="icon is-medium"><i
-                                class="mdi mdi-forward mdi-36px"></i></span></button></div>
-            </div>
-        </div>
         <!-- Circles which indicates the steps of the form: -->
         <div style="text-align:center;margin-top:40px;">
             <span class="step"></span>
@@ -958,8 +1023,7 @@
     </div>
 </div>
 <script>
-    var currentTab = 0; // Current tab is set to be the first tab (0)
-    var dinamicTableNumRows = 0; 
+    var dinamicTableNumRows = 0; //Number of sessao rows
     $(document).ready(function() {
 
         //Table
@@ -1124,7 +1188,7 @@
                     $(this).closest('tr').find('.input').val(0).change();
                 });
 
-                //hide the entry if reaches 0
+                //On sessao table input change
                 tInput.on("change", function() {
                     var isVisible = $(this).is(":visible");
                     var value = $(this).val(); 
@@ -1160,7 +1224,7 @@
                 console.log("Sessao add");
                 var value = parseInt($('#id_sessao_set-TOTAL_FORMS').val());
                 $('#id_sessao_set-TOTAL_FORMS').val(value + 1);
-                table.show();
+                //table.show();
                 $('#sessao_submit_table').append(table);
                 tInput.change();
             }
@@ -1256,16 +1320,29 @@
 
         //$("#sessao_start_info").remove();
 
+        //Remove buttons
         $('.table_remove_button').each(function(){
             applyClickRemoveRow($(this));
         });
 
+        $("#submitForm").on("click",function(){
+            var validator = $("#regForm").validate();
+            var isCheck = $("#regForm")[0].checkValidity();
+            var errors = $("#regForm").find(':invalid');
+            //console.log(validator.errorList);
+            if(errors.len == 0){
+                $("#regForm").submit();
+            }
+            else{
+                focusElementInStep(errors.eq(0));
+                for(var i = 0; i<errors.length;i++){
+                    var error = errors.eq(i)[0].validationMessage
+                    setError(errors.eq(i).closest(".field"),error);
+                }
+            }
+        });
 
-        $("#nextBtn").click(nextTab);
-        $("#prevBtn").click(previousTab);
     });
-    showTab(currentTab); // Display the current tab
-
     //Aply the remove button to the tables
     function applyClickRemoveRow(el){
         el.on('click',function(){
@@ -1326,83 +1403,6 @@
             if (el1.val() != el2.val())
                 el1.val(el2.val()).change();
         });
-    }
-
-    function showTab() {
-        var list = $(".step-content > form > .step-item").first().show();
-        var list_step = $(".steps > .step-items > .step-item").first().addClass("is-active");
-    }
-
-    function nextTab() {
-        var list = $(".step-content > form > .step-item");
-        var list_step = $(".steps > .step-items > .step-item");
-
-        var length = list.length - 1;
-
-        if (length == currentTab) {
-            $('#regForm').submit();
-            return;
-        }
-
-        var curr = list.eq(currentTab);
-        var next = list.eq(currentTab + 1);
-
-        curr.hide();
-        next.show();
-
-        var curr_step = list_step.eq(currentTab);
-        var next_step = list_step.eq(currentTab + 1);
-
-        curr_step.addClass("is-previous");
-        curr_step.removeClass("is-active");
-        next_step.addClass("is-active");
-
-        currentTab += 1;
-        if (length == currentTab) {
-            $("#nextBtn").hide();
-            $("#submitBtn").show();
-            return;
-        }
-
-        if (currentTab == 1) {
-            $("#prevBtn").show();
-            $("#cancelBtn").hide();
-        }
-    }
-
-    function previousTab() {
-        var list = $(".step-content > form > .step-item");
-        var list_step = $(".steps > .step-items > .step-item");
-
-        var length = list.length - 1;
-
-        var curr = list.eq(currentTab);
-        var next = list.eq(currentTab - 1);
-
-        curr.hide();
-        next.show();
-
-        var curr_step = list_step.eq(currentTab);
-        var next_step = list_step.eq(currentTab - 1);
-
-        next_step.removeClass("is-previous");
-        curr_step.removeClass("is-active");
-        next_step.addClass("is-active");
-
-        currentTab -= 1;
-
-        if (length - 1 == currentTab) {
-            $("#nextBtn").show();
-            $("#submitBtn").hide();
-            return;
-        }
-
-        if (0 == currentTab) {
-            $("#prevBtn").hide();
-            $("#cancelBtn").show();
-            return;
-        }
-
     }
 
     function add_responsavel() {

@@ -667,7 +667,6 @@ class TransporteHasInscricao(models.Model):
 @receiver(models.signals.post_delete, sender=TransporteHasInscricao)
 def delete_transporte(sender, instance, using, **kwargs):
     TransporteHasHorario.objects.filter(id_transporte_has_horario=instance.horario.pk).update(n_passageiros=F('n_passageiros')-instance.n_passageiros)
-    print(instance.horario.pk)
 
 
 class TransportePessoal(models.Model):
