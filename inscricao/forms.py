@@ -5,6 +5,11 @@ from inscricao.validators import email_validator, not_zero_validator, telefone_v
 from django.db.models import F
 from inscricao import validators
 
+
+class Form_InscricaoIndividual(ModelForm):
+    class Meta:
+        fields = ['nracompanhantes','telefone']
+
 class Form_Responsaveis(ModelForm):
 
     def set_inscricao(self,inscricao):
@@ -333,7 +338,7 @@ class CustomForm:
         return self
 
 
-#TEMPLATE
+#TEMPLATE COLETIVA
 
 # - form
 #   - inscricao
@@ -349,3 +354,72 @@ class CustomForm:
 #       -campus (array)
 #           - nome  (nome do campus)
 #           - transporte
+
+
+class FormIndividual:
+    def __init__(self,request = 0,**kwargs):
+        self.curr_inscricao = None
+        
+        if 'inscricao' in kwargs and kwargs['inscricao'] != None:
+            self.curr_inscricao = models.Inscricao.objects.get(pk=kwargs['inscricao'])
+
+        Sessao = modelformset_factory(models.InscricaoHasSessao,form = Form_Sessao,extra=0,can_delete=True)
+        Transportes = modelformset_factory(models.TransporteHasInscricao,form = Form_Transportes,extra=0,can_delete=True)
+        if request != 0 and request.method == 'POST':
+            if self.curr_inscricao != None:
+                insc = models.InscricaoIndividual.objects.get(inscricao_idinscricao=self.curr_inscricao)
+                self.inscricao_individual = Form_InscricaoIndividual(request.POST,prefix="individual",instance=insc)
+                self.inscricao = Form_Inscricao(request.POST,prefix="inscricao",instance=self.curr_inscricao)
+                self.sessao = Sessao(request.POST,prefix='sessao_set')
+                self.transportes = Transportes(request.POST,prefix='transportes_set')
+                self.almoco = Form_Almoco(request,instance=self.curr_inscricao)
+            else:
+                self.inscricao_individual = Form_InscricaoIndividual(request.POST,prefix="individual",instance=insc)
+                self.inscricao = Form_Inscricao(request.POST,prefix="inscricao")
+                self.sessao = Sessao(request.POST,prefix='sessao_set')
+                self.transportes = Transportes(request.POST,prefix='transportes_set')
+                self.almoco = Form_Almoco(request)
+        else:
+            if self.curr_inscricao != None:
+                insc = models.InscricaoIndividual.objects.get(inscricao_idinscricao=self.curr_inscricao)
+                self.inscricao_individual = Form_InscricaoIndividual(prefix="individual",instance=insc)
+                self.inscricao = Form_Inscricao(prefix="inscricao",instance=self.curr_inscricao)
+                self.sessao = Sessao(prefix='sessao_set',queryset=models.InscricaoHasSessao.objects.filter(inscricao_idinscricao = self.curr_inscricao))
+                self.transportes = Transportes(prefix='transportes_set',queryset=models.TransporteHasInscricao.objects.filter(inscricao_idinscricao = self.curr_inscricao))
+                self.almoco = Form_Almoco(instance=self.curr_inscricao)
+            else:
+                #self.inscricao_coletiva = Form_InscricaoColetiva(prefix="inscricao_coletiva")
+                self.inscricao_individual = Form_InscricaoIndividual(prefix="individual")
+                self.inscricao = Form_Inscricao(prefix="inscricao")
+                self.sessao = Sessao(prefix='sessao_set',queryset=models.InscricaoHasSessao.objects.none())
+                self.transportes = Transportes(prefix='transportes_set',queryset=models.TransporteHasInscricao.objects.none())
+                self.almoco = Form_Almoco()
+        
+    
+    def is_valid(self):
+        value = all([self.escola.is_valid(), self.inscricao.is_valid(), self.responsaveis.is_valid(), self.almoco.is_valid(),self.sessao.is_valid(),self.transportes.is_valid(),self.inscricao_coletiva.is_valid()])
+        if len(self.sessao)<1:
+            self.sessao.errors.append(SESSAO_MIN_ERROR)
+            return False
+        return value
+
+    def save(self,part):
+        inscricao = self.inscricao.save(escola.local)
+        self.inscricao_coletiva.save(part,escola,len(self.responsaveis),inscricao,escola.local)
+        self.almoco.save(inscricao)
+
+        for each in self.transportes:
+            each.set_inscricao(inscricao)
+
+
+        for each in self.sessao:
+            each.set_inscricao(inscricao)
+        
+        
+        for each in self.responsaveis:
+            each.set_inscricao(inscricao)
+        
+        self.transportes.save()
+        self.sessao.save()
+
+        return self

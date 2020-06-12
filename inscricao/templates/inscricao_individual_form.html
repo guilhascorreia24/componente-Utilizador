@@ -3,14 +3,6 @@
     <div class="b-steps">
         <nav class="steps is-success">
             <ul class="step-items">
-                <li class="step-item is-success is-active">
-                    <a class="step-link">
-                        <div class="step-marker"><span class="icon"><i class="mdi mdi-account mdi-24px"></i></span>
-                        </div>
-                        <div class="step-details"><span class="step-title">Responsáveis</span>
-                        </div>
-                    </a>
-                </li>
                 <li class="step-item is-success">
                     <a class="step-link is-clickable">
                         <div class="step-marker"><span class="icon"><i class="mdi mdi-school mdi-24px"></i></span></div>
@@ -51,172 +43,6 @@
         <section class="step-content">
             <form id="regForm" method="POST">
                 {% csrf_token %}
-                <div class="step-item">
-                    <!-- prettier-ignore -->
-                    <div style="padding: 1rem 2vw 0px;">
-                        {% if form.responsaveis.errors %} {% for field in form.responsaveis %} {% for error in field.errors %}
-                        <div class="alert alert-danger">
-                            <strong>{{ field|escape }}</strong>
-                        </div>
-                        {% endfor %} {% endfor %} {% for error in form.responsaveis.non_field_errors %}
-                        <div class="alert alert-danger">
-                            <strong>{{ error|escape }}</strong>
-                        </div>
-                        {% endfor %} {% endif %} {% if form.transportes.errors %} {% for field in form.transportes %} {% for error in field.errors %}
-                        <div class="alert alert-danger">
-                            <strong>{{ error|escape }}</strong>
-                        </div>
-                        {% endfor %} {% endfor %} {% for error in form.transportes.non_field_errors %}
-                        <div class="alert alert-danger">
-                            <strong>{{ error|escape }}</strong>
-                        </div>
-                        {% endfor %} {% endif %} {% if form.sessao.errors %} {% for field in form.sessao %} {% for error in field.errors %}
-                        <div class="alert alert-danger">
-                            <strong>{{ field|escape }}</strong>
-                        </div>
-                        {% endfor %} {% endfor %} {% for error in form.sessao.non_field_errors %}
-                        <div class="alert alert-danger">
-                            <strong>{{ error|escape }}</strong>
-                        </div>
-                        {% endfor %} {% endif %} {% if form.escola.errors %} {% for field in form.escola %} {% for error in field.errors %}
-                        <div class="alert alert-danger">
-                            <strong>{{ error|escape }}</strong>
-                        </div>
-                        {% endfor %} {% endfor %} {% for error in form.escola.non_field_errors %}
-                        <div class="alert alert-danger">
-                            <strong>{{ error|escape }}</strong>
-                        </div>
-                        {% endfor %} {% endif %} {% if form.inscricao_coletiva.errors %} {% for field in form.inscricao_coletiva %} {% for error in field.errors %}
-                        <div class="alert alert-danger">
-                            <strong>{{field.label}} {{ error|escape }}</strong>
-                        </div>
-                        {% endfor %} {% endfor %} {% for error in form.inscricao_coletiva.non_field_errors %}
-                        <div class="alert alert-danger">
-                            <strong>{{ error|escape }}</strong>
-                        </div>
-                        {% endfor %} {% endif %} {% if form.inscricao.errors %} {% for field in form.inscricao %} {% for error in field.errors %}
-                        <div class="alert alert-danger">
-                            <strong>{{field.label}} {{ error|escape }}</strong>
-                        </div>
-                        {% endfor %} {% endfor %} {% for error in form.inscricao.non_field_errors %}
-                        <div class="alert alert-danger">
-                            <strong>{{ error|escape }}</strong>
-                        </div>
-                        {% endfor %} {% endif %}
-                        <hr>
-                        <h2 class="title has-text-grey is-uppercase" style="font-size: 0.9rem;">
-                            Docentes responsáveis</h2>
-                        <div class="columns">
-                            <div class="column is-4">
-                                <div class="field"><label class="label">Nome</label>
-                                    <!---->
-                                </div>
-                            </div>
-                            <div class="column is-4">
-                                <div class="field"><label class="label">E-mail</label>
-                                    <!---->
-                                </div>
-                            </div>
-                            <div class="column is-3">
-                                <div class="field"><label class="label">Telemóvel/Telefone</label>
-                                    <!---->
-                                </div>
-                            </div>
-                        </div>
-                        <div id="responsavel_form" style="padding-bottom:2%">
-                            {{ form.responsaveis.management_form }} {% for responsavel in form.responsaveis%}
-                            {% for hidden in responsavel.hidden_fields %}
-                            {{ hidden }}
-                            {% endfor %}
-                            <div class="columns responsavel row">
-                                <div class="column is-4">
-                                    <div class="field">
-                                        <div class="control is-clearfix">{{responsavel.nome|addcss:"input"}}
-                                        </div>
-                                        <p class="help is-danger">{{responsavel.nome.errors.0}}</p>
-
-                                    </div>
-                                </div>
-                                <div class="column is-4">
-                                    <div class="field">
-                                        <div class="control is-clearfix">{{responsavel.email|addcss:"input"}}
-
-                                        </div>
-                                        <p class="help is-danger">{{responsavel.email.errors.0}}</p>
-                                        <!---->
-                                    </div>
-                                </div>
-                                <div class="column is-3">
-                                    <div class="field">
-                                        <div class="control is-clearfix">{{responsavel.telefone|addcss:"input"}}
-                                        </div>
-                                        <p class="help is-danger">{{responsavel.telefone.errors.0}}</p>
-                                        <!---->
-                                    </div>
-                                </div>
-                                <div class="column is-1">
-                                    <a class="table_remove_button"><span class="icon has-text-danger"><i style = "padding-top: 8px;"class="mdi mdi-close-box mdi-24px"></i></span></a>
-                                    {{responsavel.DELETE|addcss:"hide"}}
-                                </div>
-
-                            </div>
-                            {% endfor %}
-                        </div>
-
-                        <!--TEMPLATE FOR ADD MORE REPONSAVEIS-->
-                        <div id="responsavel_template" style="display:none">
-                            <div class="columns responsavel row">
-                                <div class="column is-4">
-                                    <div class="field">
-                                        <div class="control is-clearfix">
-                                            {{form.responsaveis.empty_form.nome|addcss:"input"}}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="column is-4">
-                                    <div class="field">
-                                        <div class="control is-clearfix">
-                                            {{form.responsaveis.empty_form.email|addcss:"input"}}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="column is-3">
-                                    <div class="field">
-                                        <div class="control is-clearfix">
-                                            {{form.responsaveis.empty_form.telefone|addcss:"input"}}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="column is-1">
-                                    <a class="table_remove_button"><span class="icon has-text-danger"><i style = "padding-top: 8px;"class="mdi mdi-close-box mdi-24px"></i></span></a>
-                                    {{form.responsaveis.empty_form.DELETE|addcss:"hide"}}
-                                </div>
-                            </div>
-                        </div>
-                        <!--END TEMPLATE-->
-
-                        <button type="button" class="button" onclick="add_responsavel()">
-                            <span class="icon is-small"><i class="mdi mdi-plus"></i></span>
-                            <span>Adicionar docente</span>
-                        </button>
-                        <hr>
-                    </div>
-                    <div class="column is-8 is-offset-2">
-                        <div class="level">
-                            <div class="level-left">
-                                <a href="/" class="button router-link-active is-outlined" type="button">
-                                    <!----><span> Cancelar </span>
-                                    <!---->
-                                </a>
-                            </div>
-                            <div class="level-right">
-                                <button type="button" class="button is-large is-success is-outlined next-step">
-                                    <!----> <span> Seguinte </span> <span class="icon is-medium"><i
-                                            class="mdi mdi-forward mdi-36px"></i></span></button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
                 <div class="step-item" style="display:none;">
                     <div style="padding: 1rem 2vw 0px;">
                         <hr>
@@ -231,28 +57,13 @@
                                     <p class="help is-danger">{{form.escola.nome.errors.0}}</p>
                                 </div>
                             </div>
-                            <div class="column">
-                                <div class="field"><label class="label">Localidade</label>
-                                    <div class="control is-clearfix" id="local-escola">
-                                        {{form.escola.local|addcss:"input"}}
-                                    </div>
-                                    <p class="help is-danger">{{form.escola.local.errors.0}}</p>
-                                </div>
-                            </div>
                         </div>
                         <div class="columns">
                             <div class="column">
-                                <div class="field"><label class="label">E-mail da escola</label>
-                                    <div class="control is-clearfix">{{form.escola.email|addcss:"input"}}
+                                <div class="field"><label class="label">Telefone</label>
+                                    <div class="control is-clearfix">{{form.inscricao_individual.telefone|addcss:"input"}}
                                     </div>
-                                    <p class="help is-danger">{{form.escola.email.errors.0}}</p>
-                                </div>
-                            </div>
-                            <div class="column">
-                                <div class="field"><label class="label">Telefone da escola</label>
-                                    <div class="control is-clearfix">{{form.escola.telefone|addcss:"input"}}
-                                    </div>
-                                    <p class="help is-danger">{{form.escola.telefone.errors.0}}</p>
+                                    <p class="help is-danger">{{form.inscricao_individual.telefone.errors.0}}</p>
                                 </div>
                             </div>
                         </div>
@@ -276,13 +87,6 @@
                                     <p class="help is-danger">{{form.inscricao.ano.errors.0}}</p>
                                 </div>
                             </div>
-                            <div class="column is-1">
-                                <div class="field"><label class="label">Turma</label>
-                                    <div class="control is-clearfix">{{form.inscricao_coletiva.turma|addcss:"input"}}
-                                    </div>
-                                    <p class="help is-danger">{{form.inscricao_coletiva.turma.errors.0}}</p>
-                                </div>
-                            </div>
                             <div class="column is-2">
                                 <div class="field has-numberinput has-numberinput-compact">
                                     <label class="label">Número de alunos</label>
@@ -291,13 +95,13 @@
                                                     class="icon"><i class="mdi mdi-minus mdi-24px"></i></span></button>
                                         </p>
                                         <div class="control is-clearfix">
-                                            {{form.inscricao_coletiva.nparticipantes|addcss:"input"}}
+                                            {{form.inscricao_individual.nracompanhantes|addcss:"input"}}
                                         </div>
                                         <p class="control"><button type="button" class="button is-primary"><span
                                                     class="icon"><i class="mdi mdi-plus mdi-24px"></i></span></button>
                                         </p>
                                     </div>
-                                    <p class="help is-danger">{{form.inscricao_coletiva.nparticipantes.errors.0}}</p>
+                                    <p class="help is-danger">{{form.inscricao_individual.nracompanhantes.errors.0}}</p>
                                     <!---->
                                 </div>
                             </div>
@@ -313,9 +117,10 @@
                     <div class="column is-8 is-offset-2">
                         <div class="level">
                             <div class="level-left">
-                                <button href="" class="button router-link-active is-outlined prev-step" type="button" id="prevBtn">
-                                    <!----> <span> Anterior </span>
-                                    <!----></button>
+                                <a href="/" class="button router-link-active is-outlined" type="button">
+                                    <!----><span> Cancelar </span>
+                                    <!---->
+                                </a>
                             </div>
                             <div class="level-right">
                                 <button type="button" class="button is-large is-success is-outlined next-step">

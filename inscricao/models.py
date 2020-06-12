@@ -426,7 +426,7 @@ def delete_sessao_inscricao(sender, instance, using, **kwargs):
 
 
 class InscricaoIndividual(models.Model):
-    nracompanhades = models.IntegerField()
+    nracompanhantes = models.IntegerField(db_column='nracompanhades')
     participante_utilizador_idutilizador = models.ForeignKey('Participante', models.DO_NOTHING, db_column='Participante_Utilizador_idutilizador')  # Field name made lowercase.
     inscricao_idinscricao = models.OneToOneField(Inscricao, models.DO_NOTHING, db_column='inscricao_idinscricao', primary_key=True)
     telefone = models.IntegerField(validators=[telefone_validator])
