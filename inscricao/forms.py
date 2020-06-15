@@ -7,8 +7,16 @@ from inscricao import validators
 
 
 class Form_InscricaoIndividual(ModelForm):
+
+    def save(self,participante,inscricao):
+        base = super(Form_InscricaoIndividual, self).save(commit=False)
+        base.participante_utilizador_idutilizador_id = participante.pk
+        base.inscricao_idinscricao = inscricao
+        base.save()
+
     class Meta:
         fields = ['nracompanhantes','telefone']
+        model = models.InscricaoIndividual
 
 class Form_Responsaveis(ModelForm):
 
@@ -44,7 +52,7 @@ class Form_Inscricao(ModelForm):#numero de participantes precia de ser checkado
 
     class Meta:
         model = models.Inscricao
-        fields = ['ano','areacientifica','transporte']
+        fields = ['ano','areacientifica','transporte','local']
 
     transporte = forms.ChoiceField(
     initial=(0,'Não'),
@@ -56,17 +64,16 @@ class Form_Inscricao(ModelForm):#numero de participantes precia de ser checkado
     )
 )
 
+class Form_Escola(ModelForm):
+
     def save(self,local):
-        base = super(Form_Inscricao, self).save(commit=False)
+        base = super(Form_Escola, self).save(commit=False)
         base.local = local
         base.save()
-        return base
-
-class Form_Escola(ModelForm):
 
     class Meta:
         model = models.Escola
-        fields = ['nome','local','telefone','email']
+        fields = ['nome','telefone','email']
 
 ###################### TRANSPORTES ########################################
 
@@ -313,8 +320,8 @@ class CustomForm:
         return value
 
     def save(self,part):
-        escola = self.escola.save()
-        inscricao = self.inscricao.save(escola.local)
+        inscricao = self.inscricao.save()
+        escola = self.escola.save(inscricao.local)
         self.inscricao_coletiva.save(part,escola,len(self.responsaveis),inscricao,escola.local)
         self.almoco.save(inscricao)
 
@@ -374,7 +381,7 @@ class FormIndividual:
                 self.transportes = Transportes(request.POST,prefix='transportes_set')
                 self.almoco = Form_Almoco(request,instance=self.curr_inscricao)
             else:
-                self.inscricao_individual = Form_InscricaoIndividual(request.POST,prefix="individual",instance=insc)
+                self.inscricao_individual = Form_InscricaoIndividual(request.POST,prefix="individual")
                 self.inscricao = Form_Inscricao(request.POST,prefix="inscricao")
                 self.sessao = Sessao(request.POST,prefix='sessao_set')
                 self.transportes = Transportes(request.POST,prefix='transportes_set')
@@ -397,15 +404,15 @@ class FormIndividual:
         
     
     def is_valid(self):
-        value = all([self.escola.is_valid(), self.inscricao.is_valid(), self.responsaveis.is_valid(), self.almoco.is_valid(),self.sessao.is_valid(),self.transportes.is_valid(),self.inscricao_coletiva.is_valid()])
+        value = all([self.inscricao.is_valid(), self.almoco.is_valid(),self.sessao.is_valid(),self.transportes.is_valid(),self.inscricao_individual.is_valid()])
         if len(self.sessao)<1:
             self.sessao.errors.append(SESSAO_MIN_ERROR)
             return False
         return value
 
     def save(self,part):
-        inscricao = self.inscricao.save(escola.local)
-        self.inscricao_coletiva.save(part,escola,len(self.responsaveis),inscricao,escola.local)
+        inscricao = self.inscricao.save()
+        self.inscricao_individual.save(part,inscricao)
         self.almoco.save(inscricao)
 
         for each in self.transportes:
@@ -413,10 +420,6 @@ class FormIndividual:
 
 
         for each in self.sessao:
-            each.set_inscricao(inscricao)
-        
-        
-        for each in self.responsaveis:
             each.set_inscricao(inscricao)
         
         self.transportes.save()

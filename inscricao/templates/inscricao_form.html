@@ -234,9 +234,9 @@
                             <div class="column">
                                 <div class="field"><label class="label">Localidade</label>
                                     <div class="control is-clearfix" id="local-escola">
-                                        {{form.escola.local|addcss:"input"}}
+                                        {{form.inscricao.local|addcss:"input"}}
                                     </div>
-                                    <p class="help is-danger">{{form.escola.local.errors.0}}</p>
+                                    <p class="help is-danger">{{form.inscricao.local.errors.0}}</p>
                                 </div>
                             </div>
                         </div>
@@ -1327,8 +1327,9 @@
             var validator = $("#regForm").validate();
             var isCheck = $("#regForm")[0].checkValidity();
             var errors = $("#regForm").find(':invalid');
-            //console.log(validator.errorList);
-            if(errors.len == 0){
+            console.log(errors.length);
+            if(errors.length == 0){
+                console.log("Submiting");
                 $("#regForm").submit();
             }
             else{

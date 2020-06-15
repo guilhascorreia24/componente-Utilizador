@@ -3,7 +3,7 @@
     <div class="b-steps">
         <nav class="steps is-success">
             <ul class="step-items">
-                <li class="step-item is-success">
+                <li class="step-item is-success is-active">
                     <a class="step-link is-clickable">
                         <div class="step-marker"><span class="icon"><i class="mdi mdi-school mdi-24px"></i></span></div>
                         <div class="step-details"><span class="step-title">Escola</span></div>
@@ -43,27 +43,25 @@
         <section class="step-content">
             <form id="regForm" method="POST">
                 {% csrf_token %}
-                <div class="step-item" style="display:none;">
+                <div class="step-item">
                     <div style="padding: 1rem 2vw 0px;">
                         <hr>
                         <h2 class="title has-text-grey is-uppercase" style="font-size: 0.9rem;">
                             Informação da Escola </h2>
-                        <div class="columns row">
-                            <div class="column">
-                                <div class="field"><label class="label">Nome da escola</label>
-                                    <div class="control is-clearfix">{{form.escola.nome|addcss:"input"}}
-
-                                    </div>
-                                    <p class="help is-danger">{{form.escola.nome.errors.0}}</p>
-                                </div>
-                            </div>
-                        </div>
                         <div class="columns">
                             <div class="column">
                                 <div class="field"><label class="label">Telefone</label>
                                     <div class="control is-clearfix">{{form.inscricao_individual.telefone|addcss:"input"}}
                                     </div>
                                     <p class="help is-danger">{{form.inscricao_individual.telefone.errors.0}}</p>
+                                </div>
+                            </div>
+                            <div class="column">
+                                <div class="field"><label class="label">Localidade</label>
+                                    <div class="control is-clearfix" id="local-escola">
+                                        {{form.inscricao.local|addcss:"input"}}
+                                    </div>
+                                    <p class="help is-danger">{{form.inscricao.local.errors.0}}</p>
                                 </div>
                             </div>
                         </div>
@@ -89,7 +87,7 @@
                             </div>
                             <div class="column is-2">
                                 <div class="field has-numberinput has-numberinput-compact">
-                                    <label class="label">Número de alunos</label>
+                                    <label class="label">Numero de Acompanhantes</label>
                                     <div class="b-numberinput field has-addons">
                                         <p class="control"><button type="button" class="button is-primary"><span
                                                     class="icon"><i class="mdi mdi-minus mdi-24px"></i></span></button>
@@ -610,24 +608,10 @@
                                                                                         {{atividade.espaco}}
                                                                                     </td>
                                                                                     <td data-label="Inscrever" class="">
-                                                                                        <div class="field has-numberinput has-numberinput-compact">
-                                                                                            <!---->
-                                                                                            <div class="b-numberinput field no-margin-bottom has-addons" style="width: 7rem; margin-bottom: 0px;">
-                                                                                                <p class="control">
-                                                                                                    <button type="button" class="button is-primary"><span
-                                                                                                        class="icon"><i
-                                                                                                            class="mdi mdi-minus mdi-24px"></i></span></button>
-                                                                                                </p>
-                                                                                                <div class="control is-clearfix">
-                                                                                                    <input type="number" autocomplete="on" step="1" min="0" class="input escolher_sessao">
-                                                                                                </div>
-                                                                                                <p class="control">
-                                                                                                    <button type="button" class="button is-primary"><span
-                                                                                                        class="icon"><i
-                                                                                                            class="mdi mdi-plus mdi-24px"></i></span></button>
-                                                                                                </p>
+                                                                                        <div class="field">
+                                                                                            <div class="control is-clearfix">
+                                                                                                <input type="checkbox" class="escolher_sessao">
                                                                                             </div>
-                                                                                            <!---->
                                                                                         </div>
                                                                                     </td>
                                                                                     <!---->
@@ -732,18 +716,9 @@
                                                 </td>
                                                 <td data-label="Horário"></td>
                                                 <td data-label="Inscrever">
-                                                    <div class="field has-numberinput has-numberinput-compact">
-                                                        <div class="b-numberinput field has-addons" style="width: 7rem;">
-                                                            <p class="control"><button type="button" class="button is-primary">
-                                                                <span class="icon"><i
-                                                                        class="mdi mdi-minus mdi-24px"></i></span></button>
-                                                            </p>
-                                                            <div class="control is-clearfix">
-                                                                {{form.sessao.empty_form.nr_inscritos|addcss:"input"}}</div>
-                                                            <p class="control"><button type="button" class="button is-primary">
-                                                                <span class="icon"><i
-                                                                        class="mdi mdi-plus mdi-24px"></i></span></button>
-                                                            </p>
+                                                    <div class="field">
+                                                        <div class="control is-clearfix">
+                                                            <input type="checkbox" name={{form.sessao.empty_form.nr_inscritos.html_name}} class="table_escolher_sessao">
                                                         </div>
                                                         <p class="help is-danger"></p>
                                                     </div>
@@ -981,22 +956,22 @@
                 table.find("td[data-label='Horário']").html(parent.children("td[data-label='Horário']").html());
                 table.find("td[data-label='Espaço']").html(parent.children("td[data-label='Espaço']").html());
 
-                var tInput = table.find("td[data-label='Inscrever']").find('.input');
-                tInput.val($(this).val());
+                var tInput = table.find("td[data-label='Inscrever']").find('.table_escolher_sessao');
                 table.find("td[data-label='id']").find('input').val(parseInt(parent.children("td[data-label='id']").children("input").val()));
-                syncInputs(tInput, $(this));
-
+                syncInputs($(this),tInput);
+                tInput.prop("checked",$(this).is(":checked"));
+                
                 //hides entry if button clicked
                 table.find('.remove_button').on("click", function() {
-                    $(this).closest('tr').find('.input').val(0).change();
+                    $(this).closest('tr').find('.table_escolher_sessao').prop("checked",0).change();
                 });
 
                 //On sessao table input change
                 tInput.on("change", function() {
                     var isVisible = $(this).is(":visible");
-                    var value = $(this).val(); 
+                    var value = $(this).is(":checked"); 
                     var tr = $(this).closest('tr');
-                    if (value == 0 && isVisible ) {
+                    if (value == false && isVisible ) {
                         dinamicTableNumRows-=1;
                         tr.hide();
                         var delete_field = $('tr > actions').find('input');
@@ -1006,7 +981,7 @@
                         //fixSetNumeration("sessao_set");
                     }
 
-                    if(value>0 && !isVisible){
+                    if(value == true && !isVisible){
                         dinamicTableNumRows+=1;
                         tr.show();
                         var delete_field = $('tr > actions').find('input');
@@ -1024,7 +999,6 @@
                 });
 
                 //Add new sessao
-                console.log("Sessao add");
                 var value = parseInt($('#id_sessao_set-TOTAL_FORMS').val());
                 $('#id_sessao_set-TOTAL_FORMS').val(value + 1);
                 //table.show();
@@ -1101,7 +1075,13 @@
             var valueInt = parseInt(childs.eq(1).text());
             var inscritos = parseInt(childs.eq(0).text());
             var id = sessoes.children("td[data-label='id']").children(value);
-            id.closest('.sessao_table').children("td[data-label='Inscrever']").find('input').val(inscritos).change();
+            var inscritosBool = parseInt(inscritos);
+            if(inscritosBool>0){
+                inscritosBool = true;
+            }else{
+                inscritosBool = false;
+            }
+            id.closest('.sessao_table').children("td[data-label='Inscrever']").find('input').prop("checked",inscritosBool).change();
             
             //console.log($('#sessao_submit_table').html());
             //Error set
@@ -1128,12 +1108,20 @@
             applyClickRemoveRow($(this));
         });
 
+        //Check for errors on submit
         $("#submitForm").on("click",function(){
             var validator = $("#regForm").validate();
             var isCheck = $("#regForm")[0].checkValidity();
             var errors = $("#regForm").find(':invalid');
-            //console.log(validator.errorList);
-            if(errors.len == 0){
+            if(errors.length == 0){
+                $(".table_escolher_sessao").each(function(){
+                    var value = $(this).val();
+                    if(value == 'on'){
+                        $(this).val(1);
+                    }else if(value == 'off'){
+                        $(this).val(0);
+                    }
+                });
                 $("#regForm").submit();
             }
             else{
@@ -1199,12 +1187,29 @@
     //Link 2 inputs on change
     function syncInputs(el1, el2) {
         el1.on("change", function() {
-            if (el1.val() != el2.val())
-                el2.val(el1.val()).change();
+            if($(this).is(":checkbox")){
+                var val = $(this).is(":checked");
+                if(el2.is(":checked") != val){
+                    el2.prop("checked",this.checked);
+                    el2.change();
+                }
+            }else{
+                if (el1.val() != el2.val())
+                    el2.val(el1.val()).change();
+            }
         });
         el2.on("change", function() {
-            if (el1.val() != el2.val())
-                el1.val(el2.val()).change();
+            if($(this).is(":checkbox")){
+                var val = $(this).is(":checked");
+                if(el1.is(":checked") != val){
+                    el1.prop("checked",this.checked);
+                    el1.change();
+                }
+                //el1.prop("checked",this.checked);
+            }else{
+                if (el1.val() != el2.val())
+                    el1.val(el2.val()).change();
+            }
         });
     }
 
