@@ -3,7 +3,7 @@
 <div class="navbar-menu">
     {% if funcao == "Coordenador" %}
     {% include "navbar-coord.html" %}
-    {% elif funcao == "administardor" %}
+    {% elif funcao == "administrador" %}
     {% include "navabar-admin.html" %}
     {% elif funcao == "docente Univesitario" %}
     {% include "navabar-dc.hmtl"}
@@ -193,29 +193,34 @@
                                     class="router-link-exact-active router-link-active">Notificações</a></li>
                         </ul>
                     </nav>
+<<<<<<< HEAD
                     <button class="button button4 is-danger is-outlined" type="submit" form="myform"
                         style="margin-bottom: 0.9rem; margin-right: 1rem;text-decoration:none;"><span
                             class="icon is-small"><i class="mdi mdi-close"></i></span> <span> Eliminar
                             selecionadas </span>
                         <!----></button>
+=======
+>>>>>>> 13a7fed172699ba88afc4aea6c30675a788fb5e8
                     <a href="{% url "create_not" %}" class="button is-success is-outlined" type="button"
                         style="margin-bottom: 0.9rem; margin-right: 1rem;text-decoration:none;"><span
-                            class="icon is-small"><i class="mdi mdi-plus"></i></span> <span> Compor Notificação </span>
+                            class="icon is-small"><i class="mdi mdi-plus"></i></span> <span> Nova Notificação </span>
                         <!----></a>
-                    {% if my %}
-                    <a href="{% url "check_not" %}" class="button is-success is-outlined" type="button"
-                        style="margin-bottom: 0.9rem; margin-right: 1rem;text-decoration:none;"><span
-                            class="icon is-small"><i class="mdi mdi-send"></i></span> <span> Notificações Recebidas
-                        </span>
-                        <!----></a>
-                    {% else %}
-                    <a href="{% url "check_not_enviadas" %}" class="button is-success is-outlined" type="button"
+                        <a href="{% url "check_not_enviadas" %}" class="button is-success is-outlined" type="button"
                         style="margin-bottom: 0.9rem; margin-right: 1rem;text-decoration:none;"><span
                             class="icon is-small"><i class="mdi mdi-send"></i></span> <span> Notificações Enviadas
                         </span>
                         <!----></a>
-                    {% endif %}
-
+                        <button class="button button4 is-danger is-outlined" type="submit" form="myform"
+                        style="margin-bottom: 0.9rem; margin-right: 1rem;text-decoration:none;"><span
+                            class="icon is-small"><i class="mdi mdi-close"></i></span> <span> Eliminar
+                            selecionadas </span>
+                        <!----></button>
+                    <a class="button button4 is-black is-outlined" type="button"
+                        style="margin-bottom: 0.9rem; margin-right: 1rem;text-decoration:none;"
+                        onclick="checkAll()"><span class="icon is-small"><i class="mdi mdi-select-all"></i></span>
+                        <span>
+                            Selecionar Todas/Nenhuma </span>
+                        <!----></a>
 
                     <div class="b-table">
                         <div class="field table-mobile-sort">

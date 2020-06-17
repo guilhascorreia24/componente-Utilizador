@@ -21,10 +21,12 @@ def createnot(request):
     if request.method == 'POST':
         form = NotificationForm(request.POST)
         emails=request.POST['Destinatario'].split(",")
-        #print(form.is_valid())
         if form.is_valid():
             for email in emails:
+<<<<<<< HEAD
                 email=email.strip()
+=======
+>>>>>>> 13a7fed172699ba88afc4aea6c30675a788fb5e8
                 form.cleaned_data['idutilizadorenvia'] = request.session['user_id']
                 if user_views.validateEmail(email) is True and (Utilizador.objects.filter(email=email).exists()):
                     if Utilizador.objects.filter(email=email).exists():
@@ -44,11 +46,6 @@ def createnot(request):
                     destinatario_pk= int(user_email.pk)
                     noti=Notificacao.objects.create(descricao=d,utilizadorrecebe=destinatario_pk,idutilizadorenvia=request.session['user_id'],criadoem=datetime.now(),assunto=a)
                     UtilizadorHasNotificacao.objects.create(utilizador_idutilizador=user_email,notificacao=noti,estado=0)
-            '''d='Notificação enviada com sucesso'
-            a='Notificação'
-            destinatario_pk= request.session['user_id']
-            noti=Notificacao.objects.create(descricao=d,utilizadorrecebe=destinatario_pk,idutilizadorenvia=-1,criadoem=datetime.now(),assunto=a)
-            UtilizadorHasNotificacao.objects.create(utilizador_idutilizador=Utilizador.objects.get(pk=request.session['user_id']),notificacao=noti,estado=0)'''
             messages.success(request, 'Notificação enviada com sucesso')
             return redirect('check_not')
     else:

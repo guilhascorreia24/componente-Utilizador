@@ -17,3 +17,7 @@ a.current{
 .no-bottom-border{
     border-bottom: none !important;
 }
+
+.register-button-large{
+    min-width: 20px;
+}

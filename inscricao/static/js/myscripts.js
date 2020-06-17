@@ -212,7 +212,7 @@
 
     //Tables with class sortable
     function enableSort(){
-        $('.sortable').DataTable();
+        $('table.sortable').DataTable();
     }
 
     $(document).ready(function(){
