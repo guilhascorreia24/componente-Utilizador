@@ -193,12 +193,6 @@
                                     class="router-link-exact-active router-link-active">Notificações</a></li>
                         </ul>
                     </nav>
-                    <a class="button button4 is-black is-outlined" type="button"
-                        style="margin-bottom: 0.9rem; margin-right: 1rem;text-decoration:none;"
-                        onclick="checkAll()"><span class="icon is-small"><i class="mdi mdi-select-all"></i></span>
-                        <span>
-                            Selecionar Todas/Nenhuma </span>
-                        <!----></a>
                     <button class="button button4 is-danger is-outlined" type="submit" form="myform"
                         style="margin-bottom: 0.9rem; margin-right: 1rem;text-decoration:none;"><span
                             class="icon is-small"><i class="mdi mdi-close"></i></span> <span> Eliminar
@@ -275,9 +269,9 @@
                                                 </div>
                                             </th>
                                             <th class="">
-                                                <div class="th-wrap is-centered">Ações <span class="icon is-small"
-                                                        style="display: none;"><i class="mdi mdi-menu-up"></i></span>
-                                                </div>
+                                                <div class="th-wrap is-centered">Ações <input type="checkbox" name='press' value="all" onclick="checkAll()" style="transform: scale(1.2); margin-left: 3%;"></span><span class="icon is-small"
+                                                        style="display: none;"><i class="mdi mdi-menu-up"></i> </span>
+                                                    </div>
                                             </th>
                                             <!---->
                                         </tr>

@@ -151,11 +151,9 @@
                 <div class="field"><label class="">Destinatario</label>
                   <div class="control is-clearfix">
                     <datalist id="brow">
-                      <option value="Internet Explorer">
-                      <option value="Firefox">
-                      <option value="Chrome">
-                      <option value="Opera">
-                      <option value="Safari">
+                      {% for contact in contacts %}
+                      <option value="{{contact}}">
+                        {% endfor %}
                     </datalist>
                     <div class="control has-icons-right"><input class="input" id="{{form.Destinatario.id_for_label}}" class="input" name="Destinatario"
                       data-role="tagsinput" value="{{form.Destinatario.value|default_if_none:''}}">

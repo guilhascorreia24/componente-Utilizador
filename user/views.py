@@ -278,7 +278,7 @@ def modify_user(request,id):
         form=ModifyForm(request.POST)
         print(request.POST['name']!="")
         print(request.POST['email']!="")
-        print(not Utilizador.objects.filter(email=request.POST['email']).exists() and Utilizador.objects.get(email=request.POST['email']).idutilizador!=id)
+        print(not Utilizador.objects.filter(email=request.POST['email']).exists() )
         print(not Utilizador.objects.filter(telefone=request.POST['telefone']).exists() and Utilizador.objects.get(telefone=request.POST['telefone']).idutilizador!=id)
         print(request.POST['telefone']!="")
         print(bool(validateEmail(request.POST['email'])))
@@ -290,7 +290,8 @@ def modify_user(request,id):
             if t.validada==5:
                 t.validada=0
             t.save()
-            return redirect('blog:blog-home')
+            messages.success(request, f"Utilizador alterado com sucesso")
+            return redirect('profile_list')
         else:
             error=False
             error3=False

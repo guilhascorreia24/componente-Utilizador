@@ -24,7 +24,7 @@ def createnot(request):
         #print(form.is_valid())
         if form.is_valid():
             for email in emails:
-                #print("noti:"+str(user_views.validateEmail(email) is True) +" "+str(Utilizador.objects.filter(email=email).exists()))
+                email=email.strip()
                 form.cleaned_data['idutilizadorenvia'] = request.session['user_id']
                 if user_views.validateEmail(email) is True and (Utilizador.objects.filter(email=email).exists()):
                     if Utilizador.objects.filter(email=email).exists():
