@@ -88,6 +88,7 @@
                                     </div>
                                     <!---->
                                 </div>
+                                {% if funcao == "administardor" %}
                                 <div class="field">
                                     <!---->
                                     <div class="control is-expanded has-icons-left"><span
@@ -104,6 +105,7 @@
                                                 class="mdi mdi-magnify mdi-24px"></i></span></div>
                                     <!---->
                                 </div>
+                                {% endif %}
                                 <div class="field">
                                     <!---->
                                     <div class="control is-expanded has-icons-left"><span
@@ -146,7 +148,7 @@
                     <nav aria-label="breadcrumbs" class="breadcrumb" style="background-color:white">
                         <ul>
                             <li><a href="/" class="router-link-active">Início</a></li>
-                            <li class="is-active"><a href="{% url "blog-home" %}"
+                            <li class="is-active"><a href="{% url "blog:blog-home" %}"
                                     class="router-link-exact-active router-link-active">Utilizadores</a></li>
                         </ul>
                     </nav>{% if funcao == "administardor" %}

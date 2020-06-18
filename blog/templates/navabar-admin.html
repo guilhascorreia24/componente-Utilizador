@@ -1,20 +1,12 @@
 <div class="navbar-start">
-    <a data-v-a67fe1ba="" href="/atividades" class="navbar-item is-tab router-link"> Atividades
-    </a>
+    <a href="{% url 'atividades:consultar_atividades' %}" class="navbar-item">Atividades</a>
+    <a href="{% url 'atividades:criar_sala' %}" class="navbar-item">Salas</a>
+    <a href="{% url 'atividades:criar_campus' %}" class="navbar-item">Campus</a>
+    <a href="{% url 'atividades:criar_uo' %}" class="navbar-item">Unidade Orgânica</a>
+    <a href="{% url 'atividades:criar_departamento' %}" class="navbar-item">Departamento</a>
     <a data-v-a67fe1ba="" href="/inscricoes" class="navbar-item is-tab router-link"> Inscrições </a>
     <a data-v-a67fe1ba="" href="/transportes" class="navbar-item is-tab router-link"> Transportes </a>
     <a data-v-a67fe1ba="" href="/almocos" class="navbar-item is-tab router-link"> Almoços </a>
     <a data-v-a67fe1ba="" href="/configuracao" class="navbar-item is-tab router-link"> Configuração do Dia Aberto </a>
-    <div class="dropdown">
-    <a data-v-a67fe1ba="" role="button" class="dropdown-trigger navbar-item is-tab router-link" data-toggle="dropdown"> Faculdades e Campus</a>
-    <div class="dropdown-menu" style="">
-        <div role="list" class="dropdown-content"><a data-v-a67fe1ba="" role="listitem" href=""
-                tabindex="0" class="dropdown-item">Campus</a><a data-v-a67fe1ba="" role="listitem"
-                tabindex="0" class="dropdown-item ">Cursos</a><a data-v-a67fe1ba="" role="listitem"
-                tabindex="0" class="dropdown-item">Unidades Organicas</a><a data-v-a67fe1ba="" role="listitem"
-                tabindex="0" class="dropdown-item">Departamentos</a><a data-v-a67fe1ba="" role="listitem" tabindex="0"
-                class="dropdown-item">Espaços</a></div>
-    </div>
-    </div>
     <a data-v-a67fe1ba="" href="{% url 'profile_list' %}" class="navbar-item is-tab router-link"> Utilizadores </a>
 </div>

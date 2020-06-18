@@ -103,7 +103,7 @@
                 data-v-a67fe1ba="">Notificações</strong></div>
             <hr data-v-a67fe1ba="" class="dropdown-divider">
             {% include "dropdow_noti.html" %}
-            <a data-v-a67fe1ba="" tabindex="0" class="dropdown-item"><u data-v-a67fe1ba="">Ver todas
+            <a data-v-a67fe1ba="" tabindex="0" class="dropdown-item" href="{% url "check_not" %}"><u data-v-a67fe1ba="">Ver todas
                 as notificações</u></a>
           </div>
         </div>
@@ -151,11 +151,9 @@
                 <div class="field"><label class="">Destinatario</label>
                   <div class="control is-clearfix">
                     <datalist id="brow">
-                      <option value="Internet Explorer">
-                      <option value="Firefox">
-                      <option value="Chrome">
-                      <option value="Opera">
-                      <option value="Safari">
+                      {% for contact in contacts %}
+                      <option value="{{contact}}">
+                        {% endfor %}
                     </datalist>
                     <div class="control has-icons-right"><input class="input" id="{{form.Destinatario.id_for_label}}" class="input" name="Destinatario"
                       data-role="tagsinput" value="{{form.Destinatario.value|default_if_none:''}}">

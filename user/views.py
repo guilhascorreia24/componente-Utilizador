@@ -165,7 +165,7 @@ def register(request):
             if 'user_id' in request.session:
                 validacoes(request,1,signing.dumps(user_id))
             messages.success(request, f'Registo efetuado com Sucesso!')
-            return redirect('blog-home')
+            return redirect('blog:blog-home')
         else:
             error=False
             error3=False
@@ -207,14 +207,14 @@ def login_request(request):
                 if username.validada != int(5):
                     messages.success(request, f"Bem-vindo {username.nome}")
                     request.session['user_id'] = Utilizador.objects.get(email=request.POST['email']).idutilizador
-                    r = redirect('blog-home')
+                    r = redirect('blog:blog-home')
                     if 'check' in request.POST and request.POST['check'] == '1':
                         Utilizador.objects.filter(pk=request.session['user_id']).update(remember_me=encrypt(request.session['user_id']))
                         r.set_cookie('cookie_id', encrypt(request.session['user_id']), 7 * 24 * 60 * 60)
                     return r
                 else:
                     tentatives-=1
-                    messages.error(request, f"Sua conta ainda não validada pelo administrador")
+                    messages.error(request, f"Sua conta ainda não validada")
             else:
                 tentatives-=1
                 messages.error(request, f"Username e/ou palavra-passe. Tem mais {tentatives} tentativas")
@@ -230,7 +230,7 @@ def login_request(request):
 
 
 def logout_request(request):
-    r = redirect("blog-home")
+    r = redirect("blog:blog-home")
     del request.session['user_id']
     if 'cookie_id' in request.COOKIES:
         r.delete_cookie('cookie_id')
@@ -278,20 +278,20 @@ def modify_user(request,id):
         form=ModifyForm(request.POST)
         print(request.POST['name']!="")
         print(request.POST['email']!="")
-        print(not Utilizador.objects.filter(email=request.POST['email']).exists() and Utilizador.objects.get(email=request.POST['email']).idutilizador!=id)
+        print(not Utilizador.objects.filter(email=request.POST['email']).exists() )
         print(not Utilizador.objects.filter(telefone=request.POST['telefone']).exists() and Utilizador.objects.get(telefone=request.POST['telefone']).idutilizador!=id)
         print(request.POST['telefone']!="")
         print(bool(validateEmail(request.POST['email'])))
         if (request.POST['name']!="")  and (request.POST['email']!="") and not(Utilizador.objects.filter(email=request.POST['email']).exists() and Utilizador.objects.get(email=request.POST['email']).idutilizador!=id) and not( Utilizador.objects.filter(telefone=request.POST['telefone']).exists() and Utilizador.objects.get(telefone=request.POST['telefone']).idutilizador!=id) and (request.POST['telefone']!="") and (validateEmail(request.POST['email'])):
             t=Utilizador.objects.get(pk=id)
             t.nome=request.POST['name']
-            t.username=request.POST['username']
             t.email=request.POST['email']
             t.telefone=request.POST['telefone']
             if t.validada==5:
                 t.validada=0
             t.save()
-            return redirect('blog-home')
+            messages.success(request, f"Utilizador alterado com sucesso")
+            return redirect('profile_list')
         else:
             error=False
             error3=False
@@ -342,7 +342,7 @@ def modify_user(request,id):
         ano = Utilizador.objects.get(pk=id).dia_aberto_ano
         funcao = "Colaborador"
         cursoid=Colaborador.objects.get(utilizador_idutilizador=id).curso_idcurso
-        UO=Curso.objects.get(pk=cursoid).unidade_organica_iduo.sigla
+        UO=Curso.objects.get(pk=cursoid.pk).unidade_organica_iduo.sigla
     elif Participante.objects.filter(utilizador_idutilizador=id).exists():
         funcao = "Participante"
     return render(request, 'profile_modify.html', {"form": form, 'nome': name,'UO':UO, 'email': email, "ano":ano,
@@ -366,13 +366,13 @@ def profile(request,id):
         funcao = "Docente Univesitario"
         depid = ProfessorUniversitario.objects.get(utilizador_idutilizador=id).departamento_iddepartamento
         dep= Departamento.objects.get(pk=depid.pk).nome
-        UO=UnidadeOrganica.objects.get(pk=depid.pk).sigla
+        UO=UnidadeOrganica.objects.get(pk=depid.unidade_organica_iduo.pk).sigla
     elif Coordenador.objects.filter(utilizador_idutilizador=id).exists():
         funcao = "Coordenador"
         IDUO = Coordenador.objects.get(pk=id).unidade_organica_iduo
         UO=UnidadeOrganica.objects.get(pk=IDUO.pk).sigla
     elif Colaborador.objects.filter(utilizador_idutilizador=id).exists():
-        ano = Utilizador.objects.get(pk=id).dia_aberto_ano.pk
+        #ano = Utilizador.objects.get(pk=id).dia_aberto_ano.pk 
         funcao = "Colaborador"
         curso=Colaborador.objects.get(utilizador_idutilizador=id).curso_idcurso
         cursoname=curso.nome
@@ -411,7 +411,7 @@ def profile_list(request):
         elif ProfessorUniversitario.objects.filter(pk=u.idutilizador).exists():
             u.cargo="Docente Universitario"
             dep=ProfessorUniversitario.objects.get(pk=u.idutilizador).departamento_iddepartamento
-            u.UO=UnidadeOrganica.objects.get(pk=dep.pk).sigla
+            u.UO=UnidadeOrganica.objects.get(pk=dep.unidade_organica_iduo.pk).sigla
             if u.validada==3:
                 u.estado="Validado"
         elif Administrador.objects.filter(pk=u.pk).exists():
@@ -433,7 +433,7 @@ def profile_list(request):
     return render(request,"list_users.html",{"users":users,"funcao":funcao,"me":me,"me_id":me_id,"campus":campus,"uos":uos,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
 #--------------------------------------------recuperaçao de password---------------------------------
 def change_password(request, id):
-    id_deccryp=signing.loads(id)
+    id_deccryp=decrypt(id)
     if request.method=='POST':
         form=PasswordChangeForm(request.POST)
         passwd=request.POST['password']
@@ -442,7 +442,7 @@ def change_password(request, id):
             t.password=encrypt(passwd)
             t.save()
             messages.success(request, f'Password alterada com sucesso')
-            return redirect('blog-home')
+            return redirect('blog:blog-home')
         else:
             messages.error(request,password_check(passwd))
             if request.POST['confirm_password']!=passwd:
@@ -472,7 +472,7 @@ def reset(request):
 #-------------------------------------------------validacoes---------------------------------------------------------------
 def validacoes(request,acao,id):
     if not Administrador.objects.filter(pk=request.session['user_id']).exists() or not Coordenador.objects.filter(pk=request.session['user_id']).exists():
-        redirect("blog-home")
+        redirect("blog:blog-home")
     id=signing.loads(id)
     user=Utilizador.objects.get(pk=id)
     if acao==1:

@@ -96,7 +96,7 @@
                 {% elif funcao == "admin" %}
                 {% include "navabar-admin.html" %}
                 {% elif funcao == "dc" %}
-                {% include "navabar-dc.hmtl"}
+                {% include "navabar-dc.html" %}
                 {% elif funcao == "part" %}
                 {% include "navabar-part.html" %}
                 {% elif funcao == "colab" %}
@@ -202,7 +202,7 @@
             <div data-v-8716d23a="" style="margin: auto; width: max-content;"> Dia Aberto </div>
         </footer>
     </div>
-    <div class="notices is-top">
+    <div class="notices is-top" style="padding-top: 3%;">
         {% if messages %}
         {% for message in messages %}
         {% if message.tags == 'success' %}
@@ -220,10 +220,10 @@
 $(document).ready(function () {
  
  window.setTimeout(function() {
-     $(".toast").fadeTo(1000, 0).slideUp(1000, function(){
+     $(".toast").fadeTo(500, 0).slideUp(500, function(){
          $(this).remove(); 
      });
- }, 5000);
+ }, 2500);
   
  });
 </script>
