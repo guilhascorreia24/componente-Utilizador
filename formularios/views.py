@@ -16,7 +16,8 @@ def curso_form(request):
     return render(request,'cursos.html',context)
 
 def delete_curso(request,idcurso):
-    if request.method=="POST" and Curso.objects.filter(pk=idcurso).exists():
-        Curso.objects.get(pk=idcurso).delete()
+    print("curso"+idcurso)
+    if Curso.objects.filter(pk=idcurso).exists() and request.session['type']==4:
+        Curso.objects.filter(pk=idcurso).delete()
     return redirect("formularios:cursos")
         
