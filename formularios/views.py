@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from user import views
 from Notification.views import noti_not_checked
 from blog.models import Curso
@@ -14,3 +14,9 @@ def curso_form(request):
             form.save() 
     context={'form':form,'cursos':cursos,'id':request.session['user_id'],'funcao':func,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)}
     return render(request,'cursos.html',context)
+
+def delete_curso(request,idcurso):
+    if request.method=="POST" and Curso.objects.filter(pk=idcurso).exists():
+        Curso.objects.get(pk=idcurso).delete()
+    return redirect("formularios:cursos")
+        

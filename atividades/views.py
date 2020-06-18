@@ -36,7 +36,7 @@ def atividade_create_view(request):
                         professor_universitario_utilizador_idutilizador=professor,
                         unidade_organica_iduo=get_object_or_404(UnidadeOrganica, iduo=request.POST.get('unidade_organica')),
                         departamento_iddepartamento=get_object_or_404(Departamento, iddepartamento=request.POST.get('iddepartamento')),
-                        espaco_idespaco=None, ncolboradores=request.POST.get('ncolaboradores'), tematica=request.POST.get('tema'))
+                        espaco_idespaco=None, ncolboradores=request.POST.get('nrcolaboradores'), tematica=request.POST.get('tema'))
         new.save()
         idActivity = Atividade.objects.latest('idatividade').idatividade
         return redirect("../atividades/editar_local/"+str(idActivity))

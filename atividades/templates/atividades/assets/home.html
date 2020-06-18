@@ -41,11 +41,11 @@
   <div class="navbar-menu">
     <div class="navbar-start">
         {% if account == "professor" %}
-        {% include "navabar-dc.html" %}
+        {% include "navbar-dc.html" %}
         {% elif account == "coordinator" %}
         {% include "navbar-coord.html" %}
         {% elif account == "adm" %}
-        {% include "navabar-admin.html" %}
+        {% include "navbar-admin.html" %}
         {% else %}
         {% include "navbar-part.html" %}
         {% endif %}

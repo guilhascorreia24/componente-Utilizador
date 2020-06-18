@@ -1,181 +1,115 @@
-{% extends "homepage.html" %}
-{%  block  content %}
-<div class="navbar-menu">
-    {% if funcao == "Coordenador" %}
-    {% include "navbar-coord.html" %}
-    {% elif funcao == "administardor" %}
-    {% include "navabar-admin.html" %}
-    {% elif funcao == "docente Univesitario" %}
-    {% include "navabar-dc.html" %}
-    {% elif funcao == "Participante" %}
-    {% include "navabar-part.html" %}
-    {% elif funcao == "colab" %}
-    {% include "navabar-colab.html" %}
-    {% endif %}
-    <div class="navbar-end">
-        {% if id == None %}
-        <div data-v-a67fe1ba="" class="navbar-item">
-            <div data-v-a67fe1ba="" class="dropdown is-bottom-left is-mobile-modal">
-            </div><a href="register"><button data-v-a67fe1ba="" type="button" class="button"><span
-                        class="icon is-small"><i class="mdi mdi-logout-variant"></i></span> <span> Registo
-                    </span>
-                    <!----></button></a>
-        </div>
-        <div data-v-a67fe1ba="" class="navbar-item">
-            <div data-v-a67fe1ba="" class="dropdown is-bottom-left is-mobile-modal">
-            </div><a href="login"><button data-v-a67fe1ba="" type="button" class="button"><span class="icon is-small"><i
-                            class="mdi mdi-logout-variant"></i></span> <span> Entrar
-                    </span>
-                    <!----></button></a>
-        </div>
-        {% else %}
-        <div data-v-a67fe1ba="" class="navbar-item">
-            <div data-v-a67fe1ba="" class="is-bottom-left is-mobile-modal dropdown ">
-                <a class="dropdown-toggle" role="button" data-toggle="dropdown">
-                    <div role="button" aria-haspopup="true" class="dropdown-trigger"><span data-v-a67fe1ba=""
-                            role="button"><button data-v-a67fe1ba="" type="button" data-badge="{{i}}"
-                                class="button has-badge-rounded has-badge-warning is-text"
-                                style="margin-right: 0.9rem;">
-                                <!----> <span><span data-v-a67fe1ba="" class="icon"><i
-                                            class="mdi mdi-bell mdi-24px"></i></span></span>
-                                <!----></button></span></div>
-                </a>
-                <div class="dropdown-menu">
-                    <div role="menu" class="dropdown-content">
-                        <div data-v-a67fe1ba="" role="menuitem" tabindex="0" class="dropdown-item"><strong
-                                data-v-a67fe1ba="">Notificações</strong></div>
-                        <hr data-v-a67fe1ba="" class="dropdown-divider">
-                        {% include "dropdow_noti.html" %}
-                        <a data-v-a67fe1ba="" tabindex="0" class="dropdown-item" href="notificacao/"><u
-                                data-v-a67fe1ba="">Ver todas as notificações</u></a>
-                    </div>
-                </div>
-            </div>
-            <div data-v-a67fe1ba="" class="dropdown is-bottom-left is-mobile-modal">
-                <div role="button" aria-haspopup="true" class="dropdown-trigger"><a
-                        href="{% url "profile_edit" id %}"><button data-v-a67fe1ba="" type="button"
-                            class="button is-text" style="margin-right: 0.9rem;">
-                            <!----> <span><span data-v-a67fe1ba="" class="icon"><i
-                                        class="mdi mdi-account-circle mdi-24px"></i></span></span>
-                            <!----></button></a></div>
-                <div aria-hidden="true" class="background" style="display: none;"></div>
-            </div><a href="logout"><button data-v-a67fe1ba="" type="button" class="button"><span
-                        class="icon is-small"><i class="mdi mdi-logout-variant"></i></span> <span> Sair
-                    </span>
-                    <!----></button></a>
-        </div>
-        {% endif %}
-    </div>
-</div>
-</nav>
-<div data-v-8716d23a="" id="top-hero" class="hero is-primary is-bold">
-    <div data-v-8716d23a="" id="top-hero-body" class="hero-body"></div>
-</div>
-<div data-v-8716d23a="" id="page-content">
-    <div class="card">
-        <div class="card-content">
-
-
-            <nav class="breadcrumb" aria-label="breadcrumbs" style="background-color: white;">
-                <ul>
-                    <li><a href="{% url "blog:blog-home" %}">Início</a></li>
-                    <li class="is-active"><a href="" aria-current="page">Cursos</a></li>
-                </ul>
-            </nav>
-            <div class="table "></div>
-            <div class="table-wrapper">
-                <table class="table has-mobile-cards is-hoverable is-fullwidth">
-                    <thead>
-                        <tr>
-                            <th>
-                                Curso:
-                            </th>
-                            <th>
-                                Unidade Orgânica:
-                            </th>
-                            <th></th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        <tr>
-                            {% for curso in cursos %}
-                            <td>{{curso.nome}}</td>
-                            <td>{{curso.unidade_organica_iduo.sigla}}</td>
-                            <td>
-                                <form method="POST">
-                                    <a href="">
-                                        <span class="icon is-small">
-                                            <i class="mdi mdi-delete mdi-24px"></i>
-                                        </span>
-                                    </a>
-                                </form>
-                            </td>
-                            {% endfor %}
-                        </tr>
-
-                    </tbody>
-                </table>
-                <form method="POST" id="addCurso" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    <div class="table "></div>
-                    <div class="table-wrapper">
-                        <table class="table has-mobile-cards is-hoverable is-fullwidth">
-                            <h3>Adicionar Unidade Orgânica: </h3>
-                            <thead>
-                                <tr>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="column">
-                                            <div class="control is-expanded">
-                                                <label class="label">Unidade Orgânica:</label>
-                                                <div class="control" style="margin-left: 35%;">
-                                                    {{form.unidade_organica_iduo}}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="column">
-                                            <label class="label">Nome:</label>
-                                            <div class="control is-expanded" style="margin-left: 35%;">
-                                                {{form.nome}}
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <button data-v-5aa16ff8="" type="button submit" form="addCurso"
-                                            class="button is-success" style="margin-top:40px">
-                                            <span class="icon is-small">
-                                                <i class="mdi mdi-plus"></i>
-                                            </span>
-                                            <span>Adicionar Curso</span>
-                                        </button>
-                                    </td>
-                                </tr>
-                            </thead>
-                        </table>
-                    </div>
-                </form>
-                <div align="center">
-                    <button data-v-5aa16ff8="" type="button" class="button is-success" style="margin-top:40px">
-                        <a href="/" style="color:white;">
-                            <span class="icon is-small">
-                                <i class="mdi mdi-check"></i>
-                            </span>
-                            <span>Finalizar</span>
-                        </a>
-                    </button>
-                </div>
-
-            </div>
-        </div>
-    </div>
-</div>
+{% extends "base_template.html" %}
+{% block steps %}
+<li><a href="{% url "blog:blog-home" %}">Início</a></li>
+<li class="is-active"><a href="" aria-current="page">Cursos</a></li>
 {% endblock %}
+{%  block  content %}
+<div class="table "></div>
+<div class="table-wrapper">
+    <table class="table has-mobile-cards is-hoverable is-fullwidth">
+        <thead>
+            <th>
+                Curso:
+            </th>
+            <th>
+                Campus:
+            </th>
+            <th></th>
+            </tr>
+        </thead>
+        {% for curso in cursos %}
+        <tr>
+            <td>{{curso.nome}}</td>
+            <td>{{curso.unidade_organica_iduo.sigla}}</td>
+            <td>
+                <form method="POST">
+                    <a href="{% url 'formularios:delete_curso' curso.pk %}">
+                        <span class="icon is-small">
+                            <i class="mdi mdi-delete mdi-24px"></i>
+                        </span>
+                    </a>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    <br>
+    <br>
+    <form method="POST" id="addDepartamento" enctype="multipart/form-data"> {% csrf_token %}
+        <div class="table "></div>
+        <div class="table-wrapper">
+            <table class="table has-mobile-cards is-hoverable is-fullwidth">
+                <h3>Adicionar Unidade Orgânica: </h3>
+                <thead>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+
+                    <tr>
+                        <td>
+                            <div class="column">
+                                <div class="control is-expanded">
+                                    <label class="">Unidade Orgânica:</label>
+                                    <div class="control">
+                                        {{form.unidade_organica_iduo}}
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="column">
+                                <label class="">Nome:</label>
+                                <div class="control is-expanded">
+                                    {{form.nome}}
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <button data-v-5aa16ff8="" type="button submit" form="addDepartamento"
+                                class="button is-success" style="margin-top:40px">
+                                <span class="icon is-small">
+                                    <i class="mdi mdi-plus"></i>
+                                </span>
+                                <span>Adicionar Curso</span>
+                            </button>
+                        </td>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </form>
+    <div align="center">
+        <button data-v-5aa16ff8="" type="button" class="button is-success" style="margin-top:40px">
+            <a href="{% url 'blog:blog-home' %}" style="color:white;">
+                <span class="icon is-small">
+                    <i class="mdi mdi-check"></i>
+                </span>
+                <span>Finalizar</span>
+            </a>
+        </button>
+    </div>
+<div class="dialog modal">
+    <div class="modal-background"></div>
+    <br><br><br><br><br><br><br><br><br><br><br><br>
+    <div class="modal-card animation" style="max-width:360px">
+        <!---->
+        <section class="modal-card-body is-titleless">
+            <div class="media">
+                <!---->
+                <div class="media-content">
+                    <p>Tem a certeza que quer eliminar o utilizador {{user.nome}}?</p>
+                    <!---->
+                </div>
+            </div>
+        </section>
+        <footer class="modal-card-foot"><button class="button" data-dismiss="modal">
+                Cancelar
+            </button><a href="" style="text-decoration: none;"> <button
+                    class="button is-success" type="submit">
+                    Confirmar
+                </button></a></footer>
+    </div>
+</div>
+</form>
+    {% endblock %}
