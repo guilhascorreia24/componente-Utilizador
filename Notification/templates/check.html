@@ -1,5 +1,11 @@
-{% extends "homepage.html" %}
+{% extends "base_template.html" %}
+{% block steps %}
+<li><a href="/" class="router-link-active">Início</a></li>
+<li class="is-active"><a href="{% url "blog:blog-home" %}"
+        class="router-link-exact-active router-link-active">Notificações</a></li>
+{% endblock %}
 {% block content %}
+<<<<<<< HEAD
 <div class="navbar-menu">
     {% if funcao == "Coordenador" %}
     {% include "navbar-coord.html" %}
@@ -62,60 +68,102 @@
                         <div data-v-1513178e="" class="menu">
                             <p data-v-1513178e="" class="menu-label">Filtros Utilizador</p>
                             <ul data-v-1513178e="" class="menu-list">
+=======
+<div data-v-8716d23a="" class="columns">
+    <div class="column is-3">
+        <div data-v-1513178e="">
+            <div data-v-1513178e="" class="menu">
+                <p data-v-1513178e="" class="menu-label">Filtros Utilizador</p>
+                <ul data-v-1513178e="" class="menu-list">
+>>>>>>> 12b24b65c7dbb71967b9d11ee3de1f896b884851
 
-                                <div data-v-1513178e="" class="field">
-                                    <!---->
-                                    <div data-v-1513178e="" class="autocomplete control">
-                                        <div class="control has-icons-left is-clearfix"><input type="text" id="myInput"
-                                                onkeyup="myFunction()" autocomplete="off"
-                                                placeholder="Email do Utilizador" class="input">
-                                            <span class="icon is-left"><i class="mdi mdi-magnify mdi-24px"></i></span>
-                                            <!---->
-                                            <!---->
+                    <div data-v-1513178e="" class="field">
+                        <!---->
+                        <div data-v-1513178e="" class="autocomplete control">
+                            <div class="control has-icons-left is-clearfix"><input type="text" id="myInput"
+                                    onkeyup="myFunction()" autocomplete="off" placeholder="Email do Utilizador"
+                                    class="input">
+                                <span class="icon is-left"><i class="mdi mdi-magnify mdi-24px"></i></span>
+                                <!---->
+                                <!---->
+                            </div>
+                        </div>
+                        <!---->
+                    </div>
+                    <div data-v-1513178e="" class="field">
+                        <!---->
+                        <div data-v-1513178e="" class="autocomplete control">
+                            <div class="control has-icons-left is-clearfix"><input type="text" id="myInput2"
+                                    onkeyup="myFunction2()" autocomplete="off" placeholder="Titulo da notificação"
+                                    class="input">
+                                <span class="icon is-left"><i class="mdi mdi-magnify mdi-24px"></i></span>
+                                <!---->
+                                <!---->
+                            </div>
+                        </div>
+                        <!---->
+                    </div>
+                    <li class="is-not-menu"><a class="is-active" onclick="press()">
+                            <!----> <span class="icon is-pulled-right"><i id="plus"
+                                    class="mdi mdi-plus mdi-24px"></i></span><small>Mais Filtros de
+                                Atividade</small></a>
+                        <ul style="display: none;" id="panel">
+                            <div class="field">
+                                <!---->
+                                <div class="datepicker control">
+                                    <div class="dropdown is-mobile-modal">
+                                        <div role="button" aria-haspopup="true" class="dropdown-trigger">
+                                            <div class="control has-icons-left is-clearfix input-daterange">
+                                                <input type="date" id="datefilterfrom" data-date-split-input="true"
+                                                    class="input"> <span class="icon is-left"><i
+                                                        class="mdi mdi-calendar-today mdi-24px"></i></span>
+                                                <!---->
+                                                <!---->
+                                            </div>
                                         </div>
-                                    </div>
-                                    <!---->
-                                </div>
-                                <div data-v-1513178e="" class="field">
-                                    <!---->
-                                    <div data-v-1513178e="" class="autocomplete control">
-                                        <div class="control has-icons-left is-clearfix"><input type="text" id="myInput2"
-                                                onkeyup="myFunction2()" autocomplete="off"
-                                                placeholder="Titulo da notificação" class="input">
-                                            <span class="icon is-left"><i class="mdi mdi-magnify mdi-24px"></i></span>
-                                            <!---->
-                                            <!---->
+                                        <div class="background" style="display: none;" aria-hidden="true">
                                         </div>
-                                    </div>
-                                    <!---->
-                                </div>
-                                <li class="is-not-menu"><a class="is-active" onclick="press()">
-                                        <!----> <span class="icon is-pulled-right"><i id="plus"
-                                                class="mdi mdi-plus mdi-24px"></i></span><small>Mais Filtros de
-                                            Atividade</small></a>
-                                    <ul style="display: none;" id="panel">
-                                        <div class="field">
-                                            <!---->
-                                            <div class="datepicker control">
-                                                <div class="dropdown is-mobile-modal">
-                                                    <div role="button" aria-haspopup="true" class="dropdown-trigger">
-                                                        <div class="control has-icons-left is-clearfix input-daterange">
-                                                            <input type="date" id="datefilterfrom" data-date-split-input="true"
-                                                                class="input"> <span class="icon is-left"><i
-                                                                    class="mdi mdi-calendar-today mdi-24px"></i></span>
-                                                            <!---->
+                                        <div class="dropdown-menu" style="display: none;" aria-hidden="true">
+                                            <div class="dropdown-content">
+                                                <div tabindex="0" class="dropdown-item">
+                                                    <header class="datepicker-header">
+                                                        <div class="pagination field is-centered"><a role="button"
+                                                                href="#" class="pagination-previous"><span
+                                                                    class="icon has-text-primary is"><i
+                                                                        class="mdi mdi-chevron-left mdi-24px"></i></span></a>
+                                                            <a role="button" href="#" class="pagination-next"><span
+                                                                    class="icon has-text-primary is"><i
+                                                                        class="mdi mdi-chevron-right mdi-24px"></i></span></a>
                                                             <!---->
                                                         </div>
+                                                    </header>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!---->
+                                </div>
+                                <br>
+                                <div class="field">
+                                    <!---->
+                                    <div class="datepicker control">
+                                        <div class="dropdown is-mobile-modal">
+                                            <div role="button" aria-haspopup="true" class="dropdown-trigger">
+                                                <div class="control has-icons-left is-clearfix"><input type="date"
+                                                        id="datefilterto" data-date-split-input="true" class="input">
+                                                    <span class="icon is-left date-range-filter"><i
+                                                            class="mdi mdi-calendar-today mdi-24px"></i></span>
+                                                    <!---->
+                                                    <!---->
+                                                    <div aria-hidden="true" class="background" style="display: none;">
                                                     </div>
-                                                    <div class="background" style="display: none;" aria-hidden="true">
-                                                    </div>
-                                                    <div class="dropdown-menu" style="display: none;"
-                                                        aria-hidden="true">
+                                                    <div aria-hidden="true" class="dropdown-menu"
+                                                        style="display: none;">
                                                         <div class="dropdown-content">
                                                             <div tabindex="0" class="dropdown-item">
                                                                 <header class="datepicker-header">
-                                                                    <div class="pagination field is-centered"><a
-                                                                            role="button" href="#"
+                                                                    <div class="pagination field is-centered">
+                                                                        <a role="button" href="#"
                                                                             class="pagination-previous"><span
                                                                                 class="icon has-text-primary is"><i
                                                                                     class="mdi mdi-chevron-left mdi-24px"></i></span></a>
@@ -132,66 +180,12 @@
                                                 </div>
                                                 <!---->
                                             </div>
-                                            <br>
-                                            <div class="field">
-                                                <!---->
-                                                <div class="datepicker control">
-                                                    <div class="dropdown is-mobile-modal">
-                                                        <div role="button" aria-haspopup="true"
-                                                            class="dropdown-trigger">
-                                                            <div class="control has-icons-left is-clearfix"><input
-                                                                    type="date" id="datefilterto" data-date-split-input="true" class="input">
-                                                                <span class="icon is-left date-range-filter"><i
-                                                                        class="mdi mdi-calendar-today mdi-24px"></i></span>
-                                                                <!---->
-                                                                <!---->
-                                                                <div aria-hidden="true" class="background"
-                                                                    style="display: none;">
-                                                                </div>
-                                                                <div aria-hidden="true" class="dropdown-menu"
-                                                                    style="display: none;">
-                                                                    <div class="dropdown-content">
-                                                                        <div tabindex="0" class="dropdown-item">
-                                                                            <header class="datepicker-header">
-                                                                                <div
-                                                                                    class="pagination field is-centered">
-                                                                                    <a role="button" href="#"
-                                                                                        class="pagination-previous"><span
-                                                                                            class="icon has-text-primary is"><i
-                                                                                                class="mdi mdi-chevron-left mdi-24px"></i></span></a>
-                                                                                    <a role="button" href="#"
-                                                                                        class="pagination-next"><span
-                                                                                            class="icon has-text-primary is"><i
-                                                                                                class="mdi mdi-chevron-right mdi-24px"></i></span></a>
-                                                                                    <!---->
-                                                                                </div>
-                                                                            </header>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <!---->
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
                                         </div>
-                                    </ul>
-                                </li>
-                                <div class="column">
-
+                                    </div>
                                 </div>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="column">
-                    <nav aria-label="breadcrumbs" class="breadcrumb" style="background-color:white">
-                        <ul>
-                            <li><a href="/" class="router-link-active">Início</a></li>
-                            <li class="is-active"><a href="{% url "blog:blog-home" %}"
-                                    class="router-link-exact-active router-link-active">Notificações</a></li>
+                            </div>
                         </ul>
+<<<<<<< HEAD
                     </nav>
                     <button class="button button4 is-danger is-outlined" type="submit" form="myform"
                         style="margin-bottom: 0.9rem; margin-right: 1rem;text-decoration:none;"><span
@@ -215,113 +209,141 @@
                             </span>
                             <!----></a>
                         {% endif %}
+=======
+                    </li>
+                    <div class="column">
+>>>>>>> 12b24b65c7dbb71967b9d11ee3de1f896b884851
 
-                    <div class="b-table">
-                        <div class="field table-mobile-sort">
-                            <div class="field has-addons">
-                                <div class="control is-expanded"><span class="select is-fullwidth"><select>
-                                            <!---->
-                                            <!---->
-                                            <option value="[object Object]">
-                                                Nome
-                                            </option>
-                                            <option value="[object Object]">
-                                                Tipo
-                                            </option>
-                                            <option value="[object Object]">
-                                                Estado
-                                            </option>
-                                            <!---->
-                                        </select></span>
-                                    <!---->
-                                </div>
-                                <div class="control"><button class="button is-primary"><span class="icon is-small"><i
-                                                class="mdi mdi-menu-up"></i></span></button>
-                                </div>
-                            </div>
-                        </div>
+                    </div>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="column">
+        <a href="{% url "create_not" %}" class="button is-success is-outlined" type="button"
+            style="margin-bottom: 0.9rem; margin-right: 1rem;text-decoration:none;"><span class="icon is-small"><i
+                    class="mdi mdi-plus"></i></span> <span> Nova Notificação </span>
+            <!----></a>
+        <a href="{% url "check_not_enviadas" %}" class="button is-success is-outlined" type="button"
+            style="margin-bottom: 0.9rem; margin-right: 1rem;text-decoration:none;"><span class="icon is-small"><i
+                    class="mdi mdi-send"></i></span> <span> Notificações Enviadas
+            </span>
+            <!----></a>
+        <button class="button button4 is-danger is-outlined" type="submit" form="myform"
+            style="margin-bottom: 0.9rem; margin-right: 1rem;text-decoration:none;"><span class="icon is-small"><i
+                    class="mdi mdi-close"></i></span> <span> Eliminar
+                selecionadas </span>
+            <!----></button>
+        <a class="button button4 is-black is-outlined" type="button"
+            style="margin-bottom: 0.9rem; margin-right: 1rem;text-decoration:none;" onclick="checkAll()"><span
+                class="icon is-small"><i class="mdi mdi-select-all"></i></span>
+            <span>
+                Selecionar Todas/Nenhuma </span>
+            <!----></a>
+
+        <div class="b-table">
+            <div class="field table-mobile-sort">
+                <div class="field has-addons">
+                    <div class="control is-expanded"><span class="select is-fullwidth"><select>
+                                <!---->
+                                <!---->
+                                <option value="[object Object]">
+                                    Nome
+                                </option>
+                                <option value="[object Object]">
+                                    Tipo
+                                </option>
+                                <option value="[object Object]">
+                                    Estado
+                                </option>
+                                <!---->
+                            </select></span>
                         <!---->
-                        <form method='POST' id="myform">
-                            {% csrf_token %}
-                            <div class="table-wrapper">
-                                <table id="myTable" class="table table-striped">
-                                    <thead>
-                                        <tr>
+                    </div>
+                    <div class="control"><button class="button is-primary"><span class="icon is-small"><i
+                                    class="mdi mdi-menu-up"></i></span></button>
+                    </div>
+                </div>
+            </div>
+            <!---->
+            <form method='POST' id="myform">
+                {% csrf_token %}
+                <div class="table-wrapper">
+                    <table id="myTable" class="table table-striped">
+                        <thead>
+                            <tr>
 
-                                            <!---->
+                                <!---->
 
-                                            <th class="is-sortable">
-                                                <div class="th-wrap th-sm">{% if my %} Receptor {% else %} Emissor
-                                                    {% endif %} <span class="icon is-small" style="display: none;"><i
-                                                            class="mdi mdi-menu-up"></i></span>
-                                                </div>
-                                            </th>
-                                            <th class="is-sortable">
-                                                <div class="th-wrap th-sm">Titulo da Notificação<span
-                                                        class="icon is-small" style="display: none;"><i
-                                                            class="mdi mdi-menu-up"></i></span>
-                                                </div>
-                                            </th>
-                                            <th class="is-sortable th-sm">
-                                                <div class="th-wrap th-sm"> Data Emissão <span class="icon is-small"
-                                                        style="display: none;"><i class="mdi mdi-menu-up"></i></span>
-                                                </div>
-                                            </th>
-                                            <th class="">
-                                                <div class="th-wrap is-centered">Ações <input type="checkbox" name='press' value="all" onclick="checkAll()" style="transform: scale(1.2); margin-left: 3%;"></span><span class="icon is-small"
-                                                        style="display: none;"><i class="mdi mdi-menu-up"></i> </span>
-                                                    </div>
-                                            </th>
-                                            <!---->
-                                        </tr>
-                                        <!---->
-                                        <!---->
-                                    </thead>
-                                    <tbody>
-                                        {% for not in nots %}
-                                        {% if not.notificacao.idutilizadorenvia == me_id and my%}
-                                        {% include "tabela_de_consulta.html" %}
-                                        {% elif not.notificacao.utilizadorrecebe == me_id%}
-                                        {% include "tabela_de_consulta.html" %}
-                                        {% endif %}
-                                        </tr>
-                                        <!---->
-                                        <!---->
-                                        <!---->
-                                        <!---->
-                                        {% endfor %}
+                                <th class="is-sortable">
+                                    <div class="th-wrap th-sm">{% if my %} Receptor {% else %} Emissor
+                                        {% endif %} <span class="icon is-small" style="display: none;"><i
+                                                class="mdi mdi-menu-up"></i></span>
+                                    </div>
+                                </th>
+                                <th class="is-sortable">
+                                    <div class="th-wrap th-sm">Titulo da Notificação<span class="icon is-small"
+                                            style="display: none;"><i class="mdi mdi-menu-up"></i></span>
+                                    </div>
+                                </th>
+                                <th class="is-sortable th-sm">
+                                    <div class="th-wrap th-sm"> Data Emissão <span class="icon is-small"
+                                            style="display: none;"><i class="mdi mdi-menu-up"></i></span>
+                                    </div>
+                                </th>
+                                <th class="">
+                                    <div class="th-wrap is-centered">Ações <input type="checkbox" name='press'
+                                            value="all" onclick="checkAll()"
+                                            style="transform: scale(1.2); margin-left: 3%;"></span><span
+                                            class="icon is-small" style="display: none;"><i class="mdi mdi-menu-up"></i>
+                                        </span>
+                                    </div>
+                                </th>
+                                <!---->
+                            </tr>
+                            <!---->
+                            <!---->
+                        </thead>
+                        <tbody>
+                            {% for not in nots %}
+                            {% if not.notificacao.idutilizadorenvia == me_id and my%}
+                            {% include "tabela_de_consulta.html" %}
+                            {% elif not.notificacao.utilizadorrecebe == me_id%}
+                            {% include "tabela_de_consulta.html" %}
+                            {% endif %}
+                            </tr>
+                            <!---->
+                            <!---->
+                            <!---->
+                            <!---->
+                            {% endfor %}
 
 
-                                    </tbody>
-                                    <!---->
-                                </table>
-                            </div>
-                        </form>
-                        <div class="level">
-                            <div class="level-left"></div>
-                            <div class="level-right">
-                                <div class="level-item">
-                                    <nav class="pagination"><a role="button" href="#" disabled="disabled"
-                                            aria-label="Page 0." class="pagination-link pagination-previous"><span
-                                                class="icon" aria-hidden="true"><i
-                                                    class="mdi mdi-chevron-left mdi-24px"></i></span></a> <a
-                                            role="button" href="#" disabled="disabled" aria-label="Page 2."
-                                            class="pagination-link pagination-next"><span class="icon"
-                                                aria-hidden="true"><i
-                                                    class="mdi mdi-chevron-right mdi-24px"></i></span></a>
-                                        <ul class="pagination-list">
-                                            <!---->
-                                            <!---->
-                                            <li><a role="button" href="#" aria-label="Current page, Page 1."
-                                                    aria-current="true" class="pagination-link is-current ">1</a>
-                                            </li>
-                                            <!---->
-                                            <!---->
-                                        </ul>
-                                    </nav>
-                                </div>
-                            </div>
-                        </div>
+                        </tbody>
+                        <!---->
+                    </table>
+                </div>
+            </form>
+            <div class="level">
+                <div class="level-left"></div>
+                <div class="level-right">
+                    <div class="level-item">
+                        <nav class="pagination"><a role="button" href="#" disabled="disabled" aria-label="Page 0."
+                                class="pagination-link pagination-previous"><span class="icon" aria-hidden="true"><i
+                                        class="mdi mdi-chevron-left mdi-24px"></i></span></a> <a role="button" href="#"
+                                disabled="disabled" aria-label="Page 2." class="pagination-link pagination-next"><span
+                                    class="icon" aria-hidden="true"><i
+                                        class="mdi mdi-chevron-right mdi-24px"></i></span></a>
+                            <ul class="pagination-list">
+                                <!---->
+                                <!---->
+                                <li><a role="button" href="#" aria-label="Current page, Page 1." aria-current="true"
+                                        class="pagination-link is-current ">1</a>
+                                </li>
+                                <!---->
+                                <!---->
+                            </ul>
+                        </nav>
                     </div>
                 </div>
             </div>
@@ -520,15 +542,17 @@
         isChecked = !isChecked;
     }
     function press() {
-        if (document.getElementById('panel').style.display == 'none'){
+        if (document.getElementById('panel').style.display == 'none') {
             document.getElementById("panel").style.display = "block";
             document.getElementById('plus').classList.remove("mdi-plus");
-            document.getElementById('plus').classList.add('mdi-minus');}
+            document.getElementById('plus').classList.add('mdi-minus');
+        }
 
-        else{
+        else {
             document.getElementById("panel").style.display = "none";
             document.getElementById('plus').classList.remove("mdi-minus");
-            document.getElementById('plus').classList.add('mdi-plus');}
+            document.getElementById('plus').classList.add('mdi-plus');
+        }
 
     }
     function filterRows() {

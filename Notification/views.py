@@ -23,7 +23,10 @@ def createnot(request):
         emails=request.POST['Destinatario'].split(",")
         if form.is_valid():
             for email in emails:
+<<<<<<< HEAD
                 email=email.strip()
+=======
+>>>>>>> 12b24b65c7dbb71967b9d11ee3de1f896b884851
                 form.cleaned_data['idutilizadorenvia'] = request.session['user_id']
                 if user_views.validateEmail(email) is True and (Utilizador.objects.filter(email=email).exists()):
                     if Utilizador.objects.filter(email=email).exists():

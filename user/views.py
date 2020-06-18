@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, HttpResponse
 from django.contrib import messages
 from .forms import UserRegisterForm, AuthenticationForm, ModifyForm, PasswordChangeForm, EmailSender, DeleteUser
 from django.core.mail import message, send_mail
@@ -13,8 +13,10 @@ from cryptography.fernet import Fernet
 import base64
 import logging
 import traceback
+import json
 from django.conf import settings
 from Notification.views import noti_not_checked
+from django.views.decorators.csrf import csrf_exempt
 
 def encrypt(txt):
         # convert integer etc to string first
@@ -206,7 +208,10 @@ def login_request(request):
                 username = Utilizador.objects.get( email=request.POST['email'])
                 if username.validada != int(5):
                     messages.success(request, f"Bem-vindo {username.nome}")
-                    request.session['user_id'] = Utilizador.objects.get(email=request.POST['email']).idutilizador
+                    user = Utilizador.objects.get(email=request.POST['email'])
+                    request.session['user_id'] = user.idutilizador
+                    request.session['type'] = user.validada
+
                     r = redirect('blog:blog-home')
                     if 'check' in request.POST and request.POST['check'] == '1':
                         Utilizador.objects.filter(pk=request.session['user_id']).update(remember_me=encrypt(request.session['user_id']))
@@ -504,3 +509,14 @@ def validacoes(request,acao,id):
         messages.success(request,f'Email enviado com sucesso')
         user.delete()
     return redirect('profile_list')
+
+@csrf_exempt
+def getUserType(request):
+    if(request.method=='POST'):
+        num = request.POST.get("id","")
+        print(num)
+        query = Utilizador.objects.get(idutilizador=num)
+        num = query.validada
+        return HttpResponse(json.dumps({'type': num}), content_type="application/json")
+
+    raise Exception("Error")

@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, HttpResponse
+from Notification.views import noti_not_checked,noti_not_checked
 from inscricao import models
 from django.contrib.auth import authenticate, login, logout
 from blog import userValidation
@@ -63,13 +64,13 @@ def inscricao_form(request,inscricao=None):
         else:
             campus = models.Campus.objects.all()
             sessoes = list_sessao()
-            return render(request,'inscricao_form.html',{'form': form, 'atividades_sessao' : sessoes, 'campus':campus})
+            return render(request,'inscricao_form.html',{'form': form, 'atividades_sessao' : sessoes, 'campus':campus, 'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
         
     else:
         campus = models.Campus.objects.all()
         form = forms.CustomForm(inscricao=inscricao)
         sessoes = list_sessao()
-        return render(request,'inscricao_form.html',{'form': form, 'atividades_sessao' : sessoes,'campus':campus})
+        return render(request,'inscricao_form.html',{'form': form, 'atividades_sessao' : sessoes,'campus':campus, 'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
     
     
 def test(request):
@@ -137,7 +138,7 @@ def consultar_inscricao(request):
         result_individual.append(row)
 
 
-    return render(request,'consultar_participante.html',{'inscricoes_coletivas':result_coletivo,'inscricoes_individuais':result_individual})
+    return render(request,'consultar_participante.html',{'inscricoes_coletivas':result_coletivo,'inscricoes_individuais':result_individual,  'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
     
 
 
@@ -154,10 +155,10 @@ def inscricao_individual_form(request,inscricao=None):
         else:
             campus = models.Campus.objects.all()
             sessoes = list_sessao()
-            return render(request,'inscricao_individual_form.html',{'form': form, 'atividades_sessao' : sessoes, 'campus':campus})
+            return render(request,'inscricao_individual_form.html',{'form': form, 'atividades_sessao' : sessoes, 'campus':campus,  'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
         
     else:
         campus = models.Campus.objects.all()
         form = forms.FormIndividual(inscricao=inscricao)
         sessoes = list_sessao()
-        return render(request,'inscricao_individual_form.html',{'form': form, 'atividades_sessao' : sessoes,'campus':campus})
+        return render(request,'inscricao_individual_form.html',{'form': form, 'atividades_sessao' : sessoes,'campus':campus,  'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})

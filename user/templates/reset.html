@@ -1,10 +1,12 @@
 {% extends "login.html" %}
-{% block content2 %}
+
+{% block steps %}
 <li class=""><a href=".." class="router-link-active">Login</a>
-<li class="is-active"><a href="" class="router-link-exact-active router-link-active">Recuperaçâo de Password</a>
-</li>
-</ul>
-</nav>
+    <li class="is-active"><a href="" class="router-link-exact-active router-link-active">Recuperaçâo de Password</a>
+{% endblock %}
+
+{% block content2 %}
+
 <div style="padding: 3rem 2vw 1rem;">
     <div class="b-steps">
         <nav class="steps is-success">

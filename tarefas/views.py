@@ -41,12 +41,14 @@ def consultar_tarefas2(request):
     #Colaborador
 
     if utilizador.validada == 1 :
-
         tarefas = Tarefa.objects \
         .select_related('idtarefa','dia_dia','coordenador_utilizador_idutilizador__utilizador_idutilizador','sessao_idsessao','sessao_idsessao__atividade_idatividade','buscar','levar', 'levar__campus_idcampus','inscricao_coletiva_inscricao_idinscricao','inscricao_coletiva_inscricao_idinscricao__escola_idescola').all() \
         .values(id_tarefa=F('idtarefa'),estado=F('concluida'),dia=F('dia_dia__dia'),nome_coordenador=F('coordenador_utilizador_idutilizador__utilizador_idutilizador__nome'),hora=F('hora_inicio'),nome_tarefa=F('nome'),atividade=F('sessao_idsessao__atividade_idatividade__titulo'),espaco_antes=F('buscar__nome'),espaco_depois=F('levar__nome'),campus=F('levar__campus_idcampus__nome'),n_alunos=F('sessao_idsessao__nrinscritos'),turma=F('inscricao_coletiva_inscricao_idinscricao__turma'),escola=F('inscricao_coletiva_inscricao_idinscricao__escola_idescola__nome'))
 
-        return render(request, "consultar_tarefas2.html", { 'tarefas':tarefas } )
+        return render(request, "consultar_tarefas2.html", { 'tarefas':tarefas })
+
+    else:
+        return HttpResponse("Não é colaborador")
 
 @csrf_exempt
 def mudar_estado(request):

@@ -1,13 +1,8 @@
+{% extends "base_template.html" %}
 {% load static %}
-<html lang="pt-pt">
+{% block content %}
 
 <head>
-    <meta charset="utf-8">
-    <meta content="IE=edge" http-equiv="X-UA-Compatible">
-    <meta content="width=device-width,initial-scale=1" name="viewport">
-    <link href="{% static "img/favicon.ico" %}" rel="icon">
-    <link rel="stylesheet" href="//cdn.materialdesignicons.com/4.9.95/css/materialdesignicons.min.css">
- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <title>Dia Aberto</title>
     <style>
         body,
@@ -20,12 +15,15 @@
         * {
             outline: none;
         }
+
         .modal-backdrop {
-  z-index: -1;
-}
-.modal-open {
-    padding-right: 0px !important;
-}
+            z-index: -1;
+        }
+
+        .modal-open {
+            padding-right: 0px !important;
+        }
+
         .green {
             background-color: #23d160;
             color: white;
@@ -40,191 +38,34 @@
             color: white;
         }
     </style>
-    <link href="{% static "css/atividades.320507fe.css" %}" rel="stylesheet">
-    <link href="{% static "css/colaboradores.2c4c9dc5.css" %}" rel="stylesheet">
-    <link href="{% static "css/departamentoatividades.11740b86.css" %}" rel="stylesheet">
-    <link href="{% static "css/inscricao.1e7f0088.css" %}" rel="stylesheet">
-    <link href="{% static "css/minhasatividades.320507fe.css" %}" rel="stylesheet">
-    <link href="{% static "css/proporatividade.dbff9dac.css" %}" rel="stylesheet">
-    <link href="{% static "css/tarefas.91a2a446.css" %}" rel="stylesheet">
-    <link href="{% static "css/transportes.9d1670f9.css" %}" rel="stylesheet">
-    <link href="{% static "js/almocos.09b06c28.js" %}" rel="script">
-    <link href="{% static "js/atividades.f0c6cdde.js" %}" rel="script">
-    <link href="{% static "js/atividades~departamentoatividades~inscricao~minhasatividades~transportes.7db513bd.js" %}"
-        rel="script">
-    <link href="{% static "js/chunk-1823af82.4d78cc6e.js" %}" rel="script">
-    <link href="{% static "js/colaboradores.03a794e1.js" %}" rel="script">
-    <script charset="utf-8"
-        href="{% static "js/colaboradores~departamentoatividades~inscricao~proporatividade~tarefas~transportes.38d827a4.js" %}"></script>
-    <link href="{% static "js/configuracao.dddc62e3.js" %}" rel="script">
-    <link href="{% static "js/departamentoatividades.8a11ada1.js" %}" rel="script">
-    <link href="{% static "js/inscricao.689ad7a7.js" %}" rel="script">
-    <link href="{% static "js/inscricoes.a76322c7.js" %}" rel="script">
-    <link href="{% static "js/minhasatividades.ecc268e6.js" %}" rel="script">
-    <link href="{% static "js/proporatividade.46ad7021.js" %}" rel="script">
-    <link href="{% static "js/tarefas.268f7ccd.js" %}" rel="script">
-    <link href="{% static "js/transportes.c3d4bfc2.js" %}" rel="script">
-    <link href="{% static "css/app.1e506e7f.css" %}" rel="stylesheet">
-    <link href="{% static "css/chunk-vendors.b3e8792f.css" %}" rel="stylesheet">
-    <link href="{% static "js/app.841e44b5.js" %}" rel="script">
-    <link href="{% static "js/chunk-vendors.63f37e79.js" %}" rel="script">
-    <link href="{% static "css/chunk-vendors.b3e8792f.css" %}" rel="stylesheet">
-    <link href="{% static "css/app.1e506e7f.css" %}" rel="stylesheet">
-    <script charset="utf-8" src="{% static "js/chunk-1823af82.4d78cc6e.js" %}"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="http://cdn.datatables.net/1.10.2/css/jquery.dataTables.min.css"></style>
-    <script type="text/javascript"  src="http://cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js"></script>
-    <script tyep="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
-   
+
 </head>
 
-<body>
-    <noscript><strong>We're sorry but this page doesn't work properly without JavaScript enabled. Please
-            enable it to continue.</strong></noscript>
-    <div data-v-8716d23a="" id="app">
-        <nav data-v-a67fe1ba="" data-v-8716d23a="" role="navigation" aria-label="main navigation" class="navbar" style="
-        margin: 0%;padding:0%;border-bottom: 0%;border-top: 0%;">
-            <div class="navbar-brand" style="padding:0%"><a data-v-a67fe1ba="" href="/" class="navbar-item logo"><img
-                        src="{% static "img/logo-navbar.1a946f02.png" %}" data-v-a67fe1ba="" alt="Dia Aberto"></a><a
-                    role="button" aria-label="menu" class="navbar-burger burger"><span aria-hidden="true"></span> <span
-                        aria-hidden="true"></span> <span aria-hidden="true"></span></a></div>
-            {% block content %}
-            <div class="navbar-menu">
-                {% if funcao == "coord" %}
-                {% include "navbar-coord.html" %}
-                {% elif funcao == "admin" %}
-                {% include "navabar-admin.html" %}
-                {% elif funcao == "dc" %}
-                {% include "navabar-dc.html" %}
-                {% elif funcao == "part" %}
-                {% include "navabar-part.html" %}
-                {% elif funcao == "colab" %}
-                {% include "navabar-colab.html" %}
-                {% endif %}
-                <div class="navbar-end">
-                    {% if id == None %}
-                    <div data-v-a67fe1ba="" class="navbar-item">
-                        <div data-v-a67fe1ba="" class="dropdown is-bottom-left is-mobile-modal">
-                        </div><a href="register"><button data-v-a67fe1ba="" type="button" class="button"><span
-                                    class="icon is-small"><i class="mdi mdi-logout-variant"></i></span> <span> Registo
-                                </span>
-                                <!----></button></a>
-                    </div>
-                    <div data-v-a67fe1ba="" class="navbar-item">
-                        <div data-v-a67fe1ba="" class="dropdown is-bottom-left is-mobile-modal">
-                        </div><a href="login"><button data-v-a67fe1ba="" type="button" class="button"><span
-                                    class="icon is-small"><i class="mdi mdi-logout-variant"></i></span> <span> Entrar
-                                </span>
-                                <!----></button></a>
-                    </div>
-                    {% else %}
-                    <div data-v-a67fe1ba="" class="navbar-item">
-                        <div data-v-a67fe1ba="" class="is-bottom-left is-mobile-modal dropdown ">
-                            <a class="dropdown-toggle" role="button" data-toggle="dropdown">
-                                <div role="button" aria-haspopup="true" class="dropdown-trigger"><span
-                                        data-v-a67fe1ba="" role="button"><button data-v-a67fe1ba="" type="button"
-                                            data-badge="{{i}}" class="button has-badge-rounded has-badge-warning is-text"
-                                            style="margin-right: 0.9rem;">
-                                            <!----> <span><span data-v-a67fe1ba="" class="icon"><i
-                                                        class="mdi mdi-bell mdi-24px"></i></span></span>
-                                            <!----></button></span></div>
-                            </a>
-                            <div class="dropdown-menu">
-                                <div role="menu" class="dropdown-content">
-                                    <div data-v-a67fe1ba="" role="menuitem" tabindex="0" class="dropdown-item"><strong
-                                            data-v-a67fe1ba="">Notificações</strong></div>
-                                    <hr data-v-a67fe1ba="" class="dropdown-divider">
-                                    {% include "dropdow_noti.html" %}
-                                    <a data-v-a67fe1ba="" tabindex="0" class="dropdown-item" href="notificacao/"><u
-                                            data-v-a67fe1ba="">Ver todas as notificações</u></a>
-                                </div>
-                            </div>
-                        </div>
-                        <div data-v-a67fe1ba="" class="dropdown is-bottom-left is-mobile-modal">
-                            <div role="button" aria-haspopup="true" class="dropdown-trigger"><a
-                                    href="{% url "profile_edit" id %}"><button data-v-a67fe1ba="" type="button"
-                                        class="button is-text" style="margin-right: 0.9rem;">
-                                        <!----> <span><span data-v-a67fe1ba="" class="icon"><i
-                                                    class="mdi mdi-account-circle mdi-24px"></i></span></span>
-                                        <!----></button></a></div>
-                            <div aria-hidden="true" class="background" style="display: none;"></div>
-                        </div><a href="logout"><button data-v-a67fe1ba="" type="button" class="button"><span
-                                    class="icon is-small"><i class="mdi mdi-logout-variant"></i></span> <span> Sair
-                                </span>
-                                <!----></button></a>
-                    </div>
-                    {% endif %}
-                </div>
-            </div>
-        </nav>
-        <div data-v-8716d23a="" id="top-hero" class="hero is-primary is-bold">
-            <div data-v-8716d23a="" id="top-hero-body" class="hero-body"></div>
-        </div>
-        <div data-v-8716d23a="" id="page-content">
-            <div data-v-8716d23a="" class="card">
-                <div data-v-8716d23a="" class="card-content">
-                    <div data-v-8716d23a="">
-                        <div class="section">
-                            <div class="columns">
-                                <div class="column is-7">
-                                    <h1 class="title has-text-centered">Nova plataforma</h1>
-                                    <h1 class="subtitle is-5 has-text-centered"> Simples, Intuitivo, Limpo. </h1>
-                                    <p> A plataforma online do Dia Aberto foi renovada pelos alunos em âmbito do curso
-                                        de Licenciatura de Engenharia Informática. </p>
-                                </div>
-                                <div class="column is-4"><img alt="Logo"
-                                        src="{% static "img/logo-large.17aeec9d.png" %}"></div>
-                            </div>
-                        </div>
-                        <div class="hero is-light">
-                            <div class="hero-body">
-                                <div class="columns">
-                                    <div class="column is-8">
-                                        <p>2019 Dia Aberto por <a>Grupo 9</a></p><small> Contacto de suporte: <a
-                                                href="">suporte.dia.aberto@ualg.pt</a></small>
-                                    </div>
-                                    <div class="column"><img src="{% static "img/ualg-logo.179a7914.png" %}"
-                                            alt="Dia Aberto"></div>
-                                    <div class="column is-1"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            {% endblock content %}
-        </div>
 
-        <footer data-v-8716d23a="" class="footer" style="bottom:auto;">
-            <div data-v-8716d23a="" style="float: left;"> (c) 2020 </div>
-            <div data-v-8716d23a="" style="float: right;"> Designed by Grupo 9 </div>
-            <div data-v-8716d23a="" style="margin: auto; width: max-content;"> Dia Aberto </div>
-        </footer>
-    </div>
-    <div class="notices is-top" style="padding-top: 3%;">
-        {% if messages %}
-        {% for message in messages %}
-        {% if message.tags == 'success' %}
-        <div role="alert" class="toast is-dark is-top" aria-hidden="true" style="" id="allert">
-            <div>{{message}}</div>
+<div data-v-8716d23a="">
+    <div class="section">
+        <div class="columns">
+            <div class="column is-7">
+                <h1 class="title has-text-centered">Nova plataforma</h1>
+                <h1 class="subtitle is-5 has-text-centered"> Simples, Intuitivo, Limpo. </h1>
+                <p> A plataforma online do Dia Aberto foi renovada pelos alunos em âmbito do curso
+                    de Licenciatura de Engenharia Informática. </p>
+            </div>
+            <div class="column is-4"><img alt="Logo" src="{% static "img/logo-large.17aeec9d.png" %}"></div>
         </div>
-        {% endif %}
-        {% endfor %}
-        {% endif %}
     </div>
-    <div class="notices is-bottom"></div>
-    <script src="/js/chunk-vendors.63f37e79.js"></script>
-</body>
-<script>
-$(document).ready(function () {
- 
- window.setTimeout(function() {
-     $(".toast").fadeTo(500, 0).slideUp(500, function(){
-         $(this).remove(); 
-     });
- }, 2500);
-  
- });
-</script>
-</html>
+    <div class="hero is-light">
+        <div class="hero-body">
+            <div class="columns">
+                <div class="column is-8">
+                    <p>2019 Dia Aberto por <a>Grupo 9</a></p><small> Contacto de suporte: <a
+                            href="">suporte.dia.aberto@ualg.pt</a></small>
+                </div>
+                <div class="column"><img src="{% static "img/ualg-logo.179a7914.png" %}" alt="Dia Aberto"></div>
+                <div class="column is-1"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
