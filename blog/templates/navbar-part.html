@@ -16,22 +16,6 @@
     <link rel="stylesheet" type="text/css" href={% static "css/bootstrap.min.css" %}>
     <script type="text/javascript" src={% static "js/bootstrap.min.js" %}></script>
     <title>Dia Aberto</title>
-    <style>
-        body,
-        html {
-            min-height: 100%;
-            background-size: cover;
-            background: linear-gradient(to bottom, #ffffff, #eeeeff) no-repeat fixed center center;
-        }
-
-        * {
-            outline: none;
-        }
-
-        .tab {
-            display: none;
-        }
-    </style>
     <link href="{% static "css/mycss.css" %}" rel="stylesheet">
     <link href="{% static "css/atividades.320507fe.css" %}" rel="prefetch">
     <link href="{% static "css/colaboradores.2c4c9dc5.css" %}" rel="prefetch">
@@ -75,6 +59,27 @@
     <script charset="utf-8" src="{% static "js/proporatividade.46ad7021.js" %}"></script>
     <link rel="stylesheet" type="text" {% static "css" href="{% static "css/inscricao.1e7f0088.css" %}">
     <script charset="utf-8" src="{% static "js/inscricao.689ad7a7.js" %}"></script>
+    <style>
+        body,
+        html {
+            min-height: 100%;
+            background-size: cover;
+            background: linear-gradient(to bottom, #ffffff, #eeeeff) no-repeat fixed center center;
+        }
+
+        * {
+            outline: none;
+        }
+
+        .tab {
+            display: none;
+        }
+
+        .dropdown-menu{
+            padding: 0px;
+            padding-top :0px;
+        }
+    </style>
 </head>
 
 <body><noscript><strong>We're sorry but dia_aberto_frontend doesn't work properly without JavaScript enabled. Please
@@ -92,29 +97,24 @@
                 </div>
                 <div class="navbar-end">
                     <div data-v-a67fe1ba="" class="navbar-item">
-                        <div data-v-a67fe1ba="" class="dropdown is-bottom-left is-mobile-modal">
+                        <div data-v-a67fe1ba="" class="is-bottom-left is-mobile-modal dropdown ">
                             <a class="dropdown-toggle" role="button" data-toggle="dropdown">
-                            <div role="button" aria-haspopup="true" class="dropdown-trigger"><span data-v-a67fe1ba=""
-                                    role="button"><button data-v-a67fe1ba="" type="button" data-badge="0"
-                                        class="button has-badge-rounded has-badge-warning is-text"
-                                        style="margin-right: 0.9rem;">
-                                        <!----> <span><span data-v-a67fe1ba="" class="icon"><i
-                                                    class="mdi mdi-bell mdi-24px"></i></span></span>
-                                        <!----></button></span></div></a>
-                            <div aria-hidden="true" class="background" style="display: none;"></div>
+                                <div role="button" aria-haspopup="true" class="dropdown-trigger"><span data-v-a67fe1ba=""
+                                        role="button"><button data-v-a67fe1ba="" type="button" data-badge="{{i}}"
+                                            class="button has-badge-rounded has-badge-warning is-text"
+                                            style="margin-right: 0.9rem;">
+                                            <!----> <span><span data-v-a67fe1ba="" class="icon"><i
+                                                        class="mdi mdi-bell mdi-24px"></i></span></span>
+                                            <!----></button></span></div>
+                            </a>
                             <div class="dropdown-menu">
                                 <div role="menu" class="dropdown-content">
                                     <div data-v-a67fe1ba="" role="menuitem" tabindex="0" class="dropdown-item"><strong
                                             data-v-a67fe1ba="">Notificações</strong></div>
                                     <hr data-v-a67fe1ba="" class="dropdown-divider">
-                                    <div data-v-a67fe1ba="">
-                                        <div data-v-a67fe1ba="" tabindex="0" class="dropdown-item">
-                                            <div data-v-a67fe1ba="" class="has-text-grey"> Não tem novas notificações!
-                                            </div>
-                                        </div>
-                                        <hr data-v-a67fe1ba="" class="dropdown-divider">
-                                    </div><a data-v-a67fe1ba="" tabindex="0" class="dropdown-item"><u
-                                            data-v-a67fe1ba="">Ver todas as notificações</u></a>
+                                    {% include "dropdow_noti.html" %}
+                                    <a data-v-a67fe1ba="" tabindex="0" class="dropdown-item" href="{% url "check_not" %}"><u data-v-a67fe1ba="">Ver todas
+                                            as notificações</u></a>
                                 </div>
                             </div>
                         </div>
