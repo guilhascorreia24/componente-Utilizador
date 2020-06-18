@@ -43,10 +43,6 @@ urlpatterns = [
     path('tarefas/',include('tarefas.urls')),
     #path('config_campus/',include('Campus.url',namespace="campus")),
     path('', include("blog.urls")),
-<<<<<<< HEAD
-    path('form/',include('formularios.urls')),
-=======
     path("user_type",user_views.getUserType,name="user_type"),
->>>>>>> 12b24b65c7dbb71967b9d11ee3de1f896b884851
     path('atividades/', include('atividades.urls'))
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

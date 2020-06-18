@@ -5,77 +5,12 @@
         class="router-link-exact-active router-link-active">Notificações</a></li>
 {% endblock %}
 {% block content %}
-<<<<<<< HEAD
-<div class="navbar-menu">
-    {% if funcao == "Coordenador" %}
-    {% include "navbar-coord.html" %}
-    {% elif funcao == "administardor" %}
-    {% include "navabar-admin.html" %}
-    {% elif funcao == "docente Univesitario" %}
-    {% include "navabar-dc.hmtl"}
-    {% elif funcao == None %}
-    {% include "navabar-part.html" %}
-    {% endif %}
-    <div class="navbar-end">
-        <div data-v-a67fe1ba="" class="navbar-item">
-            <div data-v-a67fe1ba="" class="is-bottom-left is-mobile-modal dropdown ">
-                <a class="dropdown-toggle" role="button" data-toggle="dropdown">
-                    <div role="button" aria-haspopup="true" class="dropdown-trigger"><span data-v-a67fe1ba=""
-                            role="button"><button data-v-a67fe1ba="" type="button" data-badge="{{i}}"
-                                class="button has-badge-rounded has-badge-warning is-text"
-                                style="margin-right: 0.9rem;">
-                                <!----> <span><span data-v-a67fe1ba="" class="icon"><i
-                                            class="mdi mdi-bell mdi-24px"></i></span></span>
-                                <!----></button></span></div>
-                </a>
-                <div class="dropdown-menu">
-                    <div role="menu" class="dropdown-content">
-                        <div data-v-a67fe1ba="" role="menuitem" tabindex="0" class="dropdown-item"><strong
-                                data-v-a67fe1ba="">Notificações</strong></div>
-                        <hr data-v-a67fe1ba="" class="dropdown-divider">
-                        {% include "dropdow_noti.html" %}
-                        <a data-v-a67fe1ba="" tabindex="0" class="dropdown-item" href="{% url 'check_not' %}"><u
-                                data-v-a67fe1ba="">Ver todas
-                                as notificações</u></a>
-                    </div>
-                </div>
-            </div>
-            <div data-v-a67fe1ba="" class="dropdown is-bottom-left is-mobile-modal">
-                <div role="button" aria-haspopup="true" class="dropdown-trigger"><a
-                        href="{% url "profile_edit" me_id %}"><button data-v-a67fe1ba="" type="button"
-                            class="button is-text" style="margin-right: 0.9rem;">
-                            <!----> <span><span data-v-a67fe1ba="" class="icon"><i
-                                        class="mdi mdi-account-circle mdi-24px"></i></span></span>
-                            <!----></button></a></div>
-                <div aria-hidden="true" class="background" style="display: none;"></div>
-            </div><a href="{% url "logout" %}"><button data-v-a67fe1ba="" type="button" class="button"><span
-                        class="icon is-small"><i class="mdi mdi-logout-variant"></i></span> <span> Sair
-                    </span>
-                    <!----></button></a>
-        </div>
-    </div>
-</div>
-</nav>
-<div data-v-8716d23a="" id="top-hero" class="hero is-primary is-bold">
-    <div data-v-8716d23a="" id="top-hero-body" class="hero-body"></div>
-</div>
-<div data-v-8716d23a="" id="page-content">
-    <div data-v-8716d23a="" class="card">
-        <div data-v-8716d23a="" class="card-content">
-            <div data-v-8716d23a="" class="columns">
-                <div class="column is-3">
-                    <div data-v-1513178e="">
-                        <div data-v-1513178e="" class="menu">
-                            <p data-v-1513178e="" class="menu-label">Filtros Utilizador</p>
-                            <ul data-v-1513178e="" class="menu-list">
-=======
 <div data-v-8716d23a="" class="columns">
     <div class="column is-3">
         <div data-v-1513178e="">
             <div data-v-1513178e="" class="menu">
                 <p data-v-1513178e="" class="menu-label">Filtros Utilizador</p>
                 <ul data-v-1513178e="" class="menu-list">
->>>>>>> 12b24b65c7dbb71967b9d11ee3de1f896b884851
 
                     <div data-v-1513178e="" class="field">
                         <!---->
@@ -185,34 +120,8 @@
                                 </div>
                             </div>
                         </ul>
-<<<<<<< HEAD
-                    </nav>
-                    <button class="button button4 is-danger is-outlined" type="submit" form="myform"
-                        style="margin-bottom: 0.9rem; margin-right: 1rem;text-decoration:none;"><span
-                            class="icon is-small"><i class="mdi mdi-close"></i></span> <span> Eliminar
-                            selecionadas </span>
-                        <!----></button>
-                    <a href="{% url "create_not" %}" class="button is-success is-outlined" type="button"
-                        style="margin-bottom: 0.9rem; margin-right: 1rem;text-decoration:none;"><span
-                            class="icon is-small"><i class="mdi mdi-plus"></i></span> <span> Nova Notificação </span>
-                        <!----></a>
-                        {% if my %}
-                        <a href="{% url "check_not" %}" class="button is-success is-outlined" type="button"
-                            style="margin-bottom: 0.9rem; margin-right: 1rem;text-decoration:none;"><span
-                                class="icon is-small"><i class="mdi mdi-send"></i></span> <span> Notificações Recebidas
-                            </span>
-                            <!----></a>
-                        {% else %}
-                            <a href="{% url "check_not_enviadas" %}" class="button is-success is-outlined" type="button"
-                            style="margin-bottom: 0.9rem; margin-right: 1rem;text-decoration:none;"><span
-                                class="icon is-small"><i class="mdi mdi-send"></i></span> <span> Notificações Enviadas
-                            </span>
-                            <!----></a>
-                        {% endif %}
-=======
                     </li>
                     <div class="column">
->>>>>>> 12b24b65c7dbb71967b9d11ee3de1f896b884851
 
                     </div>
                 </ul>
@@ -224,22 +133,24 @@
             style="margin-bottom: 0.9rem; margin-right: 1rem;text-decoration:none;"><span class="icon is-small"><i
                     class="mdi mdi-plus"></i></span> <span> Nova Notificação </span>
             <!----></a>
-        <a href="{% url "check_not_enviadas" %}" class="button is-success is-outlined" type="button"
+            {% if my %}
+        <a href="{% url "check_not" %}" class="button is-success is-outlined" type="button"
             style="margin-bottom: 0.9rem; margin-right: 1rem;text-decoration:none;"><span class="icon is-small"><i
-                    class="mdi mdi-send"></i></span> <span> Notificações Enviadas
+                    class="mdi mdi-send"></i></span> <span> Notificações Recebidas
             </span>
             <!----></a>
+            {% else %}
+            <a href="{% url "check_not_enviadas" %}" class="button is-success is-outlined" type="button"
+                style="margin-bottom: 0.9rem; margin-right: 1rem;text-decoration:none;"><span class="icon is-small"><i
+                        class="mdi mdi-send"></i></span> <span> Notificações enviadas
+                </span>
+                <!----></a>
+                {% endif %}
         <button class="button button4 is-danger is-outlined" type="submit" form="myform"
             style="margin-bottom: 0.9rem; margin-right: 1rem;text-decoration:none;"><span class="icon is-small"><i
                     class="mdi mdi-close"></i></span> <span> Eliminar
                 selecionadas </span>
             <!----></button>
-        <a class="button button4 is-black is-outlined" type="button"
-            style="margin-bottom: 0.9rem; margin-right: 1rem;text-decoration:none;" onclick="checkAll()"><span
-                class="icon is-small"><i class="mdi mdi-select-all"></i></span>
-            <span>
-                Selecionar Todas/Nenhuma </span>
-            <!----></a>
 
         <div class="b-table">
             <div class="field table-mobile-sort">

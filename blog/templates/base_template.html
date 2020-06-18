@@ -106,8 +106,8 @@
                 <div id="nav_2" class="navbar-start" style="display:none;">
                     {% include "navbar-coord.html" %}
                 </div>
-
                 <div class="navbar-end">
+                {% if request.session.user_id %}
                     <div data-v-a67fe1ba="" class="navbar-item">
                         <div data-v-a67fe1ba="" class="is-bottom-left is-mobile-modal dropdown ">
                             <a class="dropdown-toggle" role="button" data-toggle="dropdown">
@@ -152,7 +152,23 @@
                                     class="mdi mdi-logout-variant"></i></span> <span> Sair </span>
                             <!----></button>
                     </div>
+                {% else %}
+                <div data-v-a67fe1ba="" class="navbar-item">
+                    <div data-v-a67fe1ba="" class="dropdown is-bottom-left is-mobile-modal">
+                    </div><a href="register"><button data-v-a67fe1ba="" type="button" class="button"><span
+                                class="icon is-small"><i class="mdi mdi-logout-variant"></i></span> <span> Registo
+                            </span>
+                            <!----></button></a>
                 </div>
+                <div data-v-a67fe1ba="" class="navbar-item">
+                    <div data-v-a67fe1ba="" class="dropdown is-bottom-left is-mobile-modal">
+                    </div><a href="login"><button data-v-a67fe1ba="" type="button" class="button"><span
+                                class="icon is-small"><i class="mdi mdi-logout-variant"></i></span> <span> Entrar
+                            </span>
+                            <!----></button></a>
+                </div>
+                {% endif %}
+            </div>
             </div>
         </nav>
         <div data-v-8716d23a="" id="top-hero" class="hero is-primary is-bold">
@@ -162,7 +178,7 @@
             <div data-v-8716d23a="" class="card">
                 <div data-v-8716d23a="" class="card-content">
                     <div data-v-8716d23a="" id="top">
-                        <nav aria-label="breadcrumbs" class="breadcrumb">
+                        <nav aria-label="breadcrumbs" class="breadcrumb" style="background-color: white;">
                             <ul>
                                 {% block steps %}{% endblock %}
                             </ul>
