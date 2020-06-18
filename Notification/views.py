@@ -23,10 +23,7 @@ def createnot(request):
         emails=request.POST['Destinatario'].split(",")
         if form.is_valid():
             for email in emails:
-<<<<<<< HEAD
                 email=email.strip()
-=======
->>>>>>> 13a7fed172699ba88afc4aea6c30675a788fb5e8
                 form.cleaned_data['idutilizadorenvia'] = request.session['user_id']
                 if user_views.validateEmail(email) is True and (Utilizador.objects.filter(email=email).exists()):
                     if Utilizador.objects.filter(email=email).exists():
@@ -96,6 +93,7 @@ def checknot(request):
             noti.pk=signing.dumps(noti.pk)
             notis.append(noti)
     func=user_views.user(request)
+    print(func)
     return render(request,'check.html',{'nots':notis,'me_id':me_id,'funcao':func,'i':i,'not_checked':noti_not_checked(request)})
 
 def deletenot(request):

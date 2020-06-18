@@ -471,7 +471,7 @@ def reset(request):
     return render(request, 'reset.html', {'form': sub})
 #-------------------------------------------------validacoes---------------------------------------------------------------
 def validacoes(request,acao,id):
-    if not Administrador.objects.filter(pk=request.session['user_id']).exists() or not Coordenador.objects.filter(pk=request.session['user_id']).exists():
+    if not Administrador.objects.filter(pk=request.session['user_id']).exists():
         redirect("blog:blog-home")
     id=signing.loads(id)
     user=Utilizador.objects.get(pk=id)

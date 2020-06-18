@@ -50,7 +50,8 @@ INSTALLED_APPS = [
     'inscricao.apps.InscricaoConfig',
     'Notification.apps.NotificationConfig',
     'tarefas.apps.TarefasConfig',
-    'atividades'
+    'atividades',
+    'formularios'
 ]
 
 MIDDLEWARE = [
@@ -94,7 +95,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'les',
         'USER': 'root',
-        'PASSWORD': '12345abcd',
+        'PASSWORD': '1234',
         'HOST': '127.0.0.1',
         'PORT': '3306',
     }
