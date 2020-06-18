@@ -1,188 +1,164 @@
-{% extends "homepage.html" %}
+{% extends "base_template.html" %}
+{% block steps %}
+<li><a href="/" class="router-link-active">Início</a></li>
+<li class="is-active"><a href="" class="router-link-exact-active router-link-active">Entrar</a>
+</li>
+{% endblock %}
 {% block content %}
-<head><style>.count1
-    {
-    font-size:22px;
-    margin:30px;
-    text-align:center;
-    font-weight:bold;
-    color:#ff8400;
-    }</style></head>
-<div class="navbar-menu">
-    <div class="navbar-end">
-        <div data-v-a67fe1ba="" class="navbar-item">
-            <div data-v-a67fe1ba="" class="dropdown is-bottom-left is-mobile-modal">
-            </div><a href="../register"><button data-v-a67fe1ba="" type="button" class="button"><span
-                        class="icon is-small"><i class="mdi mdi-logout-variant"></i></span> <span> Registo </span>
-                    <!----></button></a>
+
+<head>
+    <style>
+        .count1 {
+            font-size: 22px;
+            margin: 30px;
+            text-align: center;
+            font-weight: bold;
+            color: #ff8400;
+        }
+    </style>
+</head>
+{% block content2 %}
+<div style="padding: 3rem 2vw 1rem;">
+    <div class="b-steps">
+        <nav class="steps is-success">
+            <ul class="step-items">
+                <li class="step-item is-success is-active"><a class="step-link">
+                        <div class="step-marker"><span class="icon"><i class="mdi mdi-book mdi-24px"></i></span></div>
+                        <div class="step-details"><span class="step-title">Entrar</span>
+                        </div>
+                    </a></li>
+            </ul>
+        </nav>
+        <section class="step-content">
+            <div class="step-item" style="">
+                <div style="padding: 1rem 2vw 0px;">
+                    <hr>
+                    <form method="POST">
+                        <input type="hidden" name="tentatives" value="{{tentatives}}">
+                        {% csrf_token %}
+                        {% if messages %}
+                        {% for message in messages %}
+                        <input type="hidden" name="tentatives" value={{tentatives}}>
+                        {% if tentatives != 0 %}
+                        <h1 class="help is-danger" style="text-align: center;">{{message}}</h1>
+                        {% else %}
+                        <h1 class="help is-danger" style="text-align: center;">Espere: <span id="time"></span></h1>
+                        {% endif %}
+                        {% endfor %}
+                        {% endif %}
+                        <div class="column is-offset-3 is-6">
+                            {% if form.email.errors %}
+                            <div class="field">
+                                <p class="" for={{form.email.id_for_label}}>Email</p>
+                                <div class="control has-icons-right"><input type="email" name="email"
+                                        id={{form.email.id_for_label}} autocomplete="on" class="input is-danger">
+                                    <!----> <span class="icon is-right has-text-danger"><i
+                                            class="mdi mdi-alert-circle mdi-24px"></i></span>
+                                    <!---->
+                                </div>
+                                <p class="help is-danger">Preencha este campo.</p>
+                                {% else %}
+                                <div class="field">
+                                    <p class="" for={{form.email.id_for_label}}>Email</p>
+                                    <div class="control is-clearfix"><input type="email" name="email"
+                                            id={{form.email.id_for_label}} class="input">
+                                    </div>
+                                </div>
+                                {% endif %}
+                                {% if form.password.errors %}
+                                <div class="field">
+                                    <p class="" for={{form.password.id_for_label}}>Password</p>
+                                    <div class="control has-icons-right"><input type="password"
+                                            id={{form.password.id_for_label}} name="password" autocomplete="on"
+                                            class="input is-danger">
+                                        <!----> <span class="icon is-right has-text-danger"><i
+                                                class="mdi mdi-alert-circle mdi-24px"></i></span>
+                                        <!---->
+                                    </div>
+                                    <p class="help is-danger">Preencha este campo.</p>
+                                    {% else %}
+                                    <div class="field">
+                                        <p class="" for={{form.password.id_for_label}}>Password</p>
+                                        <div class="control is-clearfix"><input type="password"
+                                                id={{form.password.id_for_label}} name="password" class="input">
+                                        </div>
+                                    </div>
+                                    {% endif %}
+                                    <br>
+                                    <span><input type="checkbox" name="check" value="1"> Lembar de mim<br></span>
+                                    <br><a href="recuperacao_password">Recuperar Password</a>
+                                </div>
+                                <hr>
+                            </div>
+                        </div>
+        </section>
+        <div class="column is-8 is-offset-2">
+            <div class="level">
+                <div class="level-left"><a href=".." class="button is-outlined" type="button">
+                        <!----> <span> Cancelar </span>
+                        <!----></a></div>
+                <div class="level-right"><button type="submit" class="button is-large is-success is-outlined"
+                        id="submit">
+                        <!----> <span> Submeter </span>
+                        <!----></button></div>
+            </div>
         </div>
     </div>
 </div>
-</nav>
-<div data-v-8716d23a="" id="top-hero" class="hero is-primary is-bold">
-    <div data-v-8716d23a="" id="top-hero-body" class="hero-body"></div>
 </div>
-<div data-v-8716d23a="" id="page-content">
-<div data-v-8716d23a="" class="card">
-        <div data-v-8716d23a="" class="card-content">
-            <div data-v-8716d23a="" id="top">
-                <nav aria-label="breadcrumbs" class="breadcrumb" style="background-color:white">
-                    <ul>
-                        <li><a href="/" class="router-link-active">Início</a></li>
-                        {% block content2 %}
-                        <li class="is-active"><a href="" class="router-link-exact-active router-link-active">Entrar</a>
-                        </li>
-                    </ul>
-                </nav>
-                <div style="padding: 3rem 2vw 1rem;">
-                    <div class="b-steps">
-                        <nav class="steps is-success">
-                            <ul class="step-items">
-                                <li class="step-item is-success is-active"><a class="step-link" >
-                                        <div class="step-marker"><span class="icon"><i
-                                                    class="mdi mdi-book mdi-24px"></i></span></div>
-                                        <div class="step-details"><span class="step-title">Entrar</span>
-                                        </div>
-                                    </a></li>
-                            </ul>
-                        </nav>
-                        <section class="step-content">
-                            <div class="step-item" style="">
-                                <div style="padding: 1rem 2vw 0px;">
-                                    <hr> 
-                                    <form method="POST">
-                                        <input type="hidden" name="tentatives" value="{{tentatives}}">
-                                        {% csrf_token %}
-                                        {% if messages %}
-                                        {% for message in messages %}
-                                        <input type="hidden" name="tentatives" value={{tentatives}}>
-                                        {% if tentatives != 0 %}
-                                        <h1 class="help is-danger" style="text-align: center;">{{message}}</h1>
-                                        {% else %}
-                                        <h1 class="help is-danger" style="text-align: center;">Espere: <span id="time"></span></h1>
-                                        {% endif %}
-                                        {% endfor %}
-                                        {% endif %}
-                                        <div class="column is-offset-3 is-6">
-                                            {% if form.email.errors %}
-                                            <div class="field"><p class=""
-                                                    for={{form.email.id_for_label}}>Email</p>
-                                                <div class="control has-icons-right"><input type="email" name="email"
-                                                        id={{form.email.id_for_label}} autocomplete="on"
-                                                        class="input is-danger" >
-                                                    <!----> <span class="icon is-right has-text-danger"><i
-                                                            class="mdi mdi-alert-circle mdi-24px"></i></span>
-                                                    <!---->
-                                                </div>
-                                                <p class="help is-danger">Preencha este campo.</p>
-                                                {% else %}
-                                                <div class="field"><p class=""
-                                                        for={{form.email.id_for_label}}>Email</p>
-                                                    <div class="control is-clearfix"><input type="email" name="email"
-                                                            id={{form.email.id_for_label}} class="input">
-                                                    </div>
-                                                </div>
-                                                {% endif %}
-                                                {% if form.password.errors %}
-                                                <div class="field"><p class=""
-                                                        for={{form.password.id_for_label}}>Password</p>
-                                                    <div class="control has-icons-right"><input type="password"
-                                                         id={{form.password.id_for_label}} name="password"
-                                                            autocomplete="on" class="input is-danger" >
-                                                        <!----> <span class="icon is-right has-text-danger"><i
-                                                                class="mdi mdi-alert-circle mdi-24px"></i></span>
-                                                        <!---->
-                                                    </div>
-                                                    <p class="help is-danger">Preencha este campo.</p>
-                                                    {% else %}
-                                                    <div class="field"><p class=""
-                                                            for={{form.password.id_for_label}}>Password</p>
-                                                        <div class="control is-clearfix"><input type="password"
-                                                                id={{form.password.id_for_label}} name="password"
-                                                                class="input">
-                                                        </div>
-                                                    </div>
-                                                    {% endif %}
-                                                    <br>
-                                                    <span><input type="checkbox" name="check" value="1"> Lembar de mim<br></span>
-                                                    <br><a href="recuperacao_password">Recuperar Password</a>
-                                                </div>
-                                                <hr>
-                                            </div>
-                                        </div>
-                        </section>
-                        <div class="column is-8 is-offset-2">
-                            <div class="level">
-                                <div class="level-left"><a href=".." class="button is-outlined" type="button">
-                                        <!----> <span> Cancelar </span>
-                                        <!----></a></div>
-                                <div class="level-right"><button type="submit" 
-                                        class="button is-large is-success is-outlined" 
-                                         id="submit">
-                                        <!----> <span> Submeter </span>
-                                        <!----></button></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="dialog modal" id="exampleModal">
-                <div class="modal-background"></div>
-                <br><br><br><br><br><br><br><br><br><br><br><br>
-                <div class="modal-card animation" style="max-width:360px">
+<div class="dialog modal" id="exampleModal">
+    <div class="modal-background"></div>
+    <br><br><br><br><br><br><br><br><br><br><br><br>
+    <div class="modal-card animation" style="max-width:360px">
+        <!---->
+        <section class="modal-card-body is-titleless">
+            <div class="media">
+                <!---->
+                <div class="media-content">
+                    <p>Tem a certeza que quer inscrever-se no site?</p>
                     <!---->
-                    <section class="modal-card-body is-titleless">
-                        <div class="media">
-                            <!---->
-                            <div class="media-content">
-                                <p>Tem a certeza que quer inscrever-se no site?</p>
-                                <!---->
-                            </div>
-                        </div>
-                    </section>
-                    <footer class="modal-card-foot"><button class="button" data-dismiss="modal">
-                            Cancelar
-                        </button> <button class="button is-success" type="submit">
-                            Confirmar
-                        </button></footer>
                 </div>
             </div>
-            </form>
-            {% endblock content2 %}
+        </section>
+        <footer class="modal-card-foot"><button class="button" data-dismiss="modal">
+                Cancelar
+            </button> <button class="button is-success" type="submit">
+                Confirmar
+            </button></footer>
+        </form>
+        {% endblock content2 %}
 
-        </div>
-</div>
-<script>
-function startTimer(duration, display) {
-    var timer = duration, minutes, seconds;
-    setInterval(function () {
-        minutes = parseInt(timer / 60, 10);
-        seconds = parseInt(timer % 60, 10);
+        <script>
+            function startTimer(duration, display) {
+                var timer = duration, minutes, seconds;
+                setInterval(function () {
+                    minutes = parseInt(timer / 60, 10);
+                    seconds = parseInt(timer % 60, 10);
 
-        minutes = minutes < 10 ? "0" + minutes : minutes;
-        seconds = seconds < 10 ? "0" + seconds : seconds;
+                    minutes = minutes < 10 ? "0" + minutes : minutes;
+                    seconds = seconds < 10 ? "0" + seconds : seconds;
 
-        display.textContent = minutes + ":" + seconds;
-        if(timer>0){
-            document.getElementById("id_email").disabled=true;
-            document.getElementById("id_email").value="";
-            document.getElementById("id_password").disabled=true;
-            document.getElementById("id_password").value="";
-            document.getElementById("submit").disabled=true;
-            timer--;
-        }
-        else{
-            document.getElementById("id_email").disabled=false;
-            document.getElementById("id_password").disabled=false;
-            document.getElementById("submit").disabled=false;
-        }
-    }, 1000);
-}
+                    display.textContent = minutes + ":" + seconds;
+                    if (timer > 0) {
+                        document.getElementById("id_email").disabled = true;
+                        document.getElementById("id_email").value = "";
+                        document.getElementById("id_password").disabled = true;
+                        document.getElementById("id_password").value = "";
+                        document.getElementById("submit").disabled = true;
+                        timer--;
+                    }
+                    else {
+                        document.getElementById("id_email").disabled = false;
+                        document.getElementById("id_password").disabled = false;
+                        document.getElementById("submit").disabled = false;
+                    }
+                }, 1000);
+            }
 
-window.onload = function () {
-    var fiveMinutes = 60 * 1,
-        display = document.querySelector('#time');
-    startTimer(fiveMinutes, display);
-};
-    </script>
-{% endblock content %}
+            window.onload = function () {
+                var fiveMinutes = 60 * 1,
+                    display = document.querySelector('#time');
+                startTimer(fiveMinutes, display);
+            };
+        </script>
+        {% endblock content %}
