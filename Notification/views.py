@@ -43,6 +43,7 @@ def createnot(request):
                     destinatario_pk= int(user_email.pk)
                     noti=Notificacao.objects.create(descricao=d,utilizadorrecebe=destinatario_pk,idutilizadorenvia=request.session['user_id'],criadoem=datetime.now(),assunto=a)
                     UtilizadorHasNotificacao.objects.create(utilizador_idutilizador=user_email,notificacao=noti,estado=0)
+                    #UtilizadorHasNotificacao.objects.create(utilizador_idutilizador=Utilizador.objects.get(pk=request.session['user_id']),notificacao=noti,estado=1)
             messages.success(request, 'Notificação enviada com sucesso')
             return redirect('check_not')
     else:
@@ -84,8 +85,8 @@ def checknot(request):
     nots=UtilizadorHasNotificacao.objects.all().annotate(emissor=Value("",CharField()))
     deletenot(request)
     for noti in nots:
-        print(noti.notificacao in notis)
-        if noti.utilizador_idutilizador.pk==me_id and not(noti.notificacao.pk in notis):
+        print(notis)
+        if noti.notificacao.utilizadorrecebe==me_id:
             if Utilizador.objects.filter(pk=noti.notificacao.idutilizadorenvia).exists():
                 noti.emissor=Utilizador.objects.get(pk=noti.notificacao.idutilizadorenvia).email
             else:
