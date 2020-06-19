@@ -1,0 +1,45 @@
+{% extends 'base_template.html' %}
+{% block steps %}
+<li><a href="/">Início</a></li>
+<li class="is-active"><a href="" aria-current="page">Consultar Minhas Tarefas</a></li>
+<li class="is-active"><a href="" aria-current="page">Eliminar Tarefa</a></li>
+{% endblock %}
+{% block content %}
+
+<div style="padding: 3rem 2vw 1rem">
+  <form method="POST" action=""> 
+    {% csrf_token %}
+    <div class="table-wrapper">
+      <table class="table has-mobile-cards is-hoverable is-fullwidth">
+          <font size="4"><p align="center"> Deseja mesmo eliminar <font size="5">"{{tarefa.nome}}"</font> ?</p></font>
+      <hr>
+      </div>
+    <div class="column is-8 is-offset-2">
+      <div class="level">
+        <div class="level-left">
+          <a href="{% url 'tarefa_coordenador:consultar_tarefa' %}" class="button is-outlined" type="button">
+            <span> <i class="mdi mdi-undo mdi-36px">&nbsp </i>Retroceder</span>
+          </a>
+        </div>
+        <div class="level-right">
+          <button class="button is-large is-success is-outlined is-link" type="submit">
+            <span>Eliminar</span>
+          <span class="icon is-medium">
+            <i class="mdi mdi-forward mdi-36px"></i>
+          </span>
+        </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+</div>
+<style>
+  .label {
+  font-weight: normal;
+}
+.b-steps .steps .step-items .step-item .step-details .step-title {
+  font-size: 1rem;
+}
+</style>
+{% endblock content%}

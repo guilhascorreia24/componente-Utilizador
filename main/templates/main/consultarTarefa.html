@@ -1,0 +1,149 @@
+{% extends 'base_template.html' %}
+{% block steps %}
+    <li><a href="/">Início</a></li>
+    <li class="is-active"><a aria-current="page">Consultar Tarefas</a></li>
+{% endblock %}
+{% block content %}
+
+<div class="columns">
+    <div class="column is-3">
+        <div>
+            <label class="label">Consulta Por Filtros <span class="icon is-medium"><i class="mdi mdi-filter-outline"></i></span></label>
+            <hr>
+            <form method="GET">
+                <div class="column">
+                    <div class="field">
+                        <label class="label"style="font-size:14px">Filtrar por Nome Tarefa:</label>
+                        <div class="control is-expanded">
+                            {{myFilter.form.nome}}
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="field">
+                        <label class="label"style="font-size:14px">Filtrar por Colaborador:</label>
+                        <div class="control is-expanded">
+                            <div class="select is-fullwidth">
+                                {{myFilter.form.colaborador_utilizador_idutilizador}}
+                            </div>
+                        </div>
+                      </div>
+                </div>
+                <div class="column">
+                    <div class="field">
+                        <label class="label" style="font-size:14px">Filtrar por Atividade:</label>
+                        <div class="control">
+                            <div class="select is-fullwidth">
+                                {{myFilter.form.sessao_idsessao}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="field">
+                        <label class="label"style="font-size:14px">Filtrar por Estado:</label>
+                        <div class="control">
+                            <div class="select is-fullwidth">
+                                {{myFilter.form.concluida}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <button class="button is-outlined is-link" type="submit">
+                    <span>Filtrar</span>
+                    <span class="icon is-medium"><i class="mdi mdi-magnify"></i></span>
+                </button>
+         </form>
+    </div>
+</div>
+    <div class="column">
+        <div class="table "></div>
+            <div class="table-wrapper">
+                <table id="myTable" class="table has-mobile-cards is-hoverable is-fullwidth">
+                    <thead>
+                        <tr>
+                            <th>Nome Tarefa:</th>
+                            <th>Colaborador:</th>
+                            <th>Atividade:</th>
+                            <th>Dia:</th>
+                            <th>Hora:</th>
+                            <th>Estado:</th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                            {% for i in tarefas %}
+                                <tr><td>{{i.nome}}</td>
+                                {% if i.colaborador_utilizador_idutilizador == NULL %}
+                                    <td> --------------- </td>
+                                {% else %}
+                                    <td>{{i.colaborador_utilizador_idutilizador.utilizador_idutilizador.nome}}</td>
+                                {% endif %}
+                                {% if i.sessao_idsessao == NULL %}
+                                    <td> --------------- </td>
+                                    <td>{{i.dia_dia.dia}}</td>
+                                    {% if i.hora_inicio == NULL %}
+                                        <td> --------------- </td>
+                                    {% else %}
+                                        <td>{{i.hora_inicio}}</td>
+                                    {% endif%}
+                                {% else %}
+                                    <td>{{i.sessao_idsessao.atividade_idatividade.titulo}}</td>
+                                    <td>{{i.sessao_idsessao.horario_has_dia_id_dia_hora.dia_dia.dia}}</td> 
+                                    <td>{{i.sessao_idsessao.horario_has_dia_id_dia_hora.horario_hora.hora}}</td>
+                                {% endif %}
+                                {% if i.concluida == 1%}
+                                <td><span class="tag next is-success" style="width: 7 rem;font-size: small;">Concluída</span></td>
+                                {% elif i.concluida == 0%}
+                                <td><span class="tag next is-warning" style="width: 7 rem;font-size: small;">Pendente</span></td>
+                                {% endif %}
+                                <td>
+                                    <a href="{% url 'tarefa_coordenador:mais_info' i.idtarefa %}">
+                                        <span class="icon is-small">
+                                            <i class="mdi mdi-dots-horizontal-circle mdi-22px"></i>
+                                        </span>
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="{% url 'tarefa_coordenador:editar_tarefa' i.idtarefa %}">
+                                        <span class="icon is-small">
+                                            <i class="mdi mdi-tooltip-edit mdi-22px"></i>
+                                        </span>
+                                    </a>
+                                </td>
+                                <td>
+                                    <form method="POST">
+                                        <a href="{% url 'tarefa_coordenador:eliminar_tarefa' i.idtarefa %}">
+                                            <span class="icon is-small">
+                                                <i class="mdi mdi-delete mdi-24px"></i>
+                                            </span>
+                                        </a>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+    </div>
+</div>
+
+                    
+<script>
+    $(document).ready(function () {
+        $('#myTable').DataTable({
+            "paging": true,
+            "info": false,
+            "searching": false,
+            "bLengthChange": false,
+            "aLengthMenu": [[5, 10, 25, -1], [5, 10, 25, "All"]],
+            "columnDefs": [
+    { "orderable": false, "targets": [5,6,7,8] }
+  ]
+        });
+    });
+</script>
+{% endblock content %}

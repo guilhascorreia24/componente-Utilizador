@@ -1,0 +1,6 @@
+
+  <option value="">Nenhum Grupo Selecionado</option>
+  {% for grupos in grupos %}
+  <option value="{{grupos.inscricao_idinscricao.idinscricao}}">{{grupos.escola_idescola.nome}}, Turma {{grupos.turma}} ({{grupos.nparticipantes}} alunos)</option>
+  {% endfor %}
+  

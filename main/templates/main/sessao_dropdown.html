@@ -1,0 +1,6 @@
+
+  <option value="">Nenhuma Sessão Selecionada</option>
+  {% for sessao in sessao %}
+    <option value="{{sessao.idsessao}}">{{sessao.horario_has_dia_id_dia_hora.dia_dia.dia}} às {{sessao.horario_has_dia_id_dia_hora.horario_hora.hora}}</option>
+  {% endfor %}
+  
