@@ -146,7 +146,7 @@
                 </span>
                 <!----></a>
                 {% endif %}
-        <button class="button button4 is-danger is-outlined" type="submit" form="myform"
+        <button class="button button4 is-danger is-outlined" type="submit" form="myform" id="button"
             style="margin-bottom: 0.9rem; margin-right: 1rem;text-decoration:none;"><span class="icon is-small"><i
                     class="mdi mdi-close"></i></span> <span> Eliminar
                 selecionadas </span>
@@ -203,7 +203,7 @@
                                     </div>
                                 </th>
                                 <th class="">
-                                    <div class="th-wrap is-centered">Ações <input type="checkbox" name='press'
+                                    <div class="th-wrap is-centered">Ações <input class="checkbox_extra" type="checkbox" name='press'
                                             value="all" onclick="checkAll()"
                                             style="transform: scale(1.2); margin-left: 3%;"></span><span
                                             class="icon is-small" style="display: none;"><i class="mdi mdi-menu-up"></i>
@@ -463,5 +463,29 @@
     $('#datefilterfrom').on("change", filterRows);
     $('#datefilterto').on("change", filterRows);
 </script>
+
+<script>
+ 
+    $( document ).ready(function(){
+    $(".checkbox_extra").on("change",func);
+    func();
+    });
+     
+    function func(){
+    var bool_test = false;
+    //console.log("RIP MESTRADO "+ bool_test)
+    $(".checkbox_extra").each(function(){
+        if($(this).is(":checked")){
+            bool_test = true
+        }
+    });
+    if(bool_test == true){
+        $("#button").show()
+    }else{
+        $("#button").hide()
+    }
+}
+     
+    </script>
 
 {% endblock content %}
