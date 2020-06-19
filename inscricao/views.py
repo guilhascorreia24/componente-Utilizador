@@ -38,6 +38,17 @@ def inscricao_delete(request,inscricao):
     return consultar_inscricao(request)
 
 def inscricao_alterar(request,inscricao):
+
+    try:
+        insc = models.InscricaoColetiva.objects.get(inscricao_idinscricao=inscricao)
+    except:
+        try:
+            insc = models.InscricaoIndividual.objects.get(inscricao_idinscricao=inscricao)
+        except:
+            return HttpResponse("<h1>Inscrição não existe</h1>")
+        
+        return inscricao_individual_form(request,inscricao)
+
     return inscricao_form(request,inscricao)
 
 #Precisa de ser inscricao individual ou coletiva
