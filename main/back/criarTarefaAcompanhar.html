@@ -1,0 +1,192 @@
+{% extends 'main/home.html' %}
+{% block content %}
+<nav class="breadcrumb" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="/">Início</a></li>
+    <li><a href="{% url 'criar_tarefa' %}" aria-current="page">Criar Tarefa - Selecionar Tipo Tarefa</a></li>
+    <li class="is-active"><a href="" aria-current="page">Criar Tarefa Acompanhar Participantes</a></li>
+  </ul>
+</nav>
+
+<div class="ctr">
+  <div style="padding: 3rem 2vw 1rem">
+      <form method="POST" id="personForm"> {% csrf_token %}
+          <div class="column">
+              <div class="field">
+                   <label class="label">Nome Tarefa:</label>
+              <div class="control">
+                   {{form.nome}}
+              </div>
+              </div>
+            </div>
+ 
+          <div class="column">
+            <div class="field">
+                <label class="label" id='id_dia_dia_label'>Dia da Tarefa:</label>
+                <div class="control">
+                    <div class="select is-fullwidth" id='id_dia_dia_seta'>
+                        {{form.dia_dia}}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="column">
+          <div class="field">
+            <label class="label">Hora Ínicio da Tarefa:</label>
+            <div class="control">
+              {{form.hora_inicio}}
+            </div>
+          </div>
+        </div>
+
+        <div class="column">
+          <div class="field">
+            <label class="label">Atribuir Colaborador:</label>
+            <div class="control is-expanded">
+              <div class="select is-fullwidth">
+                {{form.colaborador_utilizador_idutilizador}}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <hr>
+        
+        <div class=" marg columns">
+          <div class="column is-3">
+            <label class=" ativi label">Campus onde se encontra o Grupo:</label>
+            <div style="width: 267px;" class="control">
+              <div class="select is-fullwidth">
+                {{form.campus}}
+              </div>
+            </div>
+          </div>
+          <div class=" marginl column">
+            <label style="width: 200px;" class="label">Local Recolha do Grupo:</label>
+            <div class="control">
+              <div class="select is-fullwidth">
+                <select id="buscar" name="buscar">
+                  <option value="">---------------</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="column">
+            <label style="width: 200px;" class="label">Local Destino do Grupo:</label>
+            <div class="control">
+              <div class="select is-fullwidth">
+                <select id="levar" name="levar">
+                  <option value="">---------------</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        </div>
+
+          <hr>
+
+          <div class="columns">
+            <div class="column is-3">
+              <a href="{% url 'criar_tarefa' %}" class="button is-outlined" type="button">
+                <span>Voltar</span>
+              </a>
+             </div>
+             <div class="column"> 
+                <button class="buttons button is-success is-outlined is-link" type="submit">
+                  <span>Submeter</span>
+                  <span class="icon is-medium">
+                    <i class="mdi mdi-forward mdi-36px"></i>
+                  </span>
+                </button>
+              </div>
+      </form>
+      </div>
+    </div>
+  </div>
+    </section>
+<style>
+  .buttons {
+  display: inline-block;
+  width: 150px;
+  margin: 0 px;
+  left: 200px;
+}
+  .label {
+  font-weight: normal;
+}
+.b-steps .steps .step-items .step-item .step-details .step-title {
+  font-size: 1rem;
+}
+
+.ativi{
+  width: 440px;
+}
+
+.ctr {
+  width: 500px;
+  right:500px;
+  margin-left: 400px;
+}
+
+.hour{
+  width: 300px;
+}
+
+.margintop{
+  margin:12px;
+}
+
+.marginl{
+  margin-left: 150px;
+  width: 270px;
+}
+
+.margin2{
+  margin-left:100px;
+}
+
+.marg{
+  margin-left: -100px;
+}
+</style>
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+  $("#id_campus").change(function () { // id html (inspecionar)
+    var atividadeID = $(this).val();  // get the selected country ID from the HTML input
+    $.ajax({                       // initialize an AJAX request
+      url: "{% url 'ajax_load_espaco' %}", // url
+      method: 'POST',                  // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+      data: {
+        csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+        'campus': atividadeID       // variavel na views
+      },
+      success: function (data) {   // `data` is the return of the `load_cities` view function
+        $("#buscar").html(data);  // id html form
+      }
+    });
+
+  });
+</script>
+
+<script>
+  $("#id_campus").change(function () { // id html (inspecionar)
+    var atividadeID = $(this).val();  // get the selected country ID from the HTML input
+    $.ajax({                       // initialize an AJAX request
+      url: "{% url 'ajax_load_espaco' %}", // url
+      method: 'POST',                  // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+      data: {
+        csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+        'campus': atividadeID       // variavel na views
+      },
+      success: function (data) {   // `data` is the return of the `load_cities` view function
+        $("#levar").html(data);  // id html form
+      }
+    });
+
+  });
+</script>
+ 
+{% endblock content%}
