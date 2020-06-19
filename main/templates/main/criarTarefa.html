@@ -1,0 +1,60 @@
+{% extends 'base_template.html' %}
+{% block steps %}
+  <li><a href="tarefa_coordenador:homepage">Início</a></li>
+  <li class="is-active"><a href="" aria-current="page"> Criar Tarefa - Selecionar Tipo Tarefa</a></li>
+{% endblock %}
+{% block content %}
+
+<div class="ctr">
+  <div style="padding: 3rem 2vw 1rem">
+      <strong style="margin-left: 50px;">Selecione o Tipo de Tarefa que deseja criar:</strong>
+      <hr></hr>
+
+      <form method="get" action ="{% url 'tarefa_coordenador:criar_tarefa_atividade' %}">
+        <button class="button buttons">Tarefa de Auxílio numa Atividade</button>
+      </form>
+
+      <form method="get" action = "{% url 'tarefa_coordenador:criar_tarefa_grupo' %}">
+        <button class="button buttons">Tarefa de Acompanhar Participantes</button>
+      </form>
+    </div>
+  </div>
+    </section>
+<style>
+  .buttons {
+  display: inline-block;
+  width: 280px;
+  margin-left: 50px;
+}
+  .label {
+  font-weight: normal;
+}
+.b-steps .steps .step-items .step-item .step-details .step-title {
+  font-size: 1rem;
+}
+
+
+.ctr {
+  width: 500px;
+  right:500px;
+  margin-left: 400px;
+}
+
+.hour{
+  width: 300px;
+}
+
+.margintop{
+  margin:12px;
+}
+
+.marginl{
+  margin-left: 400px;
+}
+
+.margin2{
+  margin-left:100px;
+}
+</style>
+ 
+{% endblock content%}
