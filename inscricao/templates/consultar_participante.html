@@ -1,5 +1,8 @@
-{% extends "navbar-part.html" %}
-{% load static %}
+{% extends "base_template.html" %} {% load static %} {% load ins_form_tags %} 
+{% block steps %}
+<li><a href="/" class="router-link-active">Início</a></li>
+<li><a href="{% url "inscricao:consulta" %}" class="">Consultar Inscrições</a></li>
+{% endblock %}
 {% block content %}
 {% if inscricoes_coletivas|length > 0 %}
 <div data-v-8716d23a="" class="columns">

@@ -1,4 +1,10 @@
-{% extends "navbar-part.html" %} {% load static %} {% load ins_form_tags %} {% block content %}
+{% extends "base_template.html" %} {% load static %} {% load ins_form_tags %} 
+{% block steps %}
+<li><a href="/" class="router-link-active">Início</a></li>
+<li><a href="{% url "inscricao:register" %}" class="">Inscrição Coletiva</a></li>
+{% endblock %}
+
+{% block content %}
 <div style="padding: 3rem 2vw 1rem;">
     <div class="b-steps">
         <nav class="steps is-success">
