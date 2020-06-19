@@ -141,8 +141,8 @@ def noti_not_checked(request):
         my_noti=UtilizadorHasNotificacao.objects.all()
         for n in my_noti:
             if n.notificacao.utilizadorrecebe==user.pk and n.estado==0 and n.utilizador_idutilizador==user:
-                n.notificacao.pk=signing.dumps(n.notificacao.pk)
-                noti.append(n.notificacao)
+                n.pk=signing.dumps(n.pk)
+                noti.append(n)
     return noti
 
 def get_my_lists(request,list):

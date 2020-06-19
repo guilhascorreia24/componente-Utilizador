@@ -1,4 +1,4 @@
-{% if i == 0 %}
+{% if i == 0 or i == false %}
 <div data-v-a67fe1ba="">
     <div data-v-a67fe1ba="" tabindex="0" class="dropdown-item">
         <div data-v-a67fe1ba="" class="has-text-grey"> Não tem novas notificações!
@@ -10,9 +10,9 @@
 {% for noti in not_checked %}
 <div data-v-a67fe1ba="">
     <a href="{% url "noti" noti.pk %}"><div data-v-a67fe1ba="" tabindex="{{forloop.count}}" class="dropdown-item">
-        <div data-v-a67fe1ba="" class="has-text-grey"> <b>{{noti.assunto}}</b>
+        <div data-v-a67fe1ba="" class="has-text-grey"> <b>{{noti.notificacao.assunto}}</b>
         </div>
-        <div data-v-a67fe1ba="" class="has-text-grey"> {{noti.criadoem|date:'Y-m-d H:i'}}
+        <div data-v-a67fe1ba="" class="has-text-grey"> {{noti.notificacao.criadoem|date:'Y-m-d H:i'}}
         </div>
     </div></a>
     <hr data-v-a67fe1ba="" class="dropdown-divider">

@@ -211,7 +211,7 @@ def login_request(request):
                     user = Utilizador.objects.get(email=request.POST['email'])
                     request.session['user_id'] = user.idutilizador
                     request.session['type'] = user.validada
-
+                    request.session['id_encrypt']=signing.dumps(user.pk)
                     r = redirect('blog:blog-home')
                     if 'check' in request.POST and request.POST['check'] == '1':
                         Utilizador.objects.filter(pk=request.session['user_id']).update(remember_me=encrypt(request.session['user_id']))
