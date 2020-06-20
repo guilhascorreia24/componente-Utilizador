@@ -56,6 +56,9 @@ class Atividade(models.Model):
     tematica = models.CharField(max_length=250, blank=True, null=True)
     nrcolaborador = models.CharField(db_column='nrColaborador', max_length=45, blank=True, null=True)  # Field name made lowercase.
 
+    def __id__(self):
+        return self.idatividade
+
     class Meta:
         managed = False
         db_table = 'atividade'
@@ -153,6 +156,9 @@ class Colaborador(models.Model):
     utilizador_idutilizador = models.OneToOneField('Utilizador', models.DO_NOTHING, db_column='Utilizador_idutilizador', primary_key=True)  # Field name made lowercase.
     curso_idcurso = models.ForeignKey('Curso', models.DO_NOTHING, db_column='curso_idcurso', blank=True, null=True)
 
+    def __id__(self):
+        return self.utilizador_idutilizador.idutilizador
+        
     class Meta:
         managed = False
         db_table = 'colaborador'
@@ -191,6 +197,9 @@ class CoordenadorHasDepartamento(models.Model):
     coordenador_utilizador_idutilizador = models.OneToOneField(Coordenador, models.DO_NOTHING, db_column='Coordenador_Utilizador_idutilizador', primary_key=True)  # Field name made lowercase.
     departamento_iddepartamento = models.ForeignKey('Departamento', models.DO_NOTHING, db_column='Departamento_idDepartamento')  # Field name made lowercase.
 
+    def __id__(self):
+        return self.utilizador_idutilizador.idutilizador
+
     class Meta:
         managed = False
         db_table = 'coordenador_has_departamento'
@@ -218,6 +227,9 @@ class Departamento(models.Model):
 
 class Dia(models.Model):
     dia = models.DateField(primary_key=True)
+
+    def __id__(self):
+        return self.dia
 
     def __str__(self):
         return str(self.dia)
@@ -342,6 +354,9 @@ class HorarioHasDia(models.Model):
     horario_hora = models.ForeignKey(Horario, models.DO_NOTHING, db_column='horario_hora')
     dia_dia = models.ForeignKey(Dia, models.DO_NOTHING, db_column='Dia_dia')  # Field name made lowercase.
     id_dia_hora = models.AutoField(primary_key=True)
+
+    def __id__(self):
+        return self.id_dia_hora
 
     def __str__(self):
         return self.horario_hora.__str__() + " de " + self.dia_dia.__str__()
@@ -555,6 +570,9 @@ class Sessao(models.Model):
     atividade_idatividade = models.ForeignKey(Atividade, models.DO_NOTHING, db_column='Atividade_idAtividade')  # Field name made lowercase.
     horario_has_dia_id_dia_hora = models.ForeignKey(HorarioHasDia, models.DO_NOTHING, db_column='horario_has_dia_id_dia_hora')
 
+    def __id__(self):
+        return self.idsessao
+        
     class Meta:
         managed = False
         db_table = 'sessao'

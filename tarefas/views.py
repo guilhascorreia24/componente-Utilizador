@@ -5,6 +5,7 @@ from django.db.models import F
 from .models import Disponibilidade, Utilizador
 from .models import Tarefa
 from django.views.decorators.csrf import csrf_exempt
+from Notification.views import noti_not_checked
 
 
 
@@ -30,7 +31,7 @@ def consultar_tarefas(request):
             form = disp(queryset=Disponibilidade.objects.none(), prefix="tarefa")
 
 
-        return render(request, "consultar_tarefas.html", {'form': form})
+        return render(request, "consultar_tarefas.html", {'form': form,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
 
 # Consultar Tarefas
 
@@ -45,7 +46,7 @@ def consultar_tarefas2(request):
         .select_related('idtarefa','dia_dia','coordenador_utilizador_idutilizador__utilizador_idutilizador','sessao_idsessao','sessao_idsessao__atividade_idatividade','buscar','levar', 'levar__campus_idcampus','inscricao_coletiva_inscricao_idinscricao','inscricao_coletiva_inscricao_idinscricao__escola_idescola').all() \
         .values(id_tarefa=F('idtarefa'),estado=F('concluida'),dia=F('dia_dia__dia'),nome_coordenador=F('coordenador_utilizador_idutilizador__utilizador_idutilizador__nome'),hora=F('hora_inicio'),nome_tarefa=F('nome'),atividade=F('sessao_idsessao__atividade_idatividade__titulo'),espaco_antes=F('buscar__nome'),espaco_depois=F('levar__nome'),campus=F('levar__campus_idcampus__nome'),n_alunos=F('sessao_idsessao__nrinscritos'),turma=F('inscricao_coletiva_inscricao_idinscricao__turma'),escola=F('inscricao_coletiva_inscricao_idinscricao__escola_idescola__nome'))
 
-        return render(request, "consultar_tarefas2.html", { 'tarefas':tarefas })
+        return render(request, "consultar_tarefas2.html", { 'tarefas':tarefas,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request) })
 
     else:
         return HttpResponse("Não é colaborador")
