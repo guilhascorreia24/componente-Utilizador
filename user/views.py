@@ -141,10 +141,14 @@ def curso():
     return deps
 def register(request):
     me=None
-    print('user_id' in request.session)
-    if 'user_id' in request.session or not(request.session['type']==4):
+    print("enter"+str(not('user_id' in request.session) and not('type' in request.session)))
+    if 'user_id' in request.session and request.session['type']!=4:
         context={'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)}
         return render(request,"not_for-u.html",context)
+    elif ('user_id' in request.session) and ('type' in request.session):
+        if request.session['type']!=4:
+            ontext={'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)}
+            return render(request,"not_for-u.html",context)
     if 'user_id' in request.session:
         me=request.session['user_id']
     UOs=UnidadeOrganica.objects.all()
@@ -243,6 +247,7 @@ def login_request(request):
 def logout_request(request):
     r = redirect("blog:blog-home")
     del request.session['user_id']
+    del request.session['type']
     if 'cookie_id' in request.COOKIES:
         r.delete_cookie('cookie_id')
     messages.info(request, "saiste com sucesso")
