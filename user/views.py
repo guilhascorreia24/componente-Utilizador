@@ -200,7 +200,7 @@ def register(request):
 
 #*----------------------------------------------------------login---------------------------------------
 def login_request(request):
-    if not('user_id' in request.session):
+    if 'user_id' in request.session:
         context={'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)}
         return render(request,"not_for-u.html",context)
     if request.method == 'POST':
