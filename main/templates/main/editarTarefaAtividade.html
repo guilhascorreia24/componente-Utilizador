@@ -1,8 +1,8 @@
 {% extends 'base_template.html' %}
 {% block steps %}
 <li><a href="/">Início</a></li>
-    <li><a href="{% url 'tarefa_coordenador:criar_tarefa' %}" aria-current="page">Criar Tarefa - Selecionar Tipo Tarefa</a></li>
-    <li class="is-active"><a href="" aria-current="page">Criar Tarefa Auxiliar Atividade</a></li>
+    <li><a href="{% url 'tarefa_coordenador:consultar_tarefa' %}" aria-current="page">Consultar Tarefas</a></li>
+    <li class="is-active"><a href="" aria-current="page">Editar Tarefa Auxiliar Atividade</a></li>
 {% endblock %}
 {% block content %}
 <div style="padding: 3rem 2vw 1rem;">
@@ -11,7 +11,7 @@
           <ul class="step-items">
               <li class="step-item is-success is-active"><a class="step-link">
                       <div class="step-marker"><span class="icon"><i class="mdi mdi-book mdi-24px"></i></span></div>
-                      <div class="step-details"><span class="step-title">Criar Tarefa Auxiliar Atividade</span>
+                      <div class="step-details"><span class="step-title">Editar Tarefa Auxiliar Atividade</span>
                       </div>
                   </a></li>
           </ul>

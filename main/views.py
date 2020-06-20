@@ -13,7 +13,7 @@ def homepage(request):
 def criar_tarefa(request):
     return render(request=request,
     			  template_name="main/criarTarefa.html",
-    			  )
+    			  context={'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
 
 def mais_info(request, pk):
 	tarefa = Tarefa.objects.get(idtarefa = pk)
@@ -112,21 +112,21 @@ def consultar_tarefa(request):
 def editar_tarefa(request, pk):
 	tarefa = Tarefa.objects.get(idtarefa = pk)
 	if tarefa.sessao_idsessao == None:
-		template="main/criarTarefaAcompanhar.html"
+		template="main/editarTarefaAcompanhar.html"
 		form = TarefasFormGroup(instance = tarefa)
 		if request.method == "POST":
 			form = TarefasFormGroup(request.POST, instance = tarefa)
 			if form.is_valid():
 				form.save()
-				return redirect("blog:blog-home")
+				return redirect("tarefa_coordenador:consultar_tarefa")
 	else:
-		template="main/criarTarefaAtividade.html"
+		template="main/editarTarefaAtividade.html"
 		form = TarefasFormAtividade(instance = tarefa)
 		if request.method == "POST":
 			form = TarefasFormAtividade(request.POST, instance = tarefa)
 			if form.is_valid():
 				form.save()
-				return redirect("blog:blog-home")
+				return redirect("tarefa_coordenador:consultar_tarefa")
 	return render(request = request,
 				 template_name=template,
 				 context={'form':form,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
