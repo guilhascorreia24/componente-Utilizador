@@ -28,7 +28,7 @@
                     <div class="field">
                         <div class="control is-expanded">
                                 <span class="select is-fullwidth is-empty">
-                                <select id="myInput3"onchange="myFunction3()">
+                                <select id="myInput1"onchange="myFunction()">
                                     <option hidden value="">Filtrar por Colaborador</option>
                                     {% for c in colab %}
                                     <option  value="{{c.utilizador_idutilizador.nome}}">{{c.utilizador_idutilizador.nome}}</option>
@@ -43,7 +43,7 @@
                         <div class="control">
                             <div class="select is-fullwidth">
                                 <span class="select is-fullwidth is-empty">
-                                    <select id="myInput4"onchange="myFunction4()">
+                                    <select id="myInput2"onchange="myFunction()">
                                         <option hidden value="">Filtrar Atividade</option>
                                         {% for a in atividade %}
                                         <option value="{{a.titulo}}">{{a.titulo}}</option>
@@ -59,7 +59,7 @@
                         <div class="control">
                             <div class="select is-fullwidth">
                                 <span class="select is-fullwidth is-empty">
-                                    <select id="myInput5"onchange="myFunction5()">
+                                    <select id="myInput3"onchange="myFunction()">
                                         <option hidden value="">Filtrar por Estado</option>
                                         <option value="Concluida">Concluida</option>
                                         <option value="Pendente">Pendente</option>
@@ -70,7 +70,7 @@
                     </div>
                 </div>
                 <br>
-                <button class="button is-outlined is-link is-danger" type="reset">
+                <button class="button is-outlined is-link is-danger" type="submit">
                     <span>Limpar</span>
                     <span class="icon is-medium"><i class="mdi mdi-broom"></i></span>
                 </button>
@@ -165,16 +165,30 @@
 </script>
 <script>
     function myFunction() {
-        var input, filter, table, tr, td, i, txtValue;
+        var input,input2,input3,input4,filter,filter2,filter3,filter4,filter5, table, tr, td,td1,td2,td3,td4, i, txtValue,txtValue1,txtValue2,txtValue3,txtValue4;
         input = document.getElementById("myInput");
+        input2 = document.getElementById("myInput1");
+        input3 = document.getElementById("myInput2");
+        input4 = document.getElementById("myInput3");
         filter = input.value.toUpperCase();
+        filter2 = input2.value.toUpperCase();
+        filter3 = input3.value.toUpperCase();
+        filter4 = input4.value.toUpperCase();
+        console.log(filter+" "+filter2);
         table = document.getElementById("myTable");
         tr = table.getElementsByTagName("tr");
         for (i = 0; i < tr.length; i++) {
             td = tr[i].getElementsByTagName("td")[0];
-            if (td) {
+            td1= tr[i].getElementsByTagName("td")[1];
+            td2= tr[i].getElementsByTagName("td")[2];
+            td3 = tr[i].getElementsByTagName("td")[5];
+            if (td && td1 && td2 && td3) {
                 txtValue = td.textContent || td.innerText;
-                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                txtValue1 = td1.textContent || td1.innerText;
+                txtValue2 = td2.textContent || td2.innerText;
+                txtValue3 = td3.textContent || td3.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1 && txtValue1.toUpperCase().indexOf(filter2) > -1 &&
+                     txtValue2.toUpperCase().indexOf(filter3) > -1 && txtValue3.toUpperCase().indexOf(filter4) > -1) {
                     tr[i].style.display = "";
                 } else {
                     tr[i].style.display = "none";
@@ -182,65 +196,5 @@
             }
         }
     }
-</script>
-<script>
-function myFunction3() {
-        var input, filter, table, tr, td, i, txtValue;
-        input = document.getElementById("myInput3");
-        filter = input.value.toUpperCase();
-        table = document.getElementById("myTable");
-        tr = table.getElementsByTagName("tr");
-        for (i = 0; i < tr.length; i++) {
-            td = tr[i].getElementsByTagName("td")[1];
-            if (td) {
-                txtValue = td.textContent || td.innerText;
-                if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                    tr[i].style.display = "";
-                } else {
-                    tr[i].style.display = "none";
-                }
-            }
-        }
-    }
-</script>
-<script>
-    function myFunction4() {
-            var input, filter, table, tr, td, i, txtValue;
-            input = document.getElementById("myInput4");
-            filter = input.value.toUpperCase();
-            table = document.getElementById("myTable");
-            tr = table.getElementsByTagName("tr");
-            for (i = 0; i < tr.length; i++) {
-                td = tr[i].getElementsByTagName("td")[2];
-                if (td) {
-                    txtValue = td.textContent || td.innerText;
-                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                        tr[i].style.display = "";
-                    } else {
-                        tr[i].style.display = "none";
-                    }
-                }
-            }
-        }
-    </script>
-<script>
-        function myFunction5() {
-                var input, filter, table, tr, td, i, txtValue;
-                input = document.getElementById("myInput5");
-                filter = input.value.toUpperCase();
-                table = document.getElementById("myTable");
-                tr = table.getElementsByTagName("tr");
-                for (i = 0; i < tr.length; i++) {
-                    td = tr[i].getElementsByTagName("td")[3];
-                    if (td) {
-                        txtValue = td.textContent || td.innerText;
-                        if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                            tr[i].style.display = "";
-                        } else {
-                            tr[i].style.display = "none";
-                        }
-                    }
-                }
-            }
 </script>
 {% endblock content %}

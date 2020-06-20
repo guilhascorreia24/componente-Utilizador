@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.contrib import messages
 from django.http import HttpResponse
 from .models import *
 from .forms import *
@@ -36,6 +37,7 @@ def criar_tarefa_atividade(request):
 				colaborador_user = Colaborador.objects.get(utilizador_idutilizador = user)	#Vamos buscar o colaborador associado aquele objeto utilizador
 				new_tarefa.colaborador_utilizador_idutilizador = colaborador_user	#Enviamos esse colaborador para a nova tarefa
 			new_tarefa.save()
+			messages.success(request, f'Tarefa Criada com Sucesso!')
 			return redirect("blog:blog-home")
 	
 	return render(request=request,
@@ -77,6 +79,7 @@ def criar_tarefa_grupo(request):
 			grupo = Inscricao.objects.get(idinscricao = request.POST['grupos'])
 			new_tarefa.inscricao_coletiva_inscricao_idinscricao = InscricaoColetiva.objects.get(inscricao_idinscricao = grupo)
 			new_tarefa.save()
+			messages.success(request, f'Tarefa Criada com Sucesso!')
 			return redirect("blog:blog-home")
 	
 	return render(request=request,
@@ -118,6 +121,7 @@ def editar_tarefa(request, pk):
 			form = TarefasFormGroup(request.POST, instance = tarefa)
 			if form.is_valid():
 				form.save()
+				messages.success(request, f'Tarefa Editada com Sucesso!')
 				return redirect("tarefa_coordenador:consultar_tarefa")
 	else:
 		template="main/editarTarefaAtividade.html"
@@ -126,6 +130,7 @@ def editar_tarefa(request, pk):
 			form = TarefasFormAtividade(request.POST, instance = tarefa)
 			if form.is_valid():
 				form.save()
+				messages.success(request, f'Tarefa Editada com Sucesso!')
 				return redirect("tarefa_coordenador:consultar_tarefa")
 	return render(request = request,
 				 template_name=template,
@@ -135,6 +140,7 @@ def eliminar_tarefa(request, pk):
 	tarefa = Tarefa.objects.get(idtarefa = pk)
 	if request.method == "POST":
 		tarefa.delete()
+		messages.success(request, f'Tarefa Eliminada com Sucesso!')
 		return redirect("tarefa_coordenador:consultar_tarefa")
 	context ={'tarefa': tarefa,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)}
 	return render(request = request,
