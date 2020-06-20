@@ -935,7 +935,7 @@ COLLATE = utf8mb4_0900_ai_ci;
 -- Table `les`.`inscricao_individual`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `les`.`inscricao_individual` (
-  `nracompanhades` INT(10) UNSIGNED ZEROFILL NOT NULL,
+  `nracompanhantes` INT(10) UNSIGNED ZEROFILL NOT NULL,
   `Participante_Utilizador_idutilizador` INT NOT NULL,
   `inscricao_idinscricao` INT NOT NULL,
   `telefone` INT NOT NULL,
