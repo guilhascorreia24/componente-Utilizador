@@ -38,10 +38,10 @@
                         </div>
                         <!---->
                     </div>
-                    <li class="is-not-menu"><a class="is-active" onclick="press()">
+                    <li class="is-not-menu" ><a style="background-color: white; color: black;" class="is-active" onclick="press()">
                             <!----> <span class="icon is-pulled-right"><i id="plus"
-                                    class="mdi mdi-plus mdi-24px"></i></span><small>Mais Filtros de
-                                Atividade</small></a>
+                                    class="mdi mdi-plus mdi-24px"></i></span><small >Mais Filtros de
+                                Notificação</small></a>
                         <ul style="display: none;" id="panel">
                             <div class="field">
                                 <!---->
@@ -473,7 +473,6 @@
      
     function func(){
     var bool_test = false;
-    //console.log("RIP MESTRADO "+ bool_test)
     $(".checkbox_extra").each(function(){
         if($(this).is(":checked")){
             bool_test = true

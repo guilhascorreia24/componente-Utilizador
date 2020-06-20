@@ -251,11 +251,13 @@ class Form_Sessao(ModelForm):
             valid_nr += self.instance.nr_inscritos
 
 
+        if 'nr_inscritos' not in cleaned_data:
+            return
        
         if valid_nr  < cleaned_data['nr_inscritos']:
             raise ValidationError({'nr_inscritos': ["Não há vagas suficientes"]})
         
-        #return True
+
     class Meta:
         model = models.InscricaoHasSessao
         fields = ['nr_inscritos','sessao_idsessao']
