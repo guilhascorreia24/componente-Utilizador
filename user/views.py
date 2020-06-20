@@ -141,10 +141,10 @@ def curso():
     return deps
 def register(request):
     me=None
-    if not(Administrador.objects.filter(pk=request.session['user_id']).exists()) or ('user_id' in request.session):
+    print('user_id' in request.session)
+    if 'user_id' in request.session or not(request.session['type']==4):
         context={'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)}
         return render(request,"not_for-u.html",context)
-    print('user_id' in request.session)
     if 'user_id' in request.session:
         me=request.session['user_id']
     UOs=UnidadeOrganica.objects.all()
