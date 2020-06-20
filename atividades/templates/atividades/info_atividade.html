@@ -1,12 +1,10 @@
-{% extends '../atividades/assets/home.html' %}
-{% block content %}
-<nav class="breadcrumb" aria-label="breadcrumbs">
-  <ul>
+{% extends 'base_template.html' %}
+{% block steps %}
     <li><a href="{% url 'blog:blog-home' %}">Início</a></li>
     <li><a href="{% url 'atividades:consultar_minhas_atividades' %}">Minhas atividades</a></li>
     <li class="is-active"><a href="" aria-current="page">{{activity.titulo}}</a></li>
-  </ul>
-</nav>
+{% endblock %}
+{% block content %}
         <div class="table "></div>
             <div class="table-wrapper">
                 <table class="table has-mobile-cards is-hoverable is-fullwidth">

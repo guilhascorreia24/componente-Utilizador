@@ -1,11 +1,9 @@
-{% extends '../atividades/assets/home.html' %}
-{% block content %}
-<nav class="breadcrumb" aria-label="breadcrumbs">
-  <ul>
+{% extends 'base_template.html' %}
+{% block steps %}
     <li><a href="{% url 'blog:blog-home' %}">Início</a></li>
     <li class="is-active"><a href="" aria-current="page">Definir Local de {{activity.titulo}}</a></li>
-  </ul>
-</nav>
+{% endblock %}
+{% block content %}
 <h1 style="font-size:large;"><b>Informações sobre local</b></h1>
 <h3 style="font-size:large;"><b>{{activity.espaco_idespaco.nome}}</b></h3>
 <div style="padding: 3rem 2vw 1rem">
