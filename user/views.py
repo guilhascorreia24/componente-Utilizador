@@ -277,6 +277,8 @@ def delete_user(request,id):
 #--------------------------------------alterar user---------------------------------------------
 def modify_user(request,id):
     id=signing.loads(id)
+    if id==request.session['user_id'] or Administrador-objects.filter(pk=request.session['user_id']).exists():
+        return render(request,"not_for-u.html",)
     name = Utilizador.objects.get(idutilizador=id).nome
     me=request.session['user_id']
     if request.method=='POST':
