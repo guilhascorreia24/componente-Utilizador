@@ -141,7 +141,7 @@ def curso():
     return deps
 def register(request):
     me=None
-    if not(Administrador.objects.filter(pk=request.session['user_id']).exists()) or not('user_id' in request.session):
+    if not(Administrador.objects.filter(pk=request.session['user_id']).exists()) or ('user_id' in request.session):
         context={'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)}
         return render(request,"not_for-u.html",context)
     print('user_id' in request.session)
