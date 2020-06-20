@@ -3,9 +3,6 @@ from django_filters import DateFilter
 from .models import *
 
 class TarefaFilter(django_filters.FilterSet):
-    
-    colaborador_utilizador_idutilizador = django_filters.ChoiceFilter(choices =
-    [(colab.__id__(), colab.utilizador_idutilizador.nome) for colab in Colaborador.objects.all()])
 
     sessao_idsessao = django_filters.ChoiceFilter(choices =
 	[(sessao.__id__(), sessao.atividade_idatividade.titulo) for sessao in Sessao.objects.all()])

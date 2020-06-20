@@ -212,7 +212,6 @@
         var els = $(".breadcrumb > ul")
         console.log(els.children().length)
         if(els.children().length == 0){
-            console.log("JHSDFGJHFG")
             els.hide();
         }
         var resp = $.ajax({
@@ -232,15 +231,6 @@
         var search = "#nav_" + type;
         $(search).show();
 
-        console.log(type);
-
-        //REPLACE
-        $('.navbar-start > a').each(function(){
-                var redirect = $(this).attr('href');
-                if(req == redirect){
-                        $(this).addClass("router-link-exact-active router-link-active");
-                }
-        });
     });
     </script>
     <script type="text/javascript" src="{% static 'js/myscripts.js' %}"></script>

@@ -23,7 +23,7 @@ def mais_info(request, pk):
 				context=context)
 
 def criar_tarefa_atividade(request):
-	user = Utilizador.objects.get(idutilizador = 4)
+	user = Utilizador.objects.get(idutilizador = request.session["user_id"])
 	coord_user = Coordenador.objects.get(utilizador_idutilizador = user)
 	new_form = Tarefa(concluida = 1, coordenador_utilizador_idutilizador = coord_user)
 	form = TarefasFormAtividade(request.POST, instance = new_form)
@@ -36,7 +36,7 @@ def criar_tarefa_atividade(request):
 				colaborador_user = Colaborador.objects.get(utilizador_idutilizador = user)	#Vamos buscar o colaborador associado aquele objeto utilizador
 				new_tarefa.colaborador_utilizador_idutilizador = colaborador_user	#Enviamos esse colaborador para a nova tarefa
 			new_tarefa.save()
-			return redirect("homepage")
+			return redirect("blog:blog-home")
 	
 	return render(request=request,
 				  template_name="main/criarTarefaAtividade.html",
@@ -58,9 +58,9 @@ def load_espaco(request):
 				  context={'espaco':espaco,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
 
 def criar_tarefa_grupo(request):
-	user = Utilizador.objects.get(idutilizador = 4)
+	user = Utilizador.objects.get(idutilizador = request.session["user_id"])
 	coord_user = Coordenador.objects.get(utilizador_idutilizador = user)
-	new_form = Tarefa(concluida = 1, coordenador_utilizador_idutilizador = coord_user)
+	new_form = Tarefa(concluida = 0, coordenador_utilizador_idutilizador = coord_user)
 	form = TarefasFormGroup(request.POST, instance = new_form)
 	if request.method == "POST":
 		if form.is_valid():
@@ -77,7 +77,7 @@ def criar_tarefa_grupo(request):
 			grupo = Inscricao.objects.get(idinscricao = request.POST['grupos'])
 			new_tarefa.inscricao_coletiva_inscricao_idinscricao = InscricaoColetiva.objects.get(inscricao_idinscricao = grupo)
 			new_tarefa.save()
-			return redirect("homepage")
+			return redirect("blog:blog-home")
 	
 	return render(request=request,
 				  template_name="main/criarTarefaAcompanhar.html",
@@ -93,13 +93,17 @@ def load_cities(request):
 def consultar_tarefa(request):
 	tarefas = Tarefa.objects.all()
 	sessao = Sessao.objects.all()
-
+	iduo = Coordenador.objects.get(pk=request.session['user_id']).unidade_organica_iduo
+	colab = Colaborador.objects.filter(curso_idcurso= Curso.objects.get(unidade_organica_iduo = iduo))
+	atividade = Atividade.objects.filter(unidade_organica_iduo = iduo)
 	myFilter = TarefaFilter(request.GET, queryset=tarefas)
 	tarefas = myFilter.qs
 
-	context={'tarefas': tarefas,
+	context={'atividade':atividade,
+			'tarefas': tarefas,
 			'sessao': sessao,
 			'myFilter': myFilter,
+			'colab': colab,
 			'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)}
 	return render(request=request,
 				  template_name="main/consultarTarefa.html",
@@ -114,7 +118,7 @@ def editar_tarefa(request, pk):
 			form = TarefasFormGroup(request.POST, instance = tarefa)
 			if form.is_valid():
 				form.save()
-				return redirect("homepage")
+				return redirect("blog:blog-home")
 	else:
 		template="main/criarTarefaAtividade.html"
 		form = TarefasFormAtividade(instance = tarefa)
@@ -122,7 +126,7 @@ def editar_tarefa(request, pk):
 			form = TarefasFormAtividade(request.POST, instance = tarefa)
 			if form.is_valid():
 				form.save()
-				return redirect("homepage")
+				return redirect("blog:blog-home")
 	return render(request = request,
 				 template_name=template,
 				 context={'form':form,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
@@ -131,7 +135,7 @@ def eliminar_tarefa(request, pk):
 	tarefa = Tarefa.objects.get(idtarefa = pk)
 	if request.method == "POST":
 		tarefa.delete()
-		return redirect("consultar_tarefa")
+		return redirect("tarefa_coordenador:consultar_tarefa")
 	context ={'tarefa': tarefa,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)}
 	return render(request = request,
 				 template_name="main/eliminarTarefa.html",

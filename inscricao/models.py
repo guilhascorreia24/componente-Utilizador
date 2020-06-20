@@ -656,7 +656,6 @@ class TransporteHasInscricao(models.Model):
                     raise ValidationError({'n_passageiros': error})
 
             except ObjectDoesNotExist:
-                print("Error")
                 error = validators.TRANSPORTE_FULL.replace('_NUM_',str(capacidade))
                 raise ValidationError({'n_passageiros': error}) 
             
