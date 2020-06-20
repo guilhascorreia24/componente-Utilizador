@@ -22,7 +22,7 @@
       <form method="POST" id="personForm"> {% csrf_token %}
           <div class="column">
               <div class="field">
-                   <label class="label">Nome Tarefa:</label>
+                   <label aria-label="breadcrumbs" class="">Nome Tarefa:</label>
               <div class="control">
                    {{form.nome}}
               </div>
@@ -31,7 +31,7 @@
  
           <div class="column">
             <div class="field">
-                <label class="label" id='id_dia_dia_label'>Dia da Tarefa:</label>
+                <label aria-label="breadcrumbs"  class="" id='id_dia_dia_label'>Dia da Tarefa:</label>
                 <div class="control">
                     <div class="select is-fullwidth" id='id_dia_dia_seta'>
                         {{form.dia_dia}}
@@ -42,7 +42,7 @@
 
         <div class="column">
           <div class="field">
-            <label class="label">Hora Ínicio da Tarefa:</label>
+            <label aria-label="breadcrumbs" class="">Hora Ínicio da Tarefa:</label>
             <div class="control">
               {{form.hora_inicio}}
             </div>
@@ -51,9 +51,10 @@
 
         <div class="column">
           <div class="field">
-            <label class="label">Atribuir Colaborador:</label>
+            <label aria-label="breadcrumbs"  class="">Atribuir Colaborador:</label>
             <div class="control is-expanded">
               <div class="select is-fullwidth">
+                <option hidden value="">Colaborador</option>
                 {{form.colaborador_utilizador_idutilizador}}
               </div>
             </div>
@@ -62,52 +63,53 @@
 
         <hr>
         
-        <div class=" marg columns">
-          <div class="column is-3">
-            <label class=" ativi label">Atual Atividade do(s) Participante(s):</label>
-            <div style="width: 267px;" class="control">
+        <div style="width: 300px; margin-left: -250px;" class=" columns">
+          <div style="width: 310px;" class="column is-3">
+            <label class="">Atual Atividade do(s) Participante(s):</label>
+            <div style="width: 280px;" class="control">
               <div class="select is-fullwidth">
                 {{form.atividade_idatividade}}
               </div>
             </div>
           </div>
-          <div style="margin-left: 100px;" class="column">
-            <label style="width: 300px; margin-left: 50px;" class="label">Selecionar Sessão:</label>
+
+          <div style="margin-left: -20px;" class="column">
+            <label aria-label="breadcrumbs" style="width: 300px; margin-left: 50px;" class="">Selecionar Sessão:</label>
             <div style="margin-left: 50px; width: 250px;" class="control">
               <div class="select is-fullwidth">
                 <select id="idsessao" name="idsession">
-                  <option value="">---------------</option>
+                  <option hidden value="">Selecione Atividade</option>
                 </select>
               </div>
             </div>
           </div>
           <div style="margin-left: -80px;" class="column">
-            <label style="width: 300px; margin-left: 50px;" class="label">Selecionar Grupo:</label>
+            <label style="width: 300px; margin-left: 50px;" aria-label="breadcrumbs" class="">Selecionar Grupo:</label>
             <div style="margin-left: 50px; width: 300px;" class="control">
               <div class="select is-fullwidth">
                 <select id="grupos" name="grupos">
-                  <option value="">---------------</option>
+                  <option hidden value="">Selecione Sessão</option>
                 </select>
               </div>
             </div>
           </div>
         </div>
 <hr>
-        <div style="margin-left: -60px;" class="columns">
-          <div class="column is-3">
-            <label class=" ativi label">Próxima Atividade do(s) Participante(s):</label>
-            <div style="width: 267px;" class="control">
+        <div style="width: 300px; margin-left: -100px;" class="columns">
+          <div style="width: 350px;"  class="column is-3">
+            <label class="">Próxima Atividade do(s) Participante(s):</label>
+            <div style="width: 280px;" class="control">
               <div class="select is-fullwidth">
                 {{form.campus_levar}}
               </div>
             </div>
           </div>
-          <div style="margin-left: 80px;" class="column">
-            <label style="width: 300px; margin-left: 100px;" class="label">Local Destino do(s) Participante(s):</label>
-            <div style="margin-left: 100px; width: 250px;" class="control">
+          <div style="" class="column">
+            <label style="width: 300px;" class="">Local Destino do(s) Participante(s):</label>
+            <div style=" width: 250px;" class="control">
               <div class="select is-fullwidth">
                 <select id="levar" name="levar">
-                  <option value="">---------------</option>
+                  <option hidden value="">Selecione Atividade</option>
                 </select>
               </div>
             </div>
@@ -176,6 +178,7 @@
 
 .marg{
   margin-left: -190px;
+
 }
 </style>
 
