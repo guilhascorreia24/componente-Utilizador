@@ -1,5 +1,5 @@
 
-  <option value="">Nenhum Local Selecionado</option>
+  <option hidden value="">Selecione Local</option>
   {% for espaco in espaco %}
         <option value="{{espaco.espaco_idespaco.idespaco}}">{{espaco.espaco_idespaco.nome}} ({{espaco.espaco_idespaco.campus_idcampus.nome}})</option>
   {% endfor %}
