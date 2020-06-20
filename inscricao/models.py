@@ -234,6 +234,8 @@ class DiaAberto(models.Model):
     enderecopaginaweb = models.CharField(db_column='enderecoPaginaWeb', max_length=60)  # Field name made lowercase.
     datadiaabertoinicio = models.DateField(db_column='dataDiaAbertoInicio')  # Field name made lowercase.
     datadiaabertofim = models.DateField(db_column='dataDiaAbertofim')  # Field name made lowercase.
+    datainscricaonasatividadesinicio = models.DateField()
+    datainscricaonasatividadesfim = models.DateField()
     datapropostaatividadeinicio = models.DateField(db_column='dataPropostaAtividadeInicio')  # Field name made lowercase.
     datapropostaatividadesfim = models.DateField(db_column='dataPropostaAtividadesFim')  # Field name made lowercase.
     administrador_utilizador_idutilizador = models.ForeignKey(Administrador, models.DO_NOTHING, db_column='Administrador_Utilizador_idutilizador')  # Field name made lowercase.
@@ -318,6 +320,7 @@ class Espaco(models.Model):
     idespaco = models.AutoField(primary_key=True)
     nome = models.CharField(max_length=255)
     campus_idcampus = models.ForeignKey(Campus, models.DO_NOTHING, db_column='campus_idCampus')  # Field name made lowercase.
+    img = models.CharField(max_length=100, blank=True, null=True)
 
     class Meta:
         managed = False
@@ -387,6 +390,7 @@ class InscricaoHasPrato(models.Model):
     inscricao_idinscricao = models.ForeignKey(Inscricao, models.DO_NOTHING, db_column='inscricao_idinscricao')
     prato_idprato = models.ForeignKey('Prato', models.DO_NOTHING, db_column='Prato_idPrato')  # Field name made lowercase.
     inscricao_has_prato_id = models.AutoField(primary_key=True)
+    nralmocos = models.IntegerField()
 
     class Meta:
         managed = False
@@ -401,19 +405,17 @@ class InscricaoHasSessao(models.Model):
     inscricao_idinscricao = models.ForeignKey(Inscricao, models.DO_NOTHING, db_column='inscricao_idinscricao')
     sessao_idsessao = models.ForeignKey('Sessao', models.DO_NOTHING, db_column='sessao_idsessao')
     inscricao_has_sessao_id = models.AutoField(primary_key=True)
-    nr_inscritos = models.IntegerField(validators=[smaller_zero_validator])
+    nr_inscritos = models.IntegerField(validators=[smaller_zero_validator,not_zero_validator])
 
     def save(self, *args, **kwargs):
-        insc = 0
-        try:
-            insc = InscricaoHasSessao.objects.get(inscricao_has_sessao_id=self.inscricao_has_sessao_id).nr_inscritos
-        except:
-            insc = 0
-        
+        Sessao.objects.filter(idsessao=self.sessao_idsessao.pk).update(nrinscritos=F('nrinscritos')+self.nr_inscritos)
+        return super(InscricaoHasSessao, self).save(*args, **kwargs)
+
+    def update(self, *args, **kwargs):
+        insc = InscricaoHasSessao.objects.filter(inscricao_idinscricao=self.inscricao_idinscricao).nr_inscritos
         delta = self.nr_inscritos-insc
         Sessao.objects.filter(idsessao=self.sessao_idsessao.pk).update(nrinscritos=F('nrinscritos')+delta)
-        return super(InscricaoHasSessao, self).save(*args, **kwargs)
-    
+        super(InscricaoHasSessao,self).update(*args, **kwargs)
 
 
     class Meta:
@@ -426,7 +428,7 @@ def delete_sessao_inscricao(sender, instance, using, **kwargs):
 
 
 class InscricaoIndividual(models.Model):
-    nracompanhantes = models.IntegerField(db_column='nracompanhades')
+    nracompanhantes = models.IntegerField()
     participante_utilizador_idutilizador = models.ForeignKey('Participante', models.DO_NOTHING, db_column='Participante_Utilizador_idutilizador')  # Field name made lowercase.
     inscricao_idinscricao = models.OneToOneField(Inscricao, models.DO_NOTHING, db_column='inscricao_idinscricao', primary_key=True)
     telefone = models.IntegerField(validators=[telefone_validator])
@@ -447,8 +449,8 @@ class Material(models.Model):
 
 class Menu(models.Model):
     idmenu = models.AutoField(db_column='idMenu', primary_key=True)  # Field name made lowercase.
-    tipo = models.CharField(max_length=45)
     menu = models.CharField(max_length=45)
+    descricao = models.CharField(max_length=125, blank=True, null=True)
     campus_idcampus = models.ForeignKey(Campus, models.DO_NOTHING, db_column='Campus_idCampus')  # Field name made lowercase.
     horario_has_dia_id_dia_hora = models.ForeignKey(HorarioHasDia, models.DO_NOTHING, db_column='horario_has_dia_id_dia_hora')
     nralmocosdisponiveis = models.IntegerField()
@@ -488,19 +490,15 @@ class Participante(models.Model):
 
 class Prato(models.Model):
     idprato = models.AutoField(db_column='idPrato', primary_key=True)  # Field name made lowercase.
-    nralmocos = models.IntegerField(validators=[smaller_zero_validator])
+    tipo = models.CharField(max_length=45)
     descricao = models.CharField(max_length=125)
-    menu_idmenu = models.ForeignKey(Menu, models.DO_NOTHING, db_column='Menu_idMenu')  # Field name made lowercase.
-
-
-
+    nralmocos = models.IntegerField(blank=True, null=True)
+    menu_idmenu = models.ForeignKey(Menu, models.DO_NOTHING, db_column='menu_idMenu')  # Field name made lowercase.
+        
+        
     def save(self, *args, **kwargs):
-        try:
-            insc = Prato.objects.get(inscricao_idinscricao=self.inscricao_idinscricao).nralmocos
-        except:
-            insc = 0
-        delta = self.nralmocos-insc
-        Menu.objects.filter(idmenu=self.menu_idmenu.pk).update(nralmocosdisponiveis=F('nralmocosdisponiveis')-delta)
+        obj = Menu.objects.get(idmenu=self.menu_idmenu.pk)
+        Menu.objects.filter(idmenu=self.menu_idmenu.pk).update(nralmocosdisponiveis=F('nralmocosdisponiveis')-self.nralmocos)
         return super(Prato, self).save(*args, **kwargs)
     
     def update(self, *args, **kwargs):
@@ -606,7 +604,7 @@ class TransporteHasHorario(models.Model):
     origem = models.ForeignKey(Paragem, models.DO_NOTHING, db_column='origem',related_name="origem")
     destino = models.ForeignKey(Paragem, models.DO_NOTHING, db_column='destino',related_name="destino")
     horario_has_dia_id_dia_hora = models.ForeignKey(HorarioHasDia, models.DO_NOTHING, db_column='horario_has_dia_id_dia_hora')
-    n_passageiros = models.IntegerField(blank=True, null=True,validators=[smaller_zero_validator])
+    n_passageiros = models.IntegerField(blank=True, null=True,validators=[not_zero_validator,smaller_zero_validator])
 
     def __str__(self):
         return self.origem.paragem + " -> " + self.destino.paragem + " | " + self.horario_has_dia_id_dia_hora.__str__() + " | Lugares restantes: " + str(self.transporte_idtransporte.capacidade - self.n_passageiros)
@@ -624,20 +622,14 @@ class TransporteHasInscricao(models.Model):
     n_passageiros = models.IntegerField(validators=[smaller_zero_validator])
 
     def save(self, *args, **kwargs):
-        old = 0
-        try:
-            old = TransporteHasInscricao.objects.get(transporte_has_inscricao_id=self.transporte_has_inscricao_id).n_passageiros
-        except:
-            old = 0
-        delta = self.n_passageiros - old
-        TransporteHasHorario.objects.filter(id_transporte_has_horario=self.horario.pk).update(n_passageiros=F('n_passageiros')+delta)
+        TransporteHasHorario.objects.filter(id_transporte_has_horario=self.horario.pk).update(n_passageiros=F('n_passageiros')+self.n_passageiros)
         return super(TransporteHasInscricao, self).save(*args, **kwargs)
     
-    #def update(self, *args, **kwargs):
-        #old = TransporteHasInscricao.objects.filter(transporte_has_inscricao_id=self.transporte_has_inscricao_id).n_passageiros
-        #delta = self.n_passageiros - old
-        #TransporteHasHorario.objects.filter(id_transporte_has_horario=self.horario).update(n_passageiros=F('n_passageiros')+delta)
-        #super(TransporteHasInscricao,self).update(*args, **kwargs)
+    def update(self, *args, **kwargs):
+        old = TransporteHasInscricao.objects.filter(transporte_has_inscricao_id=self.transporte_has_inscricao_id).n_passageiros
+        delta = self.n_passageiros - old
+        TransporteHasHorario.objects.filter(id_transporte_has_horario=self.horario).update(n_passageiros=F('n_passageiros')+delta)
+        super(TransporteHasInscricao,self).update(*args, **kwargs)
     
     def clean(self):
         super().clean()
@@ -646,6 +638,7 @@ class TransporteHasInscricao(models.Model):
         except:
             raise ValidationError({'horario': "Opção inválida"})
         capacidade = data.transporte_idtransporte.capacidade - data.n_passageiros
+        print(str(data.n_passageiros) + " - " + str(data.transporte_idtransporte.capacidade))
         if capacidade < self.n_passageiros:
             #Check for equal entry already in database
             try:
@@ -656,9 +649,10 @@ class TransporteHasInscricao(models.Model):
                     raise ValidationError({'n_passageiros': error})
 
             except ObjectDoesNotExist:
+                print("Error")
                 error = validators.TRANSPORTE_FULL.replace('_NUM_',str(capacidade))
                 raise ValidationError({'n_passageiros': error}) 
-            
+
     class Meta:
         managed = False
         db_table = 'transporte_has_inscricao'

@@ -141,7 +141,7 @@ class Campus(models.Model):
     idcampus = models.AutoField(db_column='idCampus', primary_key=True)  # Field name made lowercase.
     nome = models.CharField(max_length=255)
 
-    def __str__(self):
+        def __str__(self):
         return str(self.nome)
 
     class Meta:
@@ -219,7 +219,7 @@ class Departamento(models.Model):
 class Dia(models.Model):
     dia = models.DateField(primary_key=True)
 
-    def __str__(self):
+        def __str__(self):
         return str(self.dia)
 
     class Meta:
@@ -320,7 +320,6 @@ class Espaco(models.Model):
     idespaco = models.AutoField(primary_key=True)
     nome = models.CharField(max_length=255)
     campus_idcampus = models.ForeignKey(Campus, models.DO_NOTHING, db_column='campus_idCampus')  # Field name made lowercase.
-    img = models.CharField(max_length=100, blank=True, null=True)
 
     class Meta:
         managed = False
@@ -330,7 +329,7 @@ class Espaco(models.Model):
 class Horario(models.Model):
     hora = models.TimeField(primary_key=True)
 
-    def __str__(self):
+        def __str__(self):
         return str(self.hora)
 
     class Meta:
@@ -428,7 +427,7 @@ def delete_sessao_inscricao(sender, instance, using, **kwargs):
 
 
 class InscricaoIndividual(models.Model):
-    nracompanhantes = models.IntegerField()
+    nracompanhades = models.IntegerField()
     participante_utilizador_idutilizador = models.ForeignKey('Participante', models.DO_NOTHING, db_column='Participante_Utilizador_idutilizador')  # Field name made lowercase.
     inscricao_idinscricao = models.OneToOneField(Inscricao, models.DO_NOTHING, db_column='inscricao_idinscricao', primary_key=True)
     telefone = models.IntegerField(validators=[telefone_validator])
@@ -496,7 +495,7 @@ class Prato(models.Model):
     menu_idmenu = models.ForeignKey(Menu, models.DO_NOTHING, db_column='menu_idMenu')  # Field name made lowercase.
         
         
-    def save(self, *args, **kwargs):
+        def save(self, *args, **kwargs):
         obj = Menu.objects.get(idmenu=self.menu_idmenu.pk)
         Menu.objects.filter(idmenu=self.menu_idmenu.pk).update(nralmocosdisponiveis=F('nralmocosdisponiveis')-self.nralmocos)
         return super(Prato, self).save(*args, **kwargs)
