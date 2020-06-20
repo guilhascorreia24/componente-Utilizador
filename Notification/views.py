@@ -85,7 +85,7 @@ def checknot(request):
     nots=UtilizadorHasNotificacao.objects.all().annotate(emissor=Value("",CharField()))
     deletenot(request)
     for noti in nots:
-        print(notis)
+        #print(notis)
         if noti.notificacao.utilizadorrecebe==me_id:
             if Utilizador.objects.filter(pk=noti.notificacao.idutilizadorenvia).exists():
                 noti.emissor=Utilizador.objects.get(pk=noti.notificacao.idutilizadorenvia).email
@@ -94,7 +94,7 @@ def checknot(request):
             noti.pk=signing.dumps(noti.pk)
             notis.append(noti)
     func=user_views.user(request)
-    print(func)
+    #print(func)
     return render(request,'check.html',{'nots':notis,'me_id':me_id,'funcao':func,'i':i,'not_checked':noti_not_checked(request)})
 
 def deletenot(request):
