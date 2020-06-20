@@ -4,30 +4,34 @@
     <li class="is-active"><a aria-current="page">Consultar Tarefas</a></li>
 {% endblock %}
 {% block content %}
+<head>
+    <style>
+    .select.is-empty select {
+     color:black;
+    }
+    </style>
+</head>
 
 <div class="columns">
     <div class="column is-3">
         <div>
-            <label class="label">Consulta Por Filtros <span class="icon is-medium"><i class="mdi mdi-filter-outline"></i></span></label>
-            <hr>
+            <p data-v-1513178e="" class="menu-label">Filtros Utilizador</p>
             <form method="GET">
                 <div class="column">
                     <div class="field">
-                        <label class="label"style="font-size:14px">Filtrar por Nome Tarefa:</label>
                         <div class="control is-expanded">
-                            <input type="text" id="myInput" onkeyup="myFunction()" autocomplete="off" class="input">
+                            <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Filtrar por Nome Tarefa" autocomplete="off" class="input">
                         </div>
                     </div>
                 </div>
                 <div class="column">
                     <div class="field">
-                        <label class="label"style="font-size:14px">Filtrar por Colaborador:</label>
                         <div class="control is-expanded">
                                 <span class="select is-fullwidth is-empty">
                                 <select id="myInput3"onchange="myFunction3()">
-                                    <option hidden value="">Colaborador</option>
+                                    <option hidden value="">Filtrar por Colaborador</option>
                                     {% for c in colab %}
-                                    <option value="{{c.utilizador_idutilizador.nome}}">{{c.utilizador_idutilizador.nome}}</option>
+                                    <option  value="{{c.utilizador_idutilizador.nome}}">{{c.utilizador_idutilizador.nome}}</option>
                                     {% endfor %}
                                 </select>
                                 </span>
@@ -36,12 +40,11 @@
                 </div>
                 <div class="column">
                     <div class="field">
-                        <label class="label" style="font-size:14px">Filtrar por Atividade:</label>
                         <div class="control">
                             <div class="select is-fullwidth">
                                 <span class="select is-fullwidth is-empty">
                                     <select id="myInput4"onchange="myFunction4()">
-                                        <option hidden value="">Atividade</option>
+                                        <option hidden value="">Filtrar Atividade</option>
                                         {% for a in atividade %}
                                         <option value="{{a.titulo}}">{{a.titulo}}</option>
                                         {% endfor %}
@@ -53,12 +56,11 @@
                 </div>
                 <div class="column">
                     <div class="field">
-                        <label class="label"style="font-size:14px">Filtrar por Estado:</label>
                         <div class="control">
                             <div class="select is-fullwidth">
                                 <span class="select is-fullwidth is-empty">
                                     <select id="myInput5"onchange="myFunction5()">
-                                        <option hidden value="">Estado</option>
+                                        <option hidden value="">Filtrar por Estado</option>
                                         <option value="Concluida">Concluida</option>
                                         <option value="Pendente">Pendente</option>
                                     </select>
@@ -67,10 +69,10 @@
                         </div>
                     </div>
                 </div>
-                <hr>
-                <button class="button is-outlined is-link" type="submit">
-                    <span>Filtrar</span>
-                    <span class="icon is-medium"><i class="mdi mdi-magnify"></i></span>
+                <br>
+                <button class="button is-outlined is-link is-danger" type="reset">
+                    <span>Limpar</span>
+                    <span class="icon is-medium"><i class="mdi mdi-broom"></i></span>
                 </button>
          </form>
     </div>
