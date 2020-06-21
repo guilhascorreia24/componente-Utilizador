@@ -19,13 +19,35 @@
                             <tr>
                                 <td>{{campi.nome}}</td>
                                 <td>
-                                    <form method="POST">
+                                     <div><a type="button"
+                                data-toggle="modal" data-target="#exampleModal" data-backdrop="false">
+                                <!----> <span class="icon is-small"> <i class="mdi mdi-delete mdi-24px"></i> </span>
+
+                                <!----></a></div>
+                                    <!-- POP UP Apagar-->
+                                <div class="dialog modal" id="exampleModal">
+                                <div class="modal-background"></div>
+                                <br><br><br><br><br><br><br><br><br><br><br><br>
+                                <div class="modal-card animation" style="max-width:360px">
+                                    <!---->
+                                    <section class="modal-card-body is-titleless">
+                                        <div class="media">
+                                            <!---->
+                                            <div class="media-content">
+                                                <p>Tem a certeza que quer apagar campus?</p>
+                                                <!---->
+                                            </div>
+                                        </div>
+                                    </section>
+                                    <footer class="modal-card-foot"><button class="button" data-dismiss="modal">
+                                            Cancelar
+                                        </button>
                                         <a href="{% url 'atividades:apagar_campus' campi.idcampus %}">
-                                            <span class="icon is-small">
-                                                <i class="mdi mdi-delete mdi-24px"></i>
-                                            </span>
-                                        </a>
-                                    </form>
+                                        <button class="button is-success">
+                                            Confirmar
+                                        </button></a></footer>
+                                </div>
+                            </div>
                                 </td>
                             </tr>
                             {% endfor %}
