@@ -95,7 +95,7 @@ def checknot(request):
     deletenot(request)
     for noti in nots:
         #print(notis)
-        if noti.notificacao.utilizadorrecebe==me_id:
+        if noti.notificacao.utilizadorrecebe==me_id and not(has_noti(notis,noti)) :
             if Utilizador.objects.filter(pk=noti.notificacao.idutilizadorenvia).exists():
                 noti.emissor=Utilizador.objects.get(pk=noti.notificacao.idutilizadorenvia).email
             else:

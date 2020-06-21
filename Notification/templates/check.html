@@ -322,14 +322,6 @@
 </div>
 {% endfor %}
 <script>
-    {% for user in users %}
-    $("#color_me{{ forloop.counter }}").change(function () {
-        var color = $("option:selected", this).attr("class");
-        $("#color_me").attr("class", color);
-    });
-    {% endfor %}
-</script>
-<script>
     $(function () {
         $('#campus').on('change', function () {
             var val = this.value;
@@ -387,9 +379,9 @@
     function filterRows() {
         var from = $('#datefilterfrom').val();
         var to = $('#datefilterto').val();
-        console.log(from)
         from = from || '1970-01-01'; // default from to a old date if it is not set
         to = to || '2999-12-31';
+        console.log(from)
         var dateFrom = moment(from)
         var dateTo = moment(to)
         console.log(dateFrom);
@@ -426,6 +418,14 @@
     }
 }
      
+    </script>
+    <script>
+        {% for user in users %}
+        $("#color_me{{ forloop.counter }}").change(function () {
+            var color = $("option:selected", this).attr("class");
+            $("#color_me").attr("class", color);
+        });
+        {% endfor %}
     </script>
 
 {% endblock content %}
