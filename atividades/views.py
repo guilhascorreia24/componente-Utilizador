@@ -392,7 +392,7 @@ def return_account_type(userId):
 
 def criar_campus_view(request):
     campus = Campus.objects.all()
-    if request.method == 'POST':
+    if request.method == 'POST' and not(Campus.objects.filter(nome=request.POST['nome']).exists()):
         new = Campus(nome=request.POST.get('nome'))
         new.save()
     context = {
@@ -404,7 +404,8 @@ def criar_campus_view(request):
 
 def apagar_campus_view(request, idCampus):
     campus = get_object_or_404(Campus, idcampus=idCampus)
-    campus.delete()
+    if not(UnidadeOrganica.objects.filter(campus_idcampus=idCampus).exists() and Menu.objects.filter(campus_idcampus=idCampus).exists() and Espaco.objects.filter(campus_idcampus=idCampus).exists()):
+        campus.delete()
     return redirect("atividades:criar_campus")
 
 
@@ -413,7 +414,7 @@ def apagar_campus_view(request, idCampus):
 def criar_uo_view(request):
     uo = UnidadeOrganica.objects.all()
     form = UoForm(request.POST)
-    if request.method == 'POST':
+    if request.method == 'POST' and not(UnidadeOrganica.objects.filter(sigla=request.POST['sigla'],campus_idcampus=Campus.objects.get(pk=request.POST['campus_idcampus']))):
         if form.is_valid():
             form.save()
     context = {
@@ -426,7 +427,8 @@ def criar_uo_view(request):
 
 def apagar_uo_view(request, idUo):
     uo = get_object_or_404(UnidadeOrganica, iduo=idUo)
-    uo.delete()
+    if not(Atividade.objects.filter(unidade_organica_iduo=idUo).exists() and ColaboradorHasUnidadeOrganica.objects.filter(unidade_organica_iduo=idUo).exists() and Coordenador.objects.filter(unidade_organica_iduo=idUo).exists() and Curso.objects.filter(unidade_organica_iduo=idUo).exists() and Departamento.objects.filter(unidade_organica_iduo=idUo).exists()):
+        uo.delete()
     return redirect("atividades:criar_uo")
 
 
@@ -435,7 +437,7 @@ def apagar_uo_view(request, idUo):
 def criar_departamento_view(request):
     departamento = Departamento.objects.all()
     form = DepartamentoForm(request.POST)
-    if request.method == 'POST':
+    if request.method == 'POST' and not(Departamento.objects.filter(nome=reques.POST['nome'],unidade_organica_iduo=UnidadeOrganica.objects.get(request.POST['unidade_organica_iduo']))):
         if form.is_valid():
             form.save()
     context = {
@@ -448,7 +450,8 @@ def criar_departamento_view(request):
 
 def apagar_departamento_view(request, idDepartamento):
     departamento = get_object_or_404(Departamento, iddepartamento=idDepartamento)
-    departamento.delete()
+    if not(CoordenadorHasDepartamento.objects.filter(departamento_iddepartamento=idDepartamento).exists() and Atividade.objects.filter(departamento_iddepartamento=idDepartamento).exists() and ProfessorUniversitario.objects.filter(departamento_iddepartamento=idDepartamento).exists()) :
+        departamento.delete()
     return redirect("atividades:criar_departamento")
 
 

@@ -5,7 +5,19 @@
 {% endblock %}
 {% block content %}
 {% load static %}
-<div class="table "></div>
+<div class="b-steps">
+    <nav class="steps is-success">
+        <ul class="step-items">
+            <li class="step-item is-success is-active"><a class="step-link">
+                    <div class="step-marker"><span class="icon"><i class="mdi mdi-book mdi-24px"></i></span></div>
+                    <div class="step-details"><span class="step-title">Espaços</span>
+                    </div>
+                </a></li>
+        </ul>
+    </nav>
+    </div>
+    <br>
+<div class="table " style="padding-left: 10%;padding-right: 10%;">
             <div class="table-wrapper">
                 <table class="table has-mobile-cards is-hoverable is-fullwidth">
                     <thead>
@@ -72,6 +84,7 @@
                             </tr>
                             {% endfor %}
                 </table>
+                <br>
                  <form method="POST" id="addEspaco" enctype="multipart/form-data"> {% csrf_token %}
                     <div class="table "></div>
                     <div class="table-wrapper">
@@ -87,7 +100,7 @@
                         <td>
                     <div class="column">
                         <div class="control is-expanded">
-                            <label class="label">Campus:</label>
+                            <label class="">Campus:</label>
                             <div class="control">
                                 {{form.campus_idcampus}}
                             </div>
@@ -96,7 +109,7 @@
                         </td>
                         <td>
                     <div class="column">
-                        <label class="label">Nome:</label>
+                        <label class="">Nome:</label>
                         <div class="control is-expanded">
                             {{form.nome}}
                         </div>
@@ -104,7 +117,7 @@
                         </td>
                         <td>
                     <div class="column">
-                        <label class="label">Mapa do local:</label>
+                        <label class="">Mapa do local:</label>
                         <div class="control is-expanded">
                             {{form.img}}
                         </div>
@@ -132,5 +145,7 @@
                     <span >Finalizar</span>
                     </a>
                 </button>
+                </div>
+                </div>
                 </div>
 {% endblock content%}
