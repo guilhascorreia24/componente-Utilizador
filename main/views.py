@@ -26,7 +26,7 @@ def mais_info(request, pk):
 def criar_tarefa_atividade(request):
 	user = Utilizador.objects.get(idutilizador = request.session["user_id"])
 	coord_user = Coordenador.objects.get(utilizador_idutilizador = user)
-	new_form = Tarefa(concluida = 1, coordenador_utilizador_idutilizador = coord_user)
+	new_form = Tarefa(concluida = 0, coordenador_utilizador_idutilizador = coord_user)
 	form = TarefasFormAtividade(request.POST, instance = new_form)
 	if request.method == "POST":
 		if form.is_valid():
@@ -39,7 +39,7 @@ def criar_tarefa_atividade(request):
 			new_tarefa.save()
 			messages.success(request, f'Tarefa Criada com Sucesso!')
 			return redirect("blog:blog-home")
-	
+
 	return render(request=request,
 				  template_name="main/criarTarefaAtividade.html",
 				  context={'form':form,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
@@ -158,12 +158,10 @@ def editar_tarefa(request, pk):
 				 context={'form':form,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
 
 def eliminar_tarefa(request, pk):
-	tarefa = Tarefa.objects.get(idtarefa = pk)
-	if request.method == "POST":
+	if Tarefa.objects.filter(idtarefa = pk):
+		tarefa = Tarefa.objects.get(idtarefa = pk)
 		tarefa.delete()
 		messages.success(request, f'Tarefa Eliminada com Sucesso!')
-		return redirect("tarefa_coordenador:consultar_tarefa")
-	context ={'tarefa': tarefa,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)}
-	return render(request = request,
-				 template_name="main/eliminarTarefa.html",
-				 context=context)
+	else:
+		messages.success(request, f'Não foi possível eliminar Tarefa!')
+	return redirect("tarefa_coordenador:consultar_tarefa")
