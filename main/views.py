@@ -141,7 +141,17 @@ def editar_tarefa(request, pk):
 		if request.method == "POST":
 			form = TarefasFormGroup(request.POST, instance = tarefa)
 			if form.is_valid():
-				form.save()
+				tarefa.nome= request.POST["nome"]
+				tarefa.dia_dia = Dia.objects.get(dia = request.POST["dia_dia"])
+				tarefa.hora_inicio = request.POST["hora_inicio"]
+				if request.POST['colaborador_utilizador_idutilizador'] != '':
+					tarefa.colaborador_utilizador_idutilizador = Colaborador.objects.get(utilizador_idutilizador = Utilizador.objects.get(idutilizador= request.POST["colaborador_utilizador_idutilizador"]))
+				ativid = Atividade.objects.get(idatividade = request.POST['atividade_idatividade'])
+				tarefa.buscar = Espaco.objects.get(idespaco = ativid.espaco_idespaco.idespaco)
+				tarefa.levar = Espaco.objects.get(idespaco = request.POST['levar'])
+				grupo = Inscricao.objects.get(idinscricao = request.POST['grupos'])
+				tarefa.inscricao_coletiva_inscricao_idinscricao = InscricaoColetiva.objects.get(inscricao_idinscricao = grupo)
+				tarefa.save()
 				messages.success(request, f'Tarefa Editada com Sucesso!')
 				return redirect("tarefa_coordenador:consultar_tarefa")
 	else:
@@ -150,7 +160,10 @@ def editar_tarefa(request, pk):
 		if request.method == "POST":
 			form = TarefasFormAtividade(request.POST, instance = tarefa)
 			if form.is_valid():
-				form.save()
+				tarefa.nome= request.POST["nome"]
+				tarefa.sessao_idsessao = Sessao.objects.get(idsessao = request.POST["idsession"])
+				tarefa.colaborador_utilizador_idutilizador = Colaborador.objects.get(utilizador_idutilizador = Utilizador.objects.get(idutilizador= request.POST["colaborador_utilizador_idutilizador"]))
+				tarefa.save()
 				messages.success(request, f'Tarefa Editada com Sucesso!')
 				return redirect("tarefa_coordenador:consultar_tarefa")
 	return render(request = request,
