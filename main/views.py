@@ -116,9 +116,8 @@ def consultar_tarefa_admin(request):
 	tarefas = Tarefa.objects.all()
 	unidade = UnidadeOrganica.objects.all()
 	sessao = Sessao.objects.all()
-	iduo = Coordenador.objects.get(pk=request.session['user_id']).unidade_organica_iduo
-	colab = Colaborador.objects.filter(curso_idcurso= Curso.objects.get(unidade_organica_iduo = iduo))
-	atividade = Atividade.objects.filter(unidade_organica_iduo = iduo)
+	colab = Colaborador.objects.all()
+	atividade = Atividade.objects.all()
 	myFilter = TarefaFilter(request.GET, queryset=tarefas)
 	tarefas = myFilter.qs
 
@@ -171,10 +170,19 @@ def editar_tarefa(request, pk):
 				 context={'form':form,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
 
 def eliminar_tarefa(request, pk):
-	if Tarefa.objects.filter(idtarefa = pk):
-		tarefa = Tarefa.objects.get(idtarefa = pk)
-		tarefa.delete()
-		messages.success(request, f'Tarefa Eliminada com Sucesso!')
-	else:
-		messages.success(request, f'Não foi possível eliminar Tarefa!')
-	return redirect("tarefa_coordenador:consultar_tarefa")
+	if request.session["type"] == 4:
+		if Tarefa.objects.filter(idtarefa = pk):
+			tarefa = Tarefa.objects.get(idtarefa = pk)
+			tarefa.delete()
+			messages.success(request, f'Tarefa Eliminada com Sucesso!')
+		else:
+			messages.success(request, f'Não foi possível eliminar Tarefa!')
+		return redirect("tarefa_coordenador:consultar_tarefa_admin")
+	else:	
+		if Tarefa.objects.filter(idtarefa = pk):
+			tarefa = Tarefa.objects.get(idtarefa = pk)
+			tarefa.delete()
+			messages.success(request, f'Tarefa Eliminada com Sucesso!')
+		else:
+			messages.success(request, f'Não foi possível eliminar Tarefa!')
+		return redirect("tarefa_coordenador:consultar_tarefa")
