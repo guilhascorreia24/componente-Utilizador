@@ -112,6 +112,27 @@ def consultar_tarefa(request):
 				  template_name="main/consultarTarefa.html",
  				  context=context)
 
+def consultar_tarefa_admin(request):
+	tarefas = Tarefa.objects.all()
+	unidade = UnidadeOrganica.objects.all()
+	sessao = Sessao.objects.all()
+	iduo = Coordenador.objects.get(pk=request.session['user_id']).unidade_organica_iduo
+	colab = Colaborador.objects.filter(curso_idcurso= Curso.objects.get(unidade_organica_iduo = iduo))
+	atividade = Atividade.objects.filter(unidade_organica_iduo = iduo)
+	myFilter = TarefaFilter(request.GET, queryset=tarefas)
+	tarefas = myFilter.qs
+
+	context={'atividade':atividade,
+			'unidade':unidade,
+			'tarefas': tarefas,
+			'sessao': sessao,
+			'myFilter': myFilter,
+			'colab': colab,
+			'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)}
+	return render(request=request,
+				  template_name="main/consultarTarefaAdmin.html",
+ 				  context=context)				   
+
 def editar_tarefa(request, pk):
 	tarefa = Tarefa.objects.get(idtarefa = pk)
 	if tarefa.sessao_idsessao == None:

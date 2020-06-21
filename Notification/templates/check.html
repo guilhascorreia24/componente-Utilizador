@@ -5,6 +5,7 @@
         class="router-link-exact-active router-link-active">Notificações</a></li>
 {% endblock %}
 {% block content %}
+
 <div data-v-8716d23a="" class="columns">
     <div class="column is-3">
         <div data-v-1513178e="">
@@ -14,6 +15,7 @@
 
                     <div data-v-1513178e="" class="field">
                         <!---->
+                        <form>
                         <div data-v-1513178e="" class="autocomplete control">
                             <div class="control has-icons-left is-clearfix"><input type="text" id="myInput"
                                     onkeyup="myFunction()" autocomplete="off" placeholder="Email do Utilizador"
@@ -122,8 +124,12 @@
                         </ul>
                     </li>
                     <div class="column">
-
+                        <button class="button is-outlined is-link is-danger" type="submit">
+                            <span>Limpar</span>
+                            <span class="icon is-medium"><i class="mdi mdi-broom"></i></span>
+                        </button>
                     </div>
+                </form>
                 </ul>
             </div>
         </div>
