@@ -1,82 +1,90 @@
-{% extends '../atividades/assets/home.html' %}
-{% block content %}
-<nav class="breadcrumb" aria-label="breadcrumbs">
-  <ul>
+{% extends 'base_template.html' %}
+{% block steps %}
     <li><a href="{% url 'blog:blog-home' %}">Início</a></li>
     <li class="is-active"><a href="" aria-current="page">Atividades</a></li>
-  </ul>
-</nav>
+{% endblock %}
+{% block content %}
 <div class="columns">
     <div class="column is-3">
         <div style="padding: 3rem 2vw 1rem">
             <label class="label">Consulta Por Filtros </label>
             <hr>
         <form method="Post" id="filtro"> {% csrf_token %}
-                <div class="column">
-                        <div class="field">
-                            <label class="label" style="font-size:14px">Filtrar por campus:</label>
-                            <div class="control">
-                                <div class="select is-fullwidth">
-                                <select name="campus" id="campus">
+            <div class="field">
+                <!---->
+                <div class="control is-expanded has-icons-left"><span
+                        class="select is-fullwidth is-empty">
+                       <select name="campus" id="campus">
                                     <option value="" disabled selected>Selecione campus</option>
                                     {% for campi in campus %}
                                     <option value="{{campi.idcampus}}" {% if campi.idcampus == campus_filter %} selected {% endif %} >{{campi.nome}}</option>
                                     {% endfor %}
                                 </select>
-                                </div>
-                            </div>
-                        </div>
-                </div>
-                <div class="column">
-                        <div class="field">
-                            <label class="label" style="font-size:14px">Filtrar por unidade orgânica:</label>
-                            <div class="control">
-                                <div class="select is-fullwidth">
-                                <select name="unidade_organica" id="unidade_organica">
+                         </span> <span class="icon is-left"><i
+                        class="mdi mdi-magnify mdi-24px"></i></span></div>
+                <!---->
+            </div>
+            <div class="field">
+                <!---->
+                <div class="control is-expanded has-icons-left"><span
+                        class="select is-fullwidth is-empty">
+                        <select name="unidade_organica" id="unidade_organica">
                                     <option value="" disabled selected>Selecione unidade orgânica</option>
                                     {% for unidade in uo %}
                                     <option value="{{unidade.iduo}}"  {% if unidade.iduo == uo_filter %} selected {% endif %}>{{unidade.sigla}}</option>
                                     {% endfor %}
                                 </select>
-                                </div>
-                            </div>
-                        </div>
-                </div>
-                <div class="column">
-                        <div class="field">
-                            <label class="label" style="font-size:14px">Filtrar por departamento:</label>
-                            <div class="control">
-                                <div class="select is-fullwidth">
-                                <select name="departamento" id="departamento">
+                         </span> <span class="icon is-left"><i
+                        class="mdi mdi-magnify mdi-24px"></i></span></div>
+                <!---->
+            </div>
+               <div class="field">
+                <!---->
+                <div class="control is-expanded has-icons-left"><span
+                        class="select is-fullwidth is-empty">
+                        <select name="departamento" id="departamento">
                                     <option value="" disabled selected>Selecione departamento</option>
                                     {% for departamento in departamentos %}
                                     <option value="{{departamento.iddepartamento}}" {% if departamento.iddepartamento == departamento_filter %} selected {% endif %}>{{departamento.nome}}</option>
                                     {% endfor %}
                                 </select>
-                                </div>
+                         </span> <span class="icon is-left"><i
+                        class="mdi mdi-magnify mdi-24px"></i></span></div>
+                <!---->
+                 <div data-v-1513178e="" class="field">
+                        <!---->
+                        <div data-v-1513178e="" class="autocomplete control">
+                            <div class="control has-icons-left is-clearfix"><input type="text"
+                                     autocomplete="off"
+                                    placeholder="Filtrar por tema" class="input" name="temaAtividade" id="temaAtividade" value="{{tema_filter}}">
+                                <span class="icon is-left"><i class="mdi mdi-magnify mdi-24px"></i></span>
+                                <!---->
+                                <!---->
                             </div>
                         </div>
-                </div>
-                <div class="column">
-                    <div class="field">
-                        <label class="label" style="font-size:14px">Filtrar por tema:</label>
-                        <div class="control">
-                            <input type="text" autocomplete="off" placeholder="Tema da Atividade" class="input" name="temaAtividade" id="temaAtividade" value="{{tema_filter}}">
-                        </div>
+                        <!---->
                     </div>
-                </div>
-                 <div class="column">
-                    <div class="field">
-                        <label class="label" style="font-size:14px">Filtrar por titulo:</label>
-                        <div class="control">
-                            <input type="text" autocomplete="off" placeholder="Nome da Atividade" class="input" name="nomeAtividade" id="nomeAtividade" value="{{titulo_filter}}">
+
+                <div data-v-1513178e="" class="field">
+                        <!---->
+                        <div data-v-1513178e="" class="autocomplete control">
+                            <div class="control has-icons-left is-clearfix"><input type="text"
+                                  autocomplete="off"
+                                    placeholder="Filtrar por titulo" class="input" name="nomeAtividade" id="nomeAtividade" value="{{titulo_filter}}">
+                                <span class="icon is-left"><i class="mdi mdi-magnify mdi-24px"></i></span>
+                                <!---->
+                                <!---->
+                            </div>
                         </div>
+                        <!---->
                     </div>
-                </div>
 
 
             <button  type="submit" form="filtro" class="button" style="margin-right: 1rem; color: blue"><!----> <span>Pesquisar</span> <!----></button>
-            <button onclick="clearField()" class="button" style="margin-right: 1rem;"><!----> <span>Limpar</span> <!----></button>
+             <button class="button is-outlined is-link is-danger"  onclick="clearField()">
+                                    <span>Limpar</span>
+                                    <span class="icon is-medium"><i class="mdi mdi-broom"></i></span>
+                                </button>
 
         </form>
         </div>

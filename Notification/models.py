@@ -234,6 +234,8 @@ class DiaAberto(models.Model):
     enderecopaginaweb = models.CharField(db_column='enderecoPaginaWeb', max_length=60)  # Field name made lowercase.
     datadiaabertoinicio = models.DateField(db_column='dataDiaAbertoInicio')  # Field name made lowercase.
     datadiaabertofim = models.DateField(db_column='dataDiaAbertofim')  # Field name made lowercase.
+    datainscricaonasatividadesinicio = models.DateField()
+    datainscricaonasatividadesfim = models.DateField()
     datapropostaatividadeinicio = models.DateField(db_column='dataPropostaAtividadeInicio')  # Field name made lowercase.
     datapropostaatividadesfim = models.DateField(db_column='dataPropostaAtividadesFim')  # Field name made lowercase.
     administrador_utilizador_idutilizador = models.ForeignKey(Administrador, models.DO_NOTHING, db_column='Administrador_Utilizador_idutilizador')  # Field name made lowercase.
@@ -247,7 +249,7 @@ class DiaAberto(models.Model):
 
 class Disponibilidade(models.Model):
     colaborador_utilizador_idutilizador = models.ForeignKey(Colaborador, models.DO_NOTHING, db_column='colaborador_Utilizador_idutilizador')  # Field name made lowercase.
-    disponibilidade_id = models.IntegerField(db_column='Disponibilidade_id', primary_key=True)  # Field name made lowercase.
+    disponibilidade_id = models.AutoField(primary_key=True)  # Field name made lowercase.
     dia_dia = models.ForeignKey(Dia, models.DO_NOTHING, db_column='dia_dia')
     horario_hora = models.ForeignKey('Horario', models.DO_NOTHING, db_column='horario_hora',related_name="disponibilidade_hora_inicio")
     horario_hora1 = models.ForeignKey('Horario', models.DO_NOTHING, db_column='horario_hora1',related_name="disponibilidade_hora_fim")
@@ -318,6 +320,7 @@ class Espaco(models.Model):
     idespaco = models.AutoField(primary_key=True)
     nome = models.CharField(max_length=255)
     campus_idcampus = models.ForeignKey(Campus, models.DO_NOTHING, db_column='campus_idCampus')  # Field name made lowercase.
+    img = models.CharField(max_length=100, blank=True, null=True)
 
     class Meta:
         managed = False
@@ -387,6 +390,7 @@ class InscricaoHasPrato(models.Model):
     inscricao_idinscricao = models.ForeignKey(Inscricao, models.DO_NOTHING, db_column='inscricao_idinscricao')
     prato_idprato = models.ForeignKey('Prato', models.DO_NOTHING, db_column='Prato_idPrato')  # Field name made lowercase.
     inscricao_has_prato_id = models.AutoField(primary_key=True)
+    nralmocos = models.IntegerField()
 
     class Meta:
         managed = False
@@ -424,7 +428,7 @@ def delete_sessao_inscricao(sender, instance, using, **kwargs):
 
 
 class InscricaoIndividual(models.Model):
-    nracompanhades = models.IntegerField()
+    nracompanhantes = models.IntegerField()
     participante_utilizador_idutilizador = models.ForeignKey('Participante', models.DO_NOTHING, db_column='Participante_Utilizador_idutilizador')  # Field name made lowercase.
     inscricao_idinscricao = models.OneToOneField(Inscricao, models.DO_NOTHING, db_column='inscricao_idinscricao', primary_key=True)
     telefone = models.IntegerField(validators=[telefone_validator])
@@ -445,8 +449,8 @@ class Material(models.Model):
 
 class Menu(models.Model):
     idmenu = models.AutoField(db_column='idMenu', primary_key=True)  # Field name made lowercase.
-    tipo = models.CharField(max_length=45)
     menu = models.CharField(max_length=45)
+    descricao = models.CharField(max_length=125, blank=True, null=True)
     campus_idcampus = models.ForeignKey(Campus, models.DO_NOTHING, db_column='Campus_idCampus')  # Field name made lowercase.
     horario_has_dia_id_dia_hora = models.ForeignKey(HorarioHasDia, models.DO_NOTHING, db_column='horario_has_dia_id_dia_hora')
     nralmocosdisponiveis = models.IntegerField()
@@ -486,12 +490,12 @@ class Participante(models.Model):
 
 class Prato(models.Model):
     idprato = models.AutoField(db_column='idPrato', primary_key=True)  # Field name made lowercase.
-    nralmocos = models.IntegerField(validators=[smaller_zero_validator])
+    tipo = models.CharField(max_length=45)
     descricao = models.CharField(max_length=125)
-    menu_idmenu = models.ForeignKey(Menu, models.DO_NOTHING, db_column='Menu_idMenu')  # Field name made lowercase.
-
-
-
+    nralmocos = models.IntegerField(blank=True, null=True)
+    menu_idmenu = models.ForeignKey(Menu, models.DO_NOTHING, db_column='menu_idMenu')  # Field name made lowercase.
+        
+        
     def save(self, *args, **kwargs):
         obj = Menu.objects.get(idmenu=self.menu_idmenu.pk)
         Menu.objects.filter(idmenu=self.menu_idmenu.pk).update(nralmocosdisponiveis=F('nralmocosdisponiveis')-self.nralmocos)
@@ -648,7 +652,7 @@ class TransporteHasInscricao(models.Model):
                 print("Error")
                 error = validators.TRANSPORTE_FULL.replace('_NUM_',str(capacidade))
                 raise ValidationError({'n_passageiros': error}) 
-            
+
     class Meta:
         managed = False
         db_table = 'transporte_has_inscricao'

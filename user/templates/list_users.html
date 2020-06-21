@@ -255,7 +255,10 @@
         input5 = document.getElementById("myInput5");
         filter = input.value.toUpperCase();
         filter2 = input2.value.toUpperCase();
-        filter3 = input3.value.split("@")[1].toUpperCase();
+        if(input3.value.split("@").length>1)
+            filter3 = input3.value.split("@")[1].toUpperCase();
+        else
+            filter3 = input3.value.split("@")[0].toUpperCase();
         filter4 = input4.value.toUpperCase();
         filter5 = input5.value.toUpperCase();
         console.log(filter+" "+filter2);

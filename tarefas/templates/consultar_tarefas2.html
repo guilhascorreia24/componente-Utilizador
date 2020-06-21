@@ -33,7 +33,7 @@
                                     <!---->
                                     <div data-v-1513178e="" class="autocomplete control">
                                         <div class="control has-icons-left is-clearfix">
-                                            <input type="text" id="myInput2" onkeyup="myFunction2()" 
+                                            <input type="text" id="myInput2" onkeyup="myFunction()" 
                                                 autocomplete="off" placeholder="Dia" class="input">
                                             <span class="icon is-left">
                                                 <i class="mdi mdi-magnify mdi-24px"></i>
@@ -44,7 +44,7 @@
                                 </div>
                                 <div class="control is-expanded has-icons-left"><span
                                     class="select is-fullwidth is-empty">
-                                    <select id="myInput5" onchange="myFunction3()" placeholder="Estado">
+                                    <select id="myInput5" onchange="myFunction2()" placeholder="Estado">
                                         <option hidden value="">
                                             Estado
                                         </option>
@@ -182,25 +182,6 @@
                                     <!---->
                                 </table>
                             </div>
-                            <div class="level">
-                                <div class="level-left"></div>
-                                <div class="level-right">
-                                    <div class="level-item">
-                                        <nav class="pagination">
-                                            <a role="button" href="#" disabled="disabled" aria-label="Page 0." class="pagination-link pagination-previous">
-                                                <span class="icon" aria-hidden="true">
-                                                    <i class="mdi mdi-chevron-left mdi-24px"></i>
-                                                </span>
-                                            </a> 
-                                            <a role="button" href="#" disabled="disabled" aria-label="Page 2." class="pagination-link pagination-next">
-                                                <span class="icon"aria-hidden="true">
-                                                    <i class="mdi mdi-chevron-right mdi-24px"></i>
-                                                </span>
-                                            </a>
-                                        </nav>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -286,13 +267,18 @@
 
 <script>
 
-$(document).ready(function() {
-    $('#myTable').DataTable( {
-        "paging":   false,
-        "info":     false,
-        "searching": false
-    } );
-} );
+    $(document).ready(function () {
+        $('#myTable').DataTable({
+            "paging": true,
+            "info": false,
+            "searching": false,
+            "bLengthChange": false,
+            "aLengthMenu": [[5, 10, 25, -1], [5, 10, 25, "All"]],
+            "columnDefs": [
+    { "orderable": false, "targets": 5 }
+  ]
+        });
+    });
 
 </script>
 
@@ -301,55 +287,31 @@ $(document).ready(function() {
 <script>
     function myFunction() 
     {
-            var input, filter, table, tr, td, i, txtValue;
-            input = document.getElementById("myInput");
-            filter = input.value.toUpperCase();
-            table = document.getElementById("myTable");
-            tr = table.getElementsByTagName("tr");
-            for (i = 0; i < tr.length; i++) 
-            {
-                td = tr[i].getElementsByTagName("td")[0];
-                if (td) 
+        var input,input2,filter,filter2, table, tr, td,td1, i, txtValue,txtValue1;
+        input = document.getElementById("myInput");
+        input2 = document.getElementById("myInput2");
+        filter = input.value.toUpperCase();
+        filter2 = input2.value.toUpperCase();
+        console.log(filter+" "+filter2);
+        table = document.getElementById("myTable");
+        tr = table.getElementsByTagName("tr");
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[0];
+            td1= tr[i].getElementsByTagName("td")[2];
+            if (td && td1) {
+                txtValue = td.textContent || td.innerText;
+                txtValue1 = td1.textContent || td1.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1 && txtValue1.toUpperCase().indexOf(filter2) > -1) 
                 {
-                    txtValue = td.textContent || td.innerText;
-                    if (txtValue.toUpperCase().indexOf(filter) > -1) 
-                    {
-                        tr[i].style.display = "";
-                    } 
-                    else 
-                    {
-                        tr[i].style.display = "none";
-                    }
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
                 }
             }
+        }
     }
 
-    function myFunction2() 
-    {
-            var input, filter, table, tr, td, i, txtValue;
-            input = document.getElementById("myInput2");
-            filter = input.value.toUpperCase();
-            table = document.getElementById("myTable");
-            tr = table.getElementsByTagName("tr");
-            for (i = 0; i < tr.length; i++) 
-            {
-                td = tr[i].getElementsByTagName("td")[2];
-                if (td) 
-                {
-                    txtValue = td.textContent || td.innerText;
-                    if (txtValue.toUpperCase().indexOf(filter) > -1) 
-                    {
-                        tr[i].style.display = "";
-                    } 
-                    else 
-                    {
-                        tr[i].style.display = "none";
-                    }
-                }
-            }
-    }
-
-    function myFunction3() {
+    function myFunction2() {
         var input, filter, table, tr, td, i, txtValue;
         input = document.getElementById("myInput5");
         filter = input.value.toUpperCase();
