@@ -107,6 +107,7 @@ CREATE TABLE IF NOT EXISTS `les`.`espaco` (
   `idespaco` INT NOT NULL AUTO_INCREMENT,
   `nome` VARCHAR(255) NOT NULL,
   `campus_idCampus` INT NOT NULL,
+  `img` VARCHAR(100) NULL DEFAULT NULL, 
   PRIMARY KEY (`idespaco`),
   INDEX `fk_espaco_campus1_idx` (`campus_idCampus` ASC) VISIBLE,
   CONSTRAINT `fk_espaco_campus1`

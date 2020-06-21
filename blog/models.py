@@ -688,6 +688,9 @@ class UnidadeOrganica(models.Model):
         managed = False
         db_table = 'unidade_organica'
 
+    def __str__(self):
+        return str(self.sigla)
+
 
 class Utilizador(models.Model):
     idutilizador = models.AutoField(primary_key=True)
