@@ -44,6 +44,22 @@
                             <div class="select is-fullwidth">
                                 <span class="select is-fullwidth is-empty">
                                     <select id="myInput2"onchange="myFunction()">
+                                        <option hidden value="">Filtrar Unidade Orgânica</option>
+                                        {% for u in unidade %}
+                                        <option value="{{u.sigla}}">{{u.sigla}}</option>
+                                        {% endfor %}
+                                    </select>
+                                    </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="field">
+                        <div class="control">
+                            <div class="select is-fullwidth">
+                                <span class="select is-fullwidth is-empty">
+                                    <select id="myInput3"onchange="myFunction()">
                                         <option hidden value="">Filtrar Atividade</option>
                                         {% for a in atividade %}
                                         <option value="{{a.titulo}}">{{a.titulo}}</option>
@@ -59,7 +75,7 @@
                         <div class="control">
                             <div class="select is-fullwidth">
                                 <span class="select is-fullwidth is-empty">
-                                    <select id="myInput3"onchange="myFunction()">
+                                    <select id="myInput4"onchange="myFunction()">
                                         <option hidden value="">Filtrar por Estado</option>
                                         <option value="Concluida">Concluida</option>
                                         <option value="Pendente">Pendente</option>
@@ -85,6 +101,7 @@
                         <tr>
                             <th>Nome Tarefa:</th>
                             <th>Colaborador:</th>
+                            <th>Unidade Orgânica</th>
                             <th>Atividade:</th>
                             <th>Dia:</th>
                             <th>Hora:</th>
@@ -97,8 +114,10 @@
                                 <tr scope="row"><td>{{i.nome}}</td>
                                 {% if i.colaborador_utilizador_idutilizador == NULL %}
                                     <td class=""> --------------- </td>
+                                    <td class=""> --------------- </td>
                                 {% else %}
                                     <td class="">{{i.colaborador_utilizador_idutilizador.utilizador_idutilizador.nome}}</td>
+                                    <td class="">{{i.colaborador_utilizador_idutilizador.curso_idcurso.unidade_organica_iduo.sigla}}</td>
                                 {% endif %}
                                 {% if i.sessao_idsessao == NULL %}
                                     <td class=""> --------------- </td>
@@ -170,10 +189,12 @@
         input2 = document.getElementById("myInput1");
         input3 = document.getElementById("myInput2");
         input4 = document.getElementById("myInput3");
+        input5 = document.getElementById("myInput4");
         filter = input.value.toUpperCase();
         filter2 = input2.value.toUpperCase();
         filter3 = input3.value.toUpperCase();
         filter4 = input4.value.toUpperCase();
+        filter5 = input5.value.toUpperCase();
         console.log(filter+" "+filter2);
         table = document.getElementById("myTable");
         tr = table.getElementsByTagName("tr");
@@ -181,14 +202,17 @@
             td = tr[i].getElementsByTagName("td")[0];
             td1= tr[i].getElementsByTagName("td")[1];
             td2= tr[i].getElementsByTagName("td")[2];
-            td3 = tr[i].getElementsByTagName("td")[5];
-            if (td && td1 && td2 && td3) {
+            td3 = tr[i].getElementsByTagName("td")[3];
+            td4 = tr[i].getElementsByTagName("td")[6];
+            if (td && td1 && td2 && td3 && td4) {
                 txtValue = td.textContent || td.innerText;
                 txtValue1 = td1.textContent || td1.innerText;
                 txtValue2 = td2.textContent || td2.innerText;
                 txtValue3 = td3.textContent || td3.innerText;
+                txtValue4 = td4.textContent || td4.innerText;
                 if (txtValue.toUpperCase().indexOf(filter) > -1 && txtValue1.toUpperCase().indexOf(filter2) > -1 &&
-                     txtValue2.toUpperCase().indexOf(filter3) > -1 && txtValue3.toUpperCase().indexOf(filter4) > -1) {
+                     txtValue2.toUpperCase().indexOf(filter3) > -1 && txtValue3.toUpperCase().indexOf(filter4) > -1 &&
+                        txtValue4.toUpperCase().indexOf(filter5) > -1) {
                     tr[i].style.display = "";
                 } else {
                     tr[i].style.display = "none";
