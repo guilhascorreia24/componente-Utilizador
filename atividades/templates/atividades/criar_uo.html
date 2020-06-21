@@ -1,12 +1,10 @@
-{% extends '../atividades/assets/home.html' %}
-{% block content %}
-{% load static %}
-<nav class="breadcrumb" aria-label="breadcrumbs">
-  <ul>
+{% extends 'base_template.html' %}
+{% block steps %}
     <li><a href="{% url 'blog:blog-home' %}">Início</a></li>
     <li class="is-active"><a href="" aria-current="page">Unidade Orgânica</a></li>
-  </ul>
-</nav>
+{% endblock %}
+{% block content %}
+{% load static %}
 <div class="table "></div>
             <div class="table-wrapper">
                 <table class="table has-mobile-cards is-hoverable is-fullwidth">

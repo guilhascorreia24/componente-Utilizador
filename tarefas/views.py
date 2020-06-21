@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, HttpResponse
 from django.forms import ModelForm,modelformset_factory,Form,inlineformset_factory,ValidationError
 from tarefas import forms
 from django.db.models import F
-from .models import Disponibilidade, Utilizador
+from .models import Disponibilidade, Utilizador, Colaborador
 from .models import Tarefa
 from django.views.decorators.csrf import csrf_exempt
 from Notification.views import noti_not_checked
@@ -14,22 +14,29 @@ from Notification.views import noti_not_checked
 def consultar_tarefas(request):
     user = request.session['user_id']
     utilizador = Utilizador.objects.get(pk=user)
+    colaborador = Colaborador.objects.get(pk=user)
 
     #Colaborador
 
     if utilizador.validada == 1 :
 
-        disp = modelformset_factory(Disponibilidade,form = forms.Form_Disponibilidade,extra=1)
+
+        disp = modelformset_factory(Disponibilidade,form = forms.Form_Disponibilidade,extra=1, can_delete=True)
         if request.method == 'POST':
-            form = forms.Form_Disponibilidade(request.POST, prefix="tarefa")
+            form = disp(request.POST, prefix="tarefa")
 
             if form.is_valid():
-                form.save(user)
-                return HttpResponse("<html>Sucesso</html>")
+
+                for disps in form:
+                    disps.save_user(colaborador)
+                form.save()
+
+                form_reminder = disp(queryset=form, prefix="tarefa")
+
+                return render(request, "consultar_tarefas.html", {'form': form,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
 
         else:   
             form = disp(queryset=Disponibilidade.objects.none(), prefix="tarefa")
-
 
         return render(request, "consultar_tarefas.html", {'form': form,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
 

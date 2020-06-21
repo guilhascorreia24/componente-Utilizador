@@ -1,11 +1,11 @@
-{% extends '../atividades/assets/home.html' %}
-{% block content %}
-<nav class="breadcrumb" aria-label="breadcrumbs">
-  <ul>
-    <li><a href="{% url 'blog:blog-home' %}">Início</a></li>
+{% extends 'base_template.html' %}
+{% block steps %}
+   <li><a href="{% url 'blog:blog-home' %}">Início</a></li>
     <li class="is-active"><a href="" aria-current="page">Atividades do Departamento</a></li>
-  </ul>
-</nav>
+{% endblock %}
+{% block content %}
+{% block content %}
+
 <div class="columns">
     <div class="column is-3">
         <div style="padding: 3rem 2vw 1rem">
