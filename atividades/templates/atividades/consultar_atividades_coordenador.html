@@ -152,6 +152,8 @@
                     </thead>
                 </table>
             </div>
+            </div>
+            </div>
 
          <script>
             function clearField(){
@@ -161,5 +163,19 @@
                 document.getElementById('nomeAtividade').value = '';
             }
           </script>
+                  <script>
+                    $(document).ready(function () {
+                        $('#myTable').DataTable({
+                            "paging": true,
+                            "info": false,
+                            "searching": false,
+                            "bLengthChange": false,
+                            "aLengthMenu": [[5, 10, 25, -1], [5, 10, 25, "All"]],
+                            "columnDefs": [
+                    { "orderable": false, "targets": 5 }
+                  ]
+                        });
+                    });
+                </script>
 
 {% endblock content %}
