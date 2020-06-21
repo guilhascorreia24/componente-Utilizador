@@ -34,6 +34,11 @@
                                         class="mdi mdi-menu-up"></i></span>
                             </div>
                         </th>
+                        <th class="is-sortable">
+                            <div class="th-wrap"> Ação <span class="icon is-small" style="display: none;"><i
+                                        class="mdi mdi-menu-up"></i></span>
+                            </div>
+                        </th>
                         <!---->
                     </tr>
                     <!---->
@@ -54,14 +59,22 @@
                             {{ disponibilidade.horario_hora1 }}
                         </td>
                         <td data-label="Tipo Tarefa" class="">
-                            <select name={{ tipo_tarefa.html_name }} id={{ tipo_tarefa.id_for_label }}>
-                                <option value="" selected="">---------</option>
+                            <select name="{{ disponibilidade.tipo_de_tarefa.html_name }}" id="{{ disponibilidade.tipo_de_tarefa.id_for_label }}">
+                                <option value="None" selected="">---------</option>
 
                                 <option value="Guiar Grupo">Guiar Grupo</option>
 
                                 <option value="Ajudar Docente">Ajudar Docente</option>
 
                             </select>
+                        </td>
+                        <td data-label="Ações" class="">
+                            <a role="button" class="table_remove_button" data-toggle="modal" data-target="#{{ forloop.counter }}">
+                                <span class="icon has-text-danger">
+                                    <i class="mdi mdi-close-box mdi-24px"></i>
+                                </span>
+                            </a>
+                            {{disponibilidade.DELETE | addcss:"hide" }}  
                         </td>
                     </tr>
                     {% endfor %}
@@ -88,9 +101,9 @@
                             {{form.empty_form.horario_hora1}}
                         </td>
                         <td data-label="Tipo Tarefa" class="">
-                            <select name="{{ form.empty_form.tipo_tarefa.html_name }}"
-                                id="{{ form.empty_form.tipo_tarefa.id_for_label }}">
-                                <option value="" selected="">---------</option>
+                            <select name="{{ form.empty_form.tipo_de_tarefa.html_name }}"
+                                id="{{ form.empty_form.tipo_de_tarefa.id_for_label }}">
+                                <option value="None" selected="">---------</option>
 
                                 <option value="Guiar Grupo">Guiar Grupo</option>
 
@@ -98,32 +111,43 @@
 
                             </select>
                         </td>
+                        <td data-label="Ações" class="">
+                            <a role="button" class="table_remove_button" data-toggle="modal" data-target="#{{ forloop.counter }}">
+                                <span class="icon has-text-danger">
+                                    <i class="mdi mdi-close-box mdi-24px"></i>
+                                </span>
+                            </a>
+                            {{form.empty_form.DELETE | addcss:"hide" }}
+                        </td>
                     </tr>
                 </tbody>
             </table>
 
             <!--END TEMPLATE-->
             <br>
-            <div>
-                <input type="submit" style="text-align:center">
-            </div>
-            <br>
             <button type="button" class="button" onclick="add_responsavel()">
                 <span class="icon is-small"><i class="mdi mdi-plus"></i></span>
                 <span>Adicionar disponibilidade</span>
             </button>
-            <span>
-                <button type="button" class="button" style="float:right" onclick="delete_responsavel()">
-                    <span class="icon is-small"><i class="mdi mdi-minus"></i></span>
-                    <span>Remover disponibilidade</span>
-                </button>
-            </span>
+
+            <button type="submit">
+                <span class="icon is-small"><i class="mdi mdi-plus"></i></span>
+                <span>Submeter</span>
+            </button>
         </form>
     </div>
 </div>
 
 
 <script>
+
+        $(document).ready(function () 
+        {
+            $('.table_remove_button').each(function(){
+                applyClickRemoveRow($(this));
+            });
+        });
+
     function add_responsavel() {
         var value = parseInt($('#id_tarefa-TOTAL_FORMS').val());
         $('#id_tarefa-TOTAL_FORMS').val(value + 1);
@@ -131,16 +155,19 @@
         var form_idx = $('#disponibilidade').children().length;
         var template = $('#template_disponibilidade').clone(true);
 
-        $('#disponibilidade').append(template.html().replace(/__prefix__/g, form_idx));
+        var mertens = $('#disponibilidade').append(template.html().replace(/__prefix__/g, form_idx));
+
+        applyClickRemoveRow(mertens.find('.table_remove_button'));
     }
 
-    function delete_responsavel() {
-        if ($('#id_tarefa-TOTAL_FORMS').val() > 1) {
-            var value = parseInt($('#id_tarefa-TOTAL_FORMS').val());
-            $('#id_tarefa-TOTAL_FORMS').val(value - 1);
-            $('#disponibilidade').children().last().remove();
-        }
+    function applyClickRemoveRow(el){
+        el.on('click',function(){
+            $(this).next('input').prop( "checked", true );
+            $(this).next('input').val(1);
+            $(this).closest('tr').hide();
+        });
     }
+
 </script>
 
 {% endblock content %}
