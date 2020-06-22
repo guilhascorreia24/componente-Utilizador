@@ -27,6 +27,8 @@ def home(request):
             funcao = "coord"
         elif Colaborador.objects.filter(utilizador_idutilizador=id1).exists():
             funcao = "colab"
+        else:
+            return render(request, 'homepage.html', context={'id':None})
         id=signing.dumps(id1)
         print(id)
         return render(request, 'homepage.html', context={'id':id,'funcao':funcao,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
