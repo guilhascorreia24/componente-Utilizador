@@ -1,11 +1,9 @@
-{% extends '../atividades/assets/home.html' %}
-{% block content %}
-<nav class="breadcrumb" aria-label="breadcrumbs">
-  <ul>
+{% extends 'base_template.html' %}
+{% block steps %}
     <li><a href="{% url 'blog:blog-home' %}">Início</a></li>
     <li class="is-active"><a href="" aria-current="page">Sessões de {{activity.titulo}}</a></li>
-  </ul>
-</nav>
+{% endblock %}
+{% block content %}
         <div class="table "></div>
             <div class="table-wrapper">
                 <table class="table has-mobile-cards is-hoverable is-fullwidth">
@@ -39,13 +37,35 @@
                                 <td>{{session.nrinscritos}}</td>
                                 <td>{{session.vagas}}</td>
                                 <td>
-                                    <form method="POST">
+                                     <div><a type="button"
+                                data-toggle="modal" data-target="#exampleModal" data-backdrop="false">
+                                <!----> <span class="icon is-small"> <i class="mdi mdi-delete mdi-24px"></i> </span>
+
+                                <!----></a></div>
+                                    <!-- POP UP Apagar-->
+                                <div class="dialog modal" id="exampleModal">
+                                <div class="modal-background"></div>
+                                <br><br><br><br><br><br><br><br><br><br><br><br>
+                                <div class="modal-card animation" style="max-width:360px">
+                                    <!---->
+                                    <section class="modal-card-body is-titleless">
+                                        <div class="media">
+                                            <!---->
+                                            <div class="media-content">
+                                                <p>Tem a certeza que quer apagar sessão?</p>
+                                                <!---->
+                                            </div>
+                                        </div>
+                                    </section>
+                                    <footer class="modal-card-foot"><button class="button" data-dismiss="modal">
+                                            Cancelar
+                                        </button>
                                         <a href="{% url 'atividades:apagar_sessao' session.idsessao %}">
-                                            <span class="icon is-small">
-                                                <i class="mdi mdi-delete mdi-24px"></i>
-                                            </span>
-                                        </a>
-                                    </form>
+                                        <button class="button is-success">
+                                            Confirmar
+                                        </button></a></footer>
+                                </div>
+                            </div>
                                 </td>
                             </tr>
                             {% endfor %}

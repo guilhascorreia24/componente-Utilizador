@@ -1,0 +1,324 @@
+{% extends 'base_template.html' %}
+{% block steps %}
+    <li><a href="/">Início</a></li>
+    <li class="is-active"><a aria-current="page">Consultar Tarefas</a></li>
+{% endblock %}
+{% block content %}
+<head>
+    <style>
+    .select.is-empty select {
+     color:black;
+    }
+    </style>
+</head>
+
+<div class="columns">
+    <div class="column is-3">
+        <div>
+            <p data-v-1513178e="" class="menu-label">Filtros Utilizador</p>
+            <form method="GET">
+                <div class="column">
+                    <div class="field">
+                        <div class="control is-expanded">
+                            <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Filtrar por Nome Tarefa" autocomplete="off" class="input">
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="field">
+                        <div class="control is-expanded">
+                                <span class="select is-fullwidth is-empty">
+                                <select id="myInput1"onchange="myFunction()">
+                                    <option hidden value="">Filtrar por Colaborador</option>
+                                    {% for c in colab %}
+                                    <option  value="{{c.utilizador_idutilizador.nome}}">{{c.utilizador_idutilizador.nome}}</option>
+                                    {% endfor %}
+                                </select>
+                                </span>
+                            </div>
+                        </div>
+                </div>
+                <div class="column">
+                    <div class="field">
+                        <div class="control">
+                            <div class="select is-fullwidth">
+                                <span class="select is-fullwidth is-empty">
+                                    <select id="myInput2"onchange="myFunction()">
+                                        <option hidden value="">Filtrar Unidade Orgânica</option>
+                                        {% for u in unidade %}
+                                        <option value="{{u.sigla}}">{{u.sigla}}</option>
+                                        {% endfor %}
+                                    </select>
+                                    </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="field">
+                        <div class="control">
+                            <div class="select is-fullwidth">
+                                <span class="select is-fullwidth is-empty">
+                                    <select id="myInput3"onchange="myFunction()">
+                                        <option hidden value="">Filtrar Atividade</option>
+                                        {% for a in atividade %}
+                                        <option value="{{a.titulo}}">{{a.titulo}}</option>
+                                        {% endfor %}
+                                    </select>
+                                    </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="field">
+                        <div class="control">
+                            <div class="select is-fullwidth">
+                                <span class="select is-fullwidth is-empty">
+                                    <select id="myInput4"onchange="myFunction()">
+                                        <option hidden value="">Filtrar por Estado</option>
+                                        <option value="Concluida">Concluida</option>
+                                        <option value="Pendente">Pendente</option>
+                                    </select>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <button class="button is-outlined is-link is-danger" type="submit">
+                    <span>Limpar</span>
+                    <span class="icon is-medium"><i class="mdi mdi-broom"></i></span>
+                </button>
+         </form>
+    </div>
+</div>
+    <div class="column">
+        <div class="table "></div>
+            <div class="table-wrapper">
+                <table id="myTable" class="table has-mobile-cards is-hoverable is-fullwidth">
+                    <thead>
+                        <tr>
+                            <th>Nome Tarefa:</th>
+                            <th>Colaborador:</th>
+                            <th>Unidade Orgânica</th>
+                            <th>Atividade:</th>
+                            <th>Dia:</th>
+                            <th>Hora:</th>
+                            <th>Estado:</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                            {% for i in tarefas %}
+                                <tr scope="row"><td>{{i.nome}}</td>
+                                {% if i.colaborador_utilizador_idutilizador == NULL %}
+                                    <td class=""> --------------- </td>
+                                    <td class=""> --------------- </td>
+                                {% else %}
+                                    <td class="">{{i.colaborador_utilizador_idutilizador.utilizador_idutilizador.nome}}</td>
+                                    <td class="">{{i.colaborador_utilizador_idutilizador.curso_idcurso.unidade_organica_iduo.sigla}}</td>
+                                {% endif %}
+                                {% if i.sessao_idsessao == NULL %}
+                                    <td class=""> --------------- </td>
+                                    <td class="">{{i.dia_dia.dia | date:"d/m/Y"}}</td>
+                                    {% if i.hora_inicio == NULL %}
+                                        <td class=""> --------------- </td>
+                                    {% else %}
+                                        <td class="">{{i.hora_inicio | time:"H:i"}}</td>
+                                    {% endif%}
+                                {% else %}
+                                    <td class="">{{i.sessao_idsessao.atividade_idatividade.titulo}}</td>
+                                    <td class="">{{i.sessao_idsessao.horario_has_dia_id_dia_hora.dia_dia.dia | date:"d/m/Y"}}</td> 
+                                    <td class="">{{i.sessao_idsessao.horario_has_dia_id_dia_hora.horario_hora.hora | time:"H:i"}}</td>
+                                {% endif %}
+                                {% if i.concluida == 1%}
+                                <td class=""><span class="tag next is-success" style="width: 7 rem;font-size: small;">Concluida</span></td>
+                                {% elif i.concluida == 0%}
+                                <td class=""><span class="tag next is-warning" style="width: 7 rem;font-size: small;">Pendente</span></td>
+                                {% endif %}
+                                <td style="text-align: center;" >
+                                    <a data-toggle="modal" data-target="#{{ forloop.counter }}">
+                                         <span class="icon is-small">
+                                             <i class="mdi mdi-account-search mdi-24px"></i>
+                                         </span>
+                                     </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+    </div>
+</div>
+
+{% for i in tarefas %}
+<div tabindex="-1" class="modal fade" id="{{forloop.counter}}" role="dialog" aria-hidden="true" aria-labelledby="exampleModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <button class="close" aria-label="Close" type="button" data-dismiss="modal">
+                    <span aria-hidden="true">X</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div>                   
+                        <div class="input-group col-sm-12">
+                            <div class="input-group-prepend labelForm">
+                                <span class="input-group-text w-100">Coordenador Responsável:</span>
+                            </div>
+                            <input disabled="" class="form-control bg-light" type="text" value="{{ i.coordenador_utilizador_idutilizador.utilizador_idutilizador.nome }}">
+                        </div>
+                        <br>
+                        <div class="input-group col-sm-12">
+                            <div class="input-group-prepend labelForm">
+                                <span class="input-group-text w-100">Colaborador Atribuído:</span>
+                            </div>
+                            <input disabled="" class="form-control col-sm-2 bg-light" type="text" value="{{ i.colaborador_utilizador_idutilizador.utilizador_idutilizador.nome }}">
+                        </div>
+                        {% if i.sessao_idsessao == NULL %}
+                            <br>
+                            {% if i.inscricao_coletiva_inscricao_idinscricao == NULL %}
+                                <div class="input-group col-sm-12">
+                                    <div class="input-group-prepend labelForm">
+                                        <span class="input-group-text w-100">Informações do(s) Participante(s)</span>
+                                    </div>
+                                    <input disabled="" class="form-control col-sm-2 bg-light" type="text" value="Nenhum Grupo Selecionado">
+                                </div>
+                            {%else%}
+                                <div class="input-group col-sm-12">
+                                    <div class="input-group-prepend labelForm">
+                                        <span class="input-group-text w-100">Informações do(s) Participante(s)</span>
+                                    </div>
+                                    <input disabled="" class="form-control col-sm-2 bg-light" type="text" value="{{i.inscricao_coletiva_inscricao_idinscricao.escola_idescola.nome}}, Turma {{i.inscricao_coletiva_inscricao_idinscricao.turma}} ({{i.inscricao_coletiva_inscricao_idinscricao.nparticipantes}} alunos)">
+                                </div>
+                            {%endif%}
+                            <br>
+                            <div class="input-group col-sm-12">
+                                <div class="input-group-prepend labelForm">
+                                    <span class="input-group-text w-100">Horário</span>
+                                </div>
+                                <input disabled="" class="form-control col-sm-4 bg-light" type="text" value="{{ i.dia_dia.dia | date:"d/m/Y"}} &nbsp;{{  i.hora_inicio | time:"H:i" }}">
+                            </div>
+                            <br>
+                            <div class="input-group col-sm-12">
+                                <div class="input-group-prepend labelForm">
+                                    <span class="input-group-text w-100">Campus onde se encontra(m) o(s) Participante(s)</span>
+                                </div>
+                                <input disabled="" class="form-control bg-light" type="text" value="{{i.buscar.campus_idcampus.nome}}">
+                            </div>
+                            <br>
+                            <div class="input-group col-sm-12">
+                                <div class="input-group-prepend labelForm">
+                                    <span class="input-group-text w-100">Local de Recolha do(s) Participante(s)</span>
+                                </div>
+                                <input disabled="" class="form-control bg-light" type="text" value="{{  i.buscar.nome }}">
+                            </div>
+                            <br>
+                            <div class="input-group col-sm-12">
+                                <div class="input-group-prepend labelForm">
+                                    <span class="input-group-text w-100">Local de Destino do(s) Participante(s)</span>
+                                </div>
+                                <input disabled="" class="form-control bg-light" type="text" value="{{  i.levar.nome }}">
+                            </div>
+                            <br>
+                        {% else %}
+                            <br>
+                            <div class="input-group col-sm-12">
+                                <div class="input-group-prepend labelForm">
+                                    <span class="input-group-text w-100">Horário</span>
+                                </div>
+                                <input disabled="" class="form-control col-sm-4 bg-light" type="text" value="{{ i.sessao_idsessao.horario_has_dia_id_dia_hora.dia_dia.dia| date:"d/m/Y"}} &nbsp; {{ i.sessao_idsessao.horario_has_dia_id_dia_hora.horario_hora.hora | time:"H:i" }}">
+                            </div>
+                            <br>
+                            <div class="input-group col-sm-12">
+                                <div class="input-group-prepend labelForm">
+                                    <span class="input-group-text w-100">Atividade:</span>
+                                </div>
+                                <input disabled="" class="form-control bg-light" type="text" value="{{ i.sessao_idsessao.atividade_idatividade.titulo}} ({{ i.sessao_idsessao.atividade_idatividade.espaco_idespaco.campus_idcampus.nome }})">
+                            </div>
+                            <br>
+                            <div class="input-group col-sm-12">
+                                <div class="input-group-prepend labelForm">
+                                    <span class="input-group-text w-100">Local da Atividade:</span>
+                                </div>
+                                <input disabled="" class="form-control bg-light" type="text" value="{{ i.sessao_idsessao.atividade_idatividade.espaco_idespaco.nome}}">
+                            </div>
+                            <br>
+                            <div class="input-group col-sm-12">
+                                <div class="input-group-prepend labelForm">
+                                    <span class="input-group-text w-100">Duração da Atividade:</span>
+                                </div>
+                                <input disabled="" class="form-control bg-light" type="text" value="{{ i.sessao_idsessao.atividade_idatividade.duracao}} minutos">
+                            </div>
+                            <br>
+                            <div class="input-group col-sm-12">
+                                <div class="input-group-prepend labelForm">
+                                    <span class="input-group-text w-100">Colaboradores Necessários:</span>
+                                </div>
+                                <input disabled="" class="form-control bg-light" type="text" value="{{ i.sessao_idsessao.atividade_idatividade.nrcolaborador}}">
+                            </div>
+                            <br>
+                        {% endif %} 
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+                    
+<script>
+    $(document).ready(function () {
+        $('#myTable').DataTable({
+            "paging": true,
+            "info": false,
+            "searching": false,
+            "bLengthChange": false,
+            "aLengthMenu": [[5, 10, 25, -1], [5, 10, 25, "All"]],
+            "columnDefs": [
+    { "orderable": false, "targets": [6,7] }
+  ]
+        });
+    });
+</script>
+<script>
+    function myFunction() {
+        var input,input2,input3,input4,filter,filter2,filter3,filter4,filter5, table, tr, td,td1,td2,td3,td4, i, txtValue,txtValue1,txtValue2,txtValue3,txtValue4;
+        input = document.getElementById("myInput");
+        input2 = document.getElementById("myInput1");
+        input3 = document.getElementById("myInput2");
+        input4 = document.getElementById("myInput3");
+        input5 = document.getElementById("myInput4");
+        filter = input.value.toUpperCase();
+        filter2 = input2.value.toUpperCase();
+        filter3 = input3.value.toUpperCase();
+        filter4 = input4.value.toUpperCase();
+        filter5 = input5.value.toUpperCase();
+        console.log(filter+" "+filter2);
+        table = document.getElementById("myTable");
+        tr = table.getElementsByTagName("tr");
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[0];
+            td1= tr[i].getElementsByTagName("td")[1];
+            td2= tr[i].getElementsByTagName("td")[2];
+            td3 = tr[i].getElementsByTagName("td")[3];
+            td4 = tr[i].getElementsByTagName("td")[6];
+            if (td && td1 && td2 && td3 && td4) {
+                txtValue = td.textContent || td.innerText;
+                txtValue1 = td1.textContent || td1.innerText;
+                txtValue2 = td2.textContent || td2.innerText;
+                txtValue3 = td3.textContent || td3.innerText;
+                txtValue4 = td4.textContent || td4.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1 && txtValue1.toUpperCase().indexOf(filter2) > -1 &&
+                     txtValue2.toUpperCase().indexOf(filter3) > -1 && txtValue3.toUpperCase().indexOf(filter4) > -1 &&
+                        txtValue4.toUpperCase().indexOf(filter5) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+</script>
+{% endblock content %}

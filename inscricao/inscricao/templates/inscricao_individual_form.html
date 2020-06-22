@@ -1,0 +1,1252 @@
+{% extends "base_template.html" %} {% load static %} {% load ins_form_tags %} 
+{% block steps %}
+<li><a href="/" class="router-link-active">Início</a></li>
+<li><a href="{% url "inscricao:register_individual" %}" class="">Inscrição Individual</a></li>
+{% endblock %}
+
+
+{% block content %}
+<div style="padding: 3rem 2vw 1rem;">
+    <div class="b-steps">
+        <nav class="steps is-success">
+            <ul class="step-items">
+                <li class="step-item is-success is-active">
+                    <a class="step-link is-clickable">
+                        <div class="step-marker"><span class="icon"><i class="mdi mdi-school mdi-24px"></i></span></div>
+                        <div class="step-details"><span class="step-title">Escola</span></div>
+                    </a>
+                </li>
+                <li class="step-item is-success">
+                    <a class="step-link is-clickable">
+                        <div class="step-marker"><span class="icon"><i class="mdi mdi-train-car mdi-24px"></i></span>
+                        </div>
+                        <div class="step-details"><span class="step-title">Transporte</span>
+                        </div>
+                    </a>
+                </li>
+                <li class="step-item is-success">
+                    <a class="step-link is-clickable">
+                        <div class="step-marker"><span class="icon"><i class="mdi mdi-food-apple mdi-24px"></i></span>
+                        </div>
+                        <div class="step-details"><span class="step-title">Almoço</span></div>
+                    </a>
+                </li>
+                <li class="step-item is-success">
+                    <a class="step-link is-clickable">
+                        <div class="step-marker"><span class="icon"><i
+                                    class="mdi mdi-calendar-check mdi-24px"></i></span></div>
+                        <div class="step-details"><span class="step-title">Sessões</span></div>
+                    </a>
+                </li>
+                <li class="step-item is-success">
+                    <a class="step-link is-clickable">
+                        <div class="step-marker"><span class="icon"><i class="mdi mdi-check mdi-24px"></i></span></div>
+                        <div class="step-details"><span class="step-title">Submissão</span>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <section class="step-content">
+            <form id="regForm" method="POST">
+                {% csrf_token %}
+                <div class="step-item">
+                    <div style="padding: 1rem 2vw 0px;">
+                        <hr>
+                        <h2 class="title has-text-grey is-uppercase" style="font-size: 0.9rem;">
+                            Informação da Escola </h2>
+                        <div class="columns">
+                            <div class="column">
+                                <div class="field"><label class="label">Telefone</label>
+                                    <div class="control is-clearfix">{{form.inscricao_individual.telefone|addcss:"input"}}
+                                    </div>
+                                    <p class="help is-danger">{{form.inscricao_individual.telefone.errors.0}}</p>
+                                </div>
+                            </div>
+                            <div class="column">
+                                <div class="field"><label class="label">Localidade</label>
+                                    <div class="control is-clearfix" id="local-escola">
+                                        {{form.inscricao.local|addcss:"input"}}
+                                    </div>
+                                    <p class="help is-danger">{{form.inscricao.local.errors.0}}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <h2 class="title has-text-grey is-uppercase" style="font-size: 0.9rem;">
+                            Informação da Turma </h2>
+                        <div class="columns">
+                            <div class="column is-2">
+                                <div class="field has-numberinput has-numberinput-compact">
+                                    <label class="label">Ano</label>
+                                    <div class="b-numberinput field has-addons">
+                                        <p class="control"><button type="button" class="button is-primary"><span
+                                                    class="icon"><i class="mdi mdi-minus mdi-24px"></i></span></button>
+                                        </p>
+                                        <div class="control is-clearfix">{{ form.inscricao.ano|addcss:"input" }}
+                                        </div>
+                                        <p class="control"><button type="button" class="button is-primary"><span
+                                                    class="icon"><i class="mdi mdi-plus mdi-24px"></i></span></button>
+                                        </p>
+                                    </div>
+                                    <p class="help is-danger">{{form.inscricao.ano.errors.0}}</p>
+                                </div>
+                            </div>
+                            <div class="column is-2">
+                                <div class="field has-numberinput has-numberinput-compact">
+                                    <label class="label">Numero de Acompanhantes</label>
+                                    <div class="b-numberinput field has-addons">
+                                        <p class="control"><button type="button" class="button is-primary"><span
+                                                    class="icon"><i class="mdi mdi-minus mdi-24px"></i></span></button>
+                                        </p>
+                                        <div class="control is-clearfix">
+                                            {{form.inscricao_individual.nracompanhantes|addcss:"input"}}
+                                        </div>
+                                        <p class="control"><button type="button" class="button is-primary"><span
+                                                    class="icon"><i class="mdi mdi-plus mdi-24px"></i></span></button>
+                                        </p>
+                                    </div>
+                                    <p class="help is-danger">{{form.inscricao_individual.nracompanhantes.errors.0}}</p>
+                                    <!---->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="field"><label class="label">Área científica</label>
+                            <div class="control is-clearfix">{{form.inscricao.areacientifica|addcss:"input"}}
+                            </div>
+                            <p class="help is-danger">{{form.inscricao.areacientifica.errors.0}}</p>
+                            <!---->
+                        </div>
+                        <hr>
+                    </div>
+                    <div class="column is-8 is-offset-2">
+                        <div class="level">
+                            <div class="level-left">
+                                <a href="/" class="button router-link-active is-outlined" type="button">
+                                    <!----><span> Cancelar </span>
+                                    <!---->
+                                </a>
+                            </div>
+                            <div class="level-right">
+                                <button type="button" class="button is-large is-success is-outlined next-step">
+                                    <!----> <span> Seguinte </span> <span class="icon is-medium"><i
+                                            class="mdi mdi-forward mdi-36px"></i></span></button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="step-item" style="display:none;">
+                    <div style="padding: 1rem 2vw 0px;">
+                        <hr>
+                        <h2 class="title has-text-grey is-uppercase" style="font-size: 0.9rem;">
+                            Informação de transporte </h2>
+                        <div class="columns">
+                            <div class="column is-8">
+                                <div class="field"><label class="label">Transporte</label>
+                                    <div class="control is-expanded">
+                                    </div>
+                                    <!---->
+                                </div>
+                            </div>
+                            <div class="column is-2">
+                                <div class="field"><label class="label">Numero de Passageiros</label>
+                                    <div class="control is-expanded">
+                                    </div>
+                                    <!---->
+                                </div>
+                            </div>
+                        </div>
+                        <div id="table_transporte" style="padding-bottom:2%">
+                            {{ form.transportes.management_form }} {% for transporte in form.transportes %}
+                            {% for hidden in transporte.hidden_fields %}
+                            {{ hidden }}
+                            {% endfor %}
+                            <div class="columns row">
+                                <div class="column is-8">
+                                    <div class="field">
+                                        <div class="control is-expanded"><span class="select is-fullwidth is-empty select-transporte">
+                                                {{transporte.horario}}
+                                            </span>
+                                            <p class="help is-danger">{{transportes.horario.errors.0}}</p>
+                                            <!---->
+                                        </div>
+                                        <!---->
+                                    </div>
+                                </div>
+                                <div class="column is-3">
+                                    <div class="field has-numberinput has-numberinput-compact">
+                                        <div class="b-numberinput field has-addons">
+                                            <p class="control">
+                                                <button type="button" class="button is-primary"><span class="icon"><i
+                                                            class="mdi mdi-minus mdi-24px"></i></span></button>
+                                            </p>
+                                            <div class="control is-clearfix">
+                                                {{transporte.n_passageiros|addcss:"input"}}
+                                            </div>
+                                            <p class="control">
+                                                <button type="button" class="button is-primary"><span class="icon"><i
+                                                            class="mdi mdi-plus mdi-24px"></i></span></button>
+                                            </p>
+                                        </div>
+                                        <p class="help is-danger">{{transporte.n_passageiros.errors.0}}</p>
+                                    </div>
+                                </div>
+                                <div class="column is-1">
+                                    <a class="table_remove_button"><span class="icon has-text-danger"><i style = "padding-top: 8px;"class="mdi mdi-close-box mdi-24px"></i></span></a>
+                                    {{transporte.DELETE|addcss:"hide"}}
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+
+                        <!--TEMPLATE-->
+                        <div id="template_transporte" style="display:none">
+                            <div class="columns row">
+                                <div class="column is-8">
+                                    <div class="field">
+                                        <div class="control is-expanded"><span class="select is-fullwidth is-empty select-transporte">{{form.transportes.empty_form.horario}}</span>
+                                            <!---->
+                                        </div>
+                                        <!---->
+                                    </div>
+                                </div>
+                                <div class="column is-3">
+                                    <div class="field has-numberinput has-numberinput-compact">
+                                        <div class="b-numberinput field has-addons">
+                                            <p class="control"><button type="button" class="button is-primary"><span
+                                                        class="icon"><i
+                                                            class="mdi mdi-minus mdi-24px"></i></span></button>
+                                            </p>
+                                            <div class="control is-clearfix">
+                                                {{form.transportes.empty_form.n_passageiros|addcss:"input"}}
+                                            </div>
+                                            <p class="control"><button type="button" class="button is-primary"><span
+                                                        class="icon"><i
+                                                            class="mdi mdi-plus mdi-24px"></i></span></button>
+                                            </p>
+                                        </div>
+                                        <!---->
+                                    </div>
+                                </div>
+                                <div class="column is-1">
+                                    <a class="table_remove_button"><span class="icon has-text-danger"><i style = "padding-top: 8px;"class="mdi mdi-close-box mdi-24px"></i></span></a>
+                                    {{form.transportes.empty_form.DELETE|addcss:"hide"}}
+                                </div>
+                            </div>
+                        </div>
+                        <!--END TEMPLATE-->
+
+
+                        <button type="button" class="button" onclick="add_transporte()">
+                            <span class="icon is-small"><i class="mdi mdi-plus"></i></span>
+                            <span>Adicionar transporte</span>
+                        </button>
+                        <hr>
+                        <p style="display: inline-block; padding-right: 2rem;"> Precisam de transporte para efectuar as visitas entre os 3 Campos? </p>
+                        {% for radio in form.inscricao.transporte %}
+                        <label for="{{ radio.id_for_label }}" class="b-radio radio">{{ radio.tag }}
+                            <span class="check"></span> <span class="control-label"> {{ radio.choice_label }}
+                            </span></label> {% endfor %}
+                        <hr>
+                    </div>
+                    <div class="column is-8 is-offset-2">
+                        <div class="level">
+                            <div class="level-left">
+                                <button href="" class="button router-link-active is-outlined prev-step" type="button" id="prevBtn">
+                                    <!----> <span> Anterior </span>
+                                    <!----></button>
+                            </div>
+                            <div class="level-right">
+                                <button type="button" class="button is-large is-success is-outlined next-step">
+                                    <!----> <span> Seguinte </span> <span class="icon is-medium"><i
+                                            class="mdi mdi-forward mdi-36px"></i></span></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="step-item" style="display:none;">
+                    <div data-v-f5fe8f88="" style="padding: 1rem 2vw 0px;">
+                        <hr data-v-f5fe8f88=""> {% regroup form.almoco.prato by menu.campus_idcampus as campus_prato %} {% for camp in campus_prato %}
+                        <h2 data-v-f5fe8f88="" class="title has-text-grey is-uppercase" style="font-size: 0.9rem;">
+                            Informação de almoço - Campus {{camp.grouper}} </h2>
+
+                        {% for prato in camp.list %}
+                        <div data-v-f5fe8f88="" class="field has-numberinput has-numberinput-compact">
+                            <label>{{prato.menu.tipo}} - {{prato.menu.menu}}</label>
+                            <div data-v-f5fe8f88="" class="b-numberinput field has-addons">
+                                <p class="control"><button type="button" class="button is-primary"><span class="icon"><i
+                                                class="mdi mdi-minus mdi-24px"></i></span></button>
+                                </p>
+                                <div class="control is-clearfix">{{prato.nralmocos|addcss:"input"}}
+                                </div>
+                                <p class="control"><button type="button" class="button is-primary"><span class="icon"><i
+                                                class="mdi mdi-plus mdi-24px"></i></span></button>
+                                </p>
+                            </div>
+                            <p class="help is-danger">{{prato.nralmocos.errors.0}}</p>
+                        </div>
+                        {% endfor %}
+                        <hr data-v-f5fe8f88=""> {% endfor %}
+                    </div>
+                    <div class="column is-8 is-offset-2">
+                        <div class="level">
+                            <div class="level-left">
+                                <button href="" class="button router-link-active is-outlined prev-step" type="button" id="prevBtn">
+                                    <!----> <span> Anterior </span>
+                                    <!----></button>
+                            </div>
+                            <div class="level-right">
+                                <button type="button" class="button is-large is-success is-outlined next-step">
+                                    <!----> <span> Seguinte </span> <span class="icon is-medium"><i
+                                            class="mdi mdi-forward mdi-36px"></i></span></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="step-item" style="display:none;">
+                    <div data-v-dac68d9e="" style="padding: 1rem 2vw 0px;">
+                     <hr data-v-dac68d9e="">
+                            <h2 data-v-dac68d9e="" class="title has-text-grey is-uppercase" style="font-size: 0.9rem;">
+                                Sessões Disponíveis </h2>
+                            <div data-v-1b91368a="" data-v-dac68d9e="">
+                                <div data-v-1b91368a="" class="columns">
+                                    <div data-v-1b91368a="" class="column is-3">
+                                        <div data-v-1b91368a="">
+                                            <div class="menu" style="margin-bottom: 1rem;">
+                                                <p class="menu-label">Filtros Atividade</p>
+                                                <ul class="menu-list">
+                                                    <div class="field">
+                                                        <!---->
+                                                        <div class="autocomplete control">
+                                                            <div class="control has-icons-left is-clearfix">
+                                                                <input type="text" autocomplete="off" id="atividade_filtro" placeholder="Nome da Atividade" class="input"> <span class="icon is-left"><i
+                                                                    class="mdi mdi-magnify mdi-24px"></i></span>
+                                                                <!---->
+                                                                <!---->
+                                                            </div>
+                                                            <div class="dropdown-menu" style="display: none;">
+                                                                <div class="dropdown-content" style="display: none;">
+                                                                    <!----><a class="dropdown-item"><span>
+                                                                        Introdução a Python
+                                                                    </span></a><a class="dropdown-item"><span>
+                                                                        O primeiro Hello World
+                                                                    </span></a><a class="dropdown-item"><span>
+                                                                        Deixa-me rir
+                                                                    </span></a><a class="dropdown-item"><span>
+                                                                        Observação microscópica
+                                                                    </span></a><a class="dropdown-item"><span>
+                                                                        Fomos longe demais?
+                                                                    </span></a><a class="dropdown-item"><span>
+                                                                        Ciência no mundo
+                                                                    </span></a><a class="dropdown-item"><span>
+                                                                        Física no Dia a Dia
+                                                                    </span></a>
+                                                                    <!---->
+                                                                    <!---->
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!---->
+                                                    </div>
+                                                    <div class="field">
+                                                        <!---->
+                                                        <div class="control is-expanded"><span class="select is-fullwidth is-empty">
+                                                            <select id="filter_campus">
+                                                                <option value="" selected>Todos os campus</option>
+                                                                {% for camp in campus %}
+                                                                    <option value={{camp.nome}}>{{camp.nome}}</option>
+                                                                {% endfor %}
+                                                            </select></span>
+                                                            <!---->
+                                                        </div>
+                                                        <!---->
+                                                    </div>
+                                                    <ul style="display: none;">
+                                                        <div class="field">
+                                                            <!---->
+                                                            <div class="datepicker control">
+                                                                <div class="dropdown is-mobile-modal">
+                                                                    <div role="button" aria-haspopup="true" class="dropdown-trigger">
+                                                                        <div class="control has-icons-left is-clearfix">
+                                                                            <input type="text" autocomplete="off" placeholder="Submetido antes de..." readonly="readonly" class="input">
+                                                                            <span class="icon is-left"><i
+                                                                                class="mdi mdi-calendar-today mdi-24px"></i></span>
+                                                                            <!---->
+                                                                            <!---->
+                                                                        </div>
+                                                                    </div>
+                                                                    <div aria-hidden="true" class="dropdown-menu" style="display: none;">
+                                                                        <div class="dropdown-content">
+                                                                            <div tabindex="0" class="dropdown-item">
+                                                                                <div class="field field is-grouped-centered is-grouped">
+                                                                                    <!---->
+                                                                                    <div class="control">
+                                                                                        <span class="select"><select>
+                                                                                        </select></span>
+                                                                                        <!---->
+                                                                                    </div>
+                                                                                    <span class="control is-colon">:</span>
+                                                                                    <div class="control">
+                                                                                        <span class="select"><select>
+                                                                                            <!---->
+                                                                                        </select></span>
+                                                                                        <!---->
+                                                                                    </div>
+                                                                                            <!---->
+                                                                                </div>
+                                                                                <!---->
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <!---->
+                                                        </div>
+                                                    </ul>
+                                                </ul>
+                                            </div>
+                                            <div class="menu">
+                                                <p class="menu-label">Filtros Sessão</p>
+                                                <ul class="menu-list">
+                                                    <div class="columns" style="margin-bottom: 0px;">
+                                                        <div class="field column" style="margin-bottom: 0px;">
+                                                            <!---->
+                                                            <div class="timepicker control">
+                                                                <div class="dropdown is-active is-mobile-modal">
+                                                                    <div role="button" aria-haspopup="true" class="dropdown-trigger">
+                                                                        <div class="control has-icons-left is-clearfix">
+                                                                            <input id="filter_time_start" type="text" autocomplete="off" placeholder="De" class="input">
+                                                                            <span class="icon is-left"><i class="mdi mdi-clock mdi-24px"></i></span>
+                                                                        </div>
+                                                                    </div> 
+                                                                    <div class="background" style=""></div> 
+                                                                    <div class="dropdown-menu" style="">
+                                                                        <div class="dropdown-content"> 
+                                                                            <div tabindex="0" class="dropdown-item">
+                                                                                <div class="field is-grouped-centered is-grouped">
+                                                                                    <div class="control">
+                                                                                        <span class="select">
+                                                                                            <select></select>
+                                                                                        </span>
+                                                                                    </div>
+                                                                                    <span class="control is-colon">:</span> 
+                                                                                    <div class="control">
+                                                                                        <span class="select">
+                                                                                            <select></select>
+                                                                                        </span>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>                                  
+                                                        </div>
+                                                        <div class="field column" style="margin-bottom: 0px;">
+                                                            <!---->
+                                                            <div class="timepicker control">
+                                                                <div class="dropdown is-active is-mobile-modal">
+                                                                    <div role="button" aria-haspopup="true" class="dropdown-trigger">
+                                                                        <div class="control has-icons-left is-clearfix">
+                                                                            <input id="filter_time_end" type="text" autocomplete="off" placeholder="Até" class="input">
+                                                                            <span class="icon is-left"><i class="mdi mdi-clock mdi-24px"></i></span>
+                                                                        </div>
+                                                                    </div> 
+                                                                    <div class="background" style=""></div> 
+                                                                    <div class="dropdown-menu" style="">
+                                                                        <div class="dropdown-content"> 
+                                                                            <div tabindex="0" class="dropdown-item">
+                                                                                <div class="field is-grouped-centered is-grouped">
+                                                                                    <div class="control">
+                                                                                        <span class="select">
+                                                                                            <select></select>
+                                                                                        </span>
+                                                                                    </div>
+                                                                                    <span class="control is-colon">:</span> 
+                                                                                    <div class="control">
+                                                                                        <span class="select">
+                                                                                            <select></select>
+                                                                                        </span>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>                                  
+                                                        </div>
+                                                    </div>
+                                                    <div class="field has-numberinput has-numberinput-compact">
+                                                        <label class="label">Mínimo de vagas</label>
+                                                        <div class="b-numberinput field has-addons">
+                                                            <p class="control"><button type="button" class="button is-primary"><span class="icon"><i
+                                                                        class="mdi mdi-minus mdi-24px"></i></span></button>
+                                                            </p>
+                                                            <div class="control is-clearfix"><input id='filter_vagas' type="number" autocomplete="on" step="1" min="0" class="input">
+                                                                <!---->
+                                                                <!---->
+                                                                <!---->
+                                                            </div>
+                                                            <p class="control"><button type="button" class="button is-primary"><span class="icon"><i
+                                                                        class="mdi mdi-plus mdi-24px"></i></span></button>
+                                                            </p>
+                                                        </div>
+                                                        <!---->
+                                                    </div>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div data-v-1b91368a="" class="column">
+                                        <div data-v-1b91368a="">
+                                            <div class="b-table">
+                                                <div class="table-wrapper">
+                                                    <table id="expandableTable" class="table is-striped has-mobile-cards is-hoverable">
+                                                        <thead>
+                                                            <tr>
+                                                                <th></th>
+                                                                <th>Nome</th>
+                                                                <th>Tipo</th>
+                                                                <th>Campus</th>
+                                                                <th>E.O.</th>
+                                                                <th>Dep.</th>
+                                                                <!---->
+                                                            </tr>
+                                                            <!---->
+                                                            <!---->
+                                                        </thead>
+                                                        <tbody>
+                                                            {% regroup atividades_sessao by idatividade as atividade_group %} {% for at in atividade_group %} {% if at.list %} {% with at.list.0 as atividade %}
+                                                            <tr class="dropdown-toggle" role="button" data-toggle="dropdown" id="table_{{ forloop.counter0 }}">
+                                                                <td class="chevron-cell details-control"><a role="button"><span class="icon"><i
+                                                                            class="mdi mdi-chevron-right mdi-24px"></i></span></a>
+                                                                </td>
+                                                                <!---->
+                                                                <td data-label="Nome" class="">{{atividade.titulo}}</td>
+                                                                <td data-label="Tipo" class="">{{atividade.tematica}}</td>
+                                                                <td data-label="Campus" class="">{{atividade.campus}}</td>
+                                                                <td data-label="E.O." class="">{{atividade.unidade_organica}}</td>
+                                                                <td data-label="Dep." class="">{{atividade.departamento}}</td>
+                                                                <!---->
+                                                            </tr>
+                                                            {% endwith %} {% endif %} {% endfor %}
+                                                        </tbody>
+                                                        <!---->
+                                                    </table>
+                                                </div>
+                                                <!--TEMPLATE ATIVIDADE-->
+                                                {% for at in atividade_group %} {% if at.list %} {% with at.list.0 as atividade %}
+                                                <div class="detail detail-atividade-static" id="detail_{{ forloop.counter0 }}" style="display: none;">
+                                                    <div class="detail-container dropdown-item">
+                                                        <div class="content">
+                                                            <div style="font-size: 15px;">
+                                                                <p>{{atividade.descricao}}</p>
+                                                                <p><strong>Responsável:</strong> {{atividade.docente}}
+                                                                </p>
+                                                                <div class="b-table">
+                                                                    <!---->
+                                                                    <!---->
+                                                                    <div class="table-wrapper">
+                                                                        <table class="table has-mobile-cards">
+                                                                            <thead>
+                                                                                <tr>
+                                                                                    <th class="">
+                                                                                        <div class="th-wrap">
+                                                                                            Hora
+                                                                                            <span class="icon is-small" style="display: none;"><i
+                                                                                                class="mdi mdi-arrow-up"></i></span>
+                                                                                        </div>
+                                                                                    </th>
+                                                                                    <th class="">
+                                                                                        <div class="th-wrap">
+                                                                                            Duração
+                                                                                            <span class="icon is-small" style="display: none;"><i
+                                                                                                class="mdi mdi-arrow-up"></i></span>
+                                                                                        </div>
+                                                                                    </th>
+                                                                                    <th class="">
+                                                                                        <div class="th-wrap">
+                                                                                            Vagas
+                                                                                            <span class="icon is-small" style="display: none;"><i
+                                                                                                class="mdi mdi-arrow-up"></i></span>
+                                                                                        </div>
+                                                                                    </th>
+                                                                                    <th class="">
+                                                                                        <div class="th-wrap">
+                                                                                            Espaço
+                                                                                            <span class="icon is-small" style="display: none;"><i
+                                                                                                class="mdi mdi-arrow-up"></i></span>
+                                                                                        </div>
+                                                                                    </th>
+                                                                                    <th class="">
+                                                                                        <div class="th-wrap">
+                                                                                            Inscrever
+                                                                                            <span class="icon is-small" style="display: none;"><i
+                                                                                                class="mdi mdi-arrow-up"></i></span>
+                                                                                        </div>
+                                                                                    </th>
+                                                                                </tr>
+                                                                                <!---->
+                                                                                <!---->
+                                                                            </thead>
+                                                                            <tbody>
+                                                                                {% for sessao in at.list %}
+                                                                                <tr draggable="false" class="sessao_table">
+                                                                                    <!---->
+                                                                                    <!---->
+                                                                                    <td data-label="Campus" style="display:none" class="">
+                                                                                        {{atividade.campus}}
+                                                                                    </td>
+                                                                                    <td data-label="Titulo" style="display:none">
+                                                                                        {{atividade.titulo}}
+                                                                                    </td>
+                                                                                    <td data-label="id" style="display:none" class="sessao_table_id" value="{{sessao.idsessao}}">
+                                                                                        <input value={{sessao.idsessao}}>
+                                                                                    </td>
+                                                                                    <td data-label="Horário" class="sessao_table_horario">{{sessao.hora|date:"H:i"}}</td>
+                                                                                    <td data-label="Duração" class="">
+                                                                                        {{sessao.duracao}}
+                                                                                    </td>
+                                                                                    <td data-label="Vagas" class="sessao_table_vagas">
+                                                                                        {{sessao.vagas}}
+                                                                                    </td>
+                                                                                    <td data-label="Espaço" class="">
+                                                                                        {{atividade.espaco}}
+                                                                                    </td>
+                                                                                    <td data-label="Inscrever" class="">
+                                                                                        <div class="field">
+                                                                                            <div class="control is-clearfix">
+                                                                                                <input type="checkbox" class="escolher_sessao">
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </td>
+                                                                                    <!---->
+                                                                                </tr>
+                                                                                {% endfor %}
+                                                                            </tbody>
+                                                                            <!---->
+                                                                        </table>
+                                                                    </div>
+                                                                    <!---->
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                {% endwith %} {% endif %} {% endfor %}
+                                                <!--END TEMPLATE-->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr data-v-dac68d9e="">
+                            <h2 data-v-dac68d9e="" class="title has-text-grey is-uppercase" style="font-size: 0.9rem;">
+                                Sessões Escolhidas </h2>
+                            <div data-v-dac68d9e="" class="b-table">
+                                {% if form.sessao.errors|length > 1 %}
+                                <div class="alert alert-danger">
+                                    {{form.sessao.errors.0}} 
+                                </div>
+                                <p> </p>
+                                {% endif %}
+                                <!---->
+                                <!---->
+                                <div class="table-wrapper">
+                                    {{ form.sessao.management_form }}
+
+                                    <div style="display:none" id="sessao_start_info">
+                                        {% for curr_sessao in form.sessao %}
+                                        <div>
+                                            <p>{{curr_sessao.nr_inscritos.value}}</p>
+                                            <p>{{curr_sessao.sessao_idsessao.value}}</p>
+                                            <p>{{curr_sessao.DELETE.value}}</p>
+                                            {% if curr_sessao.nr_inscritos.errors %}
+                                            <p class="sessao_error">{{curr_sessao.nr_inscritos.errors.0}}</p>
+                                            {% endif %}
+                                            {% for hidden in curr_sessao.hidden_fields %}
+                                            <p>{{ hidden }}</p>
+                                            {% endfor %}
+                                            
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                    <table class="table has-mobile-cards" id="sessao_escolhida">
+                                        <thead style="display:none;">
+                                            <tr>
+                                                <th class="">
+                                                    <div class="th-wrap">
+                                                        Horário <span class="icon is-small" style="display: none;"><i
+                                                            class="mdi mdi-arrow-up"></i></span>
+                                                    </div>
+                                                </th>
+                                                <th class="">
+                                                    <div class="th-wrap">
+                                                        Inscritos <span class="icon is-small" style="display: none;"><i
+                                                            class="mdi mdi-arrow-up"></i></span>
+                                                    </div>
+                                                </th>
+                                                <th class="">
+                                                    <div class="th-wrap">
+                                                        Atividade <span class="icon is-small" style="display: none;"><i
+                                                            class="mdi mdi-arrow-up"></i></span>
+                                                    </div>
+                                                </th>
+                                                <th class="">
+                                                    <div class="th-wrap">
+                                                        Espaço <span class="icon is-small" style="display: none;"><i
+                                                            class="mdi mdi-arrow-up"></i></span>
+                                                    </div>
+                                                </th>
+                                                <th class="">
+                                                    <div class="th-wrap">
+                                                        Campus <span class="icon is-small" style="display: none;"><i
+                                                            class="mdi mdi-arrow-up"></i></span>
+                                                    </div>
+                                                </th>
+                                                <th class="">
+                                                    <div class="th-wrap is-centered">
+                                                        Ações <span class="icon is-small" style="display: none;"><i
+                                                            class="mdi mdi-arrow-up"></i></span>
+                                                    </div>
+                                                </th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody id="sessao_submit_table">
+                                            <!--TEMPLATE -->
+                                            <tr draggable="false" id="templateTableSessoes" style="display:none;">
+                                                <td data-label="id" class = 'template_sessao_id' style="display:none">
+                                                    {{form.sessao.empty_form.sessao_idsessao}}
+                                                </td>
+                                                <td data-label="Horário"></td>
+                                                <td data-label="Inscrever">
+                                                    <div class="field">
+                                                        <div class="control is-clearfix">
+                                                            <input type="checkbox" name={{form.sessao.empty_form.nr_inscritos.html_name}} class="table_escolher_sessao">
+                                                        </div>
+                                                        <p class="help is-danger"></p>
+                                                    </div>
+                                                </td>
+                                                <td data-label="Titulo"></td>
+                                                <td data-label="Espaço"></td>
+                                                <td data-label="Campus"></td>
+                                                <td data-label="Ações" class="has-text-centered actions">
+                                                    <a class="remove_button"><span class="icon has-text-danger"><i
+                                                            class="mdi mdi-close-box mdi-24px"></i></span>
+                                                    </a>
+                                                    {{form.sessao.empty_form.DELETE|addcss:"hide"}}
+                                                </td>
+                                            </tr>
+                                            <!--END TEMPLATE-->
+                                            <tr class="is-empty">
+                                                <td colspan="0" class="no-bottom-border">
+                                                    <p class="has-text-grey">Não há sessões escolhidas
+                                                    </p>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                        <!---->
+                                    </table>
+                                </div>
+                                <!---->
+                            </div>
+                            <hr data-v-dac68d9e="">
+                    </div>
+                    <div class="column is-8 is-offset-2">
+                        <div class="level">
+                            <div class="level-left">
+                                <button href="" class="button router-link-active is-outlined prev-step" type="button" id="prevBtn">
+                                    <!----> <span> Anterior </span>
+                                    <!----></button>
+                            </div>
+                            <div class="level-right">
+                                <button type="button" class="button is-large is-success is-outlined next-step">
+                                    <!----> <span> Seguinte </span> <span class="icon is-medium"><i
+                                            class="mdi mdi-forward mdi-36px"></i></span></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="step-item" style="display:none;">
+                    <div>
+                        <hr>
+                        <h2 class="title has-text-grey is-uppercase" style="font-size: 0.9rem;">
+                            Resumo da inscrição </h2>
+                        <p>Dados Pessoais, Dados da escola, Sessões escolhidas, etc...</p><br>
+                        <p>Um e-mail de confirmação será enviado para [e-mails].</p><br><button type="button" class="button is-danger"><span class="icon is-small"><i class="mdi mdi-download"></i></span>
+                            <span> Obter PDF </span>
+                            <!----></button>
+                        <hr>
+                    </div>
+                    <div class="column is-8 is-offset-2">
+                        <div class="level">
+                            <div class="level-left">
+                                <button href="" class="button router-link-active is-outlined prev-step" type="button" id="prevBtn">
+                                    <!----> <span> Anterior </span>
+                                    <!----></button>
+                            </div>
+                            <div class="level-right">
+                                <div class="button is-large is-success is-outlined" id="submitForm">
+                                    <!----> <span> Submeter </span> <span class="icon is-medium"><i
+                                            class="mdi mdi-forward mdi-36px"></i></span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        <!-- Circles which indicates the steps of the form: -->
+        <div style="text-align:center;margin-top:40px;">
+            <span class="step"></span>
+            <span class="step"></span>
+            <span class="step"></span>
+            <span class="step"></span>
+            <span class="step"></span>
+            <span class="step"></span>
+        </div>
+        </form>
+    </section>
+    </div>
+</div>
+<script>
+    var dinamicTableNumRows = 0; //Number of sessao rows
+    $(document).ready(function() {
+
+        //Table
+        var table = $('#expandableTable').DataTable({
+            "paging": true,
+            "info": false,
+            "dom": 'tp',
+            "pageLength": 10
+        });
+
+        //Set Time Initial
+        $('#filter_time_end').val('23:59');
+        $('#filter_time_start').val('00:00');
+        $('#filter_time_end').change();
+        $('#filter_time_start').change();
+
+        //Minmum vagas filter
+        $.fn.dataTable.ext.search.push(function( settings, data, dataIndex ) {
+            var tr = table.row(dataIndex).nodes().to$();
+            var index = tr.attr('id').replace('table_', '');
+            var _str = "#detail_" + index;
+            var min_vagas = parseInt($('#filter_vagas').val());
+            var details_sessao = $(_str).find('.sessao_table');
+
+            for(var i = 0; i<details_sessao.length;i++){
+                var vagas = parseInt(details_sessao.eq(i).find('.sessao_table_vagas').text());
+                if(vagas>min_vagas){
+                    return true;
+                }
+            }
+            return false;
+        });
+
+        //Time sessao filter
+        $.fn.dataTable.ext.search.push(function( settings, data, dataIndex ) {
+            var tr = table.row(dataIndex).nodes().to$();
+            var index = tr.attr('id').replace('table_', '');
+            var _str = "#detail_" + index;
+            var time_start = stringToTimeDate($('#filter_time_start').val());
+            var time_end = stringToTimeDate($('#filter_time_end').val());
+            var details_sessao = $(_str).find('.sessao_table');
+
+            for(var i = 0; i<details_sessao.length;i++){
+                var time = stringToTimeDate(details_sessao.eq(i).find('.sessao_table_horario').text());
+                if(time>time_start && time<time_end){
+                    return true;
+                }
+            }
+            return false;
+        });
+
+
+
+        //Expand table
+        $('#expandableTable tbody').on('click', 'td.details-control', function() {
+            var tr = $(this).closest('tr');
+            var row = table.row(tr);
+            var index = tr.attr('id').replace('table_', '');
+
+            if (row.child.isShown()) {
+                // This row is already open - close it
+                row.child.remove();
+                tr.removeClass('shown');
+            } else {
+                //console.log()
+                // Open this row
+                var _str = "#detail_" + index;
+                var detail_clone = $(_str).children().clone(true);
+                var detail_inputs_clone = detail_clone.find('.escolher_sessao');
+                var detail_inputs_original = $(_str).children().find('.escolher_sessao');
+
+                for (var i = 0; i < detail_inputs_clone.length; i++) {
+                    detail_inputs_clone.eq(i).off('change');
+                    syncInputs(detail_inputs_original.eq(i), detail_inputs_clone.eq(i));
+                }
+
+                row.child(detail_clone).show();
+                tr.addClass('shown');
+            }
+        });
+
+        //Filters
+        $('#atividade_filtro').on('keyup',function(){
+            table.column(1).search($(this).val()).draw();
+        });
+        $('#filter_campus').on('change',function(){
+            table.column(3).search($(this).val()).draw();
+        });
+        $('#filter_vagas').on('keyup change',function(){
+            table.draw();
+        });
+
+        $('#filter_time_start').on('change keyup',function(){
+            table.draw();
+        });
+        $('#filter_time_end').on('change keyup',function(){
+            table.draw();
+        });
+
+
+        table.draw();
+
+        //Start all number inputs at 0
+        $(".b-numberinput").find(".input").each(function() {
+            var value = parseInt($(this).val());
+            if (isNaN(value)) {
+                $(this).val("0").change();
+            }
+        })
+
+        //Fix input numbers buttons
+        $(".b-numberinput").each(function() {
+            var buttons = $(this).find('.control > button');
+            buttons.last().on('click', plusButton);
+            buttons.first().on('click', minusButton);
+        });
+
+        //Handle Dinamic table
+        $(".escolher_sessao").on("change", function() {
+            var current = $(this).val();
+            var id = $(this).closest('tr').find('.sessao_table_id').children('input').val();
+            var tableEntrys = $('#sessao_submit_table > tr');
+            
+            //Check for same session
+            var entry = 0;
+            tableEntrys.each(function(){
+                if($(this).hasClass('is-empty') || $(this).is('#templateTableSessoes') ){
+                    return;
+                }
+                var value = $(this).find('.template_sessao_id > input').val();
+                if(value == id){
+                    entry = $(this);
+                }
+            });
+
+
+            //If session doesn't exist create new one
+            if (entry == 0) {
+                var parent = $(this).closest("tr");
+                var table = $("#templateTableSessoes").clone(true);
+                table.removeAttr('id');
+
+                var form_idx = $('#sessao_escolhida > tbody').children().length - 2;
+                table.find('input').each(function() {
+                    replaceIdName($(this), "__prefix__", form_idx);
+                });
+
+                table.find("td[data-label='Campus']").html(parent.children("td[data-label='Campus']").html());
+                table.find("td[data-label='Titulo']").html(parent.children("td[data-label='Titulo']").html());
+                table.find("td[data-label='Horário']").html(parent.children("td[data-label='Horário']").html());
+                table.find("td[data-label='Espaço']").html(parent.children("td[data-label='Espaço']").html());
+
+                var tInput = table.find("td[data-label='Inscrever']").find('.table_escolher_sessao');
+                table.find("td[data-label='id']").find('input').val(parseInt(parent.children("td[data-label='id']").children("input").val()));
+                syncInputs($(this),tInput);
+                tInput.prop("checked",$(this).is(":checked"));
+                
+                //hides entry if button clicked
+                table.find('.remove_button').on("click", function() {
+                    $(this).closest('tr').find('.table_escolher_sessao').prop("checked",0).change();
+                });
+
+                //On sessao table input change
+                tInput.on("change", function() {
+                    var isVisible = $(this).is(":visible");
+                    var value = $(this).is(":checked"); 
+                    var tr = $(this).closest('tr');
+                    if (value == false && isVisible ) {
+                        dinamicTableNumRows-=1;
+                        tr.hide();
+                        var delete_field = $(this).closest('tr').find('.actions input');
+                        delete_field.prop( "checked", 1 ).change();
+                        delete_field.val(1);
+                        
+                        //fixSetNumeration("sessao_set");
+                    }
+
+                    if(value == true && !isVisible){
+                        dinamicTableNumRows+=1;
+                        tr.show();
+                        var delete_field = $(this).closest('tr').find('.actions input');
+                        delete_field.prop( "checked", false ).change();
+                        delete_field.val(0);
+                    }
+
+                    if(dinamicTableNumRows>0){
+                        $('#sessao_submit_table').find('.is-empty').hide();
+                        $('#sessao_escolhida > thead').show();
+                    }else{
+                        $('#sessao_submit_table').find('.is-empty').show();
+                        $('#sessao_escolhida > thead').hide();
+                    }
+                });
+
+                //Add new sessao
+                var value = parseInt($('#id_sessao_set-TOTAL_FORMS').val());
+                $('#id_sessao_set-TOTAL_FORMS').val(value + 1);
+                //table.show();
+                $('#sessao_submit_table').append(table);
+                tInput.change();
+            }
+        });
+
+        function minusButton() {
+            var input = $(this).parents(".b-numberinput").first().find("input");
+            var value = parseInt(input.val());
+            if (value <= 0 || isNaN(value)) {
+                value = 0;
+                input.val(value);
+                return;
+            } else {
+                value -= 1;
+            }
+            input.val(value).change();
+        }
+
+        function plusButton() {
+            var input = $(this).parents(".b-numberinput").first().find("input");
+            var value = parseInt(input.val());
+            if (value < 0 || isNaN(value)) {
+                value = 0;
+                input.val(value);
+                return;
+            } else {
+                value += 1;
+            }
+            input.val(value).change();
+        }
+
+        //Fix numeration dinamic table
+        function fixSetNumeration(name, start_number = 0) {
+            var s = 'input[name="' + name + '-TOTAL_FORMS"]';
+            var max_number = parseInt($(s).val());
+            var difference = 0;
+
+            for (var curr_number = start_number; curr_number < max_number; curr_number++) {
+                var inputs = 'input[name^="' + name + '-' + curr_number + '"]';
+                var elements = $(inputs);
+                if (elements.length == 0) {
+                    difference++;
+                    max_number++;
+                    continue;
+                } else if (difference > 0) {
+                    elements.each(function() {
+                        var search = name + '-' + curr_number;
+                        var num = curr_number - difference;
+
+                        var replace = name + '-' + num;
+                        var reg = new RegExp(search, 'g');
+                        var fix_name = $(this).attr('name').replace(reg, replace);
+                        var fix_id = $(this).attr('id').replace(reg, replace);
+
+                        $(this).attr('name', fix_name);
+                        $(this).attr('id', fix_id);
+                    });
+                }
+            }
+        }
+
+
+        var sessoes = $(".sessao_table");
+
+        //Handle starting table
+        $('#id_sessao_set-TOTAL_FORMS').val(0);
+        $('#sessao_start_info').children().each(function() {
+            //window.alert($(this).html());
+            var childs = $(this).children();
+            var value = "input[value='" + childs.eq(1).text() + "']";
+            var valueInt = parseInt(childs.eq(1).text());
+            var inscritos = parseInt(childs.eq(0).text());
+            var id = sessoes.children("td[data-label='id']").children(value);
+            var inscritosBool = parseInt(inscritos);
+            if(inscritosBool>0){
+                inscritosBool = true;
+            }else{
+                inscritosBool = false;
+            }
+            id.closest('.sessao_table').children("td[data-label='Inscrever']").find('input').prop("checked",inscritosBool).change();
+            
+            //console.log($('#sessao_submit_table').html());
+            //Error set
+            if($(this).children('.sessao_error').length >= 1){
+                var tr = $('#sessao_submit_table').children('tr');
+                var id_input_element = tr.children("td[data-label='id']");
+                for(var i = 0; i<id_input_element.length;i++){
+                    var this_id = parseInt(id_input_element.eq(i).children('input').val());
+                    
+                    if(this_id == valueInt){
+                        var el = id_input_element.eq(i).closest('tr').children("td[data-label='Inscrever']");
+                        tr.eq(2).find('.actions > input').val(childs.eq(2).text());
+                        setError(el,childs.eq(3).text(),false);
+                        break;
+                    }
+                }
+            }
+        });
+
+        //$("#sessao_start_info").remove();
+
+        //Remove buttons
+        $('.table_remove_button').each(function(){
+            applyClickRemoveRow($(this));
+        });
+
+        //Check for errors on submit
+        $("#submitForm").on("click",function(){
+            var validator = $("#regForm").validate();
+            var isCheck = $("#regForm")[0].checkValidity();
+            var errors = $("#regForm").find(':invalid');
+            if(errors.length == 0){
+                $(".table_escolher_sessao").each(function(){
+                    var value = $(this).val();
+                    var str = "Value: " + value + " Html: "+ $(this).attr('name'); 
+                    if(value == 'on'){
+                        $(this).val(1);
+                    }else if(value == 'off'){
+                        $(this).val(0);
+                    }
+                });
+                $("#regForm").submit();
+            }
+            else{
+                focusElementInStep(errors.eq(0));
+                for(var i = 0; i<errors.length;i++){
+                    var error = errors.eq(i)[0].validationMessage
+                    setError(errors.eq(i).closest(".field"),error);
+                }
+            }
+        });
+
+    });
+    //Aply the remove button to the tables
+    function applyClickRemoveRow(el){
+        el.on('click',function(){
+            $(this).next('input').prop( "checked", true );
+            $(this).next('input').val(1);
+            $(this).closest('.row').hide();
+        });
+    }
+
+    //String in format HH:MM
+    function stringToTimeDate(string){
+        var time = string.split(':');
+        if(time.length != 2)
+            return false;
+        
+        if(parseInt(time[0])>23 || parseInt(time[1])>59)
+            return false;
+        var date = new Date();
+        date.setHours(time[0]);
+        date.setMinutes(time[1]);
+
+        return date;
+    }
+
+    function timeDeltaValid(){
+        var start_date = stringToTimeDate($('#filter_time_start').val());
+        var end_date = stringToTimeDate($('#filter_time_end').val());
+
+        if(end_date == false || start_date == false)
+            return false;
+
+        return start_date < end_date;
+    }
+
+    //replace a pattern for id and name of a specified elemnt 
+    function replaceIdName(elem, pattern, replace) {
+        if ($(elem).attr('id')) {
+            var id = $(elem).attr('id').replace(pattern, replace);
+            //var newId = $(elem).attr('id').replace(id, parseInt(id,10)+1);
+            $(elem).attr('id', id);
+        }
+
+        if ($(elem).attr('name')) {
+            var curName = $(elem).attr('name').replace(pattern, replace);
+            //var newName = $(elem).attr('name').replace(curName, parseInt(curName,10)+1);
+            $(elem).attr('name', curName);
+        }
+    }
+
+
+    //Link 2 inputs on change
+    function syncInputs(el1, el2) {
+        el1.on("change", function() {
+            if($(this).is(":checkbox")){
+                var val = $(this).is(":checked");
+                if(el2.is(":checked") != val){
+                    el2.prop("checked",this.checked);
+                    el2.change();
+                }
+            }else{
+                if (el1.val() != el2.val())
+                    el2.val(el1.val()).change();
+            }
+        });
+        el2.on("change", function() {
+            if($(this).is(":checkbox")){
+                var val = $(this).is(":checked");
+                if(el1.is(":checked") != val){
+                    el1.prop("checked",this.checked);
+                    el1.change();
+                }
+                //el1.prop("checked",this.checked);
+            }else{
+                if (el1.val() != el2.val())
+                    el1.val(el2.val()).change();
+            }
+        });
+    }
+
+    function add_responsavel() {
+        var value = parseInt($('#id_responsaveis_set-TOTAL_FORMS').val());
+        $('#id_responsaveis_set-TOTAL_FORMS').val(value + 1);
+
+        var form_idx = value;
+        var template = $('#responsavel_template').clone(true).html().replace(/__prefix__/g, form_idx);
+        var added = $('#responsavel_form').append(template);
+        applyClickRemoveRow(added.find('.table_remove_button'));
+    }
+
+    function add_transporte() {
+        var value = parseInt($('#id_transportes_set-TOTAL_FORMS').val());
+        $('#id_transportes_set-TOTAL_FORMS').val(value + 1);
+
+        var form_idx = value;
+        var template = $('#template_transporte').clone(true);
+        template.removeAttr('id');
+        template.show();
+        template.find('[name*=__prefix__]').each(function() {
+            var name = $(this).attr('name').replace(/__prefix__/g, value);
+            var id = $(this).attr('id').replace(/__prefix__/g, value);
+            $(this).attr('name', name);
+            $(this).attr('id', id);
+        });
+        $('#table_transporte').append(template);
+    }
+</script>
+
+{% endblock content %}

@@ -8,10 +8,12 @@ from .forms import cursoForm
 def curso_form(request):
     cursos=Curso.objects.all()
     func=views.user(request)
-    form=cursoForm(request.POST)
-    if request.method=='POST':
+    if request.method=='POST' and not(Curso.objects.filter(nome=request.POST['unidade_organica_iduo'])):
+        form=cursoForm(request.POST)
         if form.is_valid():
-            form.save() 
+            form.save()
+    else:
+         form=cursoForm()
     context={'form':form,'cursos':cursos,'id':request.session['user_id'],'funcao':func,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)}
     return render(request,'cursos.html',context)
 

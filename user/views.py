@@ -141,7 +141,14 @@ def curso():
     return deps
 def register(request):
     me=None
-    print('user_id' in request.session)
+    print("enter"+str(not('user_id' in request.session) and not('type' in request.session)))
+    if 'user_id' in request.session and request.session['type']!=4:
+        context={'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)}
+        return render(request,"not_for-u.html",context)
+    elif ('user_id' in request.session) and ('type' in request.session):
+        if request.session['type']!=4:
+            ontext={'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)}
+            return render(request,"not_for-u.html",context)
     if 'user_id' in request.session:
         me=request.session['user_id']
     UOs=UnidadeOrganica.objects.all()
@@ -197,6 +204,9 @@ def register(request):
 
 #*----------------------------------------------------------login---------------------------------------
 def login_request(request):
+    if 'user_id' in request.session:
+        context={'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)}
+        return render(request,"not_for-u.html",context)
     if request.method == 'POST':
         form = AuthenticationForm(request.POST)
         tentatives=int(request.POST['tentatives'])
@@ -237,6 +247,7 @@ def login_request(request):
 def logout_request(request):
     r = redirect("blog:blog-home")
     del request.session['user_id']
+    del request.session['type']
     if 'cookie_id' in request.COOKIES:
         r.delete_cookie('cookie_id')
     messages.info(request, "saiste com sucesso")
@@ -277,8 +288,10 @@ def delete_user(request,id):
 #--------------------------------------alterar user---------------------------------------------
 def modify_user(request,id):
     id=signing.loads(id)
-    if id==request.session['user_id'] or Administrador-objects.filter(pk=request.session['user_id']).exists():
-        return render(request,"not_for-u.html",)
+    print(id!=request.session['user_id'] or not(Administrador.objects.filter(pk=request.session['user_id']).exists()))
+    if id!=request.session['user_id'] and not(Administrador.objects.filter(pk=request.session['user_id']).exists()):
+        context={'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)}
+        return render(request,"not_for-u.html",context)
     name = Utilizador.objects.get(idutilizador=id).nome
     me=request.session['user_id']
     if request.method=='POST':
@@ -357,6 +370,10 @@ def modify_user(request,id):
 
 def profile(request,id):
     id=signing.loads(id)
+    print(id!=request.session['user_id'] and not(Administrador.objects.filter(pk=request.session['user_id']).exists()))
+    if not(Administrador.objects.filter(pk=request.session['user_id']).exists()) and not(Coordenador.objects.filter(pk=request.session['user_id']).exists()):
+        context={'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)}
+        return render(request,"not_for-u.html",context)
     name = Utilizador.objects.get(idutilizador=id).nome
     me=request.session['user_id']
     form = ModifyForm()
@@ -402,6 +419,10 @@ def uo():
 def profile_list(request):
     funcao=user(request)
     user_id=request.session['user_id']
+    print("can_enter:"+str(not(Coordenador.objects.filter(pk=request.session['user_id']).exists()) or not(Administrador.objects.filter(pk=request.session['user_id']).exists())))
+    if not(Coordenador.objects.filter(pk=request.session['user_id']).exists()) and not(Administrador.objects.filter(pk=request.session['user_id']).exists()):
+        context={'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)}
+        return render(request,"not_for-u.html",context)
     users=Utilizador.objects.all().annotate(cargo=Value('Participante',CharField()),estado=Value('Pendente',CharField()),UO=Value('-',CharField()))
     for u in users:
         if Coordenador.objects.filter(pk=u.idutilizador).exists():

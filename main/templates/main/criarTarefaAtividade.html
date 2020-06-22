@@ -5,13 +5,24 @@
     <li class="is-active"><a href="" aria-current="page">Criar Tarefa Auxiliar Atividade</a></li>
 {% endblock %}
 {% block content %}
-
-<div class="ctr">
-  <div style="padding: 3rem 2vw 1rem">
+<div style="padding: 3rem 2vw 1rem;">
+  <div class="b-steps">
+      <nav class="steps is-success">
+          <ul class="step-items">
+              <li class="step-item is-success is-active"><a class="step-link">
+                      <div class="step-marker"><span class="icon"><i class="mdi mdi-book mdi-24px"></i></span></div>
+                      <div class="step-details"><span class="step-title">Criar Tarefa Auxiliar Atividade</span>
+                      </div>
+                  </a></li>
+          </ul>
+      </nav>
+      <hr>
+<div class="ctr" style="margin-left: 35%;">
+  <div style="padding: 2vw">
       <form method="POST" id="personForm"> {% csrf_token %}
           <div class="column">
               <div class="field">
-                   <label class="label">Nome Tarefa:</label>
+                   <label class="">Nome Tarefa:</label>
               <div class="control">
                    {{form.nome}}
               </div>
@@ -20,7 +31,7 @@
  
             <div class="ativi column">
               <div class="field">
-                <label class="label">Selecionar Atividade:</label>
+                <label class="">Selecionar Atividade:</label>
                 <div class="control">
                   <div class="select is-fullwidth">
                     {{form.atividade_idatividade}}
@@ -31,11 +42,11 @@
 
         <div class="column">
           <div class="field">
-            <label class="label" >Sessão Da Atividade:</label>
+            <label class="" >Sessão Da Atividade:</label>
             <div class="control">
               <div class="select is-fullwidth">
                 <select id="idsessao" name="idsession">
-                  <option value="">---------------</option>
+                  <option hidden value="">Selecione Atividade</option>
                 </select>
               </div>
             </div>
@@ -44,7 +55,7 @@
 
         <div class="column">
           <div class="field">
-            <label class="label">Atribuir Colaborador:</label>
+            <label class="">Atribuir Colaborador:</label>
             <div class="control is-expanded">
               <div class="select is-fullwidth">
                 {{form.colaborador_utilizador_idutilizador}}
@@ -61,18 +72,39 @@
                 <span>Voltar</span>
               </a>
              </div>
-             <div class="column"> 
-                <button class="buttons button is-success is-outlined is-link" type="submit">
-                  <span>Submeter</span>
-                  <span class="icon is-medium">
-                    <i class="mdi mdi-forward mdi-36px"></i>
-                  </span>
-                </button>
+             <div style="margin-left: 50%;" class="column"> 
+              <button type="button" class="button is-large is-success is-outlined" data-toggle="modal" data-target="#exampleModal" data-backdrop="false">
+                <span>Submeter</span>
+              </button>
               </div>
+
+              <div class="dialog modal" id="exampleModal">
+                <div class="modal-background"></div>
+                <br><br><br><br><br><br><br><br><br><br><br><br>
+                <div class="modal-card animation" style="max-width:360px">
+                    <!---->
+                    <section class="modal-card-body is-titleless">
+                        <div class="media">
+                            <!---->
+                            <div class="media-content">
+                                <p>Tem a certeza que quer criar a tarefa?</p>
+                                <!---->
+                            </div>
+                        </div>
+                    </section>
+                    <footer class="modal-card-foot"><button class="button" data-dismiss="modal">
+                            Cancelar
+                        </button> <button class="button is-success" type="submit">
+                            Confirmar
+                        </button></footer>
+                </div>
+            </div>
       </form>
       </div>
     </div>
   </div>
+</div>
+</div>
     </section>
 <style>
   .buttons {

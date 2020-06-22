@@ -1,11 +1,9 @@
-{% extends '../atividades/assets/home.html' %}
-{% block content %}
-<nav class="breadcrumb" aria-label="breadcrumbs">
-  <ul>
+{% extends 'base_template.html' %}
+{% block steps %}
     <li><a href="{% url 'blog:blog-home' %}">Início</a></li>
-    <li class="is-active"><a href="" aria-current="page">Sessões de {{activity.titulo}}</a></li>
-  </ul>
-</nav>
+    <li class="is-active"><a href="" aria-current="page">Atividades</a></li>
+{% endblock %}
+{% block content %}
         <div class="table "></div>
             <div class="table-wrapper">
                 <table class="table has-mobile-cards is-hoverable is-fullwidth">
@@ -69,18 +67,69 @@
                     </thead>
                 </table>
                 {% if account == 'coordinator' and activity.validada == 0 or activity.validada == 2 %}
-                <a class="button is-success" type="button" style="margin-left: 500px" href="{% url 'atividades:aceitar_atividade' activity.idatividade %}">
-                <span class="icon is-small">
-                    <i class="mdi mdi-check"></i>
-                </span>
-                <span>Aceitar</span>
-                </a>
-                <a class="button is-danger" type="button" style="margin-left: 50px" href="{% url 'atividades:recusar_atividade' activity.idatividade %}">
-                <span class="icon is-small">
-                    <i class="mdi mdi-delete"></i>
-                </span>
-                <span>Rejeitar</span>
-                </a>
+                <div class="column is-8 is-offset-2">
+                    <div class="level">
+                        <div class="level-left"><button type="button" class="button is-large is-danger is-outlined"
+                                data-toggle="modal" data-target="#exampleModal" data-backdrop="false">
+                                <!----> <span> Rejeitar </span>
+
+                                <!----></button></div>
+                        <div class="level-right"><button type="button" class="button is-large is-success is-outlined"
+                                data-toggle="modal" data-target="#exampleModalAccept" data-backdrop="false">
+                                <!----> <span> Aceitar </span>
+                                <!----></button></div>
+                    </div>
+                </div>
+                <!-- POP UP Recusar-->
+                <div class="dialog modal" id="exampleModal">
+                <div class="modal-background"></div>
+                <br><br><br><br><br><br><br><br><br><br><br><br>
+                <div class="modal-card animation" style="max-width:360px">
+                    <!---->
+                    <section class="modal-card-body is-titleless">
+                        <div class="media">
+                            <!---->
+                            <div class="media-content">
+                                <p>Tem a certeza que quer rejeitar atividade?</p>
+                                <!---->
+                            </div>
+                        </div>
+                    </section>
+                    <footer class="modal-card-foot"><button class="button" data-dismiss="modal">
+                            Cancelar
+                        </button>
+                        <a href="{% url 'atividades:recusar_atividade' activity.idatividade %}">
+                        <button class="button is-success">
+                            Confirmar
+                        </button></a></footer>
+                </div>
+            </div>
+
+
+                <!-- POP UP Aceitar -->
+                <div class="dialog modal" id="exampleModalAccept">
+                <div class="modal-background"></div>
+                <br><br><br><br><br><br><br><br><br><br><br><br>
+                <div class="modal-card animation" style="max-width:360px">
+                    <!---->
+                    <section class="modal-card-body is-titleless">
+                        <div class="media">
+                            <!---->
+                            <div class="media-content">
+                                <p>Tem a certeza que quer aceitar atividade?</p>
+                                <!---->
+                            </div>
+                        </div>
+                    </section>
+                    <footer class="modal-card-foot"><button class="button" data-dismiss="modal">
+                            Cancelar
+                        </button>
+                        <a href="{% url 'atividades:aceitar_atividade' activity.idatividade %}">
+                        <button class="button is-success">
+                            Confirmar
+                        </button></a></footer>
+                </div>
+            </div>
                 {% endif %}
 
 

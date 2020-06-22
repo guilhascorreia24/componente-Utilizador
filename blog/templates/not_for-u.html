@@ -1,17 +1,15 @@
 {% extends "base_template.html" %}
+{% load static %}
 {% block steps %}
-<li><a href="/" class="router-link-active">Início</a></li>
-                            <li class="is-active"><a href="{% url "blog:blog-home" %}"
-                                    class="router-link-exact-active router-link-active">Utilizadores</a></li>
 {% endblock %}
+{% block content %}
 <div data-v-8716d23a="">
     <div class="section">
         <div class="columns">
             <div class="column is-7">
-                <h1 class="title has-text-centered">Nova plataforma</h1>
-                <h1 class="subtitle is-5 has-text-centered"> Simples, Intuitivo, Limpo. </h1>
-                <p> A plataforma online do Dia Aberto foi renovada pelos alunos em âmbito do curso
-                    de Licenciatura de Engenharia Informática. </p>
+                <h1 class="title has-text-centered">Erro de acesso</h1>
+                <h1 class="subtitle is-5 has-text-centered"> Não é possivel aceder a esta pagina </h1>
+                
             </div>
             <div class="column is-4"><img alt="Logo" src="{% static "img/logo-large.17aeec9d.png" %}"></div>
         </div>
@@ -29,4 +27,4 @@
         </div>
     </div>
 </div>
-{% block content %}
+{% endblock %}

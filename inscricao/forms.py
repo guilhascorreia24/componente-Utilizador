@@ -70,6 +70,7 @@ class Form_Escola(ModelForm):
         base = super(Form_Escola, self).save(commit=False)
         base.local = local
         base.save()
+        return base
 
     class Meta:
         model = models.Escola
@@ -114,41 +115,36 @@ class Form_Almoco:
         else:
             self.curr_insc = None
 
-        campus = models.Campus.objects.all()
-        menus = list()
+        menus = models.Prato.objects.select_related('menu_idmenu').all()
         self.prato = list()
-        for camp in campus:
-            queryset = models.Menu.objects.filter(campus_idcampus = camp)
-            for query in queryset:
-                menus.append(query)
 
         #New BD entry
         if(self.curr_insc == None):
             if request != 0 and request.method == 'POST':
                 for menu in menus:
-                    self.prato.append(Form_Prato(request.POST,menu=menu,prefix='menu_'+str(menu.pk)))
+                    self.prato.append(Form_InscricaoHasPrato(request.POST,menu=menu,prefix='menu_'+str(menu.pk)))
             else:
                 for menu in menus:
-                    self.prato.append(Form_Prato(menu=menu,prefix='menu_'+str(menu.pk)))
+                    self.prato.append(Form_InscricaoHasPrato(menu=menu,prefix='menu_'+str(menu.pk)))
         
         #Change BD Entry
         else:
             instances = models.InscricaoHasPrato.objects.select_related('prato_idprato').filter(inscricao_idinscricao = self.curr_insc)
             self.instances_dict = dict()
             for instance in instances:
-                self.instances_dict[instance.prato_idprato.menu_idmenu.pk] = instance.prato_idprato
+                self.instances_dict[instance.prato_idprato.pk] = instance
             if request != 0 and request.method == 'POST':
                 for menu in menus:
                     if menu.pk in self.instances_dict:
-                        self.prato.append(Form_Prato(request.POST,menu=menu,instance=self.instances_dict[menu.pk],prefix='menu_'+str(menu.pk)))
+                        self.prato.append(Form_InscricaoHasPrato(request.POST,menu=menu,instance=self.instances_dict[menu.pk],prefix='menu_'+str(menu.pk)))
                     else:
-                        self.prato.append(Form_Prato(request.POST,menu=menu,prefix='menu_'+str(menu.pk)))
+                        self.prato.append(Form_InscricaoHasPrato(request.POST,menu=menu,prefix='menu_'+str(menu.pk)))
             else:
                 for menu in menus:
                     if menu.pk in self.instances_dict:
-                        self.prato.append(Form_Prato(menu=menu,instance=self.instances_dict[menu.pk],prefix='menu_'+str(menu.pk)))
+                        self.prato.append(Form_InscricaoHasPrato(menu=menu,instance=self.instances_dict[menu.pk],prefix='menu_'+str(menu.pk)))
                     else:
-                        self.prato.append(Form_Prato(menu=menu,prefix='menu_'+str(menu.pk)))
+                        self.prato.append(Form_InscricaoHasPrato(menu=menu,prefix='menu_'+str(menu.pk)))
 
     #Check 0 values while other errors occurr
     def is_valid(self):
@@ -173,30 +169,27 @@ class Form_Almoco:
                         continue
                 else:
                     if prato.menu.pk in self.instances_dict:
-                        prato.save()
+                        prato.save(inscricao)
                     else:
-                        prato_result = prato.save()
-                        models.InscricaoHasPrato(inscricao_idinscricao=inscricao,prato_idprato=prato_result).save()
-
+                        prato_result = prato.save(inscricao)
         else:
             for prato in self.prato:
                 if(prato.cleaned_data['nralmocos'] == 0):
                     continue
                 else:
-                    prato_result = prato.save()
-                    models.InscricaoHasPrato(inscricao_idinscricao=inscricao,prato_idprato=prato_result).save()
+                    prato_result = prato.save(inscricao)
 
 
-class Form_Prato(ModelForm):
+class Form_InscricaoHasPrato(ModelForm):
     def __init__(self, *args, **kwargs):
-        self.menu = kwargs.pop('menu')
-        super(Form_Prato, self).__init__(*args, **kwargs)
-
-    def save(self):
-        base = super(Form_Prato, self).save(commit=False)
-        base.menu_idmenu = self.menu
-        if(base.nralmocos == 0):
-            return base
+        self.prato = kwargs.pop('menu')
+        self.menu = self.prato.menu_idmenu
+        super(Form_InscricaoHasPrato, self).__init__(*args, **kwargs)
+    
+    def save(self,inscricao):
+        base = super(Form_InscricaoHasPrato, self).save(commit=False)
+        base.inscricao_idinscricao = inscricao
+        base.prato_idprato = self.prato
         base.save()
         return base
     
@@ -209,9 +202,9 @@ class Form_Prato(ModelForm):
         if almocos < self.cleaned_data['nralmocos']:
             msg = validators.ALMOCOS_FULL.replace('_NUM_',str(self.menu.nralmocosdisponiveis))
             raise ValidationError({'nralmocos': msg})
-
+    
     class Meta:
-        model = models.Prato
+        model = models.InscricaoHasPrato
         fields = ['nralmocos']
 
 
@@ -356,8 +349,9 @@ class CustomForm:
 #   - sessao
 #   - responsaveis
 #   - almoco
-#           - prato (array)
+#           - pratos (array)
 #               - menu
+#               - prato
 #               - nralmocos
 #   - transportes
 #       -campus (array)

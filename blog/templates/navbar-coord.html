@@ -1,6 +1,18 @@
 <a data-v-a67fe1ba="" href="/inscricoes" class="navbar-item is-tab router-link">Inscrições </a>
 <a data-v-a67fe1ba="" href="/colaboradores" class="navbar-item is-tab router-link"> Colaboradores</a>
-<a data-v-a67fe1ba="" href={% url 'tarefa_coordenador:criar_tarefa' %} class="navbar-item is-tab router-link"> Criar Tarefas </a>
-<a href="{% url 'tarefa_coordenador:consultar_tarefa' %}" class="navbar-item">Consultar Tarefas</a>
-<a data-v-a67fe1ba="" href="{% url "profile_list" %}" class="navbar-item is-tab router-link"> Utilizadores </a>
+<div data-v-a67fe1ba="" class="is-bottom-left is-mobile-modal dropdown ">
+    <div role="button" aria-haspopup="true" class="dropdown-trigger">
+    <a class="dropdown-toggle"  data-toggle="dropdown">
+        <button data-v-a67fe1ba="" type="button" class="button is-text" style="margin-right: 0.0rem; margin-top: 10.7%; text-decoration: none">Tarefas</button>
+    </a>
+    
+    <div class="dropdown-menu" style="margin-top: 0px; ">
+        <div role="menu" class="dropdown-content">
+            <a data-v-a67fe1ba="" href={% url 'tarefa_coordenador:criar_tarefa' %} class="navbar-item "> Criar Tarefas </a>
+            <a href="{% url 'tarefa_coordenador:consultar_tarefa' %}" class="navbar-item">Consultar Tarefas</a>
+        </div>
+    </div>
+</div>
+</div>
+<a data-v-a67fe1ba="" href="{% url "profile_list" %}" class="navbar-item "> Utilizadores </a>
 <a data-v-a67fe1ba="" href="{% url 'atividades:consultar_atividades_coodernador' %}" class="navbar-item is-tab router-link">Atividades do Departamento</a>

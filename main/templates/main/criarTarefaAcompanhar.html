@@ -5,12 +5,24 @@
 <li class="is-active"><a href="" aria-current="page">Criar Tarefa Acompanhar Participantes</a></li>
 {% endblock %}
 {% block content %}
+<div style="padding: 3rem 2vw 1rem;">
+  <div class="b-steps">
+      <nav class="steps is-success">
+          <ul class="step-items">
+              <li class="step-item is-success is-active"><a class="step-link">
+                      <div class="step-marker"><span class="icon"><i class="mdi mdi-book mdi-24px"></i></span></div>
+                      <div class="step-details"><span class="step-title">Criar Tarefa Acompanhar Participantes</span>
+                      </div>
+                  </a></li>
+          </ul>
+      </nav>
+      <hr>
 <div class="ctr">
-  <div style="padding: 3rem 2vw 1rem">
+  <div style="padding: 2vw">
       <form method="POST" id="personForm"> {% csrf_token %}
           <div class="column">
               <div class="field">
-                   <label class="label">Nome Tarefa:</label>
+                   <label aria-label="breadcrumbs" class="">Nome Tarefa:</label>
               <div class="control">
                    {{form.nome}}
               </div>
@@ -19,7 +31,7 @@
  
           <div class="column">
             <div class="field">
-                <label class="label" id='id_dia_dia_label'>Dia da Tarefa:</label>
+                <label aria-label="breadcrumbs"  class="" id='id_dia_dia_label'>Dia da Tarefa:</label>
                 <div class="control">
                     <div class="select is-fullwidth" id='id_dia_dia_seta'>
                         {{form.dia_dia}}
@@ -30,7 +42,7 @@
 
         <div class="column">
           <div class="field">
-            <label class="label">Hora Ínicio da Tarefa:</label>
+            <label aria-label="breadcrumbs" class="">Hora Ínicio da Tarefa:</label>
             <div class="control">
               {{form.hora_inicio}}
             </div>
@@ -39,9 +51,10 @@
 
         <div class="column">
           <div class="field">
-            <label class="label">Atribuir Colaborador:</label>
+            <label aria-label="breadcrumbs"  class="">Atribuir Colaborador:</label>
             <div class="control is-expanded">
               <div class="select is-fullwidth">
+                <option hidden value="">Colaborador</option>
                 {{form.colaborador_utilizador_idutilizador}}
               </div>
             </div>
@@ -50,52 +63,53 @@
 
         <hr>
         
-        <div class=" marg columns">
-          <div class="column is-3">
-            <label class=" ativi label">Atual Atividade do(s) Participante(s):</label>
-            <div style="width: 267px;" class="control">
+        <div style="width: 300px; margin-left: -250px;" class=" columns">
+          <div style="width: 310px;" class="column is-3">
+            <label class="">Atual Atividade do(s) Participante(s):</label>
+            <div style="width: 280px;" class="control">
               <div class="select is-fullwidth">
                 {{form.atividade_idatividade}}
               </div>
             </div>
           </div>
-          <div style="margin-left: 100px;" class="column">
-            <label style="width: 300px; margin-left: 50px;" class="label">Selecionar Sessão:</label>
+
+          <div style="margin-left: -20px;" class="column">
+            <label aria-label="breadcrumbs" style="width: 300px; margin-left: 50px;" class="">Selecionar Sessão:</label>
             <div style="margin-left: 50px; width: 250px;" class="control">
               <div class="select is-fullwidth">
                 <select id="idsessao" name="idsession">
-                  <option value="">---------------</option>
+                  <option hidden value="">Selecione Atividade</option>
                 </select>
               </div>
             </div>
           </div>
           <div style="margin-left: -80px;" class="column">
-            <label style="width: 300px; margin-left: 50px;" class="label">Selecionar Grupo:</label>
+            <label style="width: 300px; margin-left: 50px;" aria-label="breadcrumbs" class="">Selecionar Grupo:</label>
             <div style="margin-left: 50px; width: 300px;" class="control">
               <div class="select is-fullwidth">
                 <select id="grupos" name="grupos">
-                  <option value="">---------------</option>
+                  <option hidden value="">Selecione Sessão</option>
                 </select>
               </div>
             </div>
           </div>
         </div>
 <hr>
-        <div style="margin-left: -60px;" class="columns">
-          <div class="column is-3">
-            <label class=" ativi label">Próxima Atividade do(s) Participante(s):</label>
-            <div style="width: 267px;" class="control">
+        <div style="width: 300px; margin-left: -100px;" class="columns">
+          <div style="width: 350px;"  class="column is-3">
+            <label class="">Próxima Atividade do(s) Participante(s):</label>
+            <div style="width: 280px;" class="control">
               <div class="select is-fullwidth">
                 {{form.campus_levar}}
               </div>
             </div>
           </div>
-          <div style="margin-left: 80px;" class="column">
-            <label style="width: 300px; margin-left: 100px;" class="label">Local Destino do(s) Participante(s):</label>
-            <div style="margin-left: 100px; width: 250px;" class="control">
+          <div style="" class="column">
+            <label style="width: 300px;" class="">Local Destino do(s) Participante(s):</label>
+            <div style=" width: 250px;" class="control">
               <div class="select is-fullwidth">
                 <select id="levar" name="levar">
-                  <option value="">---------------</option>
+                  <option hidden value="">Selecione Atividade</option>
                 </select>
               </div>
             </div>
@@ -110,19 +124,42 @@
                 <span>Voltar</span>
               </a>
              </div>
-             <div class="column"> 
-                <button class="buttons button is-success is-outlined is-link" type="submit">
-                  <span>Submeter</span>
-                  <span class="icon is-medium">
-                    <i class="mdi mdi-forward mdi-36px"></i>
-                  </span>
-                </button>
+
+             <div style="margin-left: 50%;" class="column"> 
+              <button type="button" class="button is-large is-success is-outlined" data-toggle="modal" data-target="#exampleModal" data-backdrop="false">
+                <span>Submeter</span>
+              </button>
               </div>
+
+              <div class="dialog modal" id="exampleModal">
+                <div class="modal-background"></div>
+                <br><br><br><br><br><br><br><br><br><br><br><br>
+                <div class="modal-card animation" style="max-width:360px">
+                    <!---->
+                    <section class="modal-card-body is-titleless">
+                        <div class="media">
+                            <!---->
+                            <div class="media-content">
+                                <p>Tem a certeza que quer criar a tarefa?</p>
+                                <!---->
+                            </div>
+                        </div>
+                    </section>
+                    <footer class="modal-card-foot"><button class="button" data-dismiss="modal">
+                            Cancelar
+                        </button> <button class="button is-success" type="submit">
+                            Confirmar
+                        </button></footer>
+                </div>
+            </div>
       </form>
       </div>
     </div>
   </div>
     </section>
+
+  
+
 <style>
   .buttons {
   display: inline-block;
@@ -166,6 +203,7 @@
 
 .marg{
   margin-left: -190px;
+
 }
 </style>
 
