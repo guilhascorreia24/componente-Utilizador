@@ -94,14 +94,9 @@ def checknot(request):
     nots=UtilizadorHasNotificacao.objects.all().annotate(emissor=Value("",CharField()))
     deletenot(request)
     for noti in nots:
-<<<<<<< HEAD
         if noti.notificacao.utilizadorrecebe==me_id:
             print(notis)
         if noti.notificacao.utilizadorrecebe==me_id and not(has_noti(notis,noti)):
-=======
-        #print(notis)
-        if noti.notificacao.utilizadorrecebe==me_id and not(has_noti(notis,noti)) :
->>>>>>> 13a35082ab8526683d19f86af66d9edaf88c9f4e
             if Utilizador.objects.filter(pk=noti.notificacao.idutilizadorenvia).exists():
                 noti.emissor=Utilizador.objects.get(pk=noti.notificacao.idutilizadorenvia).email
             else:
