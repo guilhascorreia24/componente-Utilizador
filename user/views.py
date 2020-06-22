@@ -490,7 +490,7 @@ def reset(request):
             subject = 'Recuperação da Palavra-Passe'
             p=Utilizador.objects.get(email=recepient).idutilizador
             id = encrypt(p)
-            message = 'Para recuperar a sua palavra-passe re-introduza uma palavra-passe nova, no seguinte link:http://127.0.0.1:8000/login/recuperacao_password/'+id+'/'
+            message = 'Para recuperar a sua palavra-passe re-introduza uma palavra-passe nova, no seguinte link: {% "reset" id %}'
             send_mail(subject, message, 'diabertoworking@gmail.com', [recepient])
             messages.success(request, f'Verifique o seu email')
             return render(request, 'reset.html', {'form': sub})

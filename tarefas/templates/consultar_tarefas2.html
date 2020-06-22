@@ -140,22 +140,33 @@
                                     </thead>                                 
                                     <tbody>
                                             {% for tarefa in tarefas %}
+                                            {% if tarefa.colab == request.session.user_id %}
                                             <tr draggable="false" class="" scope="row">
                                             <!---->
                                                 <td data-label="Tipo de tarefa" class="">
-                                                    {{ tarefa.nome_tarefa }}
+                                                    {% if tarefa.espaco_depois != None %}
+                                                        Guiar Grupo
+                                                    {% else %}
+                                                       Ajudar Docente
+                                                       {% endif %} 
                                                 </td>
                                                 <td data-label="Atividade" class="">
-                                                    {{ tarefa.atividade }}
+                                                    {{ tarefa.nome_tarefa }}
                                                 </td>
                                                 <td data-label="Dia" class=""> 
                                                     {{ tarefa.dia | date:"d/m/Y" }}
+                                                    {{ tarefa.sessao_dia | date:"d/m/Y" }}
                                                 </td>
                                                 <td data-label="Hora" class=""> 
                                                     {{  tarefa.hora | time:"H:i" }}
+                                                    {{  tarefa.sessao_hora | time:"H:i" }}
                                                 </td>    
                                                 <td data-label="Local" class=""> 
-                                                    {{  tarefa.espaco_depois }} , {{  tarefa.campus }}
+                                                    {% if tarefa.espaco_depois != None %}
+                                                    {{  tarefa.espaco_depois  }} , {{  tarefa.campus }}
+                                                    {% else %}
+                                                    {{  tarefa.atividade_espaco  }} , {{  tarefa.atividade_campus }}
+                                                    {% endif %}
                                                 </td>                                          
                                                 <td data-label="Estado" class=""> 
                                                     <input style="display:none" value="{{ tarefa.id_tarefa }}" id="666"></input>
@@ -173,6 +184,8 @@
                                                     </a>
                                                 </td>                           
                                             </td>
+                                            </tr>
+                                            {% endif %}
                                             {% endfor %}  
                                         <!---->
                                         <!---->
@@ -236,7 +249,7 @@
                                 </div>
                                 <input disabled="" class="form-control bg-light" type="text" value="{{  tarefa.hora | time:"H:i" }}">
                             </div>
-                            {% if tarefa.espaco_antes != None %} 
+                            {% if tarefa.espaco_antes != none %} 
                             <br>
                             <div class="input-group col-sm-12">
                                 <div class="input-group-prepend labelForm">

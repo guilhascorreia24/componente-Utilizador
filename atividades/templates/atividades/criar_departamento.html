@@ -21,10 +21,10 @@
         <table class="table has-mobile-cards is-hoverable is-fullwidth">
             <thead>
                 <th>
-                    Sigla:
+                    Nome:
                 </th>
                 <th>
-                    Campus:
+                    Unidade Orgânica:
                 </th>
                 <th></th>
                 </tr>
@@ -77,14 +77,18 @@
                     <table class="table has-mobile-cards is-hoverable is-fullwidth">
                         <h3>Adicionar Unidade Orgânica: </h3>
                         <thead>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th></th>
         
                             <tr>
-                                <td>
-                                    <div class="column">
+                                <th style="padding-left: 0px;">
+                                    <div class="column" style="padding-left: 0%;">
+                                        <label class="">Nome:</label>
+                                        <div class="control is-expanded">
+                                            {{form.nome}}
+                                        </div>
+                                    </div>
+                                </th>
+                                <th style="padding-left: 0px;">
+                                    <div class="column" style="padding-left: 0%;">
                                         <div class="control is-expanded">
                                             <label class="">Unidade Orgânica:</label>
                                             <div class="control">
@@ -92,16 +96,8 @@
                                             </div>
                                         </div>
                                     </div>
-                                </td>
-                                <td>
-                                    <div class="column">
-                                        <label class="">Nome:</label>
-                                        <div class="control is-expanded">
-                                            {{form.nome}}
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
+                                </th>
+                                <th>
                                     <button data-v-5aa16ff8="" type="button submit" form="addDepartamento"
                                         class="button is-success" style="margin-top:40px">
                                         <span class="icon is-small">
@@ -109,7 +105,7 @@
                                         </span>
                                         <span>Adicionar Departamento</span>
                                     </button>
-                                </td>
+                                </th>
                             </tr>
                         </thead>
                     </table>

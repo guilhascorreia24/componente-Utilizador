@@ -45,13 +45,21 @@
     <br>
     <br>
     <form method="POST" id="addCurso" enctype="multipart/form-data"> {% csrf_token %}
-        <div class="table "></div>
+        <div class="table ">
         <div class="table-wrapper">
             <table class="table has-mobile-cards is-hoverable is-fullwidth">
                 <h3>Adicionar Curso: </h3>
                 <thead>
-                        <th>
-                            <div class="column">
+                    <th style="padding-left: 0px;width:28%;">
+                        <div class="column" style="padding-left: 0%;">
+                            <label class="">Curso:</label>
+                            <div class="control is-expanded">
+                                {{form.nome}}
+                            </div>
+                        </div>
+                    </th>
+                    <th style="padding-left: 0px;">
+                        <div class="column" style="padding-left: 0%;">
                                 <div class="control is-expanded">
                                     <label class="">Unidade Orgânica:</label>
                                     <div class="control">
@@ -61,14 +69,6 @@
                             </div>
                         </th>
                         <th>
-                            <div class="column">
-                                <label class="">Nome:</label>
-                                <div class="control is-expanded">
-                                    {{form.nome}}
-                                </div>
-                            </div>
-                        </th>
-                        <td>
                             <button data-v-5aa16ff8="" type="button submit" form="addCurso" class="button is-success"
                                 style="margin-top:40px">
                                 <span class="icon is-small">
@@ -115,6 +115,7 @@
                     Confirmar
                 </button></a></footer>
     </div>
+</div>
 </div>
 </div>
 <script>
