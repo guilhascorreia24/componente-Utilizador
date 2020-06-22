@@ -266,28 +266,34 @@
                     </div>
                 </div>
                 <div class="step-item" style="display:none;">
-                    <div data-v-f5fe8f88="" style="padding: 1rem 2vw 0px;">
-                        <hr data-v-f5fe8f88=""> {% regroup form.almoco.prato by menu.campus_idcampus as campus_prato %} {% for camp in campus_prato %}
-                        <h2 data-v-f5fe8f88="" class="title has-text-grey is-uppercase" style="font-size: 0.9rem;">
-                            Informação de almoço - Campus {{camp.grouper}} </h2>
-
-                        {% for prato in camp.list %}
-                        <div data-v-f5fe8f88="" class="field has-numberinput has-numberinput-compact">
-                            <label>{{prato.menu.tipo}} - {{prato.menu.menu}}</label>
-                            <div data-v-f5fe8f88="" class="b-numberinput field has-addons">
-                                <p class="control"><button type="button" class="button is-primary"><span class="icon"><i
-                                                class="mdi mdi-minus mdi-24px"></i></span></button>
-                                </p>
-                                <div class="control is-clearfix">{{prato.nralmocos|addcss:"input"}}
-                                </div>
-                                <p class="control"><button type="button" class="button is-primary"><span class="icon"><i
-                                                class="mdi mdi-plus mdi-24px"></i></span></button>
-                                </p>
-                            </div>
-                            <p class="help is-danger">{{prato.nralmocos.errors.0}}</p>
+                    <div class="columns">
+                        <div class="column is-4" style="margin-left: 10%;">
+                            <img src="{% static "img/Talheres.PNG" %}">
                         </div>
-                        {% endfor %}
-                        <hr data-v-f5fe8f88=""> {% endfor %}
+                        <div class="column">
+                            <div data-v-f5fe8f88="" style="padding: 1rem 2vw 0px;">
+                                <hr data-v-f5fe8f88=""> {% regroup form.almoco.prato by menu.campus_idcampus as campus_prato %} {% for camp in campus_prato %}
+                                <h2 data-v-f5fe8f88="" class="title has-text-grey is-uppercase" style="font-size: 0.9rem;">
+                                    Informação de almoço - Campus {{camp.grouper}} </h2>
+                                {% for prato in camp.list %}
+                                <div data-v-f5fe8f88="" class="field has-numberinput has-numberinput-compact">
+                                    <label>{{prato.prato.tipo}} - {{prato.prato.descricao}}</label>
+                                    <div data-v-f5fe8f88="" class="b-numberinput field has-addons">
+                                        <p class="control"><button type="button" class="button is-primary"><span class="icon"><i
+                                                        class="mdi mdi-minus mdi-24px"></i></span></button>
+                                        </p>
+                                        <div class="control is-clearfix">{{prato.nralmocos|addcss:"input"}}
+                                        </div>
+                                        <p class="control"><button type="button" class="button is-primary"><span class="icon"><i
+                                                        class="mdi mdi-plus mdi-24px"></i></span></button>
+                                        </p>
+                                    </div>
+                                    <p class="help is-danger">{{prato.nralmocos.errors.0}}</p>
+                                </div>
+                                {% endfor %}
+                                <hr data-v-f5fe8f88=""> {% endfor %}
+                            </div>
+                        </div>
                     </div>
                     <div class="column is-8 is-offset-2">
                         <div class="level">
@@ -789,9 +795,9 @@
                                     <!----></button>
                             </div>
                             <div class="level-right">
-                                <div class="button is-large is-success is-outlined" id="submitForm">
+                                <button class="button is-large is-success is-outlined" data-toggle="modal" data-target="#exampleModal" data-backdrop="false">
                                     <!----> <span> Submeter </span> <span class="icon is-medium"><i
-                                            class="mdi mdi-forward mdi-36px"></i></span></div>
+                                            class="mdi mdi-forward mdi-36px"></i></span></button>
                             </div>
                         </div>
                     </div>
@@ -804,6 +810,28 @@
             <span class="step"></span>
             <span class="step"></span>
             <span class="step"></span>
+        </div>
+        <div class="dialog modal" id="exampleModal">
+            <div class="modal-background"></div>
+            <br><br><br><br><br><br><br><br><br><br><br><br>
+            <div class="modal-card animation" style="max-width:360px">
+                <!---->
+                <section class="modal-card-body is-titleless">
+                    <div class="media">
+                        <!---->
+                        <div class="media-content">
+                            <p>Tem a certeza que quer inscrever-se no site?</p>
+                            <!---->
+                        </div>
+                    </div>
+                </section>
+                <footer class="modal-card-foot"><button class="button" data-dismiss="modal">
+                        Cancelar
+                    </button> <div class="button is-success" id="submitForm">
+                        Confirmar
+                    </div>
+                </footer>
+            </div>
         </div>
         </form>
     </section>
@@ -1117,6 +1145,7 @@
 
         //Check for errors on submit
         $("#submitForm").on("click",function(){
+            $('#exampleModal').modal('hide');
             var validator = $("#regForm").validate();
             var isCheck = $("#regForm")[0].checkValidity();
             var errors = $("#regForm").find(':invalid');

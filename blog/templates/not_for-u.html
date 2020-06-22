@@ -7,6 +7,10 @@
     <div class="section">
         <div class="columns">
             <div class="column is-7">
+                {% if message %}
+                    <h1 class="title has-text-centered">Erro</h1>
+                    <h1 class="subtitle is-5 has-text-centered">{{message}}</h1>
+                {% endif %}
                 <h1 class="title has-text-centered">Erro de acesso</h1>
                 <h1 class="subtitle is-5 has-text-centered"> Não é possivel aceder a esta pagina </h1>
                 
