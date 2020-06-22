@@ -16,51 +16,6 @@
         </ul>
     </nav>
 </div>
-<form method="POST" id="addDepartamento" enctype="multipart/form-data"> {% csrf_token %}
-    <div class="table " style="padding-left: 10%;padding-right: 10%;">
-        <div class="table-wrapper">
-            <table class="table has-mobile-cards is-hoverable is-fullwidth">
-                <h3>Adicionar Unidade Orgânica: </h3>
-                <thead>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-
-                    <tr>
-                        <td>
-                            <div class="column">
-                                <div class="control is-expanded">
-                                    <label class="">Unidade Orgânica:</label>
-                                    <div class="control">
-                                        {{form.unidade_organica_iduo}}
-                                    </div>
-                                </div>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="column">
-                                <label class="">Nome:</label>
-                                <div class="control is-expanded">
-                                    {{form.nome}}
-                                </div>
-                            </div>
-                        </td>
-                        <td>
-                            <button data-v-5aa16ff8="" type="button submit" form="addDepartamento"
-                                class="button is-success" style="margin-top:40px">
-                                <span class="icon is-small">
-                                    <i class="mdi mdi-plus"></i>
-                                </span>
-                                <span>Adicionar Departamento</span>
-                            </button>
-                        </td>
-                    </tr>
-                </thead>
-            </table>
-        </div>
-        </div>
-</form>
 <div class="table " style="padding-left: 10%;padding-right: 10%;">
     <div class="table-wrapper">
         <table class="table has-mobile-cards is-hoverable is-fullwidth">
@@ -112,8 +67,54 @@
             </tr>
             {% endfor %}
         </table>
+    </div>
+</div>
         <br>
         <br>
+        <form method="POST" id="addDepartamento" enctype="multipart/form-data"> {% csrf_token %}
+            <div class="table " style="padding-left: 10%;padding-right: 10%;">
+                <div class="table-wrapper">
+                    <table class="table has-mobile-cards is-hoverable is-fullwidth">
+                        <h3>Adicionar Unidade Orgânica: </h3>
+                        <thead>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+        
+                            <tr>
+                                <td>
+                                    <div class="column">
+                                        <div class="control is-expanded">
+                                            <label class="">Unidade Orgânica:</label>
+                                            <div class="control">
+                                                {{form.unidade_organica_iduo}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="column">
+                                        <label class="">Nome:</label>
+                                        <div class="control is-expanded">
+                                            {{form.nome}}
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <button data-v-5aa16ff8="" type="button submit" form="addDepartamento"
+                                        class="button is-success" style="margin-top:40px">
+                                        <span class="icon is-small">
+                                            <i class="mdi mdi-plus"></i>
+                                        </span>
+                                        <span>Adicionar Departamento</span>
+                                    </button>
+                                </td>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+        </form>
         <div align="center">
             <button data-v-5aa16ff8="" type="button" class="button is-success" style="margin-top:40px">
                 <a href="{% url 'blog:blog-home' %}" style="color:white;">

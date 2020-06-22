@@ -23,11 +23,33 @@ def mais_info(request, pk):
 				template_name="main/info_atividade.html",
 				context=context)
 
+def disponibilidades():
+	tarefas=Tarefa.objects.all()
+	dispos=[]
+	for tarefa in tarefas:
+		colab=tarefa.colaborador_utilizador_idutilizador
+		dia=None
+		hora_i=None
+		hora_f=None
+		dispo=None
+		if tarefa.sessao_idsessao==None:
+			dia=tarefa.dia_dia
+			hora_i=tarefa.hora_inicio
+		else:
+			dia=tarefa.sessao_idsessao.horario_has_dia_id_dia_hora.dia_dia
+			hora_i=tarefa.sessao_idsessao.horario_has_dia_id_dia_hora.horario_hora
+			hora_f=hora_i+tarefa.sessao_idsessao.atividade_idatividade.duracao
+		dispo=Disponibilidade.objects.filter(colaborador_utilizador_idutilizador=colab,dia_dia=dia,horario_hora=hora_i)
+		if not(dispo):
+			dispos.append(dispo)
+	return dispos
+
 def criar_tarefa_atividade(request):
 	user = Utilizador.objects.get(idutilizador = request.session["user_id"])
 	coord_user = Coordenador.objects.get(utilizador_idutilizador = user)
 	new_form = Tarefa(concluida = 0, coordenador_utilizador_idutilizador = coord_user)
 	form = TarefasFormAtividade(request.POST, instance = new_form)
+	#form.colaborador_utilizador_idutilizador=disponibilidades()
 	if request.method == "POST":
 		if form.is_valid():
 			new_tarefa = form.save(commit = False)

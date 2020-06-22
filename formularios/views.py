@@ -8,7 +8,7 @@ from .forms import cursoForm
 def curso_form(request):
     cursos=Curso.objects.all()
     func=views.user(request)
-    if request.method=='POST' and not(Curso.objects.filter(nome=request.POST[''])):
+    if request.method=='POST' and not(Curso.objects.filter(nome=request.POST['unidade_organica_iduo'])):
         form=cursoForm(request.POST)
         if form.is_valid():
             form.save()

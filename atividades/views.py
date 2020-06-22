@@ -3,6 +3,7 @@ from les import settings
 from .forms import *
 from blog.models import Atividade, Utilizador, Administrador, Coordenador, ProfessorUniversitario, Espaco, Departamento, \
     UnidadeOrganica, Sessao, Horario, Campus, Dia, HorarioHasDia, Sala, Anfiteatro, Arlivre
+from Notification.views import noti_not_checked
 
 
 # Create your views here.
@@ -19,6 +20,7 @@ def home_view(request):
             "log": logged,
             "id": request.session["user_id"],
             "account": return_account_type(request.session["user_id"]),
+            'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)
         }
     return render(request, "atividades/inicio.html", context)
 
@@ -48,6 +50,7 @@ def atividade_create_view(request):
         "departamentos": Departamento.objects.all(),
         "unidade_organica": UnidadeOrganica.objects.all(),
         "account": return_account_type(request.session["user_id"]),
+        'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)
     }
     return render(request, "atividades/criar_atividade.html", context)
 
@@ -83,6 +86,7 @@ def editar_atividade_view(request, idActivity):
         "departamentos": departamento,
         "unidade_organica": unidade_organica,
         "account": return_account_type(request.session["user_id"]),
+        'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)
     }
     return render(request, "atividades/criar_atividade.html", context)
 
@@ -125,6 +129,7 @@ def all_activities_view(request):
         "departamentos": Departamento.objects.all(),
         "list": atividades,
         "account": return_account_type(request.session["user_id"]),
+        'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)
     }
     return render(request, "atividades/consultar_todas_atividades.html", context)
 
@@ -134,6 +139,7 @@ def info_atividade_view(request, idActivity):
     context = {
         "activity": atividade,
         "account": return_account_type(request.session["user_id"]),
+        'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)
     }
     return render(request, "atividades/info_atividade.html", context)
 
@@ -175,6 +181,7 @@ def coordinator_activities_view(request):
         "departamentos": Departamento.objects.all(),
         "list": atividades,
         "account": return_account_type(request.session["user_id"]),
+        'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)
     }
     return render(request, "atividades/consultar_atividades_coordenador.html", context)
 
@@ -213,6 +220,7 @@ def my_activities_view(request):
     context = {
         "list": querysetAtividade,
         "account": return_account_type(request.session["user_id"]),
+        'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)
     }
     return render(request, "atividades/consultar_atividades_professor.html", context)
 
@@ -224,6 +232,7 @@ def activity_session_view(request, idActivity):
         "list": querysetSession,
         "activity": atividade,
         "account": return_account_type(request.session["user_id"]),
+        'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)
     }
     return render(request, "atividades/sessao_info.html", context)
 
@@ -252,6 +261,7 @@ def create_edit_session_view(request, idActivity):
         "activity": get_object_or_404(Atividade, idatividade=idActivity),
         "messageError": message,
         "account": return_account_type(request.session["user_id"]),
+        'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)
     }
     return render(request, "atividades/criar_editar_sessao.html", context)
 
@@ -278,6 +288,7 @@ def criar_sala_view(request):
         "form": form,
         "campus": campus,
         "account": return_account_type(request.session["user_id"]),
+        'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)
     }
     return render(request, "atividades/criar_sala.html", context)
 
@@ -309,6 +320,7 @@ def especificar_espaco(request, idEspaco):
         "fields": fields,
         "local": local,
         "account": return_account_type(request.session["user_id"]),
+        'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)
     }
     return render(request, "atividades/especificar_espaco.html", context)
 
@@ -362,6 +374,7 @@ def editar_local_view(request, idActivity):
         "fields": fields,
         "edificios": allbuildings,
         "selectedBuilding": selectedBuilding,
+        'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)
     }
     return render(request, "atividades/editar_local.html", context)
 
@@ -398,6 +411,7 @@ def criar_campus_view(request):
     context = {
         "campus": campus,
         "account": return_account_type(request.session["user_id"]),
+        'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)
     }
     return render(request, "atividades/criar_campus.html", context)
 
@@ -421,6 +435,7 @@ def criar_uo_view(request):
         "form": form,
         "uo": uo,
         "account": return_account_type(request.session["user_id"]),
+        'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)
     }
     return render(request, "atividades/criar_uo.html", context)
 
@@ -444,6 +459,7 @@ def criar_departamento_view(request):
         "form": form,
         "departamento": departamento,
         "account": return_account_type(request.session["user_id"]),
+        'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)
     }
     return render(request, "atividades/criar_departamento.html", context)
 
