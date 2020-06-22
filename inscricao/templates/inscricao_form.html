@@ -58,9 +58,8 @@
             <form id="regForm" method="POST">
                 {% csrf_token %}
                 <div class="step-item">
-                    <!-- prettier-ignore -->
                     <div style="padding: 1rem 2vw 0px;">
-                        {% if form.responsaveis.errors %} {% for field in form.responsaveis %} {% for error in field.errors %}
+                        <!--{% if form.responsaveis.errors %} {% for field in form.responsaveis %} {% for error in field.errors %}
                         <div class="alert alert-danger">
                             <strong>{{ field|escape }}</strong>
                         </div>
@@ -109,18 +108,17 @@
                             <strong>{{ error|escape }}</strong>
                         </div>
                         {% endfor %} {% endif %}
+                        -->
                         <hr>
                         <h2 class="title has-text-grey is-uppercase" style="font-size: 0.9rem;">
                             Docentes responsáveis</h2>
                         <div class="columns">
                             <div class="column is-4">
                                 <div class="field"><label class="label">Nome</label>
-                                    <!---->
                                 </div>
                             </div>
                             <div class="column is-4">
                                 <div class="field"><label class="label">E-mail</label>
-                                    <!---->
                                 </div>
                             </div>
                             <div class="column is-3">

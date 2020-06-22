@@ -1,9 +1,9 @@
 from django.shortcuts import render, redirect, HttpResponse
-from Notification.views import noti_not_checked,noti_not_checked
+from Notification.views import noti_not_checked,noti_not_checked, new_noti
 from inscricao import models
 from django.contrib.auth import authenticate, login, logout
 from blog import userValidation
-from inscricao import forms
+from inscricao import forms, messages
 from django.forms import formset_factory
 from django.db.models import F
 from django.core import signing
@@ -67,12 +67,17 @@ def delete_inscricao(inscricao):
 def inscricao_form(request,inscricao=None):
     user = userValidation.getLoggedUser(request)
     if user._type != userValidation.PARTICIPANTE:
-        return HttpResponse("<html>User needs to be a Participante</html>")
+        context={'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)}
+        return render(request,"not_for-u.html",{'context' : context , 'message' : "Utilizador não é participante"})
 
     if request.method == 'POST':
         form = forms.CustomForm(request,inscricao=inscricao)
         if form.is_valid():
             form.save(user)
+            if(inscricao == None):
+                messages.send_new_inscricao_coletiva(request,form)
+            else:
+                messages.send_change_inscricao_coletiva(request,form)
             return redirect('inscricao:consulta')
         else:
             campus = models.Campus.objects.all()
@@ -85,9 +90,6 @@ def inscricao_form(request,inscricao=None):
         sessoes = list_sessao()
         return render(request,'inscricao_form.html',{'form': form, 'atividades_sessao' : sessoes,'campus':campus, 'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
     
-    
-def test(request):
-    return render(request,'test.html')
 
 
 def consultar_inscricao(request):
@@ -165,6 +167,10 @@ def inscricao_individual_form(request,inscricao=None):
         form = forms.FormIndividual(request,inscricao=inscricao)
         if form.is_valid():
             form.save(user)
+            if(inscricao == None):
+                messages.send_new_inscricao_individual(request,form)
+            else:
+                messages.send_change_inscricao_individual(request,form)
             return redirect('inscricao:consulta')
         else:
             campus = models.Campus.objects.all()
