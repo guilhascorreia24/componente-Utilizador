@@ -4,6 +4,7 @@ from inscricao import models
 from inscricao.validators import email_validator, not_zero_validator, telefone_validator, SESSAO_MIN_ERROR
 from django.db.models import F
 from inscricao import validators
+import inspect
 
 
 class Form_InscricaoIndividual(ModelForm):
@@ -422,3 +423,8 @@ class FormIndividual:
         self.sessao.save()
 
         return self
+
+def introspect(something):
+    methods = inspect.getmembers(something, inspect.ismethod)
+    others = inspect.getmembers(something, lambda x: not inspect.ismethod(x))
+    print(methods)

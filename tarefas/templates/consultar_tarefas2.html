@@ -133,6 +133,11 @@
                                                         style="display: none;"><i class="mdi mdi-menu-up"></i></span>
                                                 </div>
                                             </th>
+                                            <th class="is-sortable">
+                                                <div class="th-wrap"> Ações <span class="icon is-small"
+                                                        style="display: none;"><i class="mdi mdi-menu-up"></i></span>
+                                                </div>
+                                            </th>
                                             <!---->
                                         </tr>
                                         <!---->
@@ -148,7 +153,7 @@
                                                         Guiar Grupo
                                                     {% else %}
                                                        Ajudar Docente
-                                                       {% endif %} 
+                                                    {% endif %} 
                                                 </td>
                                                 <td data-label="Atividade" class="">
                                                     {{ tarefa.nome_tarefa }}
@@ -240,14 +245,14 @@
                                 <div class="input-group-prepend labelForm">
                                     <span class="input-group-text w-100">Dia</span>
                                 </div>
-                                <input disabled="" class="form-control col-sm-4 bg-light" type="text" value="{{ tarefa.dia | date:"d/m/Y"}}">
+                                <input disabled="" class="form-control col-sm-4 bg-light" type="text" value="{{ tarefa.dia | date:"d/m/Y" }}{{ tarefa.sessao_dia | date:"d/m/Y" }}">
                             </div>
                             <br>
                             <div class="input-group col-sm-12">
                                 <div class="input-group-prepend labelForm">
                                     <span class="input-group-text w-100">Hora</span>
                                 </div>
-                                <input disabled="" class="form-control bg-light" type="text" value="{{  tarefa.hora | time:"H:i" }}">
+                                <input disabled="" class="form-control bg-light" type="text" value="{{  tarefa.hora | time:"H:i" }}{{  tarefa.sessao_hora | time:"H:i" }}">
                             </div>
                             {% if tarefa.espaco_antes != none %} 
                             <br>
@@ -263,7 +268,11 @@
                                 <div class="input-group-prepend labelForm">
                                     <span class="input-group-text w-100">Local de Destino</span>
                                 </div>
-                                <input disabled="" class="form-control bg-light" type="text" value="{{  tarefa.espaco_depois }} {{  tarefa.campus }}">
+                                {% if tarefa.espaco_depois != None %}
+                                <input disabled="" class="form-control bg-light" type="text" value="{{  tarefa.espaco_depois  }} , {{  tarefa.campus }}">
+                                {% else %}
+                                <input disabled="" class="form-control bg-light" type="text" value="{{  tarefa.atividade_espaco  }} , {{  tarefa.atividade_campus }}">
+                                {% endif %}
                             </div>
                             <br>
                             <div class="form-group col-lg-8" style="text-align:center">
