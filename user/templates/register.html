@@ -367,7 +367,7 @@
         </section>
         <footer class="modal-card-foot"><button class="button" data-dismiss="modal">
                 Cancelar
-            </button> <button class="button is-success" type="submit">
+            </button> <button class="button is-success" type="submit" id="submit_button">
                 Confirmar
             </button></footer>
     </div>
@@ -396,6 +396,12 @@
     }    </script>
 <script>
     $(function () {
+
+        $(document).ready(function(){
+            $("#submit_button").on('click',function(){
+                $(this).modal('hide');
+            });
+        });
         $('#{{form.UO.id_for_label}}').on('change', function () {
             var val = this.value;
             if (val != 0) {

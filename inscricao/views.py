@@ -31,7 +31,8 @@ def inscricao_delete(request,inscricao):
             try:
                 insc = models.InscricaoIndividual.objects.get(participante_utilizador_idutilizador = user.pk, inscricao_idinscricao=inscricao)
             except:
-                return HttpResponse("<h1>Inscrição não existe</h1>")
+                context={'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)}
+                return render(request,"not_for-u.html",{'context' : context , 'message' : "Não existe Inscrição"})
                 
         delete_inscricao(insc)
 
@@ -45,7 +46,8 @@ def inscricao_alterar(request,inscricao):
         try:
             insc = models.InscricaoIndividual.objects.get(inscricao_idinscricao=inscricao)
         except:
-            return HttpResponse("<h1>Inscrição não existe</h1>")
+            context={'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)}
+            return render(request,"not_for-u.html",{'context' : context , 'message' : "Não existe Inscrição"})
         
         return inscricao_individual_form(request,inscricao)
 
@@ -156,7 +158,8 @@ def consultar_inscricao(request):
 def inscricao_individual_form(request,inscricao=None):
     user = userValidation.getLoggedUser(request)
     if user._type != userValidation.PARTICIPANTE:
-        return HttpResponse("<html>User needs to be a Participante</html>")
+        context={'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)}
+        return render(request,"not_for-u.html",{'context' : context , 'message' : "Utilizador não é participante"})
 
     if request.method == 'POST':
         form = forms.FormIndividual(request,inscricao=inscricao)

@@ -537,7 +537,6 @@ def validacoes(request,acao,id):
 def getUserType(request):
     if(request.method=='POST'):
         num = request.POST.get("id","")
-        print(num)
         query = Utilizador.objects.get(idutilizador=num)
         num = query.validada
         return HttpResponse(json.dumps({'type': num}), content_type="application/json")
