@@ -4,9 +4,20 @@
 <li class="is-active"><a href="" aria-current="page">Cursos</a></li>
 {% endblock %}
 {%  block  content %}
-<div class="table "></div>
+<div class="b-steps">
+<nav class="steps is-success">
+    <ul class="step-items">
+        <li class="step-item is-success is-active"><a class="step-link">
+                <div class="step-marker"><span class="icon"><i class="mdi mdi-book mdi-24px"></i></span></div>
+                <div class="step-details"><span class="step-title">Cursos</span>
+                </div>
+            </a></li>
+    </ul>
+</nav>
+</div>
+<div class="table"  style="padding-left: 10%;padding-right: 10%;" >
 <div class="table-wrapper">
-    <table class="table has-mobile-cards is-hoverable is-fullwidth">
+    <table id="myTable" class="table has-mobile-cards is-hoverable is-fullwidth">
         <thead>
             <th>
                 Curso:
@@ -39,13 +50,7 @@
             <table class="table has-mobile-cards is-hoverable is-fullwidth">
                 <h3>Adicionar Curso: </h3>
                 <thead>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-
-                    <tr>
-                        <td>
+                        <th>
                             <div class="column">
                                 <div class="control is-expanded">
                                     <label class="">Unidade Orgânica:</label>
@@ -54,15 +59,15 @@
                                     </div>
                                 </div>
                             </div>
-                        </td>
-                        <td>
+                        </th>
+                        <th>
                             <div class="column">
                                 <label class="">Nome:</label>
                                 <div class="control is-expanded">
                                     {{form.nome}}
                                 </div>
                             </div>
-                        </td>
+                        </th>
                         <td>
                             <button data-v-5aa16ff8="" type="button submit" form="addCurso" class="button is-success"
                                 style="margin-top:40px">
@@ -71,8 +76,8 @@
                                 </span>
                                 <span>Adicionar Curso</span>
                             </button>
-                        </td>
-                    </tr>
+                        </form>
+                        </th>
                 </thead>
             </table>
         </div>
@@ -111,6 +116,21 @@
                 </button></a></footer>
     </div>
 </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $('#myTable').DataTable({
+            "paging": true,
+            "info": false,
+            "searching": false,
+            "bLengthChange": false,
+            "aLengthMenu": [[5, 10, 25, -1], [5, 10, 25, "All"]],
+            "columnDefs": [
+    { "orderable": false, "targets": 2 }
+  ]
+        });
+    });
+</script>
 
 {% endfor %}
 {% endblock %}

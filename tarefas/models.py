@@ -258,6 +258,7 @@ class Disponibilidade(models.Model):
     class Meta:
         managed = False
         db_table = 'disponibilidade'
+        unique_together = (('colaborador_utilizador_idutilizador', 'dia_dia', 'horario_hora', 'horario_hora1', 'tipo_de_tarefa'),)
 
 
 class DjangoAdminLog(models.Model):
@@ -494,8 +495,8 @@ class Prato(models.Model):
     descricao = models.CharField(max_length=125)
     nralmocos = models.IntegerField(blank=True, null=True)
     menu_idmenu = models.ForeignKey(Menu, models.DO_NOTHING, db_column='menu_idMenu')  # Field name made lowercase.
-        
-        
+
+
     def save(self, *args, **kwargs):
         obj = Menu.objects.get(idmenu=self.menu_idmenu.pk)
         Menu.objects.filter(idmenu=self.menu_idmenu.pk).update(nralmocosdisponiveis=F('nralmocosdisponiveis')-self.nralmocos)
@@ -612,7 +613,7 @@ class TransporteHasHorario(models.Model):
     class Meta:
         managed = False
         db_table = 'transporte_has_horario'
-
+        
 
 #Validation is checked
 class TransporteHasInscricao(models.Model):

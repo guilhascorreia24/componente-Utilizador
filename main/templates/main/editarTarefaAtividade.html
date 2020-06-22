@@ -73,14 +73,38 @@
               </a>
              </div>
              <div style="margin-left: 50%;" class="column"> 
-              <button type="submit" class="button is-large is-success is-outlined" data-toggle="modal" data-target="#exampleModal">
+              <button type="button" class="button is-large is-success is-outlined" data-toggle="modal" data-target="#exampleModal" data-backdrop="false">
                 <span>Submeter</span>
               </button>
               </div>
+
+              <div class="dialog modal" id="exampleModal">
+                <div class="modal-background"></div>
+                <br><br><br><br><br><br><br><br><br><br><br><br>
+                <div class="modal-card animation" style="max-width:360px">
+                    <!---->
+                    <section class="modal-card-body is-titleless">
+                        <div class="media">
+                            <!---->
+                            <div class="media-content">
+                                <p>Tem a certeza que quer editar a tarefa?</p>
+                                <!---->
+                            </div>
+                        </div>
+                    </section>
+                    <footer class="modal-card-foot"><button class="button" data-dismiss="modal">
+                            Cancelar
+                        </button> <button class="button is-success" type="submit">
+                            Confirmar
+                        </button></footer>
+                </div>
+            </div>
       </form>
       </div>
     </div>
   </div>
+</div>
+</div>
     </section>
 <style>
   .buttons {

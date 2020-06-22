@@ -158,7 +158,7 @@ class Colaborador(models.Model):
 
     def __id__(self):
         return self.utilizador_idutilizador.idutilizador
-        
+
     class Meta:
         managed = False
         db_table = 'colaborador'
@@ -270,6 +270,7 @@ class Disponibilidade(models.Model):
     class Meta:
         managed = False
         db_table = 'disponibilidade'
+        unique_together = (('colaborador_utilizador_idutilizador', 'dia_dia', 'horario_hora', 'horario_hora1', 'tipo_de_tarefa'),)
 
 
 class DjangoAdminLog(models.Model):

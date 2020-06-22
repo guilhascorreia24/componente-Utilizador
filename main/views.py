@@ -26,7 +26,7 @@ def mais_info(request, pk):
 def criar_tarefa_atividade(request):
 	user = Utilizador.objects.get(idutilizador = request.session["user_id"])
 	coord_user = Coordenador.objects.get(utilizador_idutilizador = user)
-	new_form = Tarefa(concluida = 1, coordenador_utilizador_idutilizador = coord_user)
+	new_form = Tarefa(concluida = 0, coordenador_utilizador_idutilizador = coord_user)
 	form = TarefasFormAtividade(request.POST, instance = new_form)
 	if request.method == "POST":
 		if form.is_valid():
@@ -39,7 +39,7 @@ def criar_tarefa_atividade(request):
 			new_tarefa.save()
 			messages.success(request, f'Tarefa Criada com Sucesso!')
 			return redirect("blog:blog-home")
-	
+
 	return render(request=request,
 				  template_name="main/criarTarefaAtividade.html",
 				  context={'form':form,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
@@ -112,6 +112,26 @@ def consultar_tarefa(request):
 				  template_name="main/consultarTarefa.html",
  				  context=context)
 
+def consultar_tarefa_admin(request):
+	tarefas = Tarefa.objects.all()
+	unidade = UnidadeOrganica.objects.all()
+	sessao = Sessao.objects.all()
+	colab = Colaborador.objects.all()
+	atividade = Atividade.objects.all()
+	myFilter = TarefaFilter(request.GET, queryset=tarefas)
+	tarefas = myFilter.qs
+
+	context={'atividade':atividade,
+			'unidade':unidade,
+			'tarefas': tarefas,
+			'sessao': sessao,
+			'myFilter': myFilter,
+			'colab': colab,
+			'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)}
+	return render(request=request,
+				  template_name="main/consultarTarefaAdmin.html",
+ 				  context=context)				   
+
 def editar_tarefa(request, pk):
 	tarefa = Tarefa.objects.get(idtarefa = pk)
 	if tarefa.sessao_idsessao == None:
@@ -120,7 +140,17 @@ def editar_tarefa(request, pk):
 		if request.method == "POST":
 			form = TarefasFormGroup(request.POST, instance = tarefa)
 			if form.is_valid():
-				form.save()
+				tarefa.nome= request.POST["nome"]
+				tarefa.dia_dia = Dia.objects.get(dia = request.POST["dia_dia"])
+				tarefa.hora_inicio = request.POST["hora_inicio"]
+				if request.POST['colaborador_utilizador_idutilizador'] != '':
+					tarefa.colaborador_utilizador_idutilizador = Colaborador.objects.get(utilizador_idutilizador = Utilizador.objects.get(idutilizador= request.POST["colaborador_utilizador_idutilizador"]))
+				ativid = Atividade.objects.get(idatividade = request.POST['atividade_idatividade'])
+				tarefa.buscar = Espaco.objects.get(idespaco = ativid.espaco_idespaco.idespaco)
+				tarefa.levar = Espaco.objects.get(idespaco = request.POST['levar'])
+				grupo = Inscricao.objects.get(idinscricao = request.POST['grupos'])
+				tarefa.inscricao_coletiva_inscricao_idinscricao = InscricaoColetiva.objects.get(inscricao_idinscricao = grupo)
+				tarefa.save()
 				messages.success(request, f'Tarefa Editada com Sucesso!')
 				return redirect("tarefa_coordenador:consultar_tarefa")
 	else:
@@ -129,7 +159,10 @@ def editar_tarefa(request, pk):
 		if request.method == "POST":
 			form = TarefasFormAtividade(request.POST, instance = tarefa)
 			if form.is_valid():
-				form.save()
+				tarefa.nome= request.POST["nome"]
+				tarefa.sessao_idsessao = Sessao.objects.get(idsessao = request.POST["idsession"])
+				tarefa.colaborador_utilizador_idutilizador = Colaborador.objects.get(utilizador_idutilizador = Utilizador.objects.get(idutilizador= request.POST["colaborador_utilizador_idutilizador"]))
+				tarefa.save()
 				messages.success(request, f'Tarefa Editada com Sucesso!')
 				return redirect("tarefa_coordenador:consultar_tarefa")
 	return render(request = request,
@@ -137,12 +170,19 @@ def editar_tarefa(request, pk):
 				 context={'form':form,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
 
 def eliminar_tarefa(request, pk):
-	tarefa = Tarefa.objects.get(idtarefa = pk)
-	if request.method == "POST":
-		tarefa.delete()
-		messages.success(request, f'Tarefa Eliminada com Sucesso!')
+	if request.session["type"] == 4:
+		if Tarefa.objects.filter(idtarefa = pk):
+			tarefa = Tarefa.objects.get(idtarefa = pk)
+			tarefa.delete()
+			messages.success(request, f'Tarefa Eliminada com Sucesso!')
+		else:
+			messages.success(request, f'Não foi possível eliminar Tarefa!')
+		return redirect("tarefa_coordenador:consultar_tarefa_admin")
+	else:	
+		if Tarefa.objects.filter(idtarefa = pk):
+			tarefa = Tarefa.objects.get(idtarefa = pk)
+			tarefa.delete()
+			messages.success(request, f'Tarefa Eliminada com Sucesso!')
+		else:
+			messages.success(request, f'Não foi possível eliminar Tarefa!')
 		return redirect("tarefa_coordenador:consultar_tarefa")
-	context ={'tarefa': tarefa,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)}
-	return render(request = request,
-				 template_name="main/eliminarTarefa.html",
-				 context=context)

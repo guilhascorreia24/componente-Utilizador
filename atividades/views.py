@@ -36,7 +36,7 @@ def atividade_create_view(request):
                         professor_universitario_utilizador_idutilizador=professor,
                         unidade_organica_iduo=get_object_or_404(UnidadeOrganica, iduo=request.POST.get('unidade_organica')),
                         departamento_iddepartamento=get_object_or_404(Departamento, iddepartamento=request.POST.get('iddepartamento')),
-                        espaco_idespaco=None, ncolboradores=request.POST.get('nrcolaboradores'), tematica=request.POST.get('tema'))
+                        espaco_idespaco=None, nrcolaborador=request.POST.get('nrcolaboradores'), tematica=request.POST.get('tema'))
         new.save()
         idActivity = Atividade.objects.latest('idatividade').idatividade
         return redirect("../atividades/editar_local/"+str(idActivity))
@@ -71,7 +71,7 @@ def editar_atividade_view(request, idActivity):
         atividade.publico_alvo = request.POST.get('publico_alvo')
         atividade.descricao = request.POST.get('descricao')
         atividade.tematica = request.POST.get('tema')
-        atividade.ncolboradores = request.POST.get('ncolaboradores')
+        atividade.nrcolaborador = request.POST.get('ncolaboradores')
         atividade.save()
         return redirect("../../editar_local/"+str(idActivity))
     context = {
@@ -179,56 +179,32 @@ def coordinator_activities_view(request):
     return render(request, "atividades/consultar_atividades_coordenador.html", context)
 
 
-def validar_atividade_view(request, idActivity):
+def validar_atividade_view(request,idActivity):
     atividade = get_object_or_404(Atividade, idatividade=idActivity)
-    if request.method == "POST":
-        atividade.validada = 1
-        atividade.save()
-        return redirect("atividades:consultar_atividades_coodernador")
-    context = {
-        "activity": atividade,
-        "account": return_account_type(request.session["user_id"]),
-    }
-    return render(request, "atividades/aceitar_atividade.html", context)
+    atividade.validada = 1
+    atividade.save()
+    return redirect("atividades:consultar_atividades_coodernador")
 
 
 def recusar_atividade_view(request, idActivity):
     atividade = get_object_or_404(Atividade, idatividade=idActivity)
-    if request.method == "POST":
-        atividade.validada = -1
-        atividade.save()
-        return redirect("atividades:consultar_atividades_coodernador")
-    context = {
-        "activity": atividade,
-        "account": return_account_type(request.session["user_id"]),
-    }
-    return render(request, "atividades/recusar_atividade.html", context)
+    atividade.validada = -1
+    atividade.save()
+    return redirect("atividades:consultar_atividades_coodernador")
 
 
 def deletar_atividade_view(request, idActivity):
     atividade = get_object_or_404(Atividade, idatividade=idActivity)
-    if request.method == "POST":
-        atividade.delete()
-        return redirect("atividades:consultar_minhas_atividades")
-    context = {
-        "activity": atividade,
-        "account": return_account_type(request.session["user_id"]),
-    }
-    return render(request, "atividades/apagar_atividade.html", context)
+    atividade.delete()
+    return redirect("atividades:consultar_minhas_atividades")
 
 
 # --------------------------------Sessão:
 
 def delete_session(request, idSession):
     sessao = get_object_or_404(Sessao, idsessao=idSession)
-    if request.method == "POST":
-        sessao.delete()
-        return redirect("../../editar_sessao/"+str(sessao.atividade_idatividade.idatividade))
-    context = {
-        "session": sessao,
-        "account": return_account_type(request.session["user_id"]),
-    }
-    return render(request, "atividades/apagar_sessao.html", context)
+    sessao.delete()
+    return redirect("../../editar_sessao/"+str(sessao.atividade_idatividade.idatividade))
 
 
 def my_activities_view(request):
@@ -308,14 +284,8 @@ def criar_sala_view(request):
 
 def deletar_espaco_view(request, idEspaco):
     local = get_object_or_404(Espaco, idespaco=idEspaco)
-    if request.method == "POST":
-        local.delete()
-        return redirect("atividades:criar_sala")
-    context = {
-        "local": local,
-        "account": return_account_type(request.session["user_id"]),
-    }
-    return render(request, "atividades/apagar_local.html", context)
+    local.delete()
+    return redirect("atividades:criar_sala")
 
 
 def especificar_espaco(request, idEspaco):
@@ -422,7 +392,7 @@ def return_account_type(userId):
 
 def criar_campus_view(request):
     campus = Campus.objects.all()
-    if request.method == 'POST':
+    if request.method == 'POST' and not(Campus.objects.filter(nome=request.POST['nome']).exists()):
         new = Campus(nome=request.POST.get('nome'))
         new.save()
     context = {
@@ -434,14 +404,9 @@ def criar_campus_view(request):
 
 def apagar_campus_view(request, idCampus):
     campus = get_object_or_404(Campus, idcampus=idCampus)
-    if request.method == "POST":
+    if not(UnidadeOrganica.objects.filter(campus_idcampus=idCampus).exists() and Menu.objects.filter(campus_idcampus=idCampus).exists() and Espaco.objects.filter(campus_idcampus=idCampus).exists()):
         campus.delete()
-        return redirect("atividades:criar_campus")
-    context = {
-        "campus": campus,
-        "account": return_account_type(request.session["user_id"]),
-    }
-    return render(request, "atividades/apagar_campus.html", context)
+    return redirect("atividades:criar_campus")
 
 
 # --------------------------------Unidade Orgãnica:
@@ -449,7 +414,7 @@ def apagar_campus_view(request, idCampus):
 def criar_uo_view(request):
     uo = UnidadeOrganica.objects.all()
     form = UoForm(request.POST)
-    if request.method == 'POST':
+    if request.method == 'POST' and not(UnidadeOrganica.objects.filter(sigla=request.POST['sigla'],campus_idcampus=Campus.objects.get(pk=request.POST['campus_idcampus']))):
         if form.is_valid():
             form.save()
     context = {
@@ -462,14 +427,9 @@ def criar_uo_view(request):
 
 def apagar_uo_view(request, idUo):
     uo = get_object_or_404(UnidadeOrganica, iduo=idUo)
-    if request.method == "POST":
+    if not(Atividade.objects.filter(unidade_organica_iduo=idUo).exists() and ColaboradorHasUnidadeOrganica.objects.filter(unidade_organica_iduo=idUo).exists() and Coordenador.objects.filter(unidade_organica_iduo=idUo).exists() and Curso.objects.filter(unidade_organica_iduo=idUo).exists() and Departamento.objects.filter(unidade_organica_iduo=idUo).exists()):
         uo.delete()
-        return redirect("atividades:criar_uo")
-    context = {
-        "uo": uo,
-        "account": return_account_type(request.session["user_id"]),
-    }
-    return render(request, "atividades/apagar_uo.html", context)
+    return redirect("atividades:criar_uo")
 
 
 # --------------------------------Departamento:
@@ -477,7 +437,7 @@ def apagar_uo_view(request, idUo):
 def criar_departamento_view(request):
     departamento = Departamento.objects.all()
     form = DepartamentoForm(request.POST)
-    if request.method == 'POST':
+    if request.method == 'POST' and not(Departamento.objects.filter(nome=reques.POST['nome'],unidade_organica_iduo=UnidadeOrganica.objects.get(request.POST['unidade_organica_iduo']))):
         if form.is_valid():
             form.save()
     context = {
@@ -490,14 +450,10 @@ def criar_departamento_view(request):
 
 def apagar_departamento_view(request, idDepartamento):
     departamento = get_object_or_404(Departamento, iddepartamento=idDepartamento)
-    if request.method == "POST":
+    if not(CoordenadorHasDepartamento.objects.filter(departamento_iddepartamento=idDepartamento).exists() and Atividade.objects.filter(departamento_iddepartamento=idDepartamento).exists() and ProfessorUniversitario.objects.filter(departamento_iddepartamento=idDepartamento).exists()) :
         departamento.delete()
-        return redirect("atividades:criar_departamento")
-    context = {
-        "departamento": departamento,
-        "account": return_account_type(request.session["user_id"]),
-    }
-    return render(request, "atividades/apagar_departamento.html", context)
+    return redirect("atividades:criar_departamento")
+
 
 # --------------------------------Extras:
 
