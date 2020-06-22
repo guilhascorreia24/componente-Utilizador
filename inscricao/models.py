@@ -430,14 +430,13 @@ class InscricaoHasSessao(models.Model):
     nr_inscritos = models.IntegerField(validators=[smaller_zero_validator,not_zero_validator])
 
     def save(self, *args, **kwargs):
-        Sessao.objects.filter(idsessao=self.sessao_idsessao.pk).update(nrinscritos=F('nrinscritos')+self.nr_inscritos)
-        return super(InscricaoHasSessao, self).save(*args, **kwargs)
-
-    def update(self, *args, **kwargs):
-        insc = InscricaoHasSessao.objects.filter(inscricao_idinscricao=self.inscricao_idinscricao).nr_inscritos
-        delta = self.nr_inscritos-insc
+        try:
+            insc = InscricaoHasSessao.objects.get(inscricao_idinscricao=self.inscricao_idinscricao).nr_inscritos
+            delta = self.nr_inscritos-insc
+        except:
+            delta = self.nr_inscritos
         Sessao.objects.filter(idsessao=self.sessao_idsessao.pk).update(nrinscritos=F('nrinscritos')+delta)
-        super(InscricaoHasSessao,self).update(*args, **kwargs)
+        return super(InscricaoHasSessao, self).save(*args, **kwargs)
 
 
     class Meta:

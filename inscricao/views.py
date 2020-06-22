@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, HttpResponse
-from Notification.views import noti_not_checked,noti_not_checked, new_noti
+from Notification.views import noti_not_checked,noti_not_checked
 from inscricao import models
 from django.contrib.auth import authenticate, login, logout
 from blog import userValidation
@@ -76,10 +76,7 @@ def inscricao_form(request,inscricao=None):
         form = forms.CustomForm(request,inscricao=inscricao)
         if form.is_valid():
             form.save(user)
-            if(inscricao == None):
-                messages.send_new_inscricao_coletiva(request,form)
-            else:
-                messages.send_change_inscricao_coletiva(request,form)
+            messages.send_notification(request,form)
             return redirect('inscricao:consulta')
         else:
             campus = models.Campus.objects.all()
@@ -169,10 +166,7 @@ def inscricao_individual_form(request,inscricao=None):
         form = forms.FormIndividual(request,inscricao=inscricao)
         if form.is_valid():
             form.save(user)
-            if(inscricao == None):
-                messages.send_new_inscricao_individual(request,form)
-            else:
-                messages.send_change_inscricao_individual(request,form)
+            messages.send_notification(request,form)
             return redirect('inscricao:consulta')
         else:
             campus = models.Campus.objects.all()
