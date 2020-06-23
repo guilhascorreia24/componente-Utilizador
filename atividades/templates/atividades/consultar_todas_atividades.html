@@ -6,7 +6,7 @@
 {% block content %}
 <div class="columns">
     <div class="column is-3">
-        <div style="padding: 1rem 2vw 1rem">
+        <div style="padding: 3rem 2vw 1rem">
             <label class="label">Consulta Por Filtros </label>
             <hr>
         <form method="Post" id="filtro"> {% csrf_token %}
@@ -89,11 +89,10 @@
         </form>
         </div>
 </div>
-</div>
     <div class="column">
         <div class="table "></div>
             <div class="table-wrapper">
-                <table id="myTable" class="table has-mobile-cards is-hoverable is-fullwidth">
+                <table class="table has-mobile-cards is-hoverable is-fullwidth" id="myTable">
                     <thead>
                             <th>
                                 Titulo:
@@ -122,14 +121,16 @@
                             <th>
                                 Local:
                             </th>
-                    </thead>
-                    <tbody>
-                        {% if not list %}
-                        <tr>
-                            <td>Sem atividades disponivéis no momento</td>
-                            <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-                        </tr>
-                        {%else%}
+                            <th></th>
+                             </thead>
+                            <tbody>
+                            {% if not list %}
+                            <tr>
+                                <td>Sem atividades disponivéis no momento</td>
+                                <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                            </tr>
+                            {%else%}
+
                             {% for activity in list %}
                             <tr>
                                 <td>{{activity.titulo}}</td>
@@ -160,9 +161,6 @@
                             </tbody>
                 </table>
     </div>
-    </div>
-    </div>
-</div>
 
         <script>
             function clearField(){
@@ -174,18 +172,19 @@
             }
 
         </script>
-        <script>
-            $(document).ready(function () {
-                $('#myTable').DataTable({
-                    "paging": true,
-                    "info": false,
-                    "searching": false,
-                    "bLengthChange": false,
-                    "aLengthMenu": [[5, 10, 25, -1], [5, 10, 25, "All"]],
-                    "columnDefs": [
-            { "orderable": false, "targets": 5 }
-          ]
-                });
-            });
+
+
+          <script>
+    $(document).ready(function () {
+        $('#myTable').DataTable({
+            "paging": true,
+            "info": false,
+            "searching": false,
+            "bLengthChange": false,
+            "aLengthMenu": [[5, 10, 25, -1], [5, 10, 25, "All"]],
+            "columnDefs": [
+    { "orderable": false, "targets": 5 }]
+        });
+    });
         </script>
 {% endblock content %}
