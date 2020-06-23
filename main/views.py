@@ -105,8 +105,9 @@ def criar_tarefa_atividade(request):
 		if form.is_valid():
 			new_tarefa = form.save(commit = False)
 			new_tarefa.sessao_idsessao = Sessao.objects.get(idsessao = request.POST['idsession'])
-			if request.POST['colaborador_utilizador_idutilizador'] != '':
-				user = Utilizador.objects.get(idutilizador = request.POST['colaborador_utilizador_idutilizador']) #Vamos Buscar o Utilizador com o ID especificado no formulario
+			print(request.POST)
+			if request.POST['id_colaborador_utilizador_idutilizador'] != '':
+				user = Utilizador.objects.get(idutilizador = request.POST['id_colaborador_utilizador_idutilizador']) #Vamos Buscar o Utilizador com o ID especificado no formulario
 				colaborador_user = Colaborador.objects.get(utilizador_idutilizador = user)	#Vamos buscar o colaborador associado aquele objeto utilizador
 				new_tarefa.colaborador_utilizador_idutilizador = colaborador_user	#Enviamos esse colaborador para a nova tarefa
 			new_tarefa.save()
@@ -143,8 +144,8 @@ def criar_tarefa_grupo(request):
 			new_tarefa = form.save(commit = False)
 			new_tarefa.hora_inicio = request.POST['hora_inicio']
 			new_tarefa.dia_dia = Dia.objects.get(dia=request.POST['dia_dia'])
-			if request.POST['colaborador_utilizador_idutilizador'] != '':
-				user = Utilizador.objects.get(idutilizador = request.POST['colaborador_utilizador_idutilizador']) #Vamos Buscar o Utilizador com o ID especificado no formulario
+			if request.POST['id_colaborador_utilizador_idutilizador'] != '':
+				user = Utilizador.objects.get(idutilizador = request.POST['id_colaborador_utilizador_idutilizador']) #Vamos Buscar o Utilizador com o ID especificado no formulario
 				colaborador_user = Colaborador.objects.get(utilizador_idutilizador = user)	#Vamos buscar o colaborador associado aquele objeto utilizador
 				new_tarefa.colaborador_utilizador_idutilizador = colaborador_user	#Enviamos esse colaborador para a nova tarefa
 			ativid = Atividade.objects.get(idatividade = request.POST['atividade_idatividade'])

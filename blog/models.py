@@ -320,7 +320,7 @@ class Espaco(models.Model):
     idespaco = models.AutoField(primary_key=True)
     nome = models.CharField(max_length=255)
     campus_idcampus = models.ForeignKey(Campus, models.DO_NOTHING, db_column='campus_idCampus')  # Field name made lowercase.
-    img = models.CharField(max_length=100, blank=True, null=True)
+    img = models.ImageField(upload_to='images')
 
     class Meta:
         managed = False
