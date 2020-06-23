@@ -57,7 +57,7 @@
                 <select name="{{form.colaborador_utilizador_idutilizador.id_for_label}}" id="{{form.colaborador_utilizador_idutilizador.id_for_label}}">
                   <option value="" selected="">Nenhum Colaborador Atribuido</option>
                   {% for colab in dispo %}
-                    <option value="{{colab.colaborador_utilizador_idutilizador.pk}}" selected="">{{colab.colaborador_utilizador_idutilizador.utilizador_idutilizador.nome}}</option>
+                    <option value="{{colab.colaborador_utilizador_idutilizador.pk}}">{{colab.colaborador_utilizador_idutilizador.utilizador_idutilizador.nome}} (disponível dia {{colab.dia_dia}} das {{colab.horario_hora}} às {{colab.horario_hora1}})</option>
                       {% endfor %}
                 
                 </select>
