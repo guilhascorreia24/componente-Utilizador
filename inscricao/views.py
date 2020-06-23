@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, HttpResponse
-from Notification.views import noti_not_checked,noti_not_checked, new_noti
+from Notification.views import noti_not_checked,noti_not_checked
 from inscricao import models
 from django.contrib.auth import authenticate, login, logout
 from blog import userValidation
@@ -7,6 +7,8 @@ from inscricao import forms, messages
 from django.forms import formset_factory
 from django.db.models import F
 from django.core import signing
+from .models import Inscricao, InscricaoColetiva, InscricaoIndividual, Atividade, Responsaveis, Utilizador, Campus, Espaco, UnidadeOrganica, HorarioHasDia, Departamento, Sessao, Coordenador
+
 
 # Main Views.
 
@@ -74,10 +76,7 @@ def inscricao_form(request,inscricao=None):
         form = forms.CustomForm(request,inscricao=inscricao)
         if form.is_valid():
             form.save(user)
-            if(inscricao == None):
-                messages.send_new_inscricao_coletiva(request,form)
-            else:
-                messages.send_change_inscricao_coletiva(request,form)
+            messages.send_notification(request,form)
             return redirect('inscricao:consulta')
         else:
             campus = models.Campus.objects.all()
@@ -167,10 +166,7 @@ def inscricao_individual_form(request,inscricao=None):
         form = forms.FormIndividual(request,inscricao=inscricao)
         if form.is_valid():
             form.save(user)
-            if(inscricao == None):
-                messages.send_new_inscricao_individual(request,form)
-            else:
-                messages.send_change_inscricao_individual(request,form)
+            messages.send_notification(request,form)
             return redirect('inscricao:consulta')
         else:
             campus = models.Campus.objects.all()
@@ -182,3 +178,61 @@ def inscricao_individual_form(request,inscricao=None):
         form = forms.FormIndividual(inscricao=inscricao)
         sessoes = list_sessao()
         return render(request,'inscricao_individual_form.html',{'form': form, 'atividades_sessao' : sessoes,'campus':campus,  'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
+
+
+
+def consultar_inscricoes(request):
+
+    user = request.session['user_id']
+    utilizador = Utilizador.objects.get(pk=user)
+
+    #Coordenador
+
+    if utilizador.validada == 2 :
+
+        inscricoes = Inscricao.objects.raw("SELECT a.idinscricao , a.nome , a.email , a.telefone , c.nparticipantes , b.ano , c.turma , b.local , b.areacientifica , d.nome as escola FROM les.responsaveis a INNER JOIN les.inscricao b ON a.idinscricao = b.idinscricao INNER JOIN les.inscricao_coletiva c ON a.idInscricao = c.inscricao_idinscricao INNER JOIN les.escola d ON c.escola_idescola = d.idescola;")
+
+        #Coordenador UO
+        uo_id = Coordenador.objects.get(pk=user).unidade_organica_iduo
+        uo_nome = uo_id.sigla
+
+        list = []
+
+        for i in inscricoes:
+            dicionario = dict()
+            dicionario['inscricao'] = i
+
+            dicionario['atividade'] = models.InscricaoHasSessao.objects \
+            .select_related('sessao_idsessao__atividade_idatividade','sessao_idsessao__atividade_idatividade__departamento_iddepartamento','sessao_idsessao__atividade_idatividade__campus','sessao_idsessao__atividade_idatividade__unidade_organica_iduo__campus_idcampus','sessao_idsessao__atividade_idatividade__unidade_organica_iduo','sessao_idsessao__horario_has_dia_id_dia_hora__horario_hora','sessao_idsessao__atividade_idatividade__professor_universitario_utilizador_idutilizador__utilizador_idutilizador','sessao_idsessao__atividade_idatividade__espaco_idespaco')\
+            .filter(inscricao_idinscricao=i.idinscricao)\
+            .order_by('sessao_idsessao__horario_has_dia_id_dia_hora__horario_hora__hora')\
+            .values('nr_inscritos',idsessao=F('sessao_idsessao__idsessao'),hora=F('sessao_idsessao__horario_has_dia_id_dia_hora__horario_hora__hora'),idatividade=F('sessao_idsessao__atividade_idatividade__idatividade'),titulo=F('sessao_idsessao__atividade_idatividade__titulo'),duracao=F('sessao_idsessao__atividade_idatividade__duracao'),descricao=F('sessao_idsessao__atividade_idatividade__descricao'),unidade_organica=F('sessao_idsessao__atividade_idatividade__unidade_organica_iduo__sigla'),campus=F('sessao_idsessao__atividade_idatividade__unidade_organica_iduo__campus_idcampus__nome'),departamento=F('sessao_idsessao__atividade_idatividade__departamento_iddepartamento__nome'),tematica=F('sessao_idsessao__atividade_idatividade__tematica'),docente = F('sessao_idsessao__atividade_idatividade__professor_universitario_utilizador_idutilizador__utilizador_idutilizador__nome'),espaco = F('sessao_idsessao__atividade_idatividade__espaco_idespaco__nome'), dia = F('sessao_idsessao__horario_has_dia_id_dia_hora__dia_dia__dia'))
+
+
+            list.append(dicionario)
+
+        return render(request, "consultar_coord.html", { 'inscricoes':list , 'uo':uo_nome } )
+
+    #Administrador
+    
+    if utilizador.validada == 4 :
+
+        inscricoes = Inscricao.objects.raw("SELECT a.idinscricao , a.nome , a.email , a.telefone , c.nparticipantes , b.ano , c.turma , b.local , b.areacientifica , d.nome as escola FROM les.responsaveis a INNER JOIN les.inscricao b ON a.idinscricao = b.idinscricao INNER JOIN les.inscricao_coletiva c ON a.idInscricao = c.inscricao_idinscricao INNER JOIN les.escola d ON c.escola_idescola = d.idescola;")
+
+        list = []
+
+        for i in inscricoes:
+            dicionario = dict()
+            dicionario['inscricao'] = i
+
+            dicionario['atividade'] = models.InscricaoHasSessao.objects \
+            .select_related('sessao_idsessao__atividade_idatividade','sessao_idsessao__atividade_idatividade__departamento_iddepartamento','sessao_idsessao__atividade_idatividade__campus','sessao_idsessao__atividade_idatividade__unidade_organica_iduo__campus_idcampus','sessao_idsessao__atividade_idatividade__unidade_organica_iduo','sessao_idsessao__horario_has_dia_id_dia_hora__horario_hora','sessao_idsessao__atividade_idatividade__professor_universitario_utilizador_idutilizador__utilizador_idutilizador','sessao_idsessao__atividade_idatividade__espaco_idespaco')\
+            .filter(inscricao_idinscricao=i.idinscricao)\
+            .order_by('sessao_idsessao__horario_has_dia_id_dia_hora__horario_hora__hora')\
+            .values('nr_inscritos',idsessao=F('sessao_idsessao__idsessao'),capacidade=F('sessao_idsessao__capacidade'),hora=F('sessao_idsessao__horario_has_dia_id_dia_hora__horario_hora__hora'),idatividade=F('sessao_idsessao__atividade_idatividade__idatividade'),titulo=F('sessao_idsessao__atividade_idatividade__titulo'),duracao=F('sessao_idsessao__atividade_idatividade__duracao'),descricao=F('sessao_idsessao__atividade_idatividade__descricao'),unidade_organica=F('sessao_idsessao__atividade_idatividade__unidade_organica_iduo__sigla'),campus=F('sessao_idsessao__atividade_idatividade__unidade_organica_iduo__campus_idcampus__nome'),departamento=F('sessao_idsessao__atividade_idatividade__departamento_iddepartamento__nome'),tematica=F('sessao_idsessao__atividade_idatividade__tematica'),docente = F('sessao_idsessao__atividade_idatividade__professor_universitario_utilizador_idutilizador__utilizador_idutilizador__nome'),espaco = F('sessao_idsessao__atividade_idatividade__espaco_idespaco__nome'), dia = F('sessao_idsessao__horario_has_dia_id_dia_hora__dia_dia__dia'))
+
+            list.append(dicionario)
+
+            print(list)
+
+        return render(request, "consultar_admin.html", {'inscricoes':list})
