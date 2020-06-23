@@ -46,19 +46,36 @@ def same(object,list,string,string1,string2):
 			time=datetime.time(int(split[0]),int(split[1]),int(split[2]))
 			split=str(object.dia_dia).split("-")
 			date=datetime.date(int(split[0]),int(split[1]),int(split[2]))
-			print(str(n[string2]>=time and n[string1]==date and n[string]==object.colaborador_utilizador_idutilizador.pk))
+			#print(str(n[string2]>=time and n[string1]==date and n[string]==object.colaborador_utilizador_idutilizador.pk))
 			if n[string2]>=time and n[string1]==date and n[string]==object.colaborador_utilizador_idutilizador.pk:
 				return True
 	return False
 
-def lesstime(object,list,string):
+'''def same2(object,list,string,string1,string2,string3):
 	for n in list:
-		#print(str(n[string])+":"+str(object))
-		if n[string]<=object:
+		print(str(n[string2])+" "+str(object.horario_hora))
+		print(str(n[string1])+" "+str(object.dia_dia))
+		print(str(n[string3])+" "+str(object.horario_hora1))
+		print(str(isinstance(n[string2],datetime.time) and isinstance(object.horario_hora,Horario) and isinstance(n[string1],datetime.date) and isinstance(object.dia_dia,Dia) and isinstance(n[string3],datetime.time) and isinstance(object.horario_hora1,Horario)))
+		if isinstance(n[string2],datetime.time) and isinstance(object.horario_hora,Horario) and isinstance(n[string1],datetime.date) and isinstance(object.dia_dia,Dia) and isinstance(n[string3],datetime.time) and isinstance(object.horario_hora1,Horario):
+			split=str(object.horario_hora).split(":")
+			time=datetime.time(int(split[0]),int(split[1]),int(split[2]))
+			split=str(object.horario_hora1).split(":")
+			time2=datetime.time(int(split[0]),int(split[1]),int(split[2]))
+			split=str(object.dia_dia).split("-")
+			date=datetime.date(int(split[0]),int(split[1]),int(split[2]))
+			print(str(n[string2]>=time and n[string1]==date and n[string]==object.colaborador_utilizador_idutilizador.pk))
+			if n[string2]>=time and n[string1]==date and n[string]==object.colaborador_utilizador_idutilizador.pk and n[string3]<=time2:
+				return True
+	return False'''
+
+def has(list,o):
+	for l in list:
+		if o==l.colaborador_utilizador_idutilizador.pk:
 			return True
 	return False
 
-def disponibilidades():
+def disponibilidades(string):
 	tarefas= Tarefa.objects \
 		.select_related('colaborador_utilizador_idutilizador','hora_inicio','dia_dia','sessao_idsessao','sessao_idsessao__horario_has_dia_id_dia_hora__horario_hora','sessao_idsessao__atividade_idatividade__duracao','sessao_idsessao__horario_has_dia_id_dia_hora__dia_dia').all()\
 		.values(colab=F('colaborador_utilizador_idutilizador'),hora_i_a=F('hora_inicio'),dia_a=F('dia_dia'),hora_i_b=F('sessao_idsessao__horario_has_dia_id_dia_hora__horario_hora'),
@@ -72,10 +89,10 @@ def disponibilidades():
 	dispos=[]
 	#print(disponibilidades)
 	for dispo in disponibilidades:
-		print(dispo)
-		print(str(same(dispo,tarefas,'colab','dia_a','hora_i_a') or same(dispo,tarefas,'colab','dia_b','hora_i_b')))
-		if not(same(dispo,tarefas,'colab','dia_a','hora_i_a') or same(dispo,tarefas,'colab','dia_b','hora_i_b')):
-			dispos.append(dispo)
+		#print(str(same(dispo,tarefas,'colab','dia_a','hora_i_a') or same2(dispo,tarefas,'colab','dia_b','hora_i_b','hora_f_b')))
+		if not(same(dispo,tarefas,'colab','dia_a','hora_i_a')) and dispo.tipo_de_tarefa==string:
+			if not(has(dispos,dispo.colaborador_utilizador_idutilizador.pk)):
+				dispos.append(dispo)
 	return dispos
 
 def criar_tarefa_atividade(request):
@@ -83,7 +100,7 @@ def criar_tarefa_atividade(request):
 	coord_user = Coordenador.objects.get(utilizador_idutilizador = user)
 	new_form = Tarefa(concluida = 0, coordenador_utilizador_idutilizador = coord_user)
 	form = TarefasFormAtividade(request.POST, instance = new_form)
-	dispos=disponibilidades()
+	dispos=disponibilidades('Ajudar Docente')
 	if request.method == "POST":
 		if form.is_valid():
 			new_tarefa = form.save(commit = False)
@@ -120,7 +137,7 @@ def criar_tarefa_grupo(request):
 	coord_user = Coordenador.objects.get(utilizador_idutilizador = user)
 	new_form = Tarefa(concluida = 0, coordenador_utilizador_idutilizador = coord_user)
 	form = TarefasFormGroup(request.POST, instance = new_form)
-	dispos=disponibilidades()
+	dispos=disponibilidades('Guiar Grupo')
 	if request.method == "POST":
 		if form.is_valid():
 			new_tarefa = form.save(commit = False)
