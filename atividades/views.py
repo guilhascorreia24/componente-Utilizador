@@ -452,7 +452,7 @@ def apagar_uo_view(request, idUo):
 def criar_departamento_view(request):
     departamento = Departamento.objects.all()
     form = DepartamentoForm(request.POST)
-    if request.method == 'POST' and not(Departamento.objects.filter(nome=reques.POST['nome'],unidade_organica_iduo=UnidadeOrganica.objects.get(request.POST['unidade_organica_iduo']))):
+    if request.method == 'POST' and not(Departamento.objects.filter(nome=request.POST['nome'],unidade_organica_iduo=UnidadeOrganica.objects.get(pk=request.POST['unidade_organica_iduo']))):
         if form.is_valid():
             form.save()
     context = {

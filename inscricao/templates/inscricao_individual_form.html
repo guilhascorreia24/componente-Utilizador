@@ -38,13 +38,6 @@
                         <div class="step-details"><span class="step-title">Sessões</span></div>
                     </a>
                 </li>
-                <li class="step-item is-success">
-                    <a class="step-link is-clickable">
-                        <div class="step-marker"><span class="icon"><i class="mdi mdi-check mdi-24px"></i></span></div>
-                        <div class="step-details"><span class="step-title">Submissão</span>
-                        </div>
-                    </a>
-                </li>
             </ul>
         </nav>
         <section class="step-content">
@@ -267,27 +260,47 @@
                 </div>
                 <div class="step-item" style="display:none;">
                     <div data-v-f5fe8f88="" style="padding: 1rem 2vw 0px;">
-                        <hr data-v-f5fe8f88=""> {% regroup form.almoco.prato by menu.campus_idcampus as campus_prato %} {% for camp in campus_prato %}
-                        <h2 data-v-f5fe8f88="" class="title has-text-grey is-uppercase" style="font-size: 0.9rem;">
-                            Informação de almoço - Campus {{camp.grouper}} </h2>
-
-                        {% for prato in camp.list %}
-                        <div data-v-f5fe8f88="" class="field has-numberinput has-numberinput-compact">
-                            <label>{{prato.menu.tipo}} - {{prato.menu.menu}}</label>
-                            <div data-v-f5fe8f88="" class="b-numberinput field has-addons">
-                                <p class="control"><button type="button" class="button is-primary"><span class="icon"><i
-                                                class="mdi mdi-minus mdi-24px"></i></span></button>
-                                </p>
-                                <div class="control is-clearfix">{{prato.nralmocos|addcss:"input"}}
-                                </div>
-                                <p class="control"><button type="button" class="button is-primary"><span class="icon"><i
-                                                class="mdi mdi-plus mdi-24px"></i></span></button>
-                                </p>
-                            </div>
-                            <p class="help is-danger">{{prato.nralmocos.errors.0}}</p>
+                        <hr data-v-f5fe8f88="">
+                        <h1 data-v-f5fe8f88="" class="title has-text-grey is-uppercase" style="font-size: 0.9rem;">
+                            Informação de Almoços</h1>
+                        <div>
+                            <p><b>Preço de Estudante: {{form.almoco.preco_estudante}}€</b></p>
+                            <p><b>Preço de Professor: {{form.almoco.preco_professor}}€</b></p>
                         </div>
-                        {% endfor %}
-                        <hr data-v-f5fe8f88=""> {% endfor %}
+                        <hr data-v-f5fe8f88="">
+                        <div class="columns">
+                            <hr data-v-f5fe8f88="">
+                            {% regroup form.almoco.prato by menu.campus_idcampus as campus_prato %}
+                            {% for camp in campus_prato %}
+                            <div class="column">
+                                <h2 data-v-f5fe8f88="" class="title has-text-grey is-uppercase"
+                                    style="font-size: 0.9rem;">Campus {{camp.grouper}} </h2>
+                                {% for prato in camp.list %}
+                                <div data-v-f5fe8f88="" class="field has-numberinput has-numberinput-compact">
+                                    <label>{{prato.prato.tipo}} - {{prato.prato.descricao}}</label>
+                                    <div data-v-f5fe8f88="" class="b-numberinput field has-addons">
+                                        <p class="control"><button type="button" class="button is-primary"><span
+                                                    class="icon"><i class="mdi mdi-minus mdi-24px"></i></span></button>
+                                        </p>
+                                        <div class="control is-clearfix">{{prato.nralmocos|addcss:"input"}}
+                                        </div>
+                                        <p class="control"><button type="button" class="button is-primary"><span
+                                                    class="icon"><i class="mdi mdi-plus mdi-24px"></i></span></button>
+                                        </p>
+                                    </div>
+                                    <p class="help is-danger">{{prato.nralmocos.errors.0}}</p>
+                                </div>
+                                {% endfor %}
+                                {% if camp.list.0 %}
+                                <div>
+                                    <p>Informação adicional:</p>
+                                    {{camp.list.0.menu.descricao}}
+                                </div>
+                                {% endif %}
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <hr data-v-f5fe8f88="">
                     </div>
                     <div class="column is-8 is-offset-2">
                         <div class="level">
@@ -478,7 +491,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="field has-numberinput has-numberinput-compact">
-                                                        <label class="label">Mínimo de vagas</label>
+                                                        <label class="label" style="text-align:left;">Mínimo de vagas</label>
                                                         <div class="b-numberinput field has-addons">
                                                             <p class="control"><button type="button" class="button is-primary"><span class="icon"><i
                                                                         class="mdi mdi-minus mdi-24px"></i></span></button>
@@ -763,33 +776,7 @@
                                     <!----></button>
                             </div>
                             <div class="level-right">
-                                <button type="button" class="button is-large is-success is-outlined next-step">
-                                    <!----> <span> Seguinte </span> <span class="icon is-medium"><i
-                                            class="mdi mdi-forward mdi-36px"></i></span></button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="step-item" style="display:none;">
-                    <div>
-                        <hr>
-                        <h2 class="title has-text-grey is-uppercase" style="font-size: 0.9rem;">
-                            Resumo da inscrição </h2>
-                        <p>Dados Pessoais, Dados da escola, Sessões escolhidas, etc...</p><br>
-                        <p>Um e-mail de confirmação será enviado para [e-mails].</p><br><button type="button" class="button is-danger"><span class="icon is-small"><i class="mdi mdi-download"></i></span>
-                            <span> Obter PDF </span>
-                            <!----></button>
-                        <hr>
-                    </div>
-                    <div class="column is-8 is-offset-2">
-                        <div class="level">
-                            <div class="level-left">
-                                <button href="" class="button router-link-active is-outlined prev-step" type="button" id="prevBtn">
-                                    <!----> <span> Anterior </span>
-                                    <!----></button>
-                            </div>
-                            <div class="level-right">
-                                <div class="button is-large is-success is-outlined" id="submitForm">
+                                <div class="button is-large is-success is-outlined" data-toggle="modal" data-target="#exampleModal" data-backdrop="false">
                                     <!----> <span> Submeter </span> <span class="icon is-medium"><i
                                             class="mdi mdi-forward mdi-36px"></i></span></div>
                             </div>
@@ -803,7 +790,28 @@
             <span class="step"></span>
             <span class="step"></span>
             <span class="step"></span>
-            <span class="step"></span>
+        </div>
+        <div class="dialog modal" id="exampleModal">
+            <div class="modal-background"></div>
+            <br><br><br><br><br><br><br><br><br><br><br><br>
+            <div class="modal-card animation" style="max-width:360px">
+                <!---->
+                <section class="modal-card-body is-titleless">
+                    <div class="media">
+                        <!---->
+                        <div class="media-content">
+                            <p>Tem a certeza que quer inscrever-se no site?</p>
+                            <!---->
+                        </div>
+                    </div>
+                </section>
+                <footer class="modal-card-foot"><button class="button" data-dismiss="modal">
+                        Cancelar
+                    </button> <div class="button is-success" id="submitForm">
+                        Confirmar
+                    </div>
+                </footer>
+            </div>
         </div>
         </form>
     </section>
@@ -818,7 +826,7 @@
             "paging": true,
             "info": false,
             "dom": 'tp',
-            "pageLength": 10
+            "pageLength": 6
         });
 
         //Set Time Initial
@@ -1117,6 +1125,7 @@
 
         //Check for errors on submit
         $("#submitForm").on("click",function(){
+            $('#exampleModal').modal('hide');
             var validator = $("#regForm").validate();
             var isCheck = $("#regForm")[0].checkValidity();
             var errors = $("#regForm").find(':invalid');

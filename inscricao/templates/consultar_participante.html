@@ -4,10 +4,21 @@
 <li><a href="{% url "inscricao:consulta" %}" class="">Consultar Inscrições</a></li>
 {% endblock %}
 {% block content %}
+<div class="b-steps">
+<nav class="steps is-success">
+    <ul class="step-items">
+        <li class="step-item is-success is-active"><a class="step-link">
+                <div class="step-marker"><span class="icon"><i class="mdi mdi-book mdi-24px"></i></span></div>
+                <div class="step-details"><span class="step-title">Inscrições</span>
+                </div>
+            </a></li>
+    </ul>
+</nav>
+</div>
+<div style="padding: 3rem 2vw 1rem;">
 {% if inscricoes_coletivas|length > 0 %}
 <div data-v-8716d23a="" class="columns">
     <div class="column is-3">
-
         <div data-v-1513178e="">
            <div data-v-1513178e="" class="menu">
                 <p class="" data-v-1513178e="" class="menu-label"></p><p> Filtros Inscrição </p>
@@ -304,6 +315,7 @@
             <span>Nova Inscrição Coletiva</span>
         </a></span>
     </div>
+</div>
 </div>
 <!-----BUTTON_COLETIVO---->
 

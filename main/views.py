@@ -5,6 +5,8 @@ from .models import *
 from .forms import *
 from .filters import TarefaFilter
 from Notification.views import noti_not_checked
+import datetime, time
+from django.db.models import F
 
 def homepage(request):
     return render(request=request,
@@ -23,25 +25,74 @@ def mais_info(request, pk):
 				template_name="main/info_atividade.html",
 				context=context)
 
-def disponibilidades():
-	tarefas=Tarefa.objects.all()
+'''def disponibilidades():
+	dispos=Disponibilidade.objects.all()
+	colabs=[]
+	for dispo in dispos:
+		colab=dispo.colaborador_utilizador_idutilizador
+		dia=dispo.dia_dia
+		hora_i=dispo.horario_hora
+		hora_f=dispo.horario_hora1
+		tarefa=Tarefa.objects.filter(colaborador_utilizador_idutilizador=colab,hora_inicio=hora_i,dia_dia=dia).exists()
+		if not(tarefa):
+			colabs.append(dispo)
+		elif Tarefa.objects.filter(colaborador_utilizador_idutilizador=colab,se).exists()'''
+
+
+def same(object,list,string,string1,string2):
+	for n in list:
+		if isinstance(n[string2],datetime.time) and isinstance(object.horario_hora,Horario) and isinstance(n[string1],datetime.date) and isinstance(object.dia_dia,Dia):
+			split=str(object.horario_hora).split(":")
+			time=datetime.time(int(split[0]),int(split[1]),int(split[2]))
+			split=str(object.dia_dia).split("-")
+			date=datetime.date(int(split[0]),int(split[1]),int(split[2]))
+			#print(str(n[string2]>=time and n[string1]==date and n[string]==object.colaborador_utilizador_idutilizador.pk))
+			if n[string2]>=time and n[string1]==date and n[string]==object.colaborador_utilizador_idutilizador.pk:
+				return True
+	return False
+
+'''def same2(object,list,string,string1,string2,string3):
+	for n in list:
+		print(str(n[string2])+" "+str(object.horario_hora))
+		print(str(n[string1])+" "+str(object.dia_dia))
+		print(str(n[string3])+" "+str(object.horario_hora1))
+		print(str(isinstance(n[string2],datetime.time) and isinstance(object.horario_hora,Horario) and isinstance(n[string1],datetime.date) and isinstance(object.dia_dia,Dia) and isinstance(n[string3],datetime.time) and isinstance(object.horario_hora1,Horario)))
+		if isinstance(n[string2],datetime.time) and isinstance(object.horario_hora,Horario) and isinstance(n[string1],datetime.date) and isinstance(object.dia_dia,Dia) and isinstance(n[string3],datetime.time) and isinstance(object.horario_hora1,Horario):
+			split=str(object.horario_hora).split(":")
+			time=datetime.time(int(split[0]),int(split[1]),int(split[2]))
+			split=str(object.horario_hora1).split(":")
+			time2=datetime.time(int(split[0]),int(split[1]),int(split[2]))
+			split=str(object.dia_dia).split("-")
+			date=datetime.date(int(split[0]),int(split[1]),int(split[2]))
+			print(str(n[string2]>=time and n[string1]==date and n[string]==object.colaborador_utilizador_idutilizador.pk))
+			if n[string2]>=time and n[string1]==date and n[string]==object.colaborador_utilizador_idutilizador.pk and n[string3]<=time2:
+				return True
+	return False'''
+
+def has(list,o):
+	for l in list:
+		if o==l.colaborador_utilizador_idutilizador.pk:
+			return True
+	return False
+
+def disponibilidades(string):
+	tarefas= Tarefa.objects \
+		.select_related('colaborador_utilizador_idutilizador','hora_inicio','dia_dia','sessao_idsessao','sessao_idsessao__horario_has_dia_id_dia_hora__horario_hora','sessao_idsessao__atividade_idatividade__duracao','sessao_idsessao__horario_has_dia_id_dia_hora__dia_dia').all()\
+		.values(colab=F('colaborador_utilizador_idutilizador'),hora_i_a=F('hora_inicio'),dia_a=F('dia_dia'),hora_i_b=F('sessao_idsessao__horario_has_dia_id_dia_hora__horario_hora'),
+			    				dia_b=F('sessao_idsessao__horario_has_dia_id_dia_hora__dia_dia'),hora_f_b=F('sessao_idsessao__atividade_idatividade__duracao'))
+	disponibilidades=Disponibilidade.objects.all()
+	for tare in tarefas:
+		if isinstance(tare['hora_f_b'],float):
+			min=int(tare['hora_f_b']+tare['hora_i_b'].minute%60)
+			num=int(((tare['hora_f_b']+tare['hora_i_b'].minute)/60)+int(tare['hora_i_b'].hour))%24
+			tare['hora_f_b']=datetime.time(num,min)
 	dispos=[]
-	for tarefa in tarefas:
-		colab=tarefa.colaborador_utilizador_idutilizador
-		dia=None
-		hora_i=None
-		hora_f=None
-		dispo=None
-		if tarefa.sessao_idsessao==None:
-			dia=tarefa.dia_dia
-			hora_i=tarefa.hora_inicio
-		else:
-			dia=tarefa.sessao_idsessao.horario_has_dia_id_dia_hora.dia_dia
-			hora_i=tarefa.sessao_idsessao.horario_has_dia_id_dia_hora.horario_hora
-			hora_f=hora_i+tarefa.sessao_idsessao.atividade_idatividade.duracao
-		dispo=Disponibilidade.objects.filter(colaborador_utilizador_idutilizador=colab,dia_dia=dia,horario_hora=hora_i)
-		if not(dispo):
-			dispos.append(dispo)
+	#print(disponibilidades)
+	for dispo in disponibilidades:
+		#print(str(same(dispo,tarefas,'colab','dia_a','hora_i_a') or same2(dispo,tarefas,'colab','dia_b','hora_i_b','hora_f_b')))
+		if not(same(dispo,tarefas,'colab','dia_a','hora_i_a')) and dispo.tipo_de_tarefa==string:
+			if not(has(dispos,dispo.colaborador_utilizador_idutilizador.pk)):
+				dispos.append(dispo)
 	return dispos
 
 def criar_tarefa_atividade(request):
@@ -49,7 +100,7 @@ def criar_tarefa_atividade(request):
 	coord_user = Coordenador.objects.get(utilizador_idutilizador = user)
 	new_form = Tarefa(concluida = 0, coordenador_utilizador_idutilizador = coord_user)
 	form = TarefasFormAtividade(request.POST, instance = new_form)
-	#form.colaborador_utilizador_idutilizador=disponibilidades()
+	dispos=disponibilidades('Ajudar Docente')
 	if request.method == "POST":
 		if form.is_valid():
 			new_tarefa = form.save(commit = False)
@@ -64,7 +115,7 @@ def criar_tarefa_atividade(request):
 
 	return render(request=request,
 				  template_name="main/criarTarefaAtividade.html",
-				  context={'form':form,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
+				  context={'form':form,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request),'dispo':dispos})
 
 def load_grupo(request):
 	sessao = request.POST.get('sessao')
@@ -86,6 +137,7 @@ def criar_tarefa_grupo(request):
 	coord_user = Coordenador.objects.get(utilizador_idutilizador = user)
 	new_form = Tarefa(concluida = 0, coordenador_utilizador_idutilizador = coord_user)
 	form = TarefasFormGroup(request.POST, instance = new_form)
+	dispos=disponibilidades('Guiar Grupo')
 	if request.method == "POST":
 		if form.is_valid():
 			new_tarefa = form.save(commit = False)
@@ -106,7 +158,7 @@ def criar_tarefa_grupo(request):
 	
 	return render(request=request,
 				  template_name="main/criarTarefaAcompanhar.html",
-				  context={'form':form,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
+				  context={'form':form,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request),'dispo':dispos})
 
 def load_cities(request):
 	atividade = request.POST.get('atividade_idatividade')

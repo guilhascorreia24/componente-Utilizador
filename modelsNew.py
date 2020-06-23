@@ -343,7 +343,7 @@ class HorarioHasDia(models.Model):
     dia_dia = models.ForeignKey(Dia, models.DO_NOTHING, db_column='Dia_dia')  # Field name made lowercase.
     id_dia_hora = models.AutoField(primary_key=True)
 
-  def __str__(self):
+    def __str__(self):
         return self.horario_hora.__str__() + " de " + self.dia_dia.__str__()
 
     class Meta:

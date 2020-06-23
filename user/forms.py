@@ -32,7 +32,7 @@ class UserRegisterForm(forms.Form):
         else:
             ano=None
         user=Utilizador(nome=data['name'],
-            email=data['email'],telefone=data['telefone'],password=hashlib.sha256(data['password1'].encode('utf-8')).hexdigest(),validada=0,dia_aberto_ano=ano) # encriptar passe quando estiveresmos quse a acabr
+            email=data['email'],telefone=data['telefone'],password=hashlib.sha256(data['password1'].encode('utf-8')).hexdigest(),validada=5,dia_aberto_ano=ano) # encriptar passe quando estiveresmos quse a acabr
         user.save()
     
 

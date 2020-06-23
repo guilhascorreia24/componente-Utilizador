@@ -252,7 +252,7 @@ class Disponibilidade(models.Model):
     dia_dia = models.ForeignKey(Dia, models.DO_NOTHING, db_column='dia_dia')
     horario_hora = models.ForeignKey('Horario', models.DO_NOTHING, db_column='horario_hora',related_name="disponibilidade_hora_inicio")
     horario_hora1 = models.ForeignKey('Horario', models.DO_NOTHING, db_column='horario_hora1',related_name="disponibilidade_hora_fim")
-    tipo_de_tarefa = models.CharField(max_length=45, blank=True, null=True)
+    tipo_de_tarefa = models.CharField(max_length=45)
 
     class Meta:
         managed = False

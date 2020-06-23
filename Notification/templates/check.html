@@ -154,7 +154,7 @@
                 </span>
                 <!----></a>
                 {% endif %}
-        <button class="button button4 is-danger is-outlined" type="submit" form="myform" id="button"
+        <button class="button button4 is-danger is-outlined" id="button" data-toggle="modal" data-target="#exampleModal" data-backdrop="false"
             style="margin-bottom: 0.9rem; margin-right: 1rem;text-decoration:none;"><span class="icon is-small"><i
                     class="mdi mdi-close"></i></span> <span> Eliminar
                 selecionadas </span>
@@ -298,29 +298,31 @@
         }
     }
 </script>
-{% for user in users %}
-<div class="dialog modal" id="{{ forloop.counter }}">
-    <div class="modal-background"></div>
-    <br><br><br><br><br><br><br><br><br><br><br><br>
-    <div class="modal-card animation" style="max-width:360px">
-        <!---->
-        <section class="modal-card-body is-titleless">
-            <div class="media">
-                <!---->
-                <div class="media-content">
-                    <p>Tem a certeza que quer eliminar o utilizador {{user.nome}}?</p>
-                    <!---->
+
+    </section>
+                <div class="dialog modal" id="exampleModal">
+                    <div class="modal-background"></div>
+                    <br><br><br><br><br><br><br><br><br><br><br><br>
+                    <div class="modal-card animation" style="max-width:360px">
+                        <!---->
+                        <section class="modal-card-body is-titleless">
+                            <div class="media">
+                                <!---->
+                                <div class="media-content">
+                                    <p>Tem a certeza que pretende eliminar?</p>
+                                    <!---->
+                                </div>
+                            </div>
+                        </section>
+                        <footer class="modal-card-foot"><button class="button" data-dismiss="modal">
+                                Cancelar
+                            </button> <button class="button is-success" type="submit" form="myform">
+                                Confirmar
+                            </button></footer>
+                    </div>
                 </div>
-            </div>
-        </section>
-        <footer class="modal-card-foot"><button class="button" data-dismiss="modal">
-                Cancelar
-            </button><a href="" style="text-decoration: none;"> <button class="button is-success" type="submit">
-                    Confirmar
-                </button></a></footer>
     </div>
 </div>
-{% endfor %}
 <script>
     $(function () {
         $('#campus').on('change', function () {

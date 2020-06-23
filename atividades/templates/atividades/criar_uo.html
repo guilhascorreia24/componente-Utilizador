@@ -16,12 +16,13 @@
         </ul>
     </nav>
     </div>
+    <br>
 <div class="table " style="padding-left: 10%;padding-right: 10%;">
             <div class="table-wrapper">
                 <table class="table has-mobile-cards is-hoverable is-fullwidth">
                     <thead>
                             <th>
-                                Sigla:
+                                Nome:
                             </th>
                             <th>
                                 Campus:
@@ -68,44 +69,39 @@
                             {% endfor %}
                 </table>
                 <br>
+                <br>
                  <form method="POST" id="addUo" enctype="multipart/form-data"> {% csrf_token %}
-                    <div class="table "></div>
+                    <div class="table ">
                     <div class="table-wrapper">
                     <table class="table has-mobile-cards is-hoverable is-fullwidth">
-                        <h3>Adicionar Unidade Orgânica: </h3>
+                        <label class="">Adicionar Unidade Orgânica: </label>
                     <thead>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-
                     <tr>
-                         <td>
-                    <div class="column">
-                        <div class="control is-expanded">
+                        <th style="padding-left: 0px;">
+                            <div class="column" style="padding-left: 0%;">
+                                <label class="">Sigla:</label>
+                                <div class="control is-expanded">
+                                    {{form.sigla}}
+                                </div>
+                            </div>
+                         </th>
+                         <th style="padding-left: 0px;">
+                            <div class="column" style="padding-left: 0%;">
                             <label class="">Campus:</label>
                             <div class="control">
                                 {{form.campus_idcampus}}
                             </div>
                         </div>
                     </div>
-                        </td>
-                        <td>
-                    <div class="column">
-                        <label class="">Sigla:</label>
-                        <div class="control is-expanded">
-                            {{form.sigla}}
-                        </div>
-                    </div>
-                        </td>
-                        <td>
-                        <button data-v-5aa16ff8="" type="button submit" form="addUo" class="button is-success" style="margin-top:40px" >
+                        </th>
+                        <th>
+                        <button data-v-5aa16ff8="" type="button submit" form="addUo" class="button is-success" style="margin-top:5%" >
                         <span class="icon is-small">
                             <i class="mdi mdi-plus"></i>
                         </span>
                         <span>Adicionar Unidade Orgânica</span>
                     </button>
-                        </td>
+                </th>
                     </tr>
                     </thead>
                     </table>

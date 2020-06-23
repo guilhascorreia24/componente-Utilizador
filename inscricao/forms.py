@@ -4,6 +4,8 @@ from inscricao import models
 from inscricao.validators import email_validator, not_zero_validator, telefone_validator, SESSAO_MIN_ERROR
 from django.db.models import F
 from inscricao import validators
+import inspect
+import datetime,time
 
 
 class Form_InscricaoIndividual(ModelForm):
@@ -117,6 +119,12 @@ class Form_Almoco:
 
         menus = models.Prato.objects.select_related('menu_idmenu').all()
         self.prato = list()
+
+        if not(request != 0 and request.method == 'POST'):
+            year = datetime.date.today().year
+            dia_aberto = models.DiaAberto.objects.get(pk=year)
+            self.preco_estudante = dia_aberto.preco_almoco_estudante
+            self.preco_professor = dia_aberto.preco_almoco_professor
 
         #New BD entry
         if(self.curr_insc == None):
@@ -422,3 +430,8 @@ class FormIndividual:
         self.sessao.save()
 
         return self
+
+def introspect(something):
+    methods = inspect.getmembers(something, inspect.ismethod)
+    others = inspect.getmembers(something, lambda x: not inspect.ismethod(x))
+    print(methods)
