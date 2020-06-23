@@ -260,17 +260,16 @@ class DiaAberto(models.Model):
 
 
 class Disponibilidade(models.Model):
-    colaborador_utilizador_idutilizador = models.ForeignKey(Colaborador, models.DO_NOTHING, db_column='colaborador_Utilizador_idutilizador')  # Field name made lowercase.
+    colaborador_utilizador_idutilizador = models.ForeignKey(Colaborador, models.DO_NOTHING, db_column='colaborador_Utilizador_idutilizador', primary_key=True)  # Field name made lowercase.
     dia_dia = models.ForeignKey(Dia, models.DO_NOTHING, db_column='dia_dia')
     horario_hora = models.ForeignKey('Horario', models.DO_NOTHING, db_column='horario_hora',related_name="disponibilidade_hora_inicio")
     horario_hora1 = models.ForeignKey('Horario', models.DO_NOTHING, db_column='horario_hora1',related_name="disponibilidade_hora_fim")
-    tipo_de_tarefa = models.CharField(max_length=45, blank=True, null=True)
+    tipo_de_tarefa = models.CharField(max_length=45)
 
     class Meta:
         managed = False
         db_table = 'disponibilidade'
         unique_together = (('colaborador_utilizador_idutilizador', 'dia_dia', 'horario_hora', 'horario_hora1', 'tipo_de_tarefa'),)
-
 
 class DjangoAdminLog(models.Model):
     action_time = models.DateTimeField()

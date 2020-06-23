@@ -40,7 +40,13 @@
                             <tr>
                                 <td>
                                     <form method="POST">
-                                       <a href="{% url 'atividades:ver_mais_atividade' activity.idatividade %}">
+                                       {% if account == 'professor' %}
+                                       <a href="{% url 'atividades:consultar_minhas_atividades'%}">
+                                       {% elif account == 'coordinator' %}
+                                       <a href="{% url 'atividades:consultar_atividades_coodernador'%}">
+                                       {%else%}
+                                       <a href="{% url 'atividades:consultar_atividades'%}">
+                                       {% endif %}
                                             <span class="icon is-small">
                                                 <i class="mdi mdi-arrow-left-drop-circle mdi-24px"></i>
                                             </span>
@@ -52,7 +58,7 @@
                                 <td>
                                     {% if account == 'professor' %}
                                     <form method="POST">
-                                        <a href="{% url 'atividades:editar_sessao' activity.idatividade %}">
+                                        <a href="{% url 'atividades:criar_editar_sessao' activity.idatividade %}">
                                             <span class="icon is-small">
                                                 <i class="mdi mdi-tooltip-edit mdi-24px"></i>
                                             </span>
@@ -86,22 +92,30 @@
                 <br><br><br><br><br><br><br><br><br><br><br><br>
                 <div class="modal-card animation" style="max-width:360px">
                     <!---->
+                    <form method="POST">{% csrf_token %}
                     <section class="modal-card-body is-titleless">
                         <div class="media">
                             <!---->
                             <div class="media-content">
                                 <p>Tem a certeza que quer rejeitar atividade?</p>
                                 <!---->
+                                <div class="field"><div class="control">
+                                    <input placeholder="Indique o motivo..." required="required" class="input" name="motivo">
+                                </div>
+                                    <p class="help is-danger">
+                                    </p>
+                                </div>
                             </div>
                         </div>
                     </section>
+
                     <footer class="modal-card-foot"><button class="button" data-dismiss="modal">
                             Cancelar
                         </button>
-                        <a href="{% url 'atividades:recusar_atividade' activity.idatividade %}">
-                        <button class="button is-success">
+                        <button class="button is-success" type="submit">
                             Confirmar
-                        </button></a></footer>
+                        </button></footer>
+                    </form>
                 </div>
             </div>
 
