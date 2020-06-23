@@ -13,11 +13,9 @@ class ExampleForm(forms.ModelForm):
 
 class TarefasFormGroup(ModelForm):
 	
-	colaborador_utilizador_idutilizador = ChoiceField(choices = [("","Nenhum Colaborador Atribuido")] +
-	[(colab.__id__(), colab.utilizador_idutilizador.nome) for colab in Colaborador.objects.all()], required=False)
+	colaborador_utilizador_idutilizador = ChoiceField(choices = [("","Nenhum Colaborador Atribuido")] + [(colab.__id__(), colab.utilizador_idutilizador.nome) for colab in Colaborador.objects.all()], required=False)
 
-	dia_dia = ChoiceField(choices = [("", "Nenhuma Dia Selecionado")] +
-	[(di.__id__(), di.dia) for di in Dia.objects.all()], required=False)
+	dia_dia = ChoiceField(choices = [("", "Nenhuma Dia Selecionado")] + [(di.__id__(), di.dia) for di in Dia.objects.all()], required=False)
 
 	campus_levar = ChoiceField(choices = [("", "Nenhuma Atividade Selecionada")] +
 	[(actv.__id__(), actv.titulo) for actv in Atividade.objects.all()])

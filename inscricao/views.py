@@ -237,7 +237,7 @@ def consultar_inscricoes(request):
 
             list.append(dicionario)
 
-        return render(request, "consultar_coord.html", { 'inscricoes':list , 'uo':uo_nome } )
+        return render(request, "consultar_coord.html", { 'inscricoes':list , 'uo':uo_nome,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request) } )
 
     #Administrador
     
@@ -261,4 +261,4 @@ def consultar_inscricoes(request):
 
             print(list)
 
-        return render(request, "consultar_admin.html", {'inscricoes':list})
+        return render(request, "consultar_admin.html", {'inscricoes':list,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})

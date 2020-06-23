@@ -74,10 +74,7 @@ def criar_tarefa_atividade(request):
 		if form.is_valid():
 			new_tarefa = form.save(commit = False)
 			new_tarefa.sessao_idsessao = Sessao.objects.get(idsessao = request.POST['idsession'])
-<<<<<<< HEAD
 			print(request.POST)
-=======
->>>>>>> 1b915ef726d9409fc54de2271f7c0cb4fa05741e
 			if request.POST['id_colaborador_utilizador_idutilizador'] != '':
 				user = Utilizador.objects.get(idutilizador = request.POST['id_colaborador_utilizador_idutilizador']) #Vamos Buscar o Utilizador com o ID especificado no formulario
 				colaborador_user = Colaborador.objects.get(utilizador_idutilizador = user)	#Vamos buscar o colaborador associado aquele objeto utilizador
