@@ -80,7 +80,7 @@
     <div class="column">
         <div class="table "></div>
             <div class="table-wrapper">
-                <table class="table has-mobile-cards is-hoverable is-fullwidth">
+                <table class="table has-mobile-cards is-hoverable is-fullwidth" id="myTable">
                     <thead>
                             <th>
                                 Titulo:
@@ -105,7 +105,8 @@
                             </th>
                             <th></th>
                             <th></th>
-
+                            </thead>
+                            <tbody>
                             {% for activity in list %}
                             <tr>
                                 <td>{{activity.titulo}}</td>
@@ -149,10 +150,8 @@
                                     </form>
                                 </td>
                             {% endfor %}
-                    </thead>
+                    </tbody>
                 </table>
-            </div>
-            </div>
             </div>
 
          <script>
@@ -163,19 +162,19 @@
                 document.getElementById('nomeAtividade').value = '';
             }
           </script>
-                  <script>
-                    $(document).ready(function () {
-                        $('#myTable').DataTable({
-                            "paging": true,
-                            "info": false,
-                            "searching": false,
-                            "bLengthChange": false,
-                            "aLengthMenu": [[5, 10, 25, -1], [5, 10, 25, "All"]],
-                            "columnDefs": [
-                    { "orderable": false, "targets": 5 }
-                  ]
-                        });
-                    });
-                </script>
+
+          <script>
+    $(document).ready(function () {
+        $('#myTable').DataTable({
+            "paging": true,
+            "info": false,
+            "searching": false,
+            "bLengthChange": false,
+            "aLengthMenu": [[5, 10, 25, -1], [5, 10, 25, "All"]],
+            "columnDefs": [
+    { "orderable": false, "targets": 5 }]
+        });
+    });
+        </script>
 
 {% endblock content %}
