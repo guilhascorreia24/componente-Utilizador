@@ -8,7 +8,7 @@ from django.forms import formset_factory
 from django.db.models import F
 from django.core import signing
 from .models import Inscricao, InscricaoColetiva, InscricaoIndividual, Atividade, Responsaveis, Utilizador, Campus, Espaco, UnidadeOrganica, HorarioHasDia, Departamento, Sessao, Coordenador
-
+import datetime
 
 # Main Views.
 
@@ -68,9 +68,14 @@ def delete_inscricao(inscricao):
 
 def inscricao_form(request,inscricao=None):
     user = userValidation.getLoggedUser(request)
+    context={'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)}
     if user._type != userValidation.PARTICIPANTE:
-        context={'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)}
         return render(request,"not_for-u.html",{'context' : context , 'message' : "Utilizador não é participante"})
+
+    test = create_inscricao_allowed()
+    if test != True:
+        return render(request,"not_for-u.html",{'context' : context , 'message' : test})
+
 
     if request.method == 'POST':
         form = forms.CustomForm(request,inscricao=inscricao)
@@ -88,13 +93,30 @@ def inscricao_form(request,inscricao=None):
         form = forms.CustomForm(inscricao=inscricao)
         sessoes = list_sessao()
         return render(request,'inscricao_form.html',{'form': form, 'atividades_sessao' : sessoes,'campus':campus, 'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
+
+def create_inscricao_allowed():
+    date = datetime.date.today()
+    diaaberto = models.DiaAberto.objects.filter(pk=date.year)
+    if( not diaaberto.exists()):
+        return "Não existe dia aberto para o ano " +str(date.year)
+
+    diaaberto = diaaberto[0]
+
+    if date < diaaberto.datainscricaonasatividadesinicio:
+        return "Inicio de inscrições ainda não começaram"
     
+    if date > diaaberto.datainscricaonasatividadesfim:
+        return "As inscrições para o dia aberto já fecharam"
+    
+    return True
+
 
 
 def consultar_inscricao(request):
     user = userValidation.getLoggedUser(request)
     if user._type != userValidation.PARTICIPANTE:
-        return HttpResponse("<html>User needs to be a Participante</html>")
+        context={'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)}
+        return render(request,"not_for-u.html",{'context' : context , 'message' : "Utilizador não é participante"})
 
     query_coletiva = models.InscricaoColetiva.objects.select_related('inscricao_idinscricao','escola_idescola').filter(participante_utilizador_idutilizador=user.pk)
     coletivas = query_coletiva.values('turma','nparticipantes',local=F('inscricao_idinscricao__local'),idinscricao=F('inscricao_idinscricao__idinscricao'),ano=F('inscricao_idinscricao__ano'),email=F('escola_idescola__email'),telefone=F('escola_idescola__telefone'),escola=F('escola_idescola__nome'),areacientifica=F('inscricao_idinscricao__areacientifica'))
@@ -158,9 +180,13 @@ def consultar_inscricao(request):
 
 def inscricao_individual_form(request,inscricao=None):
     user = userValidation.getLoggedUser(request)
+    context={'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)}
     if user._type != userValidation.PARTICIPANTE:
-        context={'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)}
         return render(request,"not_for-u.html",{'context' : context , 'message' : "Utilizador não é participante"})
+
+    test = create_inscricao_allowed()
+    if test != True:
+        return render(request,"not_for-u.html",{'context' : context , 'message' : test})
 
     if request.method == 'POST':
         form = forms.FormIndividual(request,inscricao=inscricao)

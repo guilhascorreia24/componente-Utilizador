@@ -21,3 +21,8 @@ a.current{
 .register-button-large{
     min-width: 20px;
 }
+
+.center-column{
+    display:inline-block;
+    text-align:center;
+}

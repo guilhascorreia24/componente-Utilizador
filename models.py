@@ -6,12 +6,6 @@
 #   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
-from inscricao import validators 
-from inscricao.validators import email_validator, not_zero_validator, telefone_validator,escola_ano_validator,smaller_zero_validator
-from django.dispatch import receiver
-from django.db.models import F, DEFERRED
-from django.core.exceptions import ObjectDoesNotExist, ValidationError
-from django.utils.translation import gettext_lazy as _
 
 
 class Administrador(models.Model):
@@ -55,9 +49,6 @@ class Atividade(models.Model):
     espaco_idespaco = models.ForeignKey('Espaco', models.DO_NOTHING, db_column='espaco_idespaco', blank=True, null=True)
     tematica = models.CharField(max_length=250, blank=True, null=True)
     nrcolaborador = models.CharField(db_column='nrColaborador', max_length=45, blank=True, null=True)  # Field name made lowercase.
-
-    def __id__(self):
-        return self.idatividade
 
     class Meta:
         managed = False
@@ -144,9 +135,6 @@ class Campus(models.Model):
     idcampus = models.AutoField(db_column='idCampus', primary_key=True)  # Field name made lowercase.
     nome = models.CharField(max_length=255)
 
-    def __str__(self):
-        return str(self.nome)
-
     class Meta:
         managed = False
         db_table = 'campus'
@@ -155,9 +143,6 @@ class Campus(models.Model):
 class Colaborador(models.Model):
     utilizador_idutilizador = models.OneToOneField('Utilizador', models.DO_NOTHING, db_column='Utilizador_idutilizador', primary_key=True)  # Field name made lowercase.
     curso_idcurso = models.ForeignKey('Curso', models.DO_NOTHING, db_column='curso_idcurso', blank=True, null=True)
-
-    def __id__(self):
-        return self.utilizador_idutilizador.idutilizador
 
     class Meta:
         managed = False
@@ -197,9 +182,6 @@ class CoordenadorHasDepartamento(models.Model):
     coordenador_utilizador_idutilizador = models.OneToOneField(Coordenador, models.DO_NOTHING, db_column='Coordenador_Utilizador_idutilizador', primary_key=True)  # Field name made lowercase.
     departamento_iddepartamento = models.ForeignKey('Departamento', models.DO_NOTHING, db_column='Departamento_idDepartamento')  # Field name made lowercase.
 
-    def __id__(self):
-        return self.utilizador_idutilizador.idutilizador
-
     class Meta:
         managed = False
         db_table = 'coordenador_has_departamento'
@@ -228,12 +210,6 @@ class Departamento(models.Model):
 class Dia(models.Model):
     dia = models.DateField(primary_key=True)
 
-    def __id__(self):
-        return self.dia
-
-    def __str__(self):
-        return str(self.dia)
-
     class Meta:
         managed = False
         db_table = 'dia'
@@ -260,10 +236,10 @@ class DiaAberto(models.Model):
 
 
 class Disponibilidade(models.Model):
-    colaborador_utilizador_idutilizador = models.ForeignKey(Colaborador, models.DO_NOTHING, db_column='colaborador_Utilizador_idutilizador',primary_key=True)  # Field name made lowercase.
+    colaborador_utilizador_idutilizador = models.OneToOneField(Colaborador, models.DO_NOTHING, db_column='colaborador_Utilizador_idutilizador', primary_key=True)  # Field name made lowercase.
     dia_dia = models.ForeignKey(Dia, models.DO_NOTHING, db_column='dia_dia')
-    horario_hora = models.ForeignKey('Horario', models.DO_NOTHING, db_column='horario_hora',related_name="disponibilidade_hora_inicio")
-    horario_hora1 = models.ForeignKey('Horario', models.DO_NOTHING, db_column='horario_hora1',related_name="disponibilidade_hora_fim")
+    horario_hora = models.ForeignKey('Horario', models.DO_NOTHING, db_column='horario_hora')
+    horario_hora1 = models.ForeignKey('Horario', models.DO_NOTHING, db_column='horario_hora1')
     tipo_de_tarefa = models.CharField(max_length=45)
 
     class Meta:
@@ -320,8 +296,8 @@ class Escola(models.Model):
     idescola = models.AutoField(primary_key=True)
     nome = models.CharField(max_length=255)
     local = models.CharField(max_length=45)
-    telefone = models.CharField(max_length=45,validators=[telefone_validator])
-    email = models.CharField(max_length=255, blank=True, null=True,validators=[email_validator])
+    telefone = models.CharField(max_length=45)
+    email = models.CharField(max_length=255, blank=True, null=True)
 
     class Meta:
         managed = False
@@ -332,7 +308,7 @@ class Espaco(models.Model):
     idespaco = models.AutoField(primary_key=True)
     nome = models.CharField(max_length=255)
     campus_idcampus = models.ForeignKey(Campus, models.DO_NOTHING, db_column='campus_idCampus')  # Field name made lowercase.
-    img = models.CharField(max_length=100, blank=True, null=True)
+    img = models.CharField(max_length=100)
 
     class Meta:
         managed = False
@@ -341,9 +317,6 @@ class Espaco(models.Model):
 
 class Horario(models.Model):
     hora = models.TimeField(primary_key=True)
-
-    def __str__(self):
-        return str(self.hora)
 
     class Meta:
         managed = False
@@ -354,12 +327,6 @@ class HorarioHasDia(models.Model):
     horario_hora = models.ForeignKey(Horario, models.DO_NOTHING, db_column='horario_hora')
     dia_dia = models.ForeignKey(Dia, models.DO_NOTHING, db_column='Dia_dia')  # Field name made lowercase.
     id_dia_hora = models.AutoField(primary_key=True)
-
-    def __id__(self):
-        return self.id_dia_hora
-
-    def __str__(self):
-        return self.horario_hora.__str__() + " de " + self.dia_dia.__str__()
 
     class Meta:
         managed = False
@@ -378,7 +345,7 @@ class Idioma(models.Model):
 
 class Inscricao(models.Model):
     idinscricao = models.AutoField(primary_key=True)
-    ano = models.IntegerField(validators=[escola_ano_validator])
+    ano = models.IntegerField()
     local = models.CharField(max_length=255)
     areacientifica = models.CharField(max_length=255)
     transporte = models.IntegerField()
@@ -393,7 +360,7 @@ class InscricaoColetiva(models.Model):
     turma = models.CharField(max_length=1)
     participante_utilizador_idutilizador = models.ForeignKey('Participante', models.DO_NOTHING, db_column='Participante_Utilizador_idutilizador')  # Field name made lowercase.
     escola_idescola = models.ForeignKey(Escola, models.DO_NOTHING, db_column='escola_idescola')
-    nparticipantes = models.IntegerField(validators=[not_zero_validator,smaller_zero_validator])
+    nparticipantes = models.IntegerField()
     inscricao_idinscricao = models.OneToOneField(Inscricao, models.DO_NOTHING, db_column='inscricao_idinscricao', primary_key=True)
 
     class Meta:
@@ -411,42 +378,23 @@ class InscricaoHasPrato(models.Model):
         managed = False
         db_table = 'inscricao_has_prato'
 
-@receiver(models.signals.pre_delete, sender=InscricaoHasPrato)
-def delete_Inscricao_prato(sender, instance, using, **kwargs):
-    instance.prato_idprato.delete()
-    #delete_prato(None,instance.prato_idprato,None)
 
 class InscricaoHasSessao(models.Model):
     inscricao_idinscricao = models.ForeignKey(Inscricao, models.DO_NOTHING, db_column='inscricao_idinscricao')
     sessao_idsessao = models.ForeignKey('Sessao', models.DO_NOTHING, db_column='sessao_idsessao')
     inscricao_has_sessao_id = models.AutoField(primary_key=True)
-    nr_inscritos = models.IntegerField(validators=[smaller_zero_validator,not_zero_validator])
-
-    def save(self, *args, **kwargs):
-        Sessao.objects.filter(idsessao=self.sessao_idsessao.pk).update(nrinscritos=F('nrinscritos')+self.nr_inscritos)
-        return super(InscricaoHasSessao, self).save(*args, **kwargs)
-
-    def update(self, *args, **kwargs):
-        insc = InscricaoHasSessao.objects.filter(inscricao_idinscricao=self.inscricao_idinscricao).nr_inscritos
-        delta = self.nr_inscritos-insc
-        Sessao.objects.filter(idsessao=self.sessao_idsessao.pk).update(nrinscritos=F('nrinscritos')+delta)
-        super(InscricaoHasSessao,self).update(*args, **kwargs)
-
+    nr_inscritos = models.IntegerField()
 
     class Meta:
         managed = False
         db_table = 'inscricao_has_sessao'
-
-@receiver(models.signals.post_delete, sender=InscricaoHasSessao)
-def delete_sessao_inscricao(sender, instance, using, **kwargs):
-    Sessao.objects.filter(idsessao=instance.sessao_idsessao.pk).update(nrinscritos=F('nrinscritos')-instance.nr_inscritos)
 
 
 class InscricaoIndividual(models.Model):
     nracompanhantes = models.IntegerField()
     participante_utilizador_idutilizador = models.ForeignKey('Participante', models.DO_NOTHING, db_column='Participante_Utilizador_idutilizador')  # Field name made lowercase.
     inscricao_idinscricao = models.OneToOneField(Inscricao, models.DO_NOTHING, db_column='inscricao_idinscricao', primary_key=True)
-    telefone = models.IntegerField(validators=[telefone_validator])
+    telefone = models.IntegerField()
 
     class Meta:
         managed = False
@@ -509,26 +457,10 @@ class Prato(models.Model):
     descricao = models.CharField(max_length=125)
     nralmocos = models.IntegerField(blank=True, null=True)
     menu_idmenu = models.ForeignKey(Menu, models.DO_NOTHING, db_column='menu_idMenu')  # Field name made lowercase.
-        
-        
-    def save(self, *args, **kwargs):
-        obj = Menu.objects.get(idmenu=self.menu_idmenu.pk)
-        Menu.objects.filter(idmenu=self.menu_idmenu.pk).update(nralmocosdisponiveis=F('nralmocosdisponiveis')-self.nralmocos)
-        return super(Prato, self).save(*args, **kwargs)
-    
-    def update(self, *args, **kwargs):
-        insc = Prato.objects.filter(inscricao_idinscricao=self.inscricao_idinscricao).nralmocos
-        delta = self.nralmocos-insc
-        Menu.objects.filter(idmenu=self.menu_idmenu.pk).update(nralmocosdisponiveis=F('nralmocosdisponiveis')-delta)
-        super(Prato,self).update(*args, **kwargs)
 
     class Meta:
         managed = False
         db_table = 'prato'
-
-@receiver(models.signals.pre_delete, sender=Prato)
-def delete_prato(sender, instance, using, **kwargs):
-    Menu.objects.filter(idmenu=instance.menu_idmenu.pk).update(nralmocosdisponiveis=F('nralmocosdisponiveis')+instance.nralmocos)
 
 
 class ProfessorUniversitario(models.Model):
@@ -543,8 +475,8 @@ class ProfessorUniversitario(models.Model):
 class Responsaveis(models.Model):
     idresponsavel = models.AutoField(primary_key=True)
     nome = models.CharField(max_length=255)
-    email = models.CharField(max_length=255,validators=[email_validator])
-    telefone = models.CharField(max_length=45,validators=[telefone_validator])
+    email = models.CharField(max_length=255)
+    telefone = models.CharField(max_length=45)
     idinscricao = models.ForeignKey(Inscricao, models.DO_NOTHING, db_column='idInscricao')  # Field name made lowercase.
 
     class Meta:
@@ -570,9 +502,6 @@ class Sessao(models.Model):
     atividade_idatividade = models.ForeignKey(Atividade, models.DO_NOTHING, db_column='Atividade_idAtividade')  # Field name made lowercase.
     horario_has_dia_id_dia_hora = models.ForeignKey(HorarioHasDia, models.DO_NOTHING, db_column='horario_has_dia_id_dia_hora')
 
-    def __id__(self):
-        return self.idsessao
-        
     class Meta:
         managed = False
         db_table = 'sessao'
@@ -597,8 +526,8 @@ class Tarefa(models.Model):
     hora_inicio = models.TimeField(blank=True, null=True)
     dia_dia = models.ForeignKey(Dia, models.DO_NOTHING, db_column='dia_dia', blank=True, null=True)
     sessao_idsessao = models.ForeignKey(Sessao, models.DO_NOTHING, db_column='sessao_idsessao', blank=True, null=True)
-    buscar = models.ForeignKey(Espaco, models.DO_NOTHING, db_column='buscar', blank=True, null=True,related_name="Tarefa_buscar")
-    levar = models.ForeignKey(Espaco, models.DO_NOTHING, db_column='levar', blank=True, null=True,related_name="Tarefa_levar")
+    buscar = models.ForeignKey(Espaco, models.DO_NOTHING, db_column='buscar', blank=True, null=True)
+    levar = models.ForeignKey(Espaco, models.DO_NOTHING, db_column='levar', blank=True, null=True)
     inscricao_coletiva_inscricao_idinscricao = models.ForeignKey(InscricaoColetiva, models.DO_NOTHING, db_column='inscricao_coletiva_inscricao_idinscricao', blank=True, null=True)
 
     class Meta:
@@ -618,66 +547,26 @@ class Transporte(models.Model):
 
 class TransporteHasHorario(models.Model):
     transporte_idtransporte = models.ForeignKey(Transporte, models.DO_NOTHING, db_column='transporte_idtransporte')
-    id_transporte_has_horario = models.IntegerField(primary_key=True)
-    origem = models.ForeignKey(Paragem, models.DO_NOTHING, db_column='origem',related_name="origem")
-    destino = models.ForeignKey(Paragem, models.DO_NOTHING, db_column='destino',related_name="destino")
+    id_transporte_has_horario = models.AutoField(primary_key=True)
+    origem = models.ForeignKey(Paragem, models.DO_NOTHING, db_column='origem')
+    destino = models.ForeignKey(Paragem, models.DO_NOTHING, db_column='destino')
     horario_has_dia_id_dia_hora = models.ForeignKey(HorarioHasDia, models.DO_NOTHING, db_column='horario_has_dia_id_dia_hora')
-    n_passageiros = models.IntegerField(blank=True, null=True,validators=[not_zero_validator,smaller_zero_validator])
-
-    def __str__(self):
-        return self.origem.paragem + " -> " + self.destino.paragem + " | " + self.horario_has_dia_id_dia_hora.__str__() + " | Lugares restantes: " + str(self.transporte_idtransporte.capacidade - self.n_passageiros)
+    n_passageiros = models.IntegerField(blank=True, null=True)
 
     class Meta:
         managed = False
         db_table = 'transporte_has_horario'
 
 
-#Validation is checked
 class TransporteHasInscricao(models.Model):
     inscricao_idinscricao = models.ForeignKey(Inscricao, models.DO_NOTHING, db_column='inscricao_idinscricao')
     transporte_has_inscricao_id = models.AutoField(primary_key=True)
-    horario = models.ForeignKey(TransporteHasHorario, models.DO_NOTHING, db_column='transporte_has_horario_id_transporte_has_horario')
-    n_passageiros = models.IntegerField(validators=[smaller_zero_validator])
-
-    def save(self, *args, **kwargs):
-        TransporteHasHorario.objects.filter(id_transporte_has_horario=self.horario.pk).update(n_passageiros=F('n_passageiros')+self.n_passageiros)
-        return super(TransporteHasInscricao, self).save(*args, **kwargs)
-    
-    def update(self, *args, **kwargs):
-        old = TransporteHasInscricao.objects.filter(transporte_has_inscricao_id=self.transporte_has_inscricao_id).n_passageiros
-        delta = self.n_passageiros - old
-        TransporteHasHorario.objects.filter(id_transporte_has_horario=self.horario).update(n_passageiros=F('n_passageiros')+delta)
-        super(TransporteHasInscricao,self).update(*args, **kwargs)
-    
-    def clean(self):
-        super().clean()
-        try:
-            data = TransporteHasHorario.objects.select_related('transporte_idtransporte').get(id_transporte_has_horario=self.horario.pk)
-        except:
-            raise ValidationError({'horario': "Opção inválida"})
-        capacidade = data.transporte_idtransporte.capacidade - data.n_passageiros
-        print(str(data.n_passageiros) + " - " + str(data.transporte_idtransporte.capacidade))
-        if capacidade < self.n_passageiros:
-            #Check for equal entry already in database
-            try:
-                curr = TransporteHasInscricao.objects.get(transporte_has_inscricao_id=self.transporte_has_inscricao_id).n_passageiros
-                passageiros = self.n_passageiros - curr
-                if capacidade < passageiros:
-                    error = validators.TRANSPORTE_FULL.replace('_NUM_',str(capacidade))
-                    raise ValidationError({'n_passageiros': error})
-
-            except ObjectDoesNotExist:
-                print("Error")
-                error = validators.TRANSPORTE_FULL.replace('_NUM_',str(capacidade))
-                raise ValidationError({'n_passageiros': error}) 
+    transporte_has_horario_id_transporte_has_horario = models.ForeignKey(TransporteHasHorario, models.DO_NOTHING, db_column='transporte_has_horario_id_transporte_has_horario')
+    n_passageiros = models.IntegerField(blank=True, null=True)
 
     class Meta:
         managed = False
         db_table = 'transporte_has_inscricao'
-
-@receiver(models.signals.post_delete, sender=TransporteHasInscricao)
-def delete_transporte(sender, instance, using, **kwargs):
-    TransporteHasHorario.objects.filter(id_transporte_has_horario=instance.horario.pk).update(n_passageiros=F('n_passageiros')-instance.n_passageiros)
 
 
 class TransportePessoal(models.Model):
@@ -710,8 +599,8 @@ class UnidadeOrganica(models.Model):
 class Utilizador(models.Model):
     idutilizador = models.AutoField(primary_key=True)
     nome = models.CharField(max_length=255)
-    email = models.CharField(unique=True, max_length=255,validators=[email_validator])
-    telefone = models.CharField(unique=True, max_length=45,validators=[telefone_validator])
+    email = models.CharField(unique=True, max_length=255)
+    telefone = models.CharField(unique=True, max_length=45)
     password = models.CharField(max_length=255)
     validada = models.IntegerField()
     remember_me = models.CharField(max_length=255, blank=True, null=True)
