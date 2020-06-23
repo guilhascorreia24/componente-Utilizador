@@ -17,102 +17,103 @@
           </ul>
       </nav>
       <hr>
-<div class="ctr">
-  <div style="padding: 3rem 2vw 1rem">
-      <form method="POST" id="personForm"> {% csrf_token %}
-          <div class="column">
-              <div class="field">
-                   <label class="label">Nome Tarefa:</label>
-              <div class="control">
-                   {{form.nome}}
-              </div>
-              </div>
-            </div>
- 
-            <div class="ativi column">
-              <div class="field">
-                <label class="label">Selecionar Atividade:</label>
-                <div class="control">
-                  <div class="select is-fullwidth">
-                    {{form.atividade_idatividade}}
+      <div class="ctr" style="margin-left: 35%;">
+        <div style="padding: 2vw">
+            <form method="POST" id="personForm"> {% csrf_token %}
+                <div class="column">
+                    <div class="field">
+                         <label class="">Nome Tarefa:</label>
+                    <div class="control">
+                         {{form.nome}}
+                    </div>
+                    </div>
+                  </div>
+       
+                  <div class="ativi column">
+                    <div class="field">
+                      <label class="">Selecionar Atividade:</label>
+                      <div class="control">
+                        <div class="select is-fullwidth">
+                          {{form.atividade_idatividade}}
+                        </div>
+                      </div>
+                    </div>
+                </div>
+      
+              <div class="column">
+                <div class="field">
+                  <label class="" >Sessão Da Atividade:</label>
+                  <div class="control">
+                    <div class="select is-fullwidth">
+                      <select id="idsessao" name="idsession">
+                        <option hidden value="">Selecione Atividade</option>
+                      </select>
+                    </div>
                   </div>
                 </div>
               </div>
-          </div>
-
-        <div class="column">
-          <div class="field">
-            <label class="label" >Sessão Da Atividade:</label>
-            <div class="control">
-              <div class="select is-fullwidth">
-                <select id="idsessao" name="idsession">
-                  <option value="">---------------</option>
-                </select>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="column">
-          <div class="field">
-            <label class="label">Atribuir Colaborador:</label>
-            <div class="control is-expanded">
-              <div class="select is-fullwidth">
-                {{form.colaborador_utilizador_idutilizador}}
-              </div>
-            </div>
-          </div>
-        </div>
-
-          <hr>
-
-          <div class="columns">
-            <div class="column is-3">
-              <a href="{% url 'tarefa_coordenador:criar_tarefa' %}" class="button is-outlined" type="button">
-                <span>Voltar</span>
-              </a>
-             </div>
-             <div style="margin-left: 50%;" class="column"> 
-              <button type="button" class="button is-large is-success is-outlined" data-toggle="modal" data-target="#exampleModal" data-backdrop="false">
-                <span>Submeter</span>
-              </button>
-              </div>
-
-              <div class="dialog modal" id="exampleModal">
-                <div class="modal-background"></div>
-                <br><br><br><br><br><br><br><br><br><br><br><br>
-                <div class="modal-card animation" style="max-width:360px">
-                    <!---->
-                    <section class="modal-card-body is-titleless">
-                        <div class="media">
-                            <!---->
-                            <div class="media-content">
-                                <p>Tem a certeza que quer editar a tarefa?</p>
-                                <!---->
-                            </div>
-                        </div>
-                    </section>
-                    <footer class="modal-card-foot"><button class="button" data-dismiss="modal">
-                            Cancelar
-                        </button> <button class="button is-success" type="submit">
-                            Confirmar
-                        </button></footer>
+      
+              <div class="column">
+                <div class="field">
+                  <label class="">Atribuir Colaborador:</label>
+                  <div class="control is-expanded">
+                    <div class="select is-fullwidth">
+                      
+                      <select name="{{form.colaborador_utilizador_idutilizador.id_for_label}}" id="{{form.colaborador_utilizador_idutilizador.id_for_label}}">
+                        <option value="" selected="">Nenhum Colaborador Atribuido</option>
+                        {% for colab in dispo %}
+                          <option value="{{colab.colaborador_utilizador_idutilizador.pk}}">{{colab.colaborador_utilizador_idutilizador.utilizador_idutilizador.nome}} (disponível dia {{colab.dia_dia}} das {{colab.horario_hora}} às {{colab.horario_hora1}})</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                  </div>
                 </div>
+              </div>
+      
+                <hr>
+      
+                <div class="columns">
+                  <div class="column is-3">
+                    <a href="{% url 'tarefa_coordenador:criar_tarefa' %}" class="button is-outlined" type="button">
+                      <span>Voltar</span>
+                    </a>
+                   </div>
+                   <div style="margin-left: 50%;" class="column"> 
+                    <button type="button" class="button is-large is-success is-outlined" data-toggle="modal" data-target="#exampleModal" data-backdrop="false">
+                      <span>Submeter</span>
+                    </button>
+                    </div>
+      
+                    <div class="dialog modal" id="exampleModal">
+                      <div class="modal-background"></div>
+                      <br><br><br><br><br><br><br><br><br><br><br><br>
+                      <div class="modal-card animation" style="max-width:20%">
+                          <!---->
+                          <section class="modal-card-body is-titleless">
+                              <div class="media">
+                                  <!---->
+                                  <div class="media-content">
+                                      <p>Tem a certeza que quer editar a tarefa?</p>
+                                      <!---->
+                                  </div>
+                              </div>
+                          </section>
+                          <footer class="modal-card-foot"><button class="button" data-dismiss="modal">
+                                  Cancelar
+                              </button> <button class="button is-success" type="submit">
+                                  Confirmar
+                              </button></footer>
+                      </div>
+                  </div>
+            </form>
             </div>
-      </form>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
-</div>
-</div>
+      </div>
+          </section>
     </section>
 <style>
-  .buttons {
-  display: inline-block;
-  width: 150px;
-  margin: 0 px;
-  left: 200px;
-}
   .label {
   font-weight: normal;
 }
@@ -120,30 +121,10 @@
   font-size: 1rem;
 }
 
-.ativi{
-  width: 440px;
-}
-
 .ctr {
-  width: 500px;
-  right:500px;
-  margin-left: 400px;
-}
-
-.hour{
-  width: 300px;
-}
-
-.margintop{
-  margin:12px;
-}
-
-.marginl{
-  margin-left: 400px;
-}
-
-.margin2{
-  margin-left:100px;
+  width: 40%;
+  right:50%;
+  margin-left: 30%;
 }
 </style>
 
