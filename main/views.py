@@ -46,14 +46,19 @@ def same(object,list,string):
 	return False
 
 def moretime(object,list,string):
+	print("lsajhjdksa")
 	for n in list:
-		if n[string]<=object:
-			return True
+		if isinstance(n[string],datetime.time) and isinstance(object,datetime.time):
+			#print(str(n[string])+":"+str(object))
+			if n[string]>=object:
+				return True
 	return False
 
 def lesstime(object,list,string):
+	print("dskdfjk")
 	for n in list:
-		if n[string]>=object:
+		print(str(n[string])+":"+str(object))
+		if n[string]<=object:
 			return True
 	return False
 
@@ -72,13 +77,17 @@ def criar_tarefa_atividade(request):
 			min=int(tare['hora_f_b']+tare['hora_i_b'].minute%60)
 			num=int(((tare['hora_f_b']+tare['hora_i_b'].minute)/60)+int(tare['hora_i_b'].hour))%24
 			tare['hora_f_b']=datetime.time(num,min)
+		print(type(tare['hora_i_a']))
 	dispos=[]
 	#print(disponibilidades)
 	for dispo in disponibilidades:
 		#print(dispo)
+		print(str(same(dispo.colaborador_utilizador_idutilizador.pk,tarefas,'colab')) + str(same(dispo.dia_dia,tarefas,'dia_a') 
+			or same(dispo.dia_dia,tarefas,'dia_b')) + str(moretime(dispo.horario_hora,tarefas,'hora_i_a') or moretime(dispo.horario_hora, tarefas,'hora_i_b')))
 		if not(same(dispo.colaborador_utilizador_idutilizador.pk,tarefas,'colab') and (same(dispo.dia_dia,tarefas,'dia_a') 
-			or same(dispo.dia_dia,tarefas,'dia_b')) and (moretime(dispo.horario_hora,tarefas,'hora_i_a',) or moretime(dispo.horario_hora, tarefas,'hora_i_b'))):
+			or same(dispo.dia_dia,tarefas,'dia_b')) and (moretime(dispo.horario_hora,tarefas,'hora_i_a') or moretime(dispo.horario_hora, tarefas,'hora_i_b'))):
 			dispos.append(dispo)
+			
 	print(dispos)
 	
 	if request.method == "POST":
