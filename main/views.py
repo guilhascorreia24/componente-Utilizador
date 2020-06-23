@@ -38,31 +38,48 @@ def mais_info(request, pk):
 			colabs.append(dispo)
 		elif Tarefa.objects.filter(colaborador_utilizador_idutilizador=colab,se).exists()'''
 
+def same(object,list,string):
+	for n in list:
+		print(str(n[string])+":"+str(object))
+		if n[string]==object:
+			return True
+	return False
 
+def moretime(object,list,string):
+	for n in list:
+		if n[string]<=object:
+			return True
+	return False
+
+def lesstime(object,list,string):
+	for n in list:
+		if n[string]>=object:
+			return True
+	return False
 
 def criar_tarefa_atividade(request):
 	user = Utilizador.objects.get(idutilizador = request.session["user_id"])
 	coord_user = Coordenador.objects.get(utilizador_idutilizador = user)
 	new_form = Tarefa(concluida = 0, coordenador_utilizador_idutilizador = coord_user)
 	form = TarefasFormAtividade(request.POST, instance = new_form)
-	'''tarefas= Tarefa.objects \
+	tarefas= Tarefa.objects \
 		.select_related('colaborador_utilizador_idutilizador','hora_inicio','dia_dia','sessao_idsessao','sessao_idsessao__horario_has_dia_id_dia_hora__horario_hora','sessao_idsessao__atividade_idatividade__duracao','sessao_idsessao__horario_has_dia_id_dia_hora__dia_dia').all()\
 		.values(colab=F('colaborador_utilizador_idutilizador'),hora_i_a=F('hora_inicio'),dia_a=F('dia_dia'),hora_i_b=F('sessao_idsessao__horario_has_dia_id_dia_hora__horario_hora'),
 			    				dia_b=F('sessao_idsessao__horario_has_dia_id_dia_hora__dia_dia'),hora_f_b=F('sessao_idsessao__atividade_idatividade__duracao'))
-	#disponibilidades=Disponibilidade.objects.all()
+	disponibilidades=Disponibilidade.objects.all()
 	for tare in tarefas:
 		if isinstance(tare['hora_f_b'],float):
 			min=int(tare['hora_f_b']+tare['hora_i_b'].minute%60)
 			num=int(((tare['hora_f_b']+tare['hora_i_b'].minute)/60)+int(tare['hora_i_b'].hour))%24
 			tare['hora_f_b']=datetime.time(num,min)
-		print(tare)
 	dispos=[]
-	#print(type(disponibilidades))
+	#print(disponibilidades)
 	for dispo in disponibilidades:
-		print(dispo)
-		if (dispo.colaborador_utilizador_idutilizador.pk.pk in tare['colab']) and ((dispo.dia_dia in tare['dia_a']) 
-			or (dispo.dia_dia in tare['dia_b'])) and ((dispo.horario_hora in tare['hora_i_a']) or (dispo.horario_hora in tare['hora_i_b'])):
-			dispos.append(dispo)'''
+		#print(dispo)
+		if not(same(dispo.colaborador_utilizador_idutilizador.pk,tarefas,'colab') and (same(dispo.dia_dia,tarefas,'dia_a') 
+			or same(dispo.dia_dia,tarefas,'dia_b')) and (moretime(dispo.horario_hora,tarefas,'hora_i_a',) or moretime(dispo.horario_hora, tarefas,'hora_i_b'))):
+			dispos.append(dispo)
+	print(dispos)
 	
 	if request.method == "POST":
 		if form.is_valid():
