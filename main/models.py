@@ -271,7 +271,6 @@ class Disponibilidade(models.Model):
         db_table = 'disponibilidade'
         unique_together = (('colaborador_utilizador_idutilizador', 'dia_dia', 'horario_hora', 'horario_hora1', 'tipo_de_tarefa'),)
 
-
 class DjangoAdminLog(models.Model):
     action_time = models.DateTimeField()
     object_id = models.TextField(blank=True, null=True)
