@@ -5,9 +5,9 @@
 {% endblock %}
 {% block content %}
 
-<div class="ctr" style="margin-left: 35%;">
+<div class="ctr">
   <div style="padding: 3rem 2vw 1rem">
-      <strong style="margin-left: 50px;">Selecione o Tipo de Tarefa que deseja criar:</strong>
+      <strong style="margin-left: 10%;">Selecione o Tipo de Tarefa que deseja criar:</strong>
       <hr></hr>
 
       <form method="get" action ="{% url 'tarefa_coordenador:criar_tarefa_atividade' %}">
@@ -23,8 +23,8 @@
 <style>
   .buttons {
   display: inline-block;
-  width: 280px;
-  margin-left: 50px;
+  width: 65% ;
+  margin-left: 10%;
 }
   .label {
   font-weight: normal;
@@ -35,26 +35,11 @@
 
 
 .ctr {
-  width: 500px;
-  right:500px;
-  margin-left: 400px;
+  width: 40%;
+  right:50%;
+  margin-left: 30%;
 }
 
-.hour{
-  width: 300px;
-}
-
-.margintop{
-  margin:12px;
-}
-
-.marginl{
-  margin-left: 400px;
-}
-
-.margin2{
-  margin-left:100px;
-}
 </style>
  
 {% endblock content%}

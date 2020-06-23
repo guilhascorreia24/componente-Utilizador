@@ -57,7 +57,7 @@
                 <select name="{{form.colaborador_utilizador_idutilizador.id_for_label}}" id="{{form.colaborador_utilizador_idutilizador.id_for_label}}">
                   <option value="" selected="">Nenhum Colaborador Atribuido</option>
                   {% for colab in dispo %}
-                    <option value="{{colab.colaborador_utilizador_idutilizador.pk}}" selected="">{{colab.colaborador_utilizador_idutilizador.utilizador_idutilizador.nome}}</option>
+                    <option value="{{colab.colaborador_utilizador_idutilizador.pk}}">{{colab.colaborador_utilizador_idutilizador.utilizador_idutilizador.nome}} (disponível dia {{colab.dia_dia}} das {{colab.horario_hora}} às {{colab.horario_hora1}})</option>
                       {% endfor %}
                 
                 </select>
@@ -68,19 +68,19 @@
 
         <hr>
         
-        <div style="width: 300px; margin-left: -250px;" class=" columns">
-          <div style="width: 310px;" class="column is-3">
-            <label class="">Atual Atividade do(s) Participante(s):</label>
-            <div style="width: 280px;" class="control">
+        <div style="width: 70%; margin-left: -40%;" class=" columns">
+          <div style="width: 98%;" class="column is-3">
+            <label>Atual Atividade do(s) Participante(s):</label>
+            <div style="width: 102%;" class="control">
               <div class="select is-fullwidth">
                 {{form.atividade_idatividade}}
               </div>
             </div>
           </div>
 
-          <div style="margin-left: -20px;" class="column">
-            <label aria-label="breadcrumbs" style="width: 300px; margin-left: 50px;" class="">Selecionar Sessão:</label>
-            <div style="margin-left: 50px; width: 250px;" class="control">
+          <div style="margin-left: -5%; width: 100%;" class="column">
+            <div style="margin-left: 50%; width: 300%;" class="control">
+              <label>Selecionar Sessão:</label>
               <div class="select is-fullwidth">
                 <select id="idsessao" name="idsession">
                   <option hidden value="">Selecione Atividade</option>
@@ -88,9 +88,9 @@
               </div>
             </div>
           </div>
-          <div style="margin-left: -80px;" class="column">
-            <label style="width: 300px; margin-left: 50px;" aria-label="breadcrumbs" class="">Selecionar Grupo:</label>
-            <div style="margin-left: 50px; width: 300px;" class="control">
+          <div style="margin-left: 90%;" class="column">
+            <div style="margin-left: -22%; width: 300px;" class="control">
+              <label class="">Selecionar Grupo:</label>
               <div class="select is-fullwidth">
                 <select id="grupos" name="grupos">
                   <option hidden value="">Selecione Sessão</option>
@@ -100,18 +100,18 @@
           </div>
         </div>
 <hr>
-        <div style="width: 300px; margin-left: -100px;" class="columns">
-          <div style="width: 350px;"  class="column is-3">
+        <div style="width: 100%; margin-left: -20%;" class="columns">
+          <div style="width: 80%;"class="column is-3">
             <label class="">Próxima Atividade do(s) Participante(s):</label>
-            <div style="width: 280px;" class="control">
+            <div style="width: 95%;" class="control">
               <div class="select is-fullwidth">
                 {{form.campus_levar}}
               </div>
             </div>
           </div>
-          <div style="" class="column">
-            <label style="width: 300px;" class="">Local Destino do(s) Participante(s):</label>
-            <div style=" width: 250px;" class="control">
+          <div class="column">
+            <div style=" width: 250%;" class="control">
+              <label style="width: 200%;" class="">Local Destino do(s) Participante(s):</label>
               <div class="select is-fullwidth">
                 <select id="levar" name="levar">
                   <option hidden value="">Selecione Atividade</option>
@@ -139,7 +139,7 @@
               <div class="dialog modal" id="exampleModal">
                 <div class="modal-background"></div>
                 <br><br><br><br><br><br><br><br><br><br><br><br>
-                <div class="modal-card animation" style="max-width:360px">
+                <div class="modal-card animation" style="max-width:20%">
                     <!---->
                     <section class="modal-card-body is-titleless">
                         <div class="media">
@@ -166,12 +166,6 @@
   
 
 <style>
-  .buttons {
-  display: inline-block;
-  width: 150px;
-  margin: 0 px;
-  left: 200px;
-}
   .label {
   font-weight: normal;
 }
@@ -179,35 +173,10 @@
   font-size: 1rem;
 }
 
-.ativi{
-  width: 440px;
-}
-
 .ctr {
-  width: 500px;
-  right:500px;
-  margin-left: 400px;
-}
-
-.hour{
-  width: 300px;
-}
-
-.margintop{
-  margin:12px;
-}
-
-.marginl{
-  margin-left: -100px;
-  width: 270px;
-}
-
-.margin2{
-  margin-left:100px;
-}
-
-.marg{
-  margin-left: -190px;
+  width: 40%;
+  right:50%;
+  margin-left: 30%;
 
 }
 </style>
