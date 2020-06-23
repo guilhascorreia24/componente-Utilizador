@@ -58,7 +58,16 @@
             <label class="">Atribuir Colaborador:</label>
             <div class="control is-expanded">
               <div class="select is-fullwidth">
-                {{form.colaborador_utilizador_idutilizador}}
+                
+                <select name="{{form.colaborador_utilizador_idutilizador.id_for_label}}" id="{{form.colaborador_utilizador_idutilizador.id_for_label}}">
+                  <option value="" selected="">Nenhum Colaborador Atribuido</option>
+                  {% for colab in dispo %}
+                    <option value="{{colab.colaborador_utilizador_idutilizador.pk}}" selected="">{{colab.colaborador_utilizador_idutilizador.utilizador_idutilizador.nome}}</option>
+                      {% endfor %}
+                
+                </select>
+
+
               </div>
             </div>
           </div>

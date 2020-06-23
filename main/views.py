@@ -38,35 +38,27 @@ def mais_info(request, pk):
 			colabs.append(dispo)
 		elif Tarefa.objects.filter(colaborador_utilizador_idutilizador=colab,se).exists()'''
 
-def same(object,list,string):
-	for n in list:
-		print(str(n[string])+":"+str(object))
-		if n[string]==object:
-			return True
-	return False
 
-def moretime(object,list,string):
-	print("lsajhjdksa")
+def same(object,list,string,string1,string2):
 	for n in list:
-		if isinstance(n[string],datetime.time) and isinstance(object,datetime.time):
-			#print(str(n[string])+":"+str(object))
-			if n[string]>=object:
+		if isinstance(n[string2],datetime.time) and isinstance(object.horario_hora,Horario) and isinstance(n[string1],datetime.date) and isinstance(object.dia_dia,Dia):
+			split=str(object.horario_hora).split(":")
+			time=datetime.time(int(split[0]),int(split[1]),int(split[2]))
+			split=str(object.dia_dia).split("-")
+			date=datetime.date(int(split[0]),int(split[1]),int(split[2]))
+			print(str(n[string2]>=time and n[string1]==date and n[string]==object.colaborador_utilizador_idutilizador.pk))
+			if n[string2]>=time and n[string1]==date and n[string]==object.colaborador_utilizador_idutilizador.pk:
 				return True
 	return False
 
 def lesstime(object,list,string):
-	print("dskdfjk")
 	for n in list:
-		print(str(n[string])+":"+str(object))
+		#print(str(n[string])+":"+str(object))
 		if n[string]<=object:
 			return True
 	return False
 
-def criar_tarefa_atividade(request):
-	user = Utilizador.objects.get(idutilizador = request.session["user_id"])
-	coord_user = Coordenador.objects.get(utilizador_idutilizador = user)
-	new_form = Tarefa(concluida = 0, coordenador_utilizador_idutilizador = coord_user)
-	form = TarefasFormAtividade(request.POST, instance = new_form)
+def disponibilidades():
 	tarefas= Tarefa.objects \
 		.select_related('colaborador_utilizador_idutilizador','hora_inicio','dia_dia','sessao_idsessao','sessao_idsessao__horario_has_dia_id_dia_hora__horario_hora','sessao_idsessao__atividade_idatividade__duracao','sessao_idsessao__horario_has_dia_id_dia_hora__dia_dia').all()\
 		.values(colab=F('colaborador_utilizador_idutilizador'),hora_i_a=F('hora_inicio'),dia_a=F('dia_dia'),hora_i_b=F('sessao_idsessao__horario_has_dia_id_dia_hora__horario_hora'),
@@ -77,19 +69,21 @@ def criar_tarefa_atividade(request):
 			min=int(tare['hora_f_b']+tare['hora_i_b'].minute%60)
 			num=int(((tare['hora_f_b']+tare['hora_i_b'].minute)/60)+int(tare['hora_i_b'].hour))%24
 			tare['hora_f_b']=datetime.time(num,min)
-		print(type(tare['hora_i_a']))
 	dispos=[]
 	#print(disponibilidades)
 	for dispo in disponibilidades:
-		#print(dispo)
-		print(str(same(dispo.colaborador_utilizador_idutilizador.pk,tarefas,'colab')) + str(same(dispo.dia_dia,tarefas,'dia_a') 
-			or same(dispo.dia_dia,tarefas,'dia_b')) + str(moretime(dispo.horario_hora,tarefas,'hora_i_a') or moretime(dispo.horario_hora, tarefas,'hora_i_b')))
-		if not(same(dispo.colaborador_utilizador_idutilizador.pk,tarefas,'colab') and (same(dispo.dia_dia,tarefas,'dia_a') 
-			or same(dispo.dia_dia,tarefas,'dia_b')) and (moretime(dispo.horario_hora,tarefas,'hora_i_a') or moretime(dispo.horario_hora, tarefas,'hora_i_b'))):
+		print(dispo)
+		print(str(same(dispo,tarefas,'colab','dia_a','hora_i_a') or same(dispo,tarefas,'colab','dia_b','hora_i_b')))
+		if not(same(dispo,tarefas,'colab','dia_a','hora_i_a') or same(dispo,tarefas,'colab','dia_b','hora_i_b')):
 			dispos.append(dispo)
-			
-	print(dispos)
-	
+	return dispos
+
+def criar_tarefa_atividade(request):
+	user = Utilizador.objects.get(idutilizador = request.session["user_id"])
+	coord_user = Coordenador.objects.get(utilizador_idutilizador = user)
+	new_form = Tarefa(concluida = 0, coordenador_utilizador_idutilizador = coord_user)
+	form = TarefasFormAtividade(request.POST, instance = new_form)
+	dispos=disponibilidades()
 	if request.method == "POST":
 		if form.is_valid():
 			new_tarefa = form.save(commit = False)
@@ -126,6 +120,7 @@ def criar_tarefa_grupo(request):
 	coord_user = Coordenador.objects.get(utilizador_idutilizador = user)
 	new_form = Tarefa(concluida = 0, coordenador_utilizador_idutilizador = coord_user)
 	form = TarefasFormGroup(request.POST, instance = new_form)
+	dispos=disponibilidades()
 	if request.method == "POST":
 		if form.is_valid():
 			new_tarefa = form.save(commit = False)
@@ -146,7 +141,7 @@ def criar_tarefa_grupo(request):
 	
 	return render(request=request,
 				  template_name="main/criarTarefaAcompanhar.html",
-				  context={'form':form,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
+				  context={'form':form,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request),'dispo':dispos})
 
 def load_cities(request):
 	atividade = request.POST.get('atividade_idatividade')
