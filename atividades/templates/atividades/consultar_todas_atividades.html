@@ -51,6 +51,7 @@
                          </span> <span class="icon is-left"><i
                         class="mdi mdi-magnify mdi-24px"></i></span></div>
                 <!---->
+               </div>
                  <div data-v-1513178e="" class="field">
                         <!---->
                         <div data-v-1513178e="" class="autocomplete control">
@@ -82,9 +83,9 @@
 
             <button  type="submit" form="filtro" class="button" style="margin-right: 1rem; color: blue"><!----> <span>Pesquisar</span> <!----></button>
              <button class="button is-outlined is-link is-danger"  onclick="clearField()">
-                                    <span>Limpar</span>
-                                    <span class="icon is-medium"><i class="mdi mdi-broom"></i></span>
-                                </button>
+                <span>Limpar</span>
+                <span class="icon is-medium"><i class="mdi mdi-broom"></i></span>
+            </button>
 
         </form>
         </div>
@@ -96,9 +97,6 @@
                     <thead>
                             <th>
                                 Titulo:
-                            </th>
-                            <th>
-                                Descrição:
                             </th>
                             <th>
                                 Temática:
@@ -118,9 +116,6 @@
                             <th>
                                 Campus:
                             </th>
-                            <th>
-                                Local:
-                            </th>
                             <th></th>
                              </thead>
                             <tbody>
@@ -134,22 +129,15 @@
                             {% for activity in list %}
                             <tr>
                                 <td>{{activity.titulo}}</td>
-                                <td>{{activity.descricao}}</td>
                                 <td>{{activity.tematica}}</td>
                                 <td>{{activity.publico_alvo}}</td>
                                 <td>{{activity.duracao|floatformat:0}}</td>
                                 <td>{{activity.unidade_organica_iduo.sigla}}</td>
                                 <td>{{activity.departamento_iddepartamento.nome}}</td>
                                 <td>{{activity.unidade_organica_iduo.campus_idcampus.nome}}</td>
-                                 <td>
-                                    {%if not activity.espaco_idespaco.nome %} [a ser definido]
-                                    {% else %} <a href="{% url 'atividades:display_image' activity.espaco_idespaco.idespaco %}" target="_blank">
-                                     {{activity.espaco_idespaco.nome}}</a>
-                                    {% endif %}
-                                </td>
                                 <td>
                                     <form method="POST">
-                                        <a href="{% url 'atividades:ver_sessoes' activity.idatividade %}">
+                                        <a data-toggle="modal" data-target="#{{ forloop.counter }}">
                                             <span class="icon is-small">
                                                 <i class="mdi mdi-dots-horizontal-circle mdi-24px"></i>
                                             </span>
@@ -161,6 +149,80 @@
                             </tbody>
                 </table>
     </div>
+
+
+
+        {% for activity in list %}
+<div tabindex="-1" class="modal fade" id="{{forloop.counter}}" role="dialog" aria-hidden="true" aria-labelledby="exampleModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <button class="close" aria-label="Close" type="button" data-dismiss="modal">
+                    <span aria-hidden="true">X</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div>
+                        <div class="input-group col-sm-12">
+                            <div class="input-group-prepend labelForm">
+                                <span class="input-group-text w-100">Descrição:</span>
+                            </div>
+                            <input disabled="" class="form-control bg-light" type="text" value="{{activity.descricao}}">
+                        </div>
+                         <br>
+                        <div class="input-group col-sm-12">
+                            <div class="input-group-prepend labelForm">
+                                <span class="input-group-text w-100">Número de participantes:</span>
+                            </div>
+                            <input disabled="" class="form-control col-sm-2 bg-light" type="text" value="{{activity.capacidade}}">
+                        </div>
+                         <br>
+                        <div class="input-group col-sm-12">
+                            <div class="input-group-prepend labelForm">
+                                <span class="input-group-text w-100">Duração:</span>
+                            </div>
+                            <input disabled="" class="form-control col-sm-2 bg-light" type="text" value="{{activity.duracao|floatformat:0}}">
+                        </div>
+                        <br>
+                        <div class="input-group col-sm-12">
+                            <div class="input-group-prepend labelForm">
+                                <span class="input-group-text w-100">Publico Alvo:</span>
+                            </div>
+                            <input disabled="" class="form-control col-sm-2 bg-light" type="text" value="{{activity.publico_alvo}}">
+                        </div>
+                        <br>
+                        <div class="input-group col-sm-12">
+                            <div class="input-group-prepend labelForm">
+                                <span class="input-group-text w-100">Campus:</span>
+                            </div>
+                            <input disabled="" class="form-control col-sm-2 bg-light" type="text" value="{{activity.unidade_organica_iduo.campus_idcampus.nome}}">
+                        </div>
+                        <br>
+                        <div class="input-group col-sm-12">
+                            <div class="input-group-prepend labelForm">
+                                <span class="input-group-text w-100">Local:</span>
+                            </div>
+                            <input disabled="" class="form-control col-sm-2 bg-light" type="text" value="{%if not activity.espaco_idespaco.nome %} [a ser definido]
+                                                                {% else %} {{activity.espaco_idespaco.nome}}
+                                                                {% endif %}">
+                        </div>
+                        <br>
+                         </button>
+                        <a href="{% url 'atividades:ver_sessoes' activity.idatividade %}">
+                        <button class="button is-warning">
+                            Ver Sessões
+                        </button></a>
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+
 
         <script>
             function clearField(){

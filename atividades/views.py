@@ -4,6 +4,7 @@ from .forms import *
 from blog.models import Atividade, Utilizador, Administrador, Coordenador, ProfessorUniversitario, Espaco, Departamento, \
     UnidadeOrganica, Sessao, Horario, Campus, Dia, HorarioHasDia, Sala, Anfiteatro, Arlivre
 from Notification.views import noti_not_checked
+from Notification import views as noti_views
 
 
 # Create your views here.
@@ -134,16 +135,6 @@ def all_activities_view(request):
     return render(request, "atividades/consultar_todas_atividades.html", context)
 
 
-def info_atividade_view(request, idActivity):
-    atividade = get_object_or_404(Atividade, idatividade=idActivity)
-    context = {
-        "activity": atividade,
-        "account": return_account_type(request.session["user_id"]),
-        'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)
-    }
-    return render(request, "atividades/info_atividade.html", context)
-
-
 def coordinator_activities_view(request):
     departamento_filter = ""
     tema_filter = ""
@@ -193,13 +184,6 @@ def validar_atividade_view(request,idActivity):
     return redirect("atividades:consultar_atividades_coodernador")
 
 
-def recusar_atividade_view(request, idActivity):
-    atividade = get_object_or_404(Atividade, idatividade=idActivity)
-    atividade.validada = -1
-    atividade.save()
-    return redirect("atividades:consultar_atividades_coodernador")
-
-
 def deletar_atividade_view(request, idActivity):
     atividade = get_object_or_404(Atividade, idatividade=idActivity)
     atividade.delete()
@@ -228,6 +212,13 @@ def my_activities_view(request):
 def activity_session_view(request, idActivity):
     querysetSession = Sessao.objects.all().filter(atividade_idatividade=idActivity)
     atividade = get_object_or_404(Atividade, idatividade=idActivity)
+    if request.method == "POST":
+        print(request.POST.get("motivo"))
+        id_prof = atividade.professor_universitario_utilizador_idutilizador.utilizador_idutilizador.idutilizador
+        noti_views.new_noti(request, id_prof, "Motivo de rejeição", request.POST.get("motivo"))
+        atividade.validada = -1
+        atividade.save()
+        return redirect("atividades:consultar_atividades_coodernador")
     context = {
         "list": querysetSession,
         "activity": atividade,

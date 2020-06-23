@@ -25,54 +25,54 @@
                         class="mdi mdi-magnify mdi-24px"></i></span></div>
                 <!---->
             </div>
-                <div class="field">
-                    <!---->
-                    <div class="control is-expanded has-icons-left"><span
-                            class="select is-fullwidth is-empty"><select  name="estado" id="estado">
-                                <option value="" disabled selected>Selecione Estado</option>
-                                <option value="0" {% if estado_filter == "0" %} selected {% endif %}>Pendente</option>
-                                <option value="1" {% if estado_filter ==  "1" %} selected {% endif %}>Aceite</option>
-                                <option value="-1" {% if estado_filter == "-1" %} selected {% endif %}>Recusado</option>
-                            </select></span><span class="icon is-left"><i
-                                class="mdi mdi-magnify mdi-24px"></i></span>
-                        <!---->
-                    </div>
+            <div class="field">
+                <!---->
+                <div class="control is-expanded has-icons-left"><span
+                        class="select is-fullwidth is-empty"><select  name="estado" id="estado">
+                            <option value="" disabled selected>Selecione Estado</option>
+                            <option value="0" {% if estado_filter == "0" %} selected {% endif %}>Pendente</option>
+                            <option value="1" {% if estado_filter ==  "1" %} selected {% endif %}>Aceite</option>
+                            <option value="-1" {% if estado_filter == "-1" %} selected {% endif %}>Recusado</option>
+                        </select></span><span class="icon is-left"><i
+                            class="mdi mdi-magnify mdi-24px"></i></span>
                     <!---->
                 </div>
+                <!---->
+            </div>
 
-                     <div data-v-1513178e="" class="field">
+             <div data-v-1513178e="" class="field">
+                <!---->
+                <div data-v-1513178e="" class="autocomplete control">
+                    <div class="control has-icons-left is-clearfix"><input type="text"
+                             autocomplete="off"
+                            placeholder="Filtrar por tema" class="input" name="temaAtividade" id="temaAtividade" value="{{tema_filter}}">
+                        <span class="icon is-left"><i class="mdi mdi-magnify mdi-24px"></i></span>
                         <!---->
-                        <div data-v-1513178e="" class="autocomplete control">
-                            <div class="control has-icons-left is-clearfix"><input type="text"
-                                     autocomplete="off"
-                                    placeholder="Filtrar por tema" class="input" name="temaAtividade" id="temaAtividade" value="{{tema_filter}}">
-                                <span class="icon is-left"><i class="mdi mdi-magnify mdi-24px"></i></span>
-                                <!---->
-                                <!---->
-                            </div>
-                        </div>
                         <!---->
                     </div>
+                </div>
+                <!---->
+            </div>
 
-                <div data-v-1513178e="" class="field">
+            <div data-v-1513178e="" class="field">
+                <!---->
+                <div data-v-1513178e="" class="autocomplete control">
+                    <div class="control has-icons-left is-clearfix"><input type="text"
+                          autocomplete="off"
+                            placeholder="Filtrar por titulo" class="input" name="nomeAtividade" id="nomeAtividade" value="{{titulo_filter}}">
+                        <span class="icon is-left"><i class="mdi mdi-magnify mdi-24px"></i></span>
                         <!---->
-                        <div data-v-1513178e="" class="autocomplete control">
-                            <div class="control has-icons-left is-clearfix"><input type="text"
-                                  autocomplete="off"
-                                    placeholder="Filtrar por titulo" class="input" name="nomeAtividade" id="nomeAtividade" value="{{titulo_filter}}">
-                                <span class="icon is-left"><i class="mdi mdi-magnify mdi-24px"></i></span>
-                                <!---->
-                                <!---->
-                            </div>
-                        </div>
                         <!---->
                     </div>
+                </div>
+                <!---->
+            </div>
 
             <button  type="submit" form="filtro" class="button" style="margin-right: 1rem; color: blue"><!----> <span>Pesquisar</span> <!----></button>
             <button class="button is-outlined is-link is-danger"  onclick="clearField()">
-                                    <span>Limpar</span>
-                                    <span class="icon is-medium"><i class="mdi mdi-broom"></i></span>
-                                </button>
+                <span>Limpar</span>
+                <span class="icon is-medium"><i class="mdi mdi-broom"></i></span>
+            </button>
 
         </form>
         </div>
@@ -142,7 +142,8 @@
                                 </td>
                                 <td>
                                     <form method="POST">
-                                        <a href="{% url 'atividades:ver_mais_atividade' activity.idatividade %}">
+                                        <a data-toggle="modal" data-target="#{{ forloop.counter }}">
+                                        <!--<a href="{% url 'atividades:ver_mais_atividade' activity.idatividade %}">-->
                                             <span class="icon is-small">
                                                 <i class="mdi mdi-dots-horizontal-circle mdi-24px"></i>
                                             </span>
@@ -153,6 +154,79 @@
                     </tbody>
                 </table>
             </div>
+
+        {% for activity in list %}
+<div tabindex="-1" class="modal fade" id="{{forloop.counter}}" role="dialog" aria-hidden="true" aria-labelledby="exampleModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <button class="close" aria-label="Close" type="button" data-dismiss="modal">
+                    <span aria-hidden="true">X</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div>
+                        <div class="input-group col-sm-12">
+                            <div class="input-group-prepend labelForm">
+                                <span class="input-group-text w-100">Descrição:</span>
+                            </div>
+                            <input disabled="" class="form-control bg-light" type="text" value="{{activity.descricao}}">
+                        </div>
+                         <br>
+                        <div class="input-group col-sm-12">
+                            <div class="input-group-prepend labelForm">
+                                <span class="input-group-text w-100">Número de participantes:</span>
+                            </div>
+                            <input disabled="" class="form-control col-sm-2 bg-light" type="text" value="{{activity.capacidade}}">
+                        </div>
+                         <br>
+                        <div class="input-group col-sm-12">
+                            <div class="input-group-prepend labelForm">
+                                <span class="input-group-text w-100">Duração:</span>
+                            </div>
+                            <input disabled="" class="form-control col-sm-2 bg-light" type="text" value="{{activity.duracao|floatformat:0}}">
+                        </div>
+                        <br>
+                        <div class="input-group col-sm-12">
+                            <div class="input-group-prepend labelForm">
+                                <span class="input-group-text w-100">Publico Alvo:</span>
+                            </div>
+                            <input disabled="" class="form-control col-sm-2 bg-light" type="text" value="{{activity.publico_alvo}}">
+                        </div>
+                        <br>
+                        <div class="input-group col-sm-12">
+                            <div class="input-group-prepend labelForm">
+                                <span class="input-group-text w-100">Campus:</span>
+                            </div>
+                            <input disabled="" class="form-control col-sm-2 bg-light" type="text" value="{{activity.unidade_organica_iduo.campus_idcampus.nome}}">
+                        </div>
+                        <br>
+                        <div class="input-group col-sm-12">
+                            <div class="input-group-prepend labelForm">
+                                <span class="input-group-text w-100">Local:</span>
+                            </div>
+                            <input disabled="" class="form-control col-sm-2 bg-light" type="text" value="{%if not activity.espaco_idespaco.nome %} [a ser definido]
+                                                                {% else %} {{activity.espaco_idespaco.nome}}
+                                                                {% endif %}">
+                        </div>
+                        <br>
+                         </button>
+                        <a href="{% url 'atividades:ver_sessoes' activity.idatividade %}">
+                        <button class="button is-warning">
+                            Ver Sessões
+                        </button></a>
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+
+
 
          <script>
             function clearField(){

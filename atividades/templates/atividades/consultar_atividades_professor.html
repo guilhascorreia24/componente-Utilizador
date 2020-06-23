@@ -153,7 +153,7 @@
                                 </td>
                                 <td>
                                     <form method="POST">
-                                        <a href="{% url 'atividades:ver_mais_atividade' activity.idatividade %}">
+                                        <a data-toggle="modal" data-target="#{{ forloop.counter }}">
                                             <span class="icon is-small">
                                                 <i class="mdi mdi-dots-horizontal-circle mdi-24px"></i>
                                             </span>
@@ -164,6 +164,79 @@
                     </tbody>
                 </table>
             </div>
+
+               {% for activity in list %}
+<div tabindex="-1" class="modal fade" id="{{forloop.counter}}" role="dialog" aria-hidden="true" aria-labelledby="exampleModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <button class="close" aria-label="Close" type="button" data-dismiss="modal">
+                    <span aria-hidden="true">X</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div>
+                        <div class="input-group col-sm-12">
+                            <div class="input-group-prepend labelForm">
+                                <span class="input-group-text w-100">Descrição:</span>
+                            </div>
+                            <input disabled="" class="form-control bg-light" type="text" value="{{activity.descricao}}">
+                        </div>
+                         <br>
+                        <div class="input-group col-sm-12">
+                            <div class="input-group-prepend labelForm">
+                                <span class="input-group-text w-100">Número de participantes:</span>
+                            </div>
+                            <input disabled="" class="form-control col-sm-2 bg-light" type="text" value="{{activity.capacidade}}">
+                        </div>
+                         <br>
+                        <div class="input-group col-sm-12">
+                            <div class="input-group-prepend labelForm">
+                                <span class="input-group-text w-100">Duração:</span>
+                            </div>
+                            <input disabled="" class="form-control col-sm-2 bg-light" type="text" value="{{activity.duracao|floatformat:0}}">
+                        </div>
+                        <br>
+                        <div class="input-group col-sm-12">
+                            <div class="input-group-prepend labelForm">
+                                <span class="input-group-text w-100">Publico Alvo:</span>
+                            </div>
+                            <input disabled="" class="form-control col-sm-2 bg-light" type="text" value="{{activity.publico_alvo}}">
+                        </div>
+                        <br>
+                        <div class="input-group col-sm-12">
+                            <div class="input-group-prepend labelForm">
+                                <span class="input-group-text w-100">Campus:</span>
+                            </div>
+                            <input disabled="" class="form-control col-sm-2 bg-light" type="text" value="{{activity.unidade_organica_iduo.campus_idcampus.nome}}">
+                        </div>
+                        <br>
+                        <div class="input-group col-sm-12">
+                            <div class="input-group-prepend labelForm">
+                                <span class="input-group-text w-100">Local:</span>
+                            </div>
+                            <input disabled="" class="form-control col-sm-2 bg-light" type="text" value="{%if not activity.espaco_idespaco.nome %} [a ser definido]
+                                                                {% else %} {{activity.espaco_idespaco.nome}}
+                                                                {% endif %}">
+                        </div>
+                        <br>
+                         </button>
+                        <a href="{% url 'atividades:ver_sessoes' activity.idatividade %}">
+                        <button class="button is-warning">
+                            Ver Sessões
+                        </button></a>
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+
+
 
           <script>
             function clearField(){
