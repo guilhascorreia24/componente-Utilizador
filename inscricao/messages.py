@@ -1,5 +1,6 @@
 
 from Notification.views import noti_not_checked,noti_not_checked, new_noti
+from django.core.mail import  send_mail
 
 NEW_INSCRICAO_TITLE = "Nova Inscrição na atividade __ATV__"
 CHANGE_INSCRICAO_TITLE = "Inscrição alterada na atividade __ATV__"
