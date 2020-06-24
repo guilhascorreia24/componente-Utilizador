@@ -21,8 +21,6 @@ def list_sessao():
     return test
 
 
-
-
 def inscricao_delete(request,inscricao):
     user = userValidation.getLoggedUser(request)
     if user._type == userValidation.PARTICIPANTE:
@@ -37,11 +35,26 @@ def inscricao_delete(request,inscricao):
                 return render(request,"not_for-u.html",{'context' : context , 'message' : "Não existe Inscrição"})
                 
         delete_inscricao(insc)
+        return redirect("inscricao:consulta")
+    
+    if user._type == userValidation.ADMINISTRADOR:
+        try:
+            insc = models.InscricaoColetiva.objects.get(inscricao_idinscricao=inscricao)
+        except:
+            try:
+                insc = models.InscricaoIndividual.objects.get(inscricao_idinscricao=inscricao)
+            except:
+                context={'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)}
+                return render(request,"not_for-u.html",{'context' : context , 'message' : "Não existe Inscrição"})
+        
+        delete_inscricao(insc)
+        return redirect("inscricao:consulta")
 
-    return consultar_inscricao(request)
+
+    context={'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)}
+    return render(request,"not_for-u.html",{'context' : context , 'message' : "Não têm permissao para apagar a inscrição"})
 
 def inscricao_alterar(request,inscricao):
-
     try:
         insc = models.InscricaoColetiva.objects.get(inscricao_idinscricao=inscricao)
     except:
@@ -51,9 +64,9 @@ def inscricao_alterar(request,inscricao):
             context={'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)}
             return render(request,"not_for-u.html",{'context' : context , 'message' : "Não existe Inscrição"})
         
-        return inscricao_individual_form(request,inscricao)
+        return inscricao_individual_form(request,insc)
 
-    return inscricao_form(request,inscricao)
+    return inscricao_form(request,insc)
 
 #Precisa de ser inscricao individual ou coletiva
 def delete_inscricao(inscricao):
@@ -65,42 +78,89 @@ def delete_inscricao(inscricao):
     models.Inscricao.objects.filter(idinscricao = inscricao.inscricao_idinscricao.pk).delete()
     inscricao.delete()
 
-
-def inscricao_form(request,inscricao=None):
+#type 1 individual
+#type 0 coletivo
+def form(request,_type,inscricao=None,user=None):
     user = userValidation.getLoggedUser(request)
     context={'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)}
-    if user._type != userValidation.PARTICIPANTE:
-        return render(request,"not_for-u.html",{'context' : context , 'message' : "Utilizador não é participante"})
 
-    test = create_inscricao_allowed()
+    test = create_inscricao_allowed(user)
     if test != True:
         return render(request,"not_for-u.html",{'context' : context , 'message' : test})
 
+    if user._type == userValidation.PARTICIPANTE:
+        if inscricao != None:
+            inscricao_user = inscricao.participante_utilizador_idutilizador.pk
+            if inscricao_user != user.pk:
+                return render(request,"not_for-u.html",{'context' : context , 'message' : "Não têm permissões para ver/alterar esta inscrição"})
+    
+    elif user._type == userValidation.ADMINISTRADOR:
+        if inscricao == None:
+            return render(request,"not_for-u.html",{'context' : context , 'message' : "Criação de Inscrições por o administrador não é suportado"})
+        else:
+            user = inscricao.participante_utilizador_idutilizador.utilizador_idutilizador
 
-    if request.method == 'POST':
-        form = forms.CustomForm(request,inscricao=inscricao)
-        if form.is_valid():
-            form.save(user)
-            messages.send_notification(request,form)
-            return redirect('inscricao:consulta')
+    else:
+        return render(request,"not_for-u.html",{'context' : context , 'message' : "Não têm permissões para criar inscrição"})
+
+    if inscricao != None:
+        inscricao = inscricao.pk
+
+    if(_type == 0):
+        if request.method == 'POST':
+            form = forms.CustomForm(request,inscricao=inscricao)
+            if form.is_valid():
+                form.save(user)
+                messages.send_notification(request,form)
+                return redirect('inscricao:consulta')
+            else:
+                campus = models.Campus.objects.all()
+                sessoes = list_sessao()
+                return render(request,'inscricao_form.html',{'form': form, 'atividades_sessao' : sessoes, 'campus':campus, 'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
+        
         else:
             campus = models.Campus.objects.all()
+            form = forms.CustomForm(inscricao=inscricao)
             sessoes = list_sessao()
-            return render(request,'inscricao_form.html',{'form': form, 'atividades_sessao' : sessoes, 'campus':campus, 'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
-        
-    else:
-        campus = models.Campus.objects.all()
-        form = forms.CustomForm(inscricao=inscricao)
-        sessoes = list_sessao()
-        return render(request,'inscricao_form.html',{'form': form, 'atividades_sessao' : sessoes,'campus':campus, 'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
+            return render(request,'inscricao_form.html',{'form': form, 'atividades_sessao' : sessoes,'campus':campus, 'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
 
-def create_inscricao_allowed():
+    elif(_type == 1):
+        if request.method == 'POST':
+            form = forms.FormIndividual(request,inscricao=inscricao)
+            if form.is_valid():
+                form.save(user)
+                messages.send_notification(request,form)
+                return redirect('inscricao:consulta')
+            else:
+                campus = models.Campus.objects.all()
+                sessoes = list_sessao()
+                return render(request,'inscricao_individual_form.html',{'form': form, 'atividades_sessao' : sessoes, 'campus':campus,  'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
+        
+        else:
+            campus = models.Campus.objects.all()
+            form = forms.FormIndividual(inscricao=inscricao)
+            sessoes = list_sessao()
+            return render(request,'inscricao_individual_form.html',{'form': form, 'atividades_sessao' : sessoes,'campus':campus,  'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
+    
+    else:
+        return render(request,"not_for-u.html",{'context' : context , 'message' : "Erro desconhecido"})
+
+def inscricao_form(request,inscricao=None):
+    return form(request,0,inscricao=inscricao)
+
+def inscricao_individual_form(request,inscricao=None):
+    return form(request,1,inscricao=inscricao)
+
+def create_inscricao_allowed(user):
     date = datetime.date.today()
     diaaberto = models.DiaAberto.objects.filter(pk=date.year)
     if( not diaaberto.exists()):
         return "Não existe dia aberto para o ano " +str(date.year)
 
     diaaberto = diaaberto[0]
+
+    if user._type == userValidation.ADMINISTRADOR:
+        return True
 
     if date < diaaberto.datainscricaonasatividadesinicio:
         return "Inicio de inscrições ainda não começaram"
@@ -204,7 +264,7 @@ def consultar_inscricao(request):
         args = {}
 
     if user._type == userValidation.COORDENADOR:
-        sessao = {'sessao_idsessao__atividade_idatividade__unidade_organica_iduo':user.unidade_organica_iduo}
+        sessao = {'sessao_idsessao__atividade_idatividade__unidade_organica_iduo':user.unidade_organica_iduo.pk}
         args = {'sessao':sessao}
     
     if user._type == userValidation.PARTICIPANTE:
@@ -214,91 +274,5 @@ def consultar_inscricao(request):
     (result_coletivo,result_individual) = get_inscricoes(**args)
 
 
-    return render(request,'consultar_participante.html',{'inscricoes_coletivas':result_coletivo,'inscricoes_individuais':result_individual,  'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
+    return render(request,'consultar_participante.html',{'user_type':user._type,'inscricoes_coletivas':result_coletivo,'inscricoes_individuais':result_individual,  'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
     
-
-
-def inscricao_individual_form(request,inscricao=None):
-    user = userValidation.getLoggedUser(request)
-    context={'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)}
-    if user._type != userValidation.PARTICIPANTE:
-        return render(request,"not_for-u.html",{'context' : context , 'message' : "Utilizador não é participante"})
-
-    test = create_inscricao_allowed()
-    if test != True:
-        return render(request,"not_for-u.html",{'context' : context , 'message' : test})
-
-    if request.method == 'POST':
-        form = forms.FormIndividual(request,inscricao=inscricao)
-        if form.is_valid():
-            form.save(user)
-            messages.send_notification(request,form)
-            return redirect('inscricao:consulta')
-        else:
-            campus = models.Campus.objects.all()
-            sessoes = list_sessao()
-            return render(request,'inscricao_individual_form.html',{'form': form, 'atividades_sessao' : sessoes, 'campus':campus,  'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
-        
-    else:
-        campus = models.Campus.objects.all()
-        form = forms.FormIndividual(inscricao=inscricao)
-        sessoes = list_sessao()
-        return render(request,'inscricao_individual_form.html',{'form': form, 'atividades_sessao' : sessoes,'campus':campus,  'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
-
-
-
-def consultar_inscricoes(request):
-
-    user = request.session['user_id']
-    utilizador = Utilizador.objects.get(pk=user)
-
-    #Coordenador
-
-    if utilizador.validada == 2 :
-
-        inscricoes = Inscricao.objects.raw("SELECT a.idinscricao , a.nome , a.email , a.telefone , c.nparticipantes , b.ano , c.turma , b.local , b.areacientifica , d.nome as escola FROM les.responsaveis a INNER JOIN les.inscricao b ON a.idinscricao = b.idinscricao INNER JOIN les.inscricao_coletiva c ON a.idInscricao = c.inscricao_idinscricao INNER JOIN les.escola d ON c.escola_idescola = d.idescola;")
-
-        #Coordenador UO
-        uo_id = Coordenador.objects.get(pk=user).unidade_organica_iduo
-        uo_nome = uo_id.sigla
-
-        list = []
-
-        for i in inscricoes:
-            dicionario = dict()
-            dicionario['inscricao'] = i
-
-            dicionario['atividade'] = models.InscricaoHasSessao.objects \
-            .select_related('sessao_idsessao__atividade_idatividade','sessao_idsessao__atividade_idatividade__departamento_iddepartamento','sessao_idsessao__atividade_idatividade__campus','sessao_idsessao__atividade_idatividade__unidade_organica_iduo__campus_idcampus','sessao_idsessao__atividade_idatividade__unidade_organica_iduo','sessao_idsessao__horario_has_dia_id_dia_hora__horario_hora','sessao_idsessao__atividade_idatividade__professor_universitario_utilizador_idutilizador__utilizador_idutilizador','sessao_idsessao__atividade_idatividade__espaco_idespaco')\
-            .filter(inscricao_idinscricao=i.idinscricao)\
-            .order_by('sessao_idsessao__horario_has_dia_id_dia_hora__horario_hora__hora')\
-            .values('nr_inscritos',idsessao=F('sessao_idsessao__idsessao'),hora=F('sessao_idsessao__horario_has_dia_id_dia_hora__horario_hora__hora'),idatividade=F('sessao_idsessao__atividade_idatividade__idatividade'),titulo=F('sessao_idsessao__atividade_idatividade__titulo'),duracao=F('sessao_idsessao__atividade_idatividade__duracao'),descricao=F('sessao_idsessao__atividade_idatividade__descricao'),unidade_organica=F('sessao_idsessao__atividade_idatividade__unidade_organica_iduo__sigla'),campus=F('sessao_idsessao__atividade_idatividade__unidade_organica_iduo__campus_idcampus__nome'),departamento=F('sessao_idsessao__atividade_idatividade__departamento_iddepartamento__nome'),tematica=F('sessao_idsessao__atividade_idatividade__tematica'),docente = F('sessao_idsessao__atividade_idatividade__professor_universitario_utilizador_idutilizador__utilizador_idutilizador__nome'),espaco = F('sessao_idsessao__atividade_idatividade__espaco_idespaco__nome'), dia = F('sessao_idsessao__horario_has_dia_id_dia_hora__dia_dia__dia'))
-
-
-            list.append(dicionario)
-
-        return render(request, "consultar_coord.html", { 'inscricoes':list , 'uo':uo_nome,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request) } )
-
-    #Administrador
-    
-    if utilizador.validada == 4 :
-
-        inscricoes = Inscricao.objects.raw("SELECT a.idinscricao , a.nome , a.email , a.telefone , c.nparticipantes , b.ano , c.turma , b.local , b.areacientifica , d.nome as escola FROM les.responsaveis a INNER JOIN les.inscricao b ON a.idinscricao = b.idinscricao INNER JOIN les.inscricao_coletiva c ON a.idInscricao = c.inscricao_idinscricao INNER JOIN les.escola d ON c.escola_idescola = d.idescola;")
-
-        list = []
-
-        for i in inscricoes:
-            dicionario = dict()
-            dicionario['inscricao'] = i
-
-            dicionario['atividade'] = models.InscricaoHasSessao.objects \
-            .select_related('sessao_idsessao__atividade_idatividade','sessao_idsessao__atividade_idatividade__departamento_iddepartamento','sessao_idsessao__atividade_idatividade__campus','sessao_idsessao__atividade_idatividade__unidade_organica_iduo__campus_idcampus','sessao_idsessao__atividade_idatividade__unidade_organica_iduo','sessao_idsessao__horario_has_dia_id_dia_hora__horario_hora','sessao_idsessao__atividade_idatividade__professor_universitario_utilizador_idutilizador__utilizador_idutilizador','sessao_idsessao__atividade_idatividade__espaco_idespaco')\
-            .filter(inscricao_idinscricao=i.idinscricao)\
-            .order_by('sessao_idsessao__horario_has_dia_id_dia_hora__horario_hora__hora')\
-            .values('nr_inscritos',idsessao=F('sessao_idsessao__idsessao'),capacidade=F('sessao_idsessao__capacidade'),hora=F('sessao_idsessao__horario_has_dia_id_dia_hora__horario_hora__hora'),idatividade=F('sessao_idsessao__atividade_idatividade__idatividade'),titulo=F('sessao_idsessao__atividade_idatividade__titulo'),duracao=F('sessao_idsessao__atividade_idatividade__duracao'),descricao=F('sessao_idsessao__atividade_idatividade__descricao'),unidade_organica=F('sessao_idsessao__atividade_idatividade__unidade_organica_iduo__sigla'),campus=F('sessao_idsessao__atividade_idatividade__unidade_organica_iduo__campus_idcampus__nome'),departamento=F('sessao_idsessao__atividade_idatividade__departamento_iddepartamento__nome'),tematica=F('sessao_idsessao__atividade_idatividade__tematica'),docente = F('sessao_idsessao__atividade_idatividade__professor_universitario_utilizador_idutilizador__utilizador_idutilizador__nome'),espaco = F('sessao_idsessao__atividade_idatividade__espaco_idespaco__nome'), dia = F('sessao_idsessao__horario_has_dia_id_dia_hora__dia_dia__dia'))
-
-            list.append(dicionario)
-
-            print(list)
-
-        return render(request, "consultar_admin.html", {'inscricoes':list,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})

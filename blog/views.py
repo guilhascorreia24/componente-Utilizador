@@ -17,7 +17,7 @@ def home(request):
        # print( Administrador.objects.filter(utilizador_idutilizador=id1).exists())
         if Participante.objects.filter(utilizador_idutilizador=id1).exists():
             funcao = "part"
-            id=signing.dumps(id1)
+            id=id1
             return render(request, 'homepage.html', context={'id':id,'funcao':funcao,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
         elif ProfessorUniversitario.objects.filter(utilizador_idutilizador=id1).exists():
             funcao = "dc"
@@ -29,7 +29,7 @@ def home(request):
             funcao = "colab"
         else:
             return render(request, 'homepage.html', context={'id':None})
-        id=signing.dumps(id1)
+        id=id1
         print(id)
         return render(request, 'homepage.html', context={'id':id,'funcao':funcao,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
     else:

@@ -56,5 +56,5 @@
         data-target="#{{ forloop.counter }}_"><span class="icon has-text-success"><i
                     class="mdi mdi-account-search mdi-24px"></i></span></a>
         {% if funcao == "administardor" %}
-        <a role="button" href="{% url "profile_edit" user.idutilizador %}"><span class="icon has-text-success"><i
+        <a role="button" href="{% url "profile_edit" user.no_enc %}"><span class="icon has-text-success"><i
                     class="mdi mdi-pencil mdi-24px"></i></span></a>{% endif %}</td>

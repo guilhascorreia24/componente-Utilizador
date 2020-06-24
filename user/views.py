@@ -172,7 +172,7 @@ def register(request):
             user_id=Utilizador.objects.get(email=request.POST['email']).idutilizador
             type_user(data,user_id)
             if 'user_id' in request.session:
-                validacoes(request,1,signing.dumps(user_id))
+                validacoes(request,1,user_id)
             messages.success(request, f'Registo efetuado com Sucesso!')
             return redirect('blog:blog-home')
         else:
@@ -198,9 +198,9 @@ def register(request):
                 error2 = "Passwords nao coincidem"
             if password_check(request.POST['password1']) != True:
                 error1 = password_check(request.POST['password1']) 
-            return render(request, 'register.html', {'me':signing.dumps(me),"func":user(request),'form': form,'cursos':cursos,'UOs':UOs,'deps':deps,'error1': error, 'error2': error1, 'error3': error2, 'error4': error3,'error5':type_user(data,None),'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
+            return render(request, 'register.html', {'me':me,"func":user(request),'form': form,'cursos':cursos,'UOs':UOs,'deps':deps,'error1': error, 'error2': error1, 'error3': error2, 'error4': error3,'error5':type_user(data,None),'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
     form = UserRegisterForm()
-    return render(request, 'register.html', {'form': form,'UOs':UOs,'deps':deps,'cursos':cursos,"func":user(request),'me':signing.dumps(me),'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
+    return render(request, 'register.html', {'form': form,'UOs':UOs,'deps':deps,'cursos':cursos,"func":user(request),'me':me,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
 
 #*----------------------------------------------------------login---------------------------------------
 def login_request(request):
@@ -221,7 +221,7 @@ def login_request(request):
                     user = Utilizador.objects.get(email=request.POST['email'])
                     request.session['user_id'] = user.idutilizador
                     request.session['type'] = user.validada
-                    request.session['id_encrypt']=signing.dumps(user.pk)
+                    request.session['id_encrypt']=user.pk
                     r = redirect('blog:blog-home')
                     if 'check' in request.POST and request.POST['check'] == '1':
                         Utilizador.objects.filter(pk=request.session['user_id']).update(remember_me=encrypt(request.session['user_id']))
@@ -229,7 +229,7 @@ def login_request(request):
                     return r
                 else:
                     tentatives-=1
-                    messages.error(request, f"Sua conta ainda não validada")
+                    messages.error(request, f"Sua conta ainda não está validada")
             else:
                 tentatives-=1
                 messages.error(request, f"Username e/ou palavra-passe. Tem mais {tentatives} tentativas")
@@ -255,7 +255,6 @@ def logout_request(request):
 
 #----------------------------------------------remover user-----------------------------------
 def delete_user(request,id):
-    id=signing.loads(id)
     u=Utilizador.objects.filter(pk=id)
     admin=Administrador.objects.filter(pk=id)
     prof=ProfessorUniversitario.objects.filter(pk=id)
@@ -287,7 +286,6 @@ def delete_user(request,id):
 
 #--------------------------------------alterar user---------------------------------------------
 def modify_user(request,id):
-    id=signing.loads(id)
     print(id!=request.session['user_id'] or not(Administrador.objects.filter(pk=request.session['user_id']).exists()))
     if id!=request.session['user_id'] and not(Administrador.objects.filter(pk=request.session['user_id']).exists()):
         context={'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)}
@@ -339,7 +337,7 @@ def modify_user(request,id):
                 error = "Email ja existe"
             if Utilizador.objects.filter(telefone=request.POST['telefone']).exists() and Utilizador.objects.get(telefone=request.POST['telefone']).idutilizador!=id:
                 error3 = "telefone ja existe"
-            return render(request, 'profile_modify.html', {'email':email,'UO':UO,'telefone':telefone,'funcao':funcao,'curso':curso,'dep':dep,"form": form,'error4':error3,"error1":error,'me':signing.dumps(me),'id':signing.dumps(id),'nome':name,'ano':ano,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
+            return render(request, 'profile_modify.html', {'email':email,'UO':UO,'telefone':telefone,'funcao':funcao,'curso':curso,'dep':dep,"form": form,'error4':error3,"error1":error,'me':me,'id':id,'nome':name,'ano':ano,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
     else:
         form = ModifyForm()
         email = Utilizador.objects.get(idutilizador=id).email
@@ -368,10 +366,10 @@ def modify_user(request,id):
     elif Participante.objects.filter(utilizador_idutilizador=id).exists():
         funcao = "Participante"
     return render(request, 'profile_modify.html', {"form": form, 'nome': name,'UO':UO, 'email': email, "ano":ano,
-                    'telefone': telefone, 'funcao': funcao, 'ano': ano, 'curso': curso,'dep':dep,"me":signing.dumps(me),'id':signing.dumps(id),'func':user(request),'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
+                    'telefone': telefone, 'funcao': funcao, 'ano': ano, 'curso': curso,'dep':dep,"me":me,'id':id,'func':user(request),'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
 
 def profile(request,id):
-    id=signing.loads(id)
+    id=id
     print(id!=request.session['user_id'] and not(Administrador.objects.filter(pk=request.session['user_id']).exists()))
     if not(Administrador.objects.filter(pk=request.session['user_id']).exists()) and not(Coordenador.objects.filter(pk=request.session['user_id']).exists()):
         context={'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)}
@@ -406,7 +404,7 @@ def profile(request,id):
     elif Participante.objects.filter(pk=id).exists():
         funcao="Participante"
     return render(request, 'profile.html', {"form": form, 'nome': name,'UO':UO, 'email': email,"ano":ano,
-                    'telefone': telefone, 'funcao': funcao, 'ano': ano, 'curso': cursoname,'dep':dep,"me":signing.dumps(me),'id':signing.dumps(id),'func':user(request),'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
+                    'telefone': telefone, 'funcao': funcao, 'ano': ano, 'curso': cursoname,'dep':dep,"me":me,'id':id,'func':user(request),'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
 
 
 
@@ -452,13 +450,13 @@ def profile_list(request):
             u.estado="Validado"
         print(str(u.idutilizador)+" "+str(user_id))
         u.no_enc=u.pk
-        u.idutilizador=signing.dumps(u.idutilizador)
+        u.idutilizador=u.idutilizador
     if Coordenador.objects.filter(pk=user_id).exists():
         me=UnidadeOrganica.objects.get(pk=Coordenador.objects.get(pk=user_id).unidade_organica_iduo.pk).sigla
     elif Administrador.objects.filter(pk=user_id).exists():
         me=Administrador.objects.get(pk=user_id)
         me.sigla=None
-    me_id=signing.dumps(user_id)
+    me_id=user_id
     campus=Campus.objects.all()
     uos=uo()
     return render(request,"list_users.html",{"users":users,"funcao":funcao,"me":me,"me_id":me_id,"campus":campus,"uos":uos,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request),'colaboradores':Colaborador.objects.all(),'docentes':ProfessorUniversitario.objects.all()})
@@ -504,7 +502,7 @@ def reset(request):
 def validacoes(request,acao,id):
     if not Administrador.objects.filter(pk=request.session['user_id']).exists():
         redirect("blog:blog-home")
-    id=signing.loads(id)
+    id=id
     user=Utilizador.objects.get(pk=id)
     if acao==1:
         if Colaborador.objects.filter(pk=id).exists():
