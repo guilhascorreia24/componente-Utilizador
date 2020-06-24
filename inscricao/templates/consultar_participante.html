@@ -222,21 +222,25 @@
                                         {{ inscricao.inscricao.escola }}
                                     </td>
                                     <td data-label="Ações">
+                                        {% if user_type == 0 or user_type == 4 %}
                                         <a role="button" class="no_underline"
                                             href={% url 'inscricao:delete' inscricao=inscricao.inscricao.idinscricao  %}>
                                             <span class="icon has-text-danger"> <i
                                                     class="mdi mdi-close-box mdi-24px"></i></button></span>
                                         </a>
+                                        {% endif %}
                                         <a role="button" class="no_underline has-target" data-toggle="modal"
                                             data-target="#coletiva_{{ forloop.counter }}">
                                             <span class="icon has-text-success"> <i
                                                     class="mdi mdi-account-search mdi-24px"></i></button></span>
                                         </a>
+                                        {% if user_type == 0 or user_type == 4 %}
                                         <a role="button" class="no_underline"
                                             href={% url 'inscricao:alterar' inscricao=inscricao.inscricao.idinscricao  %}>
                                             <span class="icon has-text-success"> <i
                                                     class="mdi mdi-pencil mdi-24px"></i></button></span>
                                         </a>
+                                        {% endif %}
                                     </td>
                                 </tr>
                                 {% endfor inscricao %}
@@ -262,21 +266,25 @@
                                         {{ inscricao.inscricao.escola }}
                                     </td>
                                     <td data-label="Ações">
+                                        {% if user_type == 0 or user_type == 4 %}
                                         <a role="button" class="no_underline"
                                             href={% url 'inscricao:delete' inscricao=inscricao.inscricao.idinscricao  %}>
                                             <span class="icon has-text-danger"> <i
                                                     class="mdi mdi-close-box mdi-24px"></i></button></span>
                                         </a>
+                                        {% endif %}
                                         <a role="button" class="no_underline has-target" data-toggle="modal"
                                             data-target="#individual_{{ forloop.counter }}">
                                             <span class="icon has-text-success"> <i
                                                     class="mdi mdi-account-search mdi-24px"></i></button></span>
                                         </a>
+                                        {% if user_type == 0 or user_type == 4 %}
                                         <a role="button" class="no_underline"
                                             href={% url 'inscricao:alterar' inscricao=inscricao.inscricao.idinscricao  %}>
                                             <span class="icon has-text-success"> <i
                                                     class="mdi mdi-pencil mdi-24px"></i></button></span>
                                         </a>
+                                        {% endif %}
                                     </td>
                                     </td>
                                     {% endfor inscricao %}
@@ -289,7 +297,10 @@
         </div>
     </div>
     <hr>
+    {% else %}
+        <b>Ainda não existem inscrições</b>
     {% endif %}
+    {% if user_type == 0 %}
     <div style="display: flex;align-items: center;justify-content: center;">
         <div style="display: flex;align-items: center;justify-content: center;">
             <a href={% url 'inscricao:register_individual' %} type="button" class="button" style="margin-right:12%;">
@@ -302,6 +313,7 @@
                 </a></span>
         </div>
     </div>
+    {% endif %}
 </div>
 <!-----BUTTON_COLETIVO---->
 

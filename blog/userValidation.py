@@ -1,11 +1,11 @@
 from .models import Utilizador,Participante,Colaborador,Administrador,ProfessorUniversitario,Coordenador
-ADMINISTRADOR = 1
+ADMINISTRADOR = 4
 COORDENADOR = 2
-PARTICIPANTE = 3
-PROFESSOR_UNIVERSITARIO = 4
-COLABORADOR = 5
+PARTICIPANTE = 0
+PROFESSOR_UNIVERSITARIO = 3
+COLABORADOR = 1
 
-NONE = 0
+NONE = -1
 class Container(object):
     pass 
 
