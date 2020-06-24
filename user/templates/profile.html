@@ -38,7 +38,7 @@
         </div>
         {% endif %}
         {% if curso %}
-        <div class="field"><label class="" for={{form.curso.id_for_label}}>Função</label>
+        <div class="field"><label class="" for={{form.curso.id_for_label}}>Curso</label>
             <div class=" control is-clearfix"><input type="text" id={{form.curso.id_for_label}} name="curso" class="input"
                     value={{curso}} disabled>
                     <input type="hidden" id={{form.curso.id_for_label}} name="curso" class="input"
@@ -51,7 +51,7 @@
             <div class=" control is-clearfix"><input type="text" id={{form.ano.id_for_label}} name="ano" class="input"
                     value={{ano}} disabled>
                     <input type="hidden" id={{form.ano.id_for_label}} name="ano" class="input"
-                    value={{ano}} >
+                    value={{ano.ano}} >
             </div>
         </div>
         {% endif %}

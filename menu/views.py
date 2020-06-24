@@ -16,7 +16,7 @@ def index(request):
     return render(request, "index.html", context)
 
 def diaaberto_create(request):
-    user = Utilizador.objects.get(idutilizador=52)
+    user = Utilizador.objects.get(idutilizador=request.session['user_id'])
     admin = Administrador.objects.get(utilizador_idutilizador=user)
     new_form = DiaAberto(administrador_utilizador_idutilizador=admin)
     form = DiaAbertoForm(request.POST or None, instance=new_form)

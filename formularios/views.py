@@ -1,14 +1,16 @@
 from django.shortcuts import render,redirect
 from user import views
 from Notification.views import noti_not_checked
-from blog.models import Curso
+from blog.models import Curso, UnidadeOrganica
 from .forms import cursoForm
 
 # Create your views here.
 def curso_form(request):
     cursos=Curso.objects.all()
+    cursos=cursos.order_by('-idcurso')
+    print(cursos)
     func=views.user(request)
-    if request.method=='POST' and not(Curso.objects.filter(nome=request.POST['nome']).exists() and Unidade.objects.filter(unidade_organica_iduo=request.POST['unidade_organica_iduo'])):
+    if request.method=='POST' and not(Curso.objects.filter(nome=request.POST['nome']).exists() and UnidadeOrganica.objects.filter(sigla=request.POST['unidade_organica_iduo'])):
         form=cursoForm(request.POST)
         if form.is_valid():
             form.save()

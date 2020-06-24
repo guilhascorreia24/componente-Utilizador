@@ -4,7 +4,7 @@ from .forms import UserRegisterForm, AuthenticationForm, ModifyForm, PasswordCha
 from django.core.mail import message, send_mail
 from django.core import signing
 from .models import UnidadeOrganica, DiaAberto,Departamento, Utilizador, Participante, ProfessorUniversitario, Administrador, Coordenador, Colaborador, DjangoSession, Curso, InscricaoColetiva, InscricaoIndividual, Atividade, Tarefa, Campus
-from django.db.models import CharField, Value
+from django.db.models import CharField, Value, IntegerField
 from Notification import views as noti_views
 import datetime
 import re
@@ -310,6 +310,8 @@ def modify_user(request,id):
             if t.validada==5:
                 t.validada=0
             t.save()
+            if Administrador.objects.filter(pk=request.session['user_id']).exists():
+                noti_views.new_noti(request,t.pk,'Aletração de dados no perfil','Foram feitas alterações nos dados do seu perfil. Por favor consulte as alterações.')
             messages.success(request, f"Utilizador alterado com sucesso")
             return redirect('profile_list')
         else:
@@ -423,7 +425,7 @@ def profile_list(request):
     if not(Coordenador.objects.filter(pk=request.session['user_id']).exists()) and not(Administrador.objects.filter(pk=request.session['user_id']).exists()):
         context={'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)}
         return render(request,"not_for-u.html",context)
-    users=Utilizador.objects.all().annotate(cargo=Value('Participante',CharField()),estado=Value('Pendente',CharField()),UO=Value('-',CharField()))
+    users=Utilizador.objects.all().annotate(cargo=Value('Participante',CharField()),estado=Value('Pendente',CharField()),UO=Value('-',CharField()), no_enc=Value(0,IntegerField()))
     for u in users:
         if Coordenador.objects.filter(pk=u.idutilizador).exists():
             u.cargo="Coordenador"
@@ -449,6 +451,7 @@ def profile_list(request):
         elif Participante.objects.filter(pk=u.pk).exists():
             u.estado="Validado"
         print(str(u.idutilizador)+" "+str(user_id))
+        u.no_enc=u.pk
         u.idutilizador=signing.dumps(u.idutilizador)
     if Coordenador.objects.filter(pk=user_id).exists():
         me=UnidadeOrganica.objects.get(pk=Coordenador.objects.get(pk=user_id).unidade_organica_iduo.pk).sigla
@@ -458,7 +461,7 @@ def profile_list(request):
     me_id=signing.dumps(user_id)
     campus=Campus.objects.all()
     uos=uo()
-    return render(request,"list_users.html",{"users":users,"funcao":funcao,"me":me,"me_id":me_id,"campus":campus,"uos":uos,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
+    return render(request,"list_users.html",{"users":users,"funcao":funcao,"me":me,"me_id":me_id,"campus":campus,"uos":uos,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request),'colaboradores':Colaborador.objects.all(),'docentes':ProfessorUniversitario.objects.all()})
 #--------------------------------------------recuperaçao de password---------------------------------
 def change_password(request, id):
     id_deccryp=decrypt(id)
