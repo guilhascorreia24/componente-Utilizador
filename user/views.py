@@ -229,7 +229,7 @@ def login_request(request):
                     return r
                 else:
                     tentatives-=1
-                    messages.error(request, f"Sua conta ainda não validada")
+                    messages.error(request, f"Sua conta ainda não está validada")
             else:
                 tentatives-=1
                 messages.error(request, f"Username e/ou palavra-passe. Tem mais {tentatives} tentativas")
