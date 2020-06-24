@@ -100,7 +100,7 @@
                                 <td>{{instance.menu}}</td>
                                 <td>{{instance.campus_idcampus}}</td>
                                 <td>{{instance.horario_has_dia_id_dia_hora.dia_dia.dia| date:"d/m/Y"                                }}</td> 
-                                <td>{{instance.horario_has_dia_id_dia_hora.horario_hora.hora}} </td>
+                                <td>{{instance.horario_has_dia_id_dia_hora.horario_hora.hora | time:"H:i" }} </td>
                                 <td>{{instance.nralmocosdisponiveis}}</td>
                                 <td>
                                     <a data-toggle="modal"
@@ -110,7 +110,7 @@
                                         </span>
                                     </a>
                                     
-                                    <a href="{{instance.idmenu}}/update/">
+                                    <a href="{% url 'menu:menu_update' instance.idmenu %}">
                                         <span class="icon is-small">
                                             <i class="mdi mdi-pencil mdi-24px"></i>
                                         </span>
@@ -151,23 +151,23 @@
                         </div>
                         <br>
                         {% for prato in prato %}
-                        {% if prato.menu_idmenu == i.pk %}
+                        {% if prato.menu_idmenu.pk == i.pk %}
                         {% if prato.tipo == "Carne" %}
                         <div class="input-group col-sm-12">
                             <div class="input-group-prepend labelForm">
                                 <span class="input-group-text w-100">Prato de Carne:</span>
                             </div>
-                            <input disabled="" class="form-control col-sm-2 bg-light" type="text" value="{{ prato.descricao }}">
+                            <span><input disabled="" class="form-control col-sm-2 bg-light" style="width: 94%;" type="text" value="{{ prato.descricao }}">
                             <a href="{% url 'menu:prato_update' prato.idprato %}">
                                 <span class="icon is-small">
-                                    <i class="mdi mdi-tooltip-edit mdi-22px"></i>
-                                </span>
-                            </a>   
+                                    <i class="mdi mdi-tooltip-edit mdi-24px" style="margin-top: 100%;margin-left:50%;"></i>
+                                </span> 
                             <a href="{% url 'menu:prato_delete' prato.idprato %}">
-                                <span class="icon is-small">
-                                    <i class="mdi mdi-delete mdi-24px"></i>
+                                <span class="icon is-small has-text-danger">
+                                    <i class="mdi mdi-delete mdi-24px" style="margin-left:50%;"></i>
                                 </span>
                             </a>
+                            </span>
                         </div>
                         <br>
                         {% endif %}
@@ -176,15 +176,15 @@
                             <div class="input-group-prepend labelForm">
                                 <span class="input-group-text w-100">Prato de Peixe:</span>
                             </div>
-                            <input disabled="" class="form-control col-sm-2 bg-light" type="text" value="{{prato.descricao}} ">
+                            <input disabled="" class="form-control col-sm-2 bg-light" type="text" style="width: 95%;" value="{{prato.descricao}} ">
                             <a href="{% url 'menu:prato_update' prato.idprato %}">
-                                <span class="icon is-small">
-                                    <i class="mdi mdi-tooltip-edit mdi-22px"></i>
+                                <span class="icon is-small ">
+                                    <i class="mdi mdi-tooltip-edit mdi-24px" style="margin-top: 100%;margin-left:50%;"></i>
                                 </span>
                             </a>   
                             <a href="{% url 'menu:prato_delete' prato.idprato %}">
-                                <span class="icon is-small">
-                                    <i class="mdi mdi-delete mdi-24px"></i>
+                                <span class="icon is-small has-text-danger">
+                                    <i class="mdi mdi-delete mdi-24px" style="margin-left:50%;"></i>
                                 </span>
                             </a>
                         </div>
@@ -195,15 +195,15 @@
                             <div class="input-group-prepend labelForm">
                                 <span class="input-group-text w-100">Prato Vegetariano:</span>
                             </div>
-                            <input disabled="" class="form-control col-sm-2 bg-light" type="text" value="{{prato.descricao}} ">
+                            <input disabled="" class="form-control col-sm-2 bg-light" type="text"  style="width: 95%;" value="{{prato.descricao}} ">
                             <a href="{% url 'menu:prato_update' prato.idprato %}">
-                                <span class="icon is-small">
-                                    <i class="mdi mdi-tooltip-edit mdi-22px"></i>
+                                <span class="icon is-small ">
+                                    <i class="mdi mdi-tooltip-edit mdi-24px" style="margin-top: 100%;margin-left:50%;"></i>
                                 </span>
                             </a>   
                             <a href="{% url 'menu:prato_delete' prato.idprato %}">
-                                <span class="icon is-small">
-                                    <i class="mdi mdi-delete mdi-24px"></i>
+                                <span class="icon is-small has-text-danger">
+                                    <i class="mdi mdi-delete mdi-24px" style="margin-left:50%;"></i>
                                 </span>
                             </a>
                         </div>
@@ -215,7 +215,7 @@
                             <div class="input-group-prepend labelForm">
                                 <span class="input-group-text w-100">Dia do almoço:</span>
                             </div>
-                            <input disabled="" class="form-control bg-light" type="text" value="{{ i.horario_has_dia_id_dia_hora.dia_dia.dia }}">
+                            <input disabled="" class="form-control bg-light" type="text" value="{{ i.horario_has_dia_id_dia_hora.dia_dia.dia | date:"d/m/Y" }}">
                         </div>
                         <br>
                         <div class="input-group col-sm-12">

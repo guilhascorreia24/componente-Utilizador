@@ -72,7 +72,7 @@
                             <tr>
                                 <td>
                                     <form method="POST">
-                                       <a href="{% url 'atividades:ver_mais_atividade' activity.idatividade %}">
+                                       <a href="{% url 'atividades:consultar_minhas_atividades' %}">
                                             <span class="icon is-small">
                                                 <i class="mdi mdi-arrow-left-drop-circle mdi-24px"></i>
                                             </span>
@@ -89,14 +89,15 @@
                             </tr>
                     </thead>
                 </table>
-
+                <br>
+                <br>
 
 
                 <form method="POST" id="addSession"> {% csrf_token %}
                     <div class="table "></div>
                     <div class="table-wrapper">
                     <table class="table has-mobile-cards is-hoverable is-fullwidth">
-                        <h3>Adicionar Sessões: </h3>
+                        <label class="">Adicionar Unidade Orgânica: </label>
                         <h2 style="color: red;">{{messageError}}</h2>
                     <thead>
                     <th></th>
