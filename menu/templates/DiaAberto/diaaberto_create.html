@@ -1,13 +1,31 @@
 
 {% extends 'base_template.html' %}
 {% block steps %}
-<li><a href="/">Início</a></li>
-<li><a href="/diaaberto">Consultar Anos Anteriores</a></li>
+<li><a href="{% url 'blog:blog-home' %}">Início</a></li>
+<li><a href="{% url 'menu:diaaberto_list' %}">Consultar Anos Anteriores</a></li>
+{% if o %}
 <li class="is-active"><a href="" aria-current="page">Criar Dia Aberto</a></li>
+{% else %}
+<li class="is-active"><a href="" aria-current="page">Detalhes sobre o Dia Aberto do ano {{diaaberto.ano}}</a></li>
+{% endif %}
 {% endblock %}
 {% block content %}
 {{form.errors}}
-<div style="padding: 3rem 2vw 1rem">
+<div style="padding: 3rem 2vw 1rem;">
+    <div class="b-steps">
+        <nav class="steps is-success">
+            <ul class="step-items">
+                <li class="step-item is-success is-active"><a class="step-link">
+                        <div class="step-marker"><span class="icon"><i class="mdi mdi-book mdi-24px"></i></span></div>
+                        <div class="step-details"><span class="step-title">{% if o %} Criar Dia Aberto
+                            {% else %}
+                            Editar Dia Aberto
+                            {% endif %}</span>
+                        </div>
+                    </a></li>
+            </ul>
+        </nav>
+<div style="padding: 1rem 2vw 1rem">
     <form method="POST" class="post-form"> {% csrf_token %}
     <div class="b-steps">
       <section class="step-content">
@@ -43,7 +61,7 @@
             <div class="field">
                 <label class="label">Descrição</label>
                           <div class="control is-clearfix">
-                              <textarea maxlength="300" class="textarea" id={{form.descricao}}></textarea></small>
+                              <textarea maxlength="300" class="textarea" id='{{form.descricao}}' style="margin-top: 0px; margin-bottom: 0px; height: 30%;"></textarea>
                         </div> <!---->
                     </div>
                 </div>
@@ -133,18 +151,20 @@
                                                                     <div class="column is-8 is-offset-2">
                                                                                 <div class="level">
                                                                                 <div class="level-left">
-                                                                                <a href="/diaaberto" class="button is-outlined" type="button">
+                                                                                <a href="{% url 'menu:diaaberto_list' %}" class="button is-outlined" type="button">
                                                                                               <span>Cancelar</span>
                                                                                 </a>
                                                                                 </div>
                                                                                   <div class="level-right">
-                                                                                              <input  href="/diaaberto" class="button is-large is-success is-outlined is-link" type='submit' value='Submeter'>
+                                                                                              <input  href="{% url "blog:blog-home" %}" class="button is-large is-success is-outlined is-link" type='submit' value='Submeter'>
                                                                                      </button>
                                                                                      </div>
                                                                              </div>
                                                                             </div>
                                                                             </div>
                                                                             </form>
+                                                                            </div>
+                                                                            </div>
                                                                             </div>
                                                             
                                                                                        <style>

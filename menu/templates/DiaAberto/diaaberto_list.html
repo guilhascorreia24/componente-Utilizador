@@ -75,12 +75,10 @@
 </div>
 <div class="column">
         <div class="table ">
-        
         <a href="{% url 'menu:diaaberto_create' %}" class="button is-success is-outlined" type="button" style="margin-bottom: 0.9rem; margin-right: 1rem;">
            <span class="icon is-small">
                <i class="mdi mdi-plus"></i></span> 
                    <span> Adicionar Dia Aberto </span> <!----></a>
-        <div class="table "></div>
             <div class="table-wrapper">
                 <table id= "myTable" class="table has-mobile-cards is-hoverable is-fullwidth">
                     <thead>
@@ -111,12 +109,13 @@
                                 <td>{{instance.datapropostaatividadeinicio | date:"d/m/Y"}}</td>
                                 <td>
                                    
-                                    <a href="{{instance.ano}}/details/">
+                                    <a data-toggle="modal"
+                                    data-target="#{{forloop.counter}}_">
                                         <span class="icon is-small">
                                             <i class="mdi mdi-account-search mdi-24px"></i>
                                         </span>
                                     </a>
-                                    <a href="{{instance.ano}}/update/">
+                                    <a href="{% url 'menu:diaaberto_update' instance.ano %}">
                                         <span class="icon is-small">
                                             <i class="mdi mdi-pencil mdi-24px"></i>
                                         </span>
@@ -147,7 +146,7 @@
             <div class="media">
                 <!---->
                 <div class="media-content">
-                    <p>Tem a certeza que quer eliminar o utilizador {{user.nome}}?</p>
+                    <p>Tem a certeza que quer eliminar o ano {{instance.ano}}?</p>
                     <!---->
                 </div>
             </div>
@@ -162,7 +161,72 @@
 </div> 
 
 {% endfor %}
+{% for i in diaaberto_list %}
+<div tabindex="-1" class="modal fade" id="{{forloop.counter}}_" role="dialog" aria-hidden="true" aria-labelledby="exampleModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
 
+                <button class="close" aria-label="Close" type="button" data-dismiss="modal">
+                    <span aria-hidden="true">X</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div>                   
+                        <div class="input-group col-sm-12">
+                            <div class="input-group-prepend labelForm">
+                                <span class="input-group-text w-100">Ano:</span>
+                            </div>
+                            <input disabled="" class="form-control bg-light" type="text" value="{{ i.ano }}">
+                        </div>
+                        <br>
+                        <div class="input-group col-sm-12">
+                            <div class="input-group-prepend labelForm">
+                                <span class="input-group-text w-100">Email do Dia Aberto:</span>
+                            </div>
+                            <input disabled="" class="form-control col-sm-2 bg-light" type="text" value="{{ i.emaildiaaberto }}">
+                        </div>
+                        <br>
+                        <div class="input-group col-sm-12">
+                            <div class="input-group-prepend labelForm">
+                                <span class="input-group-text w-100">Endereço da página Web:</span>
+                            </div>
+                            <input disabled="" class="form-control col-sm-2 bg-light" type="text" value="{{ i.enderecopaginaweb }}">
+                        </div>
+                        <br>
+                        <div class="input-group col-sm-12">
+                            <div class="input-group-prepend labelForm">
+                                <span class="input-group-text w-100">A Proposta de Atividades acaba:</span>
+                            </div>
+                            <input disabled="" class="form-control col-sm-2 bg-light" type="text" value="{{ i.datapropostaatividadesfim }}">
+                        </div>
+                        <br>
+                        <div class="input-group col-sm-12">
+                            <div class="input-group-prepend labelForm">
+                                <span class="input-group-text w-100">A inscrição acaba dia:</span>
+                            </div>
+                            <input disabled="" class="form-control col-sm-2 bg-light" type="text" value="{{ i.datainscricaonasatividadesfim }}">
+                        </div>
+                        <br>
+                        <div class="input-group col-sm-12">
+                            <div class="input-group-prepend labelForm">
+                                <span class="input-group-text w-100">O Dia Aberto acaba dia:</span>
+                            </div>
+                            <input disabled="" class="form-control col-sm-2 bg-light" type="text" value="{{ i.datadiaabertofim }}">
+                        </div>
+                        <br>
+                        <div class="input-group col-sm-12">
+                            <div class="input-group-prepend labelForm">
+                                <span class="input-group-text w-100">Descrição</span>
+                            </div>
+                            <input disabled="" class="form-control col-sm-2 bg-light" type="text" value="{{ i.descricao }}">
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
 <script>
     function myFunction() {
         var input,input2,input3,filter,filter2,filter3,filter5, table, tr, td,td1,td2,td3,td4, i, txtValue,txtValue1,txtValue2,txtValue3,txtValue4;

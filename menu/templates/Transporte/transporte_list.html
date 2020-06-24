@@ -1,15 +1,12 @@
 
-{% extends 'home.html' %}
+{% extends 'base_template.html' %}
 
 {% load static %}
-
+{% block steps %}
+<li><a href="{% url 'blog:blog-home' %}">Início</a></li>
+<li class="is-active"><a href="" aria-current="page">Consultar Transportes</a></li>
+{% endblock %}
 {% block content %}
-<nav class="breadcrumb" aria-label="breadcrumbs">
-  <ul>
-    <li><a href="/">Início</a></li>
-    <li class="is-active"><a href="" aria-current="page">Consultar Transportes</a></li>
-  </ul>
-</nav>
 <div class="columns">
     <div class="column is-3">
         <div>

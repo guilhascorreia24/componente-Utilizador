@@ -46,5 +46,6 @@ urlpatterns = [
     path("formulairos/",include("formularios.urls")),
     path("user_type",user_views.getUserType,name="user_type"),
     path('atividades/', include('atividades.urls')),
+    path('menu/',include('menu.urls')),
     path('tarefa_coordenador/', include('main.urls'))
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

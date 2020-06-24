@@ -3,12 +3,14 @@ import datetime, time
 from .forms import *
 from .models import *
 from .filters import *
+from Notification.views import noti_not_checked
 
 ###### Dia Aberto ##############
 def index(request):
     queryset = DiaAberto.objects.all() # list of objects
     context = {
-        "diaaberto": queryset
+        "diaaberto": queryset,
+        'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)
     }
     return render(request, "index.html", context)
 
@@ -31,7 +33,7 @@ def diaaberto_create(request):
             return redirect("/diaaberto")
     return render(request,
                  template_name="DiaAberto/diaaberto_create.html", 
-                    context={'form': form})
+                    context={'form': form,'o':True,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
 
 
 def diaaberto_update(request, id):
@@ -43,7 +45,8 @@ def diaaberto_update(request, id):
         form.save()
         return redirect("/diaaberto")
     context = {
-        'form': form
+        'form': form,
+        'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)
     }
     return render(request, "DiaAberto/diaaberto_create.html", context)
 
@@ -57,6 +60,7 @@ def diaaberto_list(request):
         "diaaberto_list": dia,
         'myFilter': myFilter,
         "d": d,
+        'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)
     }
     return render(request, "DiaAberto/diaaberto_list.html", context)
 
@@ -65,6 +69,7 @@ def diaaberto_details(request, id):
     pk_url_kwarg = 'ano'
     context = {
         "diaaberto": obj,
+        'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)
     }
     return render(request, "DiaAberto/diaaberto_details.html", context)
 
@@ -82,7 +87,8 @@ def menu_create_view(request):
         form.save()
         return redirect("/menu")
     context = {
-        'form': form
+        'form': form,
+        'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)
     }
     return render(request, "Menu/menu_create.html", context)
 
@@ -93,7 +99,8 @@ def prato_create_view(request):
         form.save()
         return redirect("/menu")
     context = {
-        'form': form
+        'form': form,
+        'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)
                   }
     return render(request, "Menu/prato_create.html", context)
 
@@ -104,7 +111,8 @@ def menu_update_view(request, id):
         form.save()
         return redirect("/menu")
     context = {
-        'form': form
+        'form': form,
+        'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)
     }
     return render(request, "Menu/menu_create.html", context)
 
@@ -115,7 +123,8 @@ def prato_update_view(request, id):
         form.save()
         return redirect("/menu")
     context = {
-        'form': form
+        'form': form,
+        'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)
     }
     return render(request, "Menu/prato_create.html", context)
 
@@ -126,6 +135,7 @@ def menu_list_view(request):
     context = {
         "menu": menu,
         "campus": campus,
+        'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)
 
     }
     return render(request, "Menu/menu_list.html", context)
@@ -140,6 +150,7 @@ def menu_detail_view(request, id):
         "menu": obj,
         "prato": prato,
         "preco": preco,
+        'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)
     }
     return render(request, "Menu/menu_details.html", context=context)
 
@@ -150,7 +161,8 @@ def menu_delete_view(request, id):
         obj.delete()
         return redirect('../../')
     context = {
-        "menu": obj
+        "menu": obj,
+        'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)
     }
     return render(request, "Menu/menu_delete.html", context)
 
@@ -160,7 +172,8 @@ def prato_delete_view(request, id):
         obj.delete()
         return redirect('../../')
     context = {
-        "prato": obj
+        "prato": obj,
+        'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)
     }
     return render(request, "Menu/prato_delete.html", context)
 
@@ -172,7 +185,8 @@ def transporte_create_view(request):
             form.save()
             return redirect("/horario")
     context = {
-        'form': form
+        'form': form,
+        'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)
     }
     return render(request, "Transporte/transporte_create.html", context)
 
@@ -195,6 +209,7 @@ def horario_create_view(request):
     context = {
         'form': form,
         'hora' : hora,
+        'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)
     }
     return render(request, "Transporte/horario_create.html", context)
 
@@ -208,7 +223,8 @@ def transporte_update_view(request, id):
         form.save()
         return redirect('menu:transporte-update2', id=id)
     context = {
-        'form': form
+        'form': form,
+        'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)
     }
     return render(request, "Transporte/transporte_create.html", context)
 
@@ -223,7 +239,8 @@ def transporte_update2_view(request, id):
         return redirect("/transporte")
     context = {
         'form': form,
-        'hora': hora
+        'hora': hora,
+        'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)
     }
     print(form.errors)
     return render(request, "Transporte/horario_create.html", context)
@@ -236,6 +253,7 @@ def transporte_list_view(request):
     context = {
         "hora": hora,
         "par": par,
+        'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)
     }
     return render(request, "Transporte/transporte_list.html", context)
 
@@ -245,6 +263,7 @@ def transporte_detail_view(request, id):
     context = {
         "obj": obj,
         "transporte": transporte,
+        'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)
 
     }
     return render(request, "Transporte/transporte_details.html", context)
@@ -255,7 +274,7 @@ def transporte_delete_view(request, id):
 	if request.method == "POST":
 		transporte.delete()
 		return redirect("/transporte")
-	context ={'transporte': transporte}
+	context ={'transporte': transporte,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)}
 	return render(request = request,
 				 template_name="Transporte/transporte_delete.html",
 				 context=context)
@@ -276,5 +295,6 @@ def transportehora_create_view(request):
     context = {
         'form1': form1,
         'form2': form2,
+        'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)
     }
     return render(request, "Transporte/hora_create.html", context)
