@@ -15,7 +15,7 @@ import logging
 import traceback
 import json
 from django.conf import settings
-from Notification.views import noti_not_checked
+from Notification.views import *
 from django.views.decorators.csrf import csrf_exempt
 
 def encrypt(txt):
