@@ -27,23 +27,46 @@ def home_view(request):
 
 
 # --------------------------------Atividades:
+def all_valid(request):
+    errors = []
+    if not request.POST.get('titulo'):
+        errors.append("Campo Titulo vazio")
+    if not request.POST.get('descricao'):
+        errors.append("Campo Descrição vazio")
+    if not request.POST.get('publico_alvo'):
+        errors.append("Campo Publico Alvo vazio")
+    if not request.POST.get('tema'):
+        errors.append("Campo Tematica vazio")
+    if not request.POST.get('capacidade'):
+        errors.append("Campo Número de Participantes vazio")
+    if not request.POST.get('duracao'):
+        errors.append("Campo Duração vazio")
+    if not request.POST.get('nrcolaboradores'):
+        errors.append("Campo Número de colaboradores vazio")
+
+    return errors
+
 
 def atividade_create_view(request):
+    erros = []
     professor = get_object_or_404(ProfessorUniversitario, utilizador_idutilizador=request.session["user_id"])
     if request.method == "POST":
-        new = Atividade(titulo=request.POST.get('titulo'), capacidade=request.POST.get('capacidade'),
-                        publico_alvo=request.POST.get('publico_alvo'),
-                        duracao=request.POST.get('duracao'),
-                        descricao=request.POST.get('descricao'),
-                        validada=0,
-                        professor_universitario_utilizador_idutilizador=professor,
-                        unidade_organica_iduo=get_object_or_404(UnidadeOrganica, iduo=request.POST.get('unidade_organica')),
-                        departamento_iddepartamento=get_object_or_404(Departamento, iddepartamento=request.POST.get('iddepartamento')),
-                        espaco_idespaco=None, nrcolaborador=request.POST.get('nrcolaboradores'), tematica=request.POST.get('tema'))
-        new.save()
-        idActivity = Atividade.objects.latest('idatividade').idatividade
-        return redirect("../atividades/editar_local/"+str(idActivity))
+        erros = all_valid(request)
+        if len(erros) == 0:
+            new = Atividade(titulo=request.POST.get('titulo'), capacidade=request.POST.get('capacidade'),
+                            publico_alvo=request.POST.get('publico_alvo'),
+                            duracao=request.POST.get('duracao'),
+                            descricao=request.POST.get('descricao'),
+                            validada=0,
+                            professor_universitario_utilizador_idutilizador=professor,
+                            unidade_organica_iduo=get_object_or_404(UnidadeOrganica, iduo=request.POST.get('unidade_organica')),
+                            departamento_iddepartamento=get_object_or_404(Departamento, iddepartamento=request.POST.get('iddepartamento')),
+                            espaco_idespaco=None, nrcolaborador=request.POST.get('nrcolaboradores'), tematica=request.POST.get('tema'))
+            new.save()
+            idActivity = Atividade.objects.latest('idatividade').idatividade
+            return redirect("../atividades/editar_local/"+str(idActivity))
     context = {
+        "erros":erros,
         "id": request.session["user_id"],
         "espaco": Espaco.objects.all(),
         "professor": professor,
@@ -57,6 +80,7 @@ def atividade_create_view(request):
 
 
 def editar_atividade_view(request, idActivity):
+    erros = []
     atividade = get_object_or_404(Atividade, idatividade=idActivity)
     espaco = Espaco.objects.all()
     unidade_organica = UnidadeOrganica.objects.all()
@@ -64,21 +88,25 @@ def editar_atividade_view(request, idActivity):
     professor = get_object_or_404(ProfessorUniversitario, utilizador_idutilizador=request.session["user_id"])
     campus = Campus.objects.all()
     sessao = []
-    for sess in get_list_or_404(Sessao, atividade_idatividade=idActivity):
-        sessao.append(sess.horario_has_dia_id_dia_hora)
+    if list(Sessao.objects.filter(atividade_idatividade=idActivity)):
+        for sess in get_list_or_404(Sessao, atividade_idatividade=idActivity):
+            sessao.append(sess.horario_has_dia_id_dia_hora)
     if request.method == "POST":
-        atividade.titulo = request.POST.get('titulo')
-        atividade.capacidade = request.POST.get('capacidade')
-        atividade.duracao = request.POST.get('duracao')
-        atividade.validada = 2
-        atividade.iddepartamento = request.POST.get('iddepartamento')
-        atividade.publico_alvo = request.POST.get('publico_alvo')
-        atividade.descricao = request.POST.get('descricao')
-        atividade.tematica = request.POST.get('tema')
-        atividade.nrcolaborador = request.POST.get('ncolaboradores')
-        atividade.save()
-        return redirect("../../editar_local/"+str(idActivity))
+        erros = all_valid(request)
+        if len(erros) == 0:
+            atividade.titulo = request.POST.get('titulo')
+            atividade.capacidade = request.POST.get('capacidade')
+            atividade.duracao = request.POST.get('duracao')
+            atividade.validada = 2
+            atividade.iddepartamento = request.POST.get('iddepartamento')
+            atividade.publico_alvo = request.POST.get('publico_alvo')
+            atividade.descricao = request.POST.get('descricao')
+            atividade.tematica = request.POST.get('tema')
+            atividade.nrcolaborador = request.POST.get('nrcolaboradores')
+            atividade.save()
+            return redirect("../../editar_local/"+str(idActivity))
     context = {
+        "erros": erros,
         "id": request.session["user_id"],
         "activity": atividade,
         "espaco": espaco,
@@ -308,6 +336,7 @@ def deletar_espaco_view(request, idEspaco):
 
 
 def editar_local_view(request, idActivity):
+    account = return_account_type(request.session["user_id"])
     atividade = get_object_or_404(Atividade, idatividade=idActivity)
     espaco = []
     allbuildings = []
@@ -352,7 +381,7 @@ def editar_local_view(request, idActivity):
     context = {
         "activity": atividade,
         "espacos": espaco,
-        "account": return_account_type(request.session["user_id"]),
+        "account": account,
         "fields": fields,
         "edificios": allbuildings,
         "selectedBuilding": selectedBuilding,
