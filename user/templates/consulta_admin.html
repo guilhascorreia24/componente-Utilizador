@@ -52,7 +52,8 @@
         {% if funcao == "administardor" %}<a role="button" data-toggle="modal"
             data-target="#{{ forloop.counter }}"><span class="icon has-text-danger"><i
                     class="mdi mdi-close-box mdi-24px"></i></span></a>{% endif %}
-        <a role="button" href="{% url "profile_user" user.idutilizador %}"><span class="icon has-text-success"><i
+        <a role="button" data-toggle="modal"
+        data-target="#{{ forloop.counter }}_"><span class="icon has-text-success"><i
                     class="mdi mdi-account-search mdi-24px"></i></span></a>
         {% if funcao == "administardor" %}
         <a role="button" href="{% url "profile_edit" user.idutilizador %}"><span class="icon has-text-success"><i

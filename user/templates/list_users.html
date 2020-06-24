@@ -313,6 +313,96 @@
 </div>
 </form>
 {% endfor %}
+{% for user in users %}
+    <div tabindex="-1" class="modal fade" id="{{forloop.counter}}_" role="dialog" aria-hidden="true" aria-labelledby="exampleModalLabel">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+
+                    <button class="close" aria-label="Close" type="button" data-dismiss="modal">
+                        <span aria-hidden="true">X</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div>                   
+                        <form class="well form-horizontal ">
+                            <div class="input-group col-sm-12">
+                                <div class="input-group-prepend labelForm">
+                                    <span class="input-group-text w-100">Nome</span>
+                                </div>
+                                <input disabled="" class="form-control bg-light" type="text" value="{{ user.nome }}">
+                            </div>
+                            <br>
+                            <div class="input-group col-sm-12">
+                                <div class="input-group-prepend labelForm">
+                                    <span class="input-group-text w-100">Email</span>
+                                </div>
+                                <input disabled="" class="form-control col-sm-2 bg-light" type="text" value="{{ user.email }}">
+                            </div>
+                            <br>
+                            <div class="input-group col-sm-12">
+                                <div class="input-group-prepend labelForm">
+                                    <span class="input-group-text w-100">Telefone/Telemovel</span>
+                                </div>
+                                <input disabled="" class="form-control col-sm-2 bg-light" type="text" value="{{ user.telefone }}">
+                            </div>
+                            <br>
+                            <div class="input-group col-sm-12">
+                                <div class="input-group-prepend labelForm">
+                                    <span class="input-group-text w-100">Função</span>
+                                </div>
+                                <input disabled="" class="form-control col-sm-4 bg-light" type="text" value="{{user.cargo}}">
+                            </div>
+                            <br>
+                            <div class="input-group col-sm-12">
+                                <div class="input-group-prepend labelForm">
+                                    <span class="input-group-text w-100">Unidade Organica</span>
+                                </div>
+                                <input disabled="" class="form-control col-sm-4 bg-light" type="text" value="{{user.UO}}">
+                            </div>
+                            <br>
+                            {% for colab in colaboradores %}
+                            {% if colab.utilizador_idutilizador.pk == user.no_enc %}
+                            <div class="input-group col-sm-12">
+                                <div class="input-group-prepend labelForm">
+                                    <span class="input-group-text w-100">Curso</span>
+                                </div>
+                                <input disabled="" class="form-control col-sm-4 bg-light" type="text" value="{{colab.curso_idcurso.nome}}">
+                            </div>
+                            <br>
+                            {% endif %}
+                            {% endfor %}
+                            {% for du in docentes %}
+                            {% if du.utilizador_idutilizador.pk == user.no_enc %}
+                            <div class="input-group col-sm-12">
+                                <div class="input-group-prepend labelForm">
+                                    <span class="input-group-text w-100">Departamento</span>
+                                </div>
+                                <input disabled="" class="form-control col-sm-4 bg-light" type="text" value="{{du.departamento_iddepartamento.nome}}">
+                            </div>
+                            <br>
+                            {% endif %}
+                            {% endfor %}
+                            {% if user.dia_aberto_ano != None %}
+                            <div class="input-group col-sm-12">
+                                <div class="input-group-prepend labelForm">
+                                    <span class="input-group-text w-100">Ano</span>
+                                </div>
+                                <input disabled="" class="form-control col-sm-4 bg-light" type="text" value="{{user.dia_aberto_ano.ano}}">
+                            </div>
+                            <br>
+                            {% endif %}
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $('#{{forloop.counter}}_').on('shown.bs.modal', function (e) {
+      $("#pageContent").css({ opacity: 0.5 });
+    })</script>
+    {% endfor %}
 <script>
     {% for user in users %}
     $("#color_me{{ forloop.counter }}").change(function () {
