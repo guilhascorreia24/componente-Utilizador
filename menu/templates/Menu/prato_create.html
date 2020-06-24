@@ -72,8 +72,8 @@
                 <div class="field">
                   <label class="label">Descrição</label>
                   <div class="control is-clearfix">
-                    <textarea maxlength="300" class="textarea" {{form.descricao}}>
-                              </textarea></small>
+                    <textarea maxlength="300" class="textarea" id="{{form.descricao.for_id_label}}" name="{{form.descricao.for_id_label}}">{{form.descricao.value}}
+                              </textarea>
                   </div>
                   <!---->
                 </div>
@@ -90,7 +90,7 @@
             </a>
           </div>
           <div class="level-right">
-            <input href="/menu" class="button is-large is-success is-outlined is-link" type='submit' value='Submeter'>
+            <input class="button is-large is-success is-outlined is-link" type='submit' value='Submeter'>
             </button>
           </div>
         </div>
