@@ -19,7 +19,7 @@
     <br>
 <div class="table " style="padding-left: 10%;padding-right: 10%;">
             <div class="table-wrapper">
-                <table class="table has-mobile-cards is-hoverable is-fullwidth">
+                <table class="table has-mobile-cards is-hoverable is-fullwidth" id="myTable">
                     <thead>
                             <th>
                                 Nome:
@@ -30,6 +30,7 @@
                             <th></th>
                             </tr>
                     </thead>
+                    <tbody>
                             {% for unidade in uo %}
                             <tr>
                                 <td>{{unidade.sigla}}</td>
@@ -67,6 +68,7 @@
                                 </td>
                             </tr>
                             {% endfor %}
+                    </tbody>
                 </table>
                 <br>
                 <br>
@@ -121,5 +123,18 @@
                 </div>
 
 
+        <script>
+            $(document).ready(function () {
+                $('#myTable').DataTable({
+                    "paging": true,
+                    "info": false,
+                    "searching": false,
+                    "bLengthChange": false,
+                    "aLengthMenu": [[5, 10, 25, -1], [5, 10, 25, "All"]],
+                    "columnDefs": [
+            { "orderable": false, "targets": 2 }]
+                });
+            });
+        </script>
 
 {% endblock content%}

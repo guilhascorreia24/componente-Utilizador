@@ -103,7 +103,7 @@
                                         <tr>
                                             <!---->
                                             <th class="is-sortable">
-                                                <div class="th-wrap" > ID <span class="icon is-small"
+                                                <div class="th-wrap" > Grupo <span class="icon is-small"
                                                     style="display: none;"><i class="mdi mdi-menu-up"></i></span>
                                                 </div>
                                             </th>
@@ -157,25 +157,25 @@
                                             <tr draggable="false" class="" scope="row">
                                             <!---->
                                                 <td data-label="Grupo" class="">
-                                                    {{ inscricao.idinscricao }}
+                                                    {{ inscricao.inscricao.idinscricao }}
                                                 </td>
                                                 <td data-label="Nome" class="">
-                                                    {{ inscricao.nome }}
+                                                    {{ inscricao.inscricao.nome }}
                                                 </td>
                                                 <td data-label="Email" class=""> 
-                                                    {{ inscricao.email }}
+                                                    {{ inscricao.inscricao.email }}
                                                 </td>
                                                 <td data-label="Telefone" class=""> 
-                                                    {{ inscricao.telefone }}
+                                                    {{ inscricao.inscricao.telefone }}
                                                 </td>                                           
                                                 <td data-label="Nº participantes" class=""> 
-                                                    {{ inscricao.nparticipantes }}
+                                                    {{ inscricao.inscricao.nparticipantes }}
                                                 </td>
                                                 <td data-label="Ano Escolar" class=""> 
-                                                    {{ inscricao.ano }}
+                                                    {{ inscricao.inscricao.ano }}
                                                 </td>
                                                 <td data-label="Escola" class=""> 
-                                                    {{ inscricao.escola }}
+                                                    {{ inscricao.inscricao.escola }}
                                                 </td>  
                                                 <td data-label="Ações" class="has-text-centered">
                                                     <a role="button" data-toggle="modal" data-target="#{{ forloop.counter }}"><span class="icon has-text-success"><i class="mdi mdi-account-search mdi-24px"></i></span></a>                          
@@ -214,35 +214,35 @@
                                 <div class="input-group-prepend labelForm">
                                     <span class="input-group-text w-100">Nome do Responsável</span>
                                 </div>
-                                <input disabled="" class="form-control bg-light" type="text" value="{{ inscricao.nome }}">
+                                <input disabled="" class="form-control bg-light" type="text" value="{{ inscricao.inscricao.nome }}">
                             </div>
                             <br>
                             <div class="input-group col-sm-12">
                                 <div class="input-group-prepend labelForm">
                                     <span class="input-group-text w-100">Ano Escolar</span>
                                 </div>
-                                <input disabled="" class="form-control col-sm-2 bg-light" type="text" value="{{ inscricao.ano }}">
+                                <input disabled="" class="form-control col-sm-2 bg-light" type="text" value="{{ inscricao.inscricao.ano }}">
                             </div>
                             <br>
                             <div class="input-group col-sm-12">
                                 <div class="input-group-prepend labelForm">
                                     <span class="input-group-text w-100">Area Científica</span>
                                 </div>
-                                <input disabled="" class="form-control col-sm-4 bg-light" type="text" value="{{ inscricao.areacientifica }}">
+                                <input disabled="" class="form-control col-sm-4 bg-light" type="text" value="{{ inscricao.inscricao.areacientifica }}">
                             </div>
                             <br>
                             <div class="input-group col-sm-12">
                                 <div class="input-group-prepend labelForm">
                                     <span class="input-group-text w-100">Escola</span>
                                 </div>
-                                <input disabled="" class="form-control bg-light" type="text" value="{{ inscricao.escola }}">
+                                <input disabled="" class="form-control bg-light" type="text" value="{{ inscricao.inscricao.escola }}">
                             </div>
                             <br>
                             <div class="input-group col-sm-12">
                                 <div class="input-group-prepend labelForm">
                                     <span class="input-group-text w-100">Local</span>
                                 </div>
-                                <input disabled="" class="form-control bg-light" type="text" value="{{ inscricao.local }}">
+                                <input disabled="" class="form-control bg-light" type="text" value="{{ inscricao.inscricao.local }}">
                             </div>
                             <br>
                             <div class="form-group col-lg-8" style="text-align:center">
@@ -356,7 +356,7 @@
                 "bLengthChange": false,
                 "aLengthMenu": [[5, 10, 25, -1], [5, 10, 25, "All"]],
                 "columnDefs": [
-        { "orderable": false, "targets": 5 }
+        { "orderable": false, "targets": 8 }
       ]
             });
         });
