@@ -94,7 +94,7 @@ def menu_create_view(request):
     form = MenuModelForm(request.POST or None)
     if form.is_valid():
         form.save()
-        return redirect("/menu")
+        return redirect("menu:menu_list")
     context = {
         'form': form,'o':True,
         'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)
@@ -106,7 +106,7 @@ def prato_create_view(request):
     form = PratoForm(request.POST or None)
     if form.is_valid():
         form.save()
-        return redirect("/menu")
+        return redirect("menu:menu_list")
     context = {
         'form': form,'o':True,
         'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)
@@ -178,7 +178,7 @@ def prato_delete_view(request, id):
     obj = get_object_or_404(Prato, idprato=id)
     if Prato.objects.filter(pk=id).exists():
         obj.delete()
-    return redirect('../../')
+    return redirect('blog:blog-home')
 
 ######## TRANSPORTEEE ############################
 def transporte_create_view(request):
@@ -186,7 +186,7 @@ def transporte_create_view(request):
     if request.method == "POST":
         if form.is_valid():
             form.save()
-            return redirect("/horario")
+            return redirect("menu:horario-list")
     context = {
         'form': form,'o':True,
         'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)
@@ -289,7 +289,7 @@ def transportehora_create_view(request):
             utl1 = Dia.objects.latest('dia')
             horario = HorarioHasDia(horario_hora=utl, dia_dia=utl1)
             horario.save()
-            return redirect("/transporte")
+            return redirect("menu:transporte-list")
     context = {
         'form1': form1,
         'form2': form2,
