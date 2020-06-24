@@ -1,14 +1,11 @@
-{% extends 'home.html' %}
+{% extends 'base_template.html' %}
 
 {% load static %}
-
+{% block steps %}
+<li><a href="{% url 'blog:blog-home' %}">Início</a></li>
+<li class="is-active"><a href="" aria-current="page">Consultar Menus</a></li>
+{% endblock %}
 {% block content %}
-<nav class="breadcrumb" aria-label="breadcrumbs">
-  <ul>
-    <li><a href="/">Início</a></li>
-    <li class="is-active"><a href="" aria-current="page">Consultar Menus</a></li>
-  </ul>
-</nav>
 <div class="columns">
     <div class="column is-3">
         <div>
@@ -45,7 +42,8 @@
                     </div>
                 </div>
                 <br>
-                <button class="button is-outlined is-link is-danger" type="submit">
+                <button class="button is-outlined is-link is-danger" type="submit" style="
+                margin-left: 5%;">
                     <span>Limpar</span>
                     <span class="icon is-medium"><i class="mdi mdi-broom"></i></span>
                 </button>
@@ -55,11 +53,11 @@
 <div class="column">
         <div class="table ">
         
-        <a href="/menu/criar" class="button is-success is-outlined" type="button" style="margin-bottom: 0.9rem; margin-right: 1rem;">
+        <a href="{% url "menu:menu_criar" %}" class="button is-success is-outlined" type="button" style="margin-bottom: 0.9rem; margin-right: 1rem;">
            <span class="icon is-small">
                <i class="mdi mdi-plus"></i></span> 
                    <span> Adicionar Menu </span> <!----></a>
-                   <a href="/menu/criarprato/" class="button is-success is-outlined" type="button" style="margin-bottom: 0.9rem; margin-right: 1rem;">
+                   <a href="{% url "menu:prato_criar" %}" class="button is-success is-outlined" type="button" style="margin-bottom: 0.9rem; margin-right: 1rem;">
                     <span class="icon is-small">
                         <i class="mdi mdi-plus"></i></span> 
                             <span> Adicionar Prato </span> <!----></a>
@@ -75,7 +73,6 @@
                                   <div class="control"><button class="button is-primary">
                                     <span class="icon is-small">
                                       <i class="mdi mdi-menu-up"></i></span></button></div></div></div>-->
-        <div class="table "></div>
             <div class="table-wrapper">
                 <table id="myTable" class="table has-mobile-cards is-hoverable is-fullwidth">
                     <thead>
@@ -106,7 +103,8 @@
                                 <td>{{instance.horario_has_dia_id_dia_hora.horario_hora.hora}} </td>
                                 <td>{{instance.nralmocosdisponiveis}}</td>
                                 <td>
-                                    <a href="{{instance.idmenu}}/details/">
+                                    <a data-toggle="modal"
+                                    data-target="#{{forloop.counter}}">
                                         <span class="icon is-small">
                                             <i class="mdi mdi-account-search mdi-24px"></i>
                                         </span>
@@ -118,7 +116,7 @@
                                         </span>
                                     </a>
 
-                                        <a href="{{instance.idmenu}}/apagar/">
+                                        <a href="{% url 'menu:menu_delete' instance.idmenu %}">
                                             <span class="icon is-small has-text-danger">
                                                 <i class="mdi mdi-close-box mdi-24px"></i>
                                             </span>
@@ -133,7 +131,139 @@
 </div>
 </div>
 
+{% for i in menu %}
+<div tabindex="-1" class="modal fade" id="{{forloop.counter}}" role="dialog" aria-hidden="true" aria-labelledby="exampleModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
 
+                <button class="close" aria-label="Close" type="button" data-dismiss="modal">
+                    <span aria-hidden="true">X</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div>                   
+                        <div class="input-group col-sm-12">
+                            <div class="input-group-prepend labelForm">
+                                <span class="input-group-text w-100">Sopa e Sobremesa:</span>
+                            </div>
+                            <input disabled="" class="form-control bg-light" type="text" value="{{ i.descricao }}">
+                        </div>
+                        <br>
+                        {% for prato in prato %}
+                        {% if prato.menu_idmenu == i.pk %}
+                        {% if prato.tipo == "Carne" %}
+                        <div class="input-group col-sm-12">
+                            <div class="input-group-prepend labelForm">
+                                <span class="input-group-text w-100">Prato de Carne:</span>
+                            </div>
+                            <input disabled="" class="form-control col-sm-2 bg-light" type="text" value="{{ prato.descricao }}">
+                            <a href="{% url 'menu:prato_update' prato.idprato %}">
+                                <span class="icon is-small">
+                                    <i class="mdi mdi-tooltip-edit mdi-22px"></i>
+                                </span>
+                            </a>   
+                            <a href="{% url 'menu:prato_delete' prato.idprato %}">
+                                <span class="icon is-small">
+                                    <i class="mdi mdi-delete mdi-24px"></i>
+                                </span>
+                            </a>
+                        </div>
+                        <br>
+                        {% endif %}
+                        {% if prato.tipo == "Peixe" %}
+                        <div class="input-group col-sm-12">
+                            <div class="input-group-prepend labelForm">
+                                <span class="input-group-text w-100">Prato de Peixe:</span>
+                            </div>
+                            <input disabled="" class="form-control col-sm-2 bg-light" type="text" value="{{prato.descricao}} ">
+                            <a href="{% url 'menu:prato_update' prato.idprato %}">
+                                <span class="icon is-small">
+                                    <i class="mdi mdi-tooltip-edit mdi-22px"></i>
+                                </span>
+                            </a>   
+                            <a href="{% url 'menu:prato_delete' prato.idprato %}">
+                                <span class="icon is-small">
+                                    <i class="mdi mdi-delete mdi-24px"></i>
+                                </span>
+                            </a>
+                        </div>
+                        <br>
+                        {% endif %}
+                        {% if prato.tipo == "Vegetariano" %}
+                        <div class="input-group col-sm-12">
+                            <div class="input-group-prepend labelForm">
+                                <span class="input-group-text w-100">Prato Vegetariano:</span>
+                            </div>
+                            <input disabled="" class="form-control col-sm-2 bg-light" type="text" value="{{prato.descricao}} ">
+                            <a href="{% url 'menu:prato_update' prato.idprato %}">
+                                <span class="icon is-small">
+                                    <i class="mdi mdi-tooltip-edit mdi-22px"></i>
+                                </span>
+                            </a>   
+                            <a href="{% url 'menu:prato_delete' prato.idprato %}">
+                                <span class="icon is-small">
+                                    <i class="mdi mdi-delete mdi-24px"></i>
+                                </span>
+                            </a>
+                        </div>
+                        <br>
+                        {% endif %}
+                        {% endif %}
+                        {% endfor %}
+                        <div class="input-group col-sm-12">
+                            <div class="input-group-prepend labelForm">
+                                <span class="input-group-text w-100">Dia do almoço:</span>
+                            </div>
+                            <input disabled="" class="form-control bg-light" type="text" value="{{ i.horario_has_dia_id_dia_hora.dia_dia.dia }}">
+                        </div>
+                        <br>
+                        <div class="input-group col-sm-12">
+                            <div class="input-group-prepend labelForm">
+                                <span class="input-group-text w-100">Hora do Almoço:</span>
+                            </div>
+                            <input disabled="" class="form-control bg-light" type="text" value="{{ i.horario_has_dia_id_dia_hora.horario_hora.hora }}">
+                        </div>
+                        <br>
+                        <div class="input-group col-sm-12">
+                            <div class="input-group-prepend labelForm">
+                                <span class="input-group-text w-100">Campus:</span>
+                            </div>
+                            <input disabled="" class="form-control bg-light" type="text" value="{{ i.campus_idcampus }}">
+                        </div>
+                        <br>
+                        <div class="input-group col-sm-12">
+                            <div class="input-group-prepend labelForm">
+                                <span class="input-group-text w-100">Numero de Almoços disponiveis:</span>
+                            </div>
+                            <input disabled="" class="form-control bg-light" type="text" value="{{ i.nralmocosdisponiveis }}">
+                        </div>
+                        <br>
+                        {% for preco in preco %}
+                        {% if preco.ano == 2020 %}
+                        <div class="input-group col-sm-12">
+                            <div class="input-group-prepend labelForm">
+                                <span class="input-group-text w-100">Preço do almoço para estudantes:</span>
+                            </div>
+                            <input disabled="" class="form-control bg-light" type="text" value="{{preco.preco_almoco_estudante}}€">
+                        </div>
+                        <br>
+                        <div class="input-group col-sm-12">
+                            <div class="input-group-prepend labelForm">
+                                <span class="input-group-text w-100">Preço do almoço para professores:</span>
+                            </div>
+                            <input disabled="" class="form-control bg-light" type="text" value="{{preco.preco_almoco_professor}}€">
+                        </div>
+                        <br>
+                        {% endif %}
+                        {% endfor %}
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
 <script>
     function myFunction() {
         var input,input2,input3,filter,filter2,filter3,filter5, table, tr, td,td1,td2,td3,td4, i, txtValue,txtValue1,txtValue2,txtValue3,txtValue4;
@@ -158,6 +288,20 @@
             }
         }
     }
+</script>
+<script>
+    $(document).ready(function () {
+        $('#myTable').DataTable({
+            "paging": true,
+            "info": false,
+            "searching": false,
+            "bLengthChange": false,
+            "aLengthMenu": [[5, 10, 25, -1], [5, 10, 25, "All"]],
+            "columnDefs": [
+    { "orderable": false, "targets": 5 }
+  ]
+        });
+    });
 </script>
 
 

@@ -75,7 +75,9 @@
                     </div>
                 </div>
                 <br>
-                <button class="button is-outlined is-link is-danger" type="submit">
+                <button class="button is-outlined is-link is-danger" type="submit" style="
+                margin-left: 5%;"
+            >
                     <span>Limpar</span>
                     <span class="icon is-medium"><i class="mdi mdi-broom"></i></span>
                 </button>
@@ -85,15 +87,14 @@
 <div class="column">
         <div class="table ">
         
-        <a href="/transporte/criar" class="button is-success is-outlined" type="button" style="margin-bottom: 0.9rem; margin-right: 1rem;">
+        <a href="{% url 'menu:transporte-criar' %}" class="button is-success is-outlined" type="button" style="margin-bottom: 0.9rem; margin-right: 1rem;">
            <span class="icon is-small">
                <i class="mdi mdi-plus"></i></span> 
                    <span> Adicionar Transporte </span></a>
-                   <a href="/transporte/criarhorario" class="button is-success is-outlined" type="button" style="margin-bottom: 0.9rem; margin-right: 1rem;">
+                   <a href="{% url 'menu:transportehora-criar' %}" class="button is-success is-outlined" type="button" style="margin-bottom: 0.9rem; margin-right: 1rem;">
                     <span class="icon is-small">
                         <i class="mdi mdi-plus"></i></span> 
                             <span> Adicionar Horário </span></a>
-        <div class="table "></div>
             <div class="table-wrapper">
                 <table id="myTable" class="table has-mobile-cards is-hoverable is-fullwidth">
                     <thead>
@@ -131,13 +132,13 @@
                                         </span>
                                     </a>
                                 
-                                    <a href="{{instance.id_transporte_has_horario}}/update/">
+                                    <a href="{% url 'menu:transporte-detail' instance.id_transporte_has_horario %}">
                                         <span class="icon is-small">
                                             <i class="mdi mdi-pencil mdi-24px"></i>
                                         </span>
                                     </a>
                                
-                                        <a href="{{instance.transporte_idtransporte.idtransporte}}/apagar/">
+                                        <a data-toggle="modal" data-target="#{{ forloop.counter }}_">
                                             <span class="icon is-small has-text-danger">
                                                 <i class="mdi mdi-close-box mdi-24px"></i>
                                             </span>
@@ -184,7 +185,31 @@
     </div>
 
     {% endfor %}
-
+    {% for instance in hora %}
+    <div class="dialog modal" id="{{ forloop.counter }}_">
+        <div class="modal-background"></div>
+        <br><br><br><br><br><br><br><br><br><br><br><br>
+        <div class="modal-card animation" style="max-width:360px">
+            <!---->
+            <section class="modal-card-body is-titleless">
+                <div class="media">
+                    <!---->
+                    <div class="media-content">
+                        <p>Tem a certeza que quer eliminar o utilizador {{user.nome}}?</p>
+                        <!---->
+                    </div>
+                </div>
+            </section>
+            <footer class="modal-card-foot"><button class="button" data-dismiss="modal">
+                    Cancelar
+                </button><a href="{% url 'menu:transporte-delete' %}" style="text-decoration: none;"> <button
+                        class="button is-success" type="submit">
+                        Confirmar
+                    </button></a></footer>
+        </div>
+    </div>
+    </form>
+    {% endfor %}
 
     <script>
         function myFunction() {
@@ -219,6 +244,20 @@
                 }
             }
         }
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('#myTable').DataTable({
+                "paging": true,
+                "info": false,
+                "searching": false,
+                "bLengthChange": false,
+                "aLengthMenu": [[5, 10, 25, -1], [5, 10, 25, "All"]],
+                "columnDefs": [
+        { "orderable": false, "targets": 5 }
+      ]
+            });
+        });
     </script>
 
 {% endblock content %}

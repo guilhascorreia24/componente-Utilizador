@@ -87,7 +87,7 @@ def menu_create_view(request):
         form.save()
         return redirect("/menu")
     context = {
-        'form': form,
+        'form': form,'o':True,
         'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)
     }
     return render(request, "Menu/menu_create.html", context)
@@ -99,7 +99,7 @@ def prato_create_view(request):
         form.save()
         return redirect("/menu")
     context = {
-        'form': form,
+        'form': form,'o':True,
         'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)
                   }
     return render(request, "Menu/prato_create.html", context)
@@ -132,9 +132,12 @@ def prato_update_view(request, id):
 def menu_list_view(request):
     menu = Menu.objects.all() # list of objects
     campus= Campus.objects.all()
+    prato=Prato.objects.all()
+    preco=DiaAberto.objects.all()
     context = {
         "menu": menu,
         "campus": campus,
+        "prato":prato,'preco':preco,
         'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)
 
     }
@@ -157,25 +160,15 @@ def menu_detail_view(request, id):
 
 def menu_delete_view(request, id):
     obj = get_object_or_404(Menu, idmenu=id)
-    if request.method == "POST":
+    if Menu.objects.filter(pk=id).exists():
         obj.delete()
-        return redirect('../../')
-    context = {
-        "menu": obj,
-        'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)
-    }
-    return render(request, "Menu/menu_delete.html", context)
+    return redirect('menu:menu_list')
 
 def prato_delete_view(request, id):
     obj = get_object_or_404(Prato, idprato=id)
-    if request.method == "POST":
+    if Prato.objects.filter(pk=id).exists():
         obj.delete()
-        return redirect('../../')
-    context = {
-        "prato": obj,
-        'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)
-    }
-    return render(request, "Menu/prato_delete.html", context)
+    return redirect('../../')
 
 ######## TRANSPORTEEE ############################
 def transporte_create_view(request):
@@ -185,7 +178,7 @@ def transporte_create_view(request):
             form.save()
             return redirect("/horario")
     context = {
-        'form': form,
+        'form': form,'o':True,
         'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)
     }
     return render(request, "Transporte/transporte_create.html", context)
@@ -208,7 +201,7 @@ def horario_create_view(request):
             return redirect("/transporte")
     context = {
         'form': form,
-        'hora' : hora,
+        'hora' : hora,'o':True,
         'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)
     }
     return render(request, "Transporte/horario_create.html", context)
@@ -271,14 +264,9 @@ def transporte_detail_view(request, id):
 
 def transporte_delete_view(request, id):
 	transporte = Transporte.objects.get(idtransporte=id)
-	if request.method == "POST":
+	if Transporte.objects.filter(pk=id).exists():
 		transporte.delete()
-		return redirect("/transporte")
-	context ={'transporte': transporte,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)}
-	return render(request = request,
-				 template_name="Transporte/transporte_delete.html",
-				 context=context)
-
+	return redirect("menu:transporte-list")
 
 def transportehora_create_view(request):
     form1 = DiaForm(request.POST or None)
