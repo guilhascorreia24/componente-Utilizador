@@ -1,6 +1,5 @@
 from django.test import TestCase, SimpleTestCase
-from Notification.models import Notificacao
-from Notification.views import createnot,checknot,noti,enviados
+from Notification.views import *
 from django.urls import reverse,resolve
 
 
@@ -14,9 +13,9 @@ class TestUrls(SimpleTestCase):
         url = reverse('check_not')
         self.assertEquals(resolve(url).func, checknot)
 
-    '''def test_noti_url(self):
-        url = reverse('noti')
-        self.assertEquals(resolve(url).func.view_class, noti)'''
+    def test_noti_url(self):
+        url = reverse('noti',args=[52])
+        self.assertEquals(resolve(url).func, noti)
     
     def test_check_not_enviadas(self):
         url = reverse('check_not_enviadas')
