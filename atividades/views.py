@@ -260,6 +260,7 @@ def create_edit_session_view(request, idActivity):
 # --------------------------------Espaço:
 
 def criar_sala_view(request):
+    fields = 0
     lista = []
     for i in Arlivre.objects.all():
         lista.append(i.espaco_idespaco)
@@ -273,7 +274,23 @@ def criar_sala_view(request):
     if request.method == 'POST':
         if form.is_valid():
             form.save()
+            idEspaco = Espaco.objects.latest('idespaco')
+            if request.POST.get("descrition"):
+                new = Arlivre(descricao=request.POST.get('descrition'), espaco_idespaco=idEspaco)
+                new.save()
+
+            elif request.POST.get("andarAnfiteatro"):
+                new = Anfiteatro(edificio=request.POST.get('edificioAnfiteatro'), andar=request.POST.get('andarAnfiteatro'),
+                                 espaco_idespaco=idEspaco)
+                new.save()
+            elif request.POST.get("andarSala"):
+                new = Sala(edificio=request.POST.get('edificioSala'), andar=request.POST.get('andarSala'),
+                                 espaco_idespaco=idEspaco)
+                new.save()
+        elif request.POST.get('tipoSala'):
+            fields = request.POST.get('tipoSala')
     context = {
+        "fields":fields,
         "list": lista,
         "espaco": espaco,
         "form": form,
@@ -288,32 +305,6 @@ def deletar_espaco_view(request, idEspaco):
     local = get_object_or_404(Espaco, idespaco=idEspaco)
     local.delete()
     return redirect("atividades:criar_sala")
-
-
-def especificar_espaco(request, idEspaco):
-    fields = 0
-    local = get_object_or_404(Espaco, idespaco=idEspaco)
-    if request.method == "POST":
-        fields = request.POST.get('tipoSala')
-        if fields == "1" and request.POST.get('edificio') and request.POST.get('andar'):
-            new = Sala(edificio=request.POST.get('edificio'), andar=request.POST.get('andar'), espaco_idespaco=local)
-            new.save()
-            return redirect("atividades:criar_sala")
-        elif fields == "2" and request.POST.get('edificio') and request.POST.get('andar'):
-            new = Anfiteatro(edificio=request.POST.get('edificio'), andar=request.POST.get('andar'), espaco_idespaco=local)
-            new.save()
-            return redirect("atividades:criar_sala")
-        elif fields == "3" and request.POST.get('descricao'):
-            new = Arlivre(descricao=request.POST.get('descricao'), espaco_idespaco=local)
-            new.save()
-            return redirect("atividades:criar_sala")
-    context = {
-        "fields": fields,
-        "local": local,
-        "account": return_account_type(request.session["user_id"]),
-        'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)
-    }
-    return render(request, "atividades/especificar_espaco.html", context)
 
 
 def editar_local_view(request, idActivity):
