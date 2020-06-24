@@ -542,3 +542,11 @@ def getUserType(request):
         return HttpResponse(json.dumps({'type': num}), content_type="application/json")
 
     raise Exception("Error")
+
+def update_ano_user_null():
+    atual=datetime.date.today().year
+    users=Utilizador.objects.filter(dia_aberto_ano=None)
+    if DiaAberto.objects.filter(ano=atual).exists():
+        for user in users:
+            Utilizador.objects.filter(pk=user.pk).update(dia_aberto_ano=atual)
+

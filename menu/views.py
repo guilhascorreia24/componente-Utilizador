@@ -4,6 +4,7 @@ from .forms import *
 from .models import *
 from .filters import *
 from Notification.views import noti_not_checked
+from user.views import update_ano_user_null
 
 ###### Dia Aberto ##############
 def index(request):
@@ -30,6 +31,7 @@ def diaaberto_create(request):
                 Dia(dia=inicio+datetime.timedelta(days=x)).save()
                 dia1 = Dia.objects.filter(dia = inicio+datetime.timedelta(days=x))
                 HorarioHasDia(horario_hora=hora1[0], dia_dia=dia1[0]).save()
+            update_ano_user_null()
             return redirect("/diaaberto")
     return render(request,
                  template_name="DiaAberto/diaaberto_create.html", 
@@ -134,10 +136,11 @@ def menu_list_view(request):
     campus= Campus.objects.all()
     prato=Prato.objects.all()
     preco=DiaAberto.objects.all()
+    atual=datetime.date.today().year
     context = {
         "menu": menu,
         "campus": campus,
-        "prato":prato,'preco':preco,
+        "prato":prato,'preco':preco,'atual':atual,
         'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)
 
     }
