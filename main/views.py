@@ -143,7 +143,10 @@ def consultar_tarefa(request):
 	tarefas = Tarefa.objects.all()
 	sessao = Sessao.objects.all()
 	iduo = Coordenador.objects.get(pk=request.session['user_id']).unidade_organica_iduo
-	colab = Colaborador.objects.filter(curso_idcurso= Curso.objects.get(unidade_organica_iduo = iduo))
+	cursoid=Curso.objects.filter(unidade_organica_iduo = iduo)
+	colab=[]
+	for id in cursoid:
+		colab.append(Colaborador.objects.filter(curso_idcurso= cursoid))
 	atividade = Atividade.objects.filter(unidade_organica_iduo = iduo)
 	myFilter = TarefaFilter(request.GET, queryset=tarefas)
 	tarefas = myFilter.qs

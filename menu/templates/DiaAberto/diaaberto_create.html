@@ -1,4 +1,3 @@
-
 {% extends 'base_template.html' %}
 {% block steps %}
 <li><a href="{% url 'blog:blog-home' %}">Início</a></li>
@@ -10,7 +9,6 @@
 {% endif %}
 {% endblock %}
 {% block content %}
-{{form.errors}}
 <div style="padding: 3rem 2vw 1rem;">
     <div class="b-steps">
         <nav class="steps is-success">
@@ -18,161 +16,241 @@
                 <li class="step-item is-success is-active"><a class="step-link">
                         <div class="step-marker"><span class="icon"><i class="mdi mdi-book mdi-24px"></i></span></div>
                         <div class="step-details"><span class="step-title">{% if o %} Criar Dia Aberto
-                            {% else %}
-                            Editar Dia Aberto
-                            {% endif %}</span>
+                                {% else %}
+                                Editar Dia Aberto
+                                {% endif %}</span>
                         </div>
                     </a></li>
             </ul>
         </nav>
-<div style="padding: 1rem 2vw 1rem">
-    <form method="POST" class="post-form"> {% csrf_token %}
-    <div class="b-steps">
-      <section class="step-content">
-          <div class="step-item">
-    <div style="padding: 1rem 2vw 0px;">
-        <hr><h2 class="title has-text-grey is-uppercase" style="font-size: 0.9rem;"> Informação do Dia Aberto </h2>
-        <div class="columns">
-            <div class="column">
-                <div class="field">
-                    <label class="label">Ano</label>
-                     <div class="control is-clearfix">
-                    {{form.ano}}
-              </div>
-            </div>
-          </div>
-        <div class="column">
-            <div class="field">
-                <label class="label">Pagina Web do Dia Aberto</label>
-                 <div class="control is-clearfix">
-                  {{form.enderecopaginaweb}}
-                    </span> <!----></div> <!---->
-                    </div>
-                </div>
-            <div class="column">
-                <div class="field">
-                    <label class="label">Email da Universidade do Algarve</label>
-                     <div class="control is-clearfix">
-                        {{form.emaildiaaberto}}
-                        </span> <!----></div> <!---->
+        <div style="padding: 1rem 2vw 1rem">
+            <form method="POST" class="post-form"> {% csrf_token %}
+                <div class="b-steps">
+                    <section class="step-content">
+                        <div class="step-item">
+                            <div style="padding: 1rem 2vw 0px;">
+                                <hr>
+                                <h2 class="title has-text-grey is-uppercase" style="font-size: 0.9rem;"> Informação do
+                                    Dia Aberto </h2>
+                                <div class="columns">
+                                    <div class="column">
+                                        <div class="field">
+                                            <label class="label">Ano</label>
+                                            <div class="control is-clearfix">
+                                                {{form.ano}}
+                                            </div>
+                                        </div>
+                                        {{form.errors.ano}}
+                                    </div>
+                                   
+                                    <div class="column">
+                                        <div class="field">
+                                            <label class="label">Pagina Web do Dia Aberto</label>
+                                            <div class="control is-clearfix">
+                                                {{form.enderecopaginaweb}}
+                                                </span>
+                                                <!---->
+                                            </div>
+                                            <!---->
+                                        </div>
+                                    </div>
+                                    {{form.errors.enderecopaginaweb}}
+                                    <div class="column">
+                                        <div class="field">
+                                            <label class="label">Email da Universidade do Algarve</label>
+                                            <div class="control is-clearfix">
+                                                {{form.emaildiaaberto}}
+                                                </span>
+                                                <!---->
+                                            </div>
+                                            <!---->
+                                        </div>
+                                    </div>
+                                </div>
+                                {{form.errors.emaildiaaberto}}
+                                <div class="field">
+                                    <label class="label">Descrição</label>
+                                    <div class="control is-clearfix">
+                                        <textarea maxlength="300" class="textarea" id='{{form.descricao}}'
+                                            style="margin-top: 0px; margin-bottom: 0px; height: 30%;"></textarea>
+                                    </div>
+                                    <!---->
+                                </div>
+                            </div>
+
+
+                            <div style="padding: 1rem 2vw 0px;">
+                                <hr>
+                                <h2 class="title has-text-grey is-uppercase" style="font-size: 0.9rem;"> Datas para
+                                    Propor Atividades para o Dia Aberto </h2>
+                                <div class="columns">
+                                    <div class="column">
+                                        <div class="field">
+                                            <label class="label">Incio para Propor Atividades por parte dos
+                                                Docentes</label>
+                                            <div class="control is-clearfix">
+                                                {{form.datapropostaatividadeinicio}}
+                                                <!---->
+                                                <!---->
+                                                <!---->
+                                            </div>
+                                            <!---->
+                                        </div>
+                                    </div>
+                                    {{form.errors.datapropostaatividadeinicio}}
+                                    <div class="column">
+                                        <div class="field">
+                                            <label class="label">Fim para Propor Atividades por parte dos
+                                                Docentes</label>
+                                            <div class="control is-clearfix">
+                                                {{form.datapropostaatividadesfim}}
+                                                </span>
+                                                <!---->
+                                            </div>
+                                            <!---->
+                                        </div>
+                                    </div>
+                                    {{form.errors.datapropostaatividadesfim}}
+                                </div>
+                            </div>
+                            <div style="padding: 1rem 2vw 0px;">
+                                <hr>
+                                <h2 class="title has-text-grey is-uppercase" style="font-size: 0.9rem;"> Datas da
+                                    Inscrição Dia Aberto </h2>
+                                <div class="columns">
+                                    <div class="column">
+                                        <div class="field">
+                                            <label class="label">Incio da Inscrição para Dia Aberto</label>
+                                            <div class="control is-clearfix">
+                                                {{form.datainscricaonasatividadesinicio}}
+                                                <!---->
+                                                <!---->
+                                                <!---->
+                                            </div>
+                                            <!---->
+                                        </div>
+                                    </div>
+                                    {{form.errors.datainscricaonasatividadesinicio}}
+                                    <div class="column">
+                                        <div class="field">
+                                            <label class="label">Fim da Inscrição para Dia Aberto</label>
+                                            <div class="control is-clearfix">
+                                                {{form.datainscricaonasatividadesfim}}
+                                                </span>
+                                                <!---->
+                                            </div>
+                                            <!---->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="padding: 1rem 2vw 0px;">
+                                <hr>
+                                <h2 class="title has-text-grey is-uppercase" style="font-size: 0.9rem;"> Datas do Dia
+                                    Aberto </h2>
+                                <div class="columns">
+                                    <div class="column">
+                                        <div class="field">
+                                            <label class="label">Incio do Dia Aberto</label>
+                                            <div class="control is-clearfix">
+                                                {{form.datadiaabertoinicio}}</div>
+                                            <!---->
+                                        </div>
+                                    </div>
+                                    {{form.errors.datadiaabertoinicio}}
+                                    <div class="column">
+                                        <div class="field">
+                                            <label class="label">Fim do Dia Aberto</label>
+                                            <div class="control is-clearfix">
+                                                {{form.datadiaabertofim}}
+                                                </span>
+                                                <!---->
+                                            </div>
+                                            <!---->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="padding: 1rem 2vw 0px;">
+                                <hr>
+                                <h2 class="title has-text-grey is-uppercase" style="font-size: 0.9rem;"> Preço dos
+                                    Almoços nas Cantinas </h2>
+                                <div class="columns">
+                                    <div class="column">
+                                        <div class="field">
+                                            <label class="label">Preço do aluno</label>
+                                            <div class="control is-clearfix">
+                                                {{form.preco_almoco_estudante}}
+                                                <!---->
+                                                <!---->
+                                                <!---->
+                                            </div>
+                                            <!---->
+                                        </div>
+                                    </div>
+                                    {{form.errors.preco_almoco_estudante}}
+                                    <div class="column">
+                                        <div class="field">
+                                            <label class="label">Preço do professor</label>
+                                            <div class="control is-clearfix">
+                                                {{form.preco_almoco_professor}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {{form.errors.preco_almoco_professor}}
+                                </div>
+                                </div>
+                                <div style="padding: 1rem 2vw 0px;">
+                                    <hr>
+                                    <h2 class="title has-text-grey is-uppercase" style="font-size: 0.9rem;"> Hora de
+                                        Funcionamneto </h2>
+                                        <div class="columns">
+                                        <div class="column">
+                                            <div class="field">
+                                                <label class="label">Hora Abertura</label>
+                                                 <div class="control is-clearfix">
+                                                    <input type="time" name="h_incio" class="input" required="" id="h_incio">
+                                                   </div>
+                                                 </div>
+                                               </div>
+                                               <div class="column">
+                                                <div class="field">
+                                                    <label class="label">Hora Fecho</label>
+                                                     <div class="control is-clearfix">
+                                                        <input type="time" name="h_fim" class="input" required="" id="h_fim">
+                                                       </div>
+                                                     </div>
+                                                   </div>
+
+                    </section>
+                    <div class="column is-8 is-offset-2">
+                        <div class="level">
+                            <div class="level-left">
+                                <a href="{% url 'menu:diaaberto_list' %}" class="button is-outlined" type="button">
+                                    <span>Cancelar</span>
+                                </a>
+                            </div>
+                            <div class="level-right">
+                                <input href="{% url "blog:blog-home" %}"
+                                    class="button is-large is-success is-outlined is-link" type='submit'
+                                    value='Submeter'>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            <div class="field">
-                <label class="label">Descrição</label>
-                          <div class="control is-clearfix">
-                              <textarea maxlength="300" class="textarea" id='{{form.descricao}}' style="margin-top: 0px; margin-bottom: 0px; height: 30%;"></textarea>
-                        </div> <!---->
-                    </div>
-                </div>
-        
-                                    
-                 <div style="padding: 1rem 2vw 0px;">
-                     <hr><h2 class="title has-text-grey is-uppercase" style="font-size: 0.9rem;"> Datas para Propor Atividades para o Dia Aberto </h2>
-                     <div class="columns">
-                         <div class="column">
-                         <div class="field">
-                         <label class="label">Incio para Propor Atividades por parte dos Docentes</label> 
-                         <div class="control is-clearfix">
-                             {{form.datapropostaatividadeinicio}} <!----> <!----> <!----></div>
-                              <!----></div>
-                             </div>
-                             <div class="column">
-                                 <div class="field">
-                                     <label class="label">Fim para Propor Atividades por parte dos Docentes</label>
-                                      <div class="control is-clearfix">
-                                          {{form.datapropostaatividadesfim}}
-                                         </span> <!----></div> <!---->
-                                         </div>
-                                     </div>
-                                 </div>
-                                   </div>
-                                       <div style="padding: 1rem 2vw 0px;">
-                                           <hr><h2 class="title has-text-grey is-uppercase" style="font-size: 0.9rem;"> Datas da Inscrição Dia Aberto </h2>
-                                           <div class="columns">
-                                               <div class="column">
-                                               <div class="field">
-                                               <label class="label">Incio da Inscrição para Dia Aberto</label> 
-                                               <div class="control is-clearfix">
-                                                   {{form.datainscricaonasatividadesinicio}} <!----> <!----> <!----></div>
-                                                    <!----></div>
-                                                   </div>
-                                                   <div class="column">
-                                                       <div class="field">
-                                                           <label class="label">Fim da Inscrição para Dia Aberto</label>
-                                                            <div class="control is-clearfix">
-                                                               {{form.datainscricaonasatividadesfim}}
-                                                               </span> <!----></div> <!---->
-                                                               </div>
-                                                           </div>
-                                                       </div>
-                                                   </div>
-                                                   <div style="padding: 1rem 2vw 0px;">
-                                                    <hr><h2 class="title has-text-grey is-uppercase" style="font-size: 0.9rem;"> Datas do Dia Aberto </h2>
-                                                    <div class="columns">
-                                                        <div class="column">
-                                                        <div class="field">
-                                                        <label class="label">Incio do Dia Aberto</label> 
-                                                        <div class="control is-clearfix">
-                                                            {{form.datadiaabertoinicio}}</div>
-                                                             <!----></div>
-                                                            </div>
-                                                            <div class="column">
-                                                                <div class="field">
-                                                                    <label class="label">Fim do Dia Aberto</label>
-                                                                     <div class="control is-clearfix">
-                                                                        {{form.datadiaabertofim}}
-                                                                        </span> <!----></div> <!---->
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                </div>
-                                                      <div style="padding: 1rem 2vw 0px;">
-                                                          <hr><h2 class="title has-text-grey is-uppercase" style="font-size: 0.9rem;"> Preço dos Almoços nas Cantinas </h2>
-                                                          <div class="columns">
-                                                              <div class="column">
-                                                              <div class="field">
-                                                              <label class="label">Preço do aluno</label> 
-                                                              <div class="control is-clearfix">
-                                                                  {{form.preco_almoco_estudante}}
-                                                                   <!----> <!----> <!----></div>
-                                                                   <!----></div>
-                                                                  </div>
-                                                                  <div class="column">
-                                                                      <div class="field">
-                                                                          <label class="label">Preço do professor</label>
-                                                                           <div class="control is-clearfix">
-                                                                               {{form.preco_almoco_professor}}
-                                                                              </div>
-                                                                              </div>
-                                                                          </div>
-                                                                      </div>
-                                                                  </section>
-                                                                    <div class="column is-8 is-offset-2">
-                                                                                <div class="level">
-                                                                                <div class="level-left">
-                                                                                <a href="{% url 'menu:diaaberto_list' %}" class="button is-outlined" type="button">
-                                                                                              <span>Cancelar</span>
-                                                                                </a>
-                                                                                </div>
-                                                                                  <div class="level-right">
-                                                                                              <input  href="{% url "blog:blog-home" %}" class="button is-large is-success is-outlined is-link" type='submit' value='Submeter'>
-                                                                                     </button>
-                                                                                     </div>
-                                                                             </div>
-                                                                            </div>
-                                                                            </div>
-                                                                            </form>
-                                                                            </div>
-                                                                            </div>
-                                                                            </div>
-                                                            
-                                                                                       <style>
-                                                                                                   .label {
-                                                                                                   font-weight: normal;
-                                                                                                   }
-                                                                                                   .b-steps .steps .step-items .step-item .step-details .step-title {
-                                                                                                   font-size: 1rem;
-                                                                                                   }
-                                                                                               </style>
-                                                                                       {% endblock content%}
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+    .label {
+        font-weight: normal;
+    }
+
+    .b-steps .steps .step-items .step-item .step-details .step-title {
+        font-size: 1rem;
+    }
+</style>
+{% endblock content%}
