@@ -1,0 +1,164 @@
+{% extends 'home.html' %}
+
+{% load static %}
+
+{% block content %}
+<nav class="breadcrumb" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="/">Início</a></li>
+    <li class="is-active"><a href="" aria-current="page">Consultar Menus</a></li>
+  </ul>
+</nav>
+<div class="columns">
+    <div class="column is-3">
+        <div>
+            <p data-v-1513178e="" class="menu-label">Filtros do Menu</p>
+            <form method="GET">
+                <div class="column">
+                    <div class="field">
+                        <div class="control is-expanded">
+                                <span class="select is-fullwidth is-empty">
+                                <select id="myInput"onchange="myFunction()">
+                                    <option hidden value="">Filtrar por Campus</option>
+                                    {% for campus in campus %}
+                                    <option  value="{{campus.nome}}">{{campus.nome}}</option>
+                                    {% endfor %}
+                                </select>
+                                </span>
+                            </div>
+                        </div>
+                </div>
+                <div class="column">
+                    <div class="field">
+                        <div class="control">
+                            <div class="select is-fullwidth">
+                                <span class="select is-fullwidth is-empty">
+                                    <select id="myInput1"onchange="myFunction()">
+                                        <option hidden value="">Filtrar por Data do Almoço</option>
+                                        {% for menu in menu %}
+                                        <option  value="{{menu.horario_has_dia_id_dia_hora.dia_dia.dia | date:"d/m/Y"}}">{{menu.horario_has_dia_id_dia_hora.dia_dia.dia | date:"d/m/Y"}}</option>
+                                        {% endfor %}
+                                    </select>
+                                    </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <button class="button is-outlined is-link is-danger" type="submit">
+                    <span>Limpar</span>
+                    <span class="icon is-medium"><i class="mdi mdi-broom"></i></span>
+                </button>
+         </form>
+    </div>
+</div>
+<div class="column">
+        <div class="table ">
+        
+        <a href="/menu/criar" class="button is-success is-outlined" type="button" style="margin-bottom: 0.9rem; margin-right: 1rem;">
+           <span class="icon is-small">
+               <i class="mdi mdi-plus"></i></span> 
+                   <span> Adicionar Menu </span> <!----></a>
+                   <a href="/menu/criarprato/" class="button is-success is-outlined" type="button" style="margin-bottom: 0.9rem; margin-right: 1rem;">
+                    <span class="icon is-small">
+                        <i class="mdi mdi-plus"></i></span> 
+                            <span> Adicionar Prato </span> <!----></a>
+
+                  <!---- <div class="field table-mobile-sort">
+                     <div class="field has-addons">
+                       <div class="control is-expanded">
+                         <span class="select is-fullwidth">
+                           <select><option value="[object Object]">
+                              Escola</option><option value="[object Object]">    
+                                Localidade</option><option value="[object Object]">    
+                                  Campus</option></select></span> </div> 
+                                  <div class="control"><button class="button is-primary">
+                                    <span class="icon is-small">
+                                      <i class="mdi mdi-menu-up"></i></span></button></div></div></div>-->
+        <div class="table "></div>
+            <div class="table-wrapper">
+                <table id="myTable" class="table has-mobile-cards is-hoverable is-fullwidth">
+                    <thead>
+                            <th>
+                                Menu:
+                            </th>
+                            <th>
+                                Campus:
+                            </th>
+                            <th>
+                                Dia:
+                            </th>
+                            <th>
+                                Hora:
+                            </th>
+                            <th>
+                                Almoços Disponivel:
+                            </th>
+                            <th>Ações</th>
+                        </thead>
+                        <tbody>
+                            {% for instance in menu %}
+                            
+                            <tr>
+                                <td>{{instance.menu}}</td>
+                                <td>{{instance.campus_idcampus}}</td>
+                                <td>{{instance.horario_has_dia_id_dia_hora.dia_dia.dia| date:"d/m/Y"                                }}</td> 
+                                <td>{{instance.horario_has_dia_id_dia_hora.horario_hora.hora}} </td>
+                                <td>{{instance.nralmocosdisponiveis}}</td>
+                                <td>
+                                    <a href="{{instance.idmenu}}/details/">
+                                        <span class="icon is-small">
+                                            <i class="mdi mdi-account-search mdi-24px"></i>
+                                        </span>
+                                    </a>
+                                    
+                                    <a href="{{instance.idmenu}}/update/">
+                                        <span class="icon is-small">
+                                            <i class="mdi mdi-pencil mdi-24px"></i>
+                                        </span>
+                                    </a>
+
+                                        <a href="{{instance.idmenu}}/apagar/">
+                                            <span class="icon is-small has-text-danger">
+                                                <i class="mdi mdi-close-box mdi-24px"></i>
+                                            </span>
+                                        </a>
+                                </td>
+                             </tr>
+                            {% endfor %}
+                    </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</div>
+
+
+<script>
+    function myFunction() {
+        var input,input2,input3,filter,filter2,filter3,filter5, table, tr, td,td1,td2,td3,td4, i, txtValue,txtValue1,txtValue2,txtValue3,txtValue4;
+        input = document.getElementById("myInput");
+        input2 = document.getElementById("myInput1");
+        filter = input.value.toUpperCase();
+        filter2 = input2.value.toUpperCase();
+        console.log(filter+" "+filter2);
+        table = document.getElementById("myTable");
+        tr = table.getElementsByTagName("tr");
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[1];
+            td1= tr[i].getElementsByTagName("td")[2];
+            if (td && td1) {
+                txtValue = td.textContent || td.innerText;
+                txtValue1 = td1.textContent || td1.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1 && txtValue1.toUpperCase().indexOf(filter2) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+</script>
+
+
+{% endblock content %}

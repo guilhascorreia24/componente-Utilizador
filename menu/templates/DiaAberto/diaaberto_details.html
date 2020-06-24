@@ -1,0 +1,55 @@
+{% extends 'home.html' %}
+
+{% block content %}
+<nav class="breadcrumb" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="">Início</a></li>
+    <li><a href="/diaaberto">Consultar Anos Anteriores</a></li>
+    <li class="is-active"><a href="" aria-current="page">Detalhes sobre o Dia Aberto do ano {{diaaberto.ano}}</a></li>
+  </ul>
+</nav>
+<div class="table "></div>
+<div class="table-wrapper">
+    <table class="table has-mobile-cards is-hoverable is-fullwidth">
+        <thead>
+                <th></th>
+                <th></th>
+                <tr>
+                  <td><b>Ano:</b></td>
+                    <td>{{diaaberto.ano}}</td>
+                </tr>
+                <td><b>Email do Dia Aberto:</b></td>
+                    <td>{{diaaberto.emaildiaaberto}}</td>
+                </tr>
+                <td><b>Endereço da página Web:</b></td>
+                    <td>{{diaaberto.enderecopaginaweb}}</td>
+                </tr>
+                <td><b>A Proposta de Atividades começa:</b></td>
+                    <td>{{diaaberto.datapropostaatividadeinicio}}</td>
+                </tr>
+                <td><b>A Proposta de Atividades acaba: </b></td>
+                    <td>{{diaaberto.datapropostaatividadesfim}}</td>
+                </tr>
+                <td><b>A inscrição comeceça dia: </b></td>
+                    <td>{{diaaberto.datainscricaonasatividadesinicio}}</td>
+                </tr>
+                <td><b>A inscrição acaba dia: </b></td>
+                    <td>{{diaaberto.datainscricaonasatividadesfim}}</td>
+                </tr>
+                <td><b>O Dia Aberto comeceça dia: </b></td>
+                    <td>{{diaaberto.datadiaabertoinicio}}</td>
+                </tr>
+                <td><b>O Dia Aberto acaba dia: </b></td>
+                    <td>{{diaaberto.datadiaabertofim}}</td>
+                </tr>
+                <td><b>Descrição:</b></td>
+                    <td>{{diaaberto.descricao}}</td>
+                </tr>
+                      </thead>
+                    </table>
+                      <a href="/diaaberto" class="button is-outlined" type="button">
+                        <span>Voltar</span>
+                      </a>
+                    </div>
+  {% endblock content %}
+
