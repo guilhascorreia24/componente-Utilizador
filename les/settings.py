@@ -52,7 +52,8 @@ INSTALLED_APPS = [
     'tarefas.apps.TarefasConfig',
     'atividades',
     'formularios',
-    'main.apps.MainConfig'
+    'main.apps.MainConfig',
+    'menu'
 ]
 
 MIDDLEWARE = [

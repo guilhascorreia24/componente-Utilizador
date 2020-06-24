@@ -30,8 +30,9 @@
     margin-top: 0px; 
 ">
         <div role="menu" class="dropdown-content">
-            <a data-v-a67fe1ba="" href="/transportes" class="navbar-item "> Transportes </a>
-            <a data-v-a67fe1ba="" href="/almocos" class="navbar-item"> Almoços </a>
+            <a data-v-a67fe1ba="" href="{% url 'menu:transporte-list' %}" class="navbar-item "> Transportes </a>
+            <a data-v-a67fe1ba="" href="{% url 'menu:menu_list' %}" class="navbar-item"> Almoços </a>
+            <a data-v-a67fe1ba="" href="{% url 'menu:diaaberto_list' %}" class="navbar-item"> Geral </a>
         </div>
     </div>
 </div>

@@ -19,7 +19,7 @@
     <br>
 <div class="table " style="padding-left: 10%;padding-right: 10%;">
             <div class="table-wrapper">
-                <table class="table has-mobile-cards is-hoverable is-fullwidth">
+                <table class="table has-mobile-cards is-hoverable is-fullwidth" id="myTable">
                     <thead>
                             <th>
                                 Campus:
@@ -31,6 +31,7 @@
                             <th></th>
                             </tr>
                     </thead>
+                    <tbody>
                             {% for local in espaco %}
                             <tr>
                                 <td>{{local.campus_idcampus.nome}}</td>
@@ -72,31 +73,37 @@
                                 </div>
                             </div>
                                 </td>
-                                <td>
-                                    {% if local not in list %}
-                                    <form method="POST">
-                                        <a href="{% url 'atividades:especificar_espaco' local.idespaco %}">
-                                            Especificar Tipo
-                                        </a>
-                                    </form>
-                                    {% endif %}
-                                </td>
                             </tr>
                             {% endfor %}
+                    </tbody>
                 </table>
                 <br>
                  <form method="POST" id="addEspaco" enctype="multipart/form-data"> {% csrf_token %}
                     <div class="table "></div>
                     <div class="table-wrapper">
                     <table class="table has-mobile-cards is-hoverable is-fullwidth">
-                        <h3>Adicionar Local: </h3>
+                          <h3>Adicionar Local: </h3>
                     <thead>
+                    <th></th>
                     <th></th>
                     <th></th>
                     <th></th>
                     <th></th>
 
                     <tr>
+                        <td>
+                            <div class="field">
+                    <label class="label">Tipo de local</label>
+                    <div class="select is-fullwidth">
+                            <select id="tipoSala" name="tipoSala" onchange='this.form.submit()'>
+                                <option value="" disabled selected>Selecione tipo desejado</option>
+                                <option value="1" {% if  fields == "1" %} selected {% endif %}>Sala</option>
+                                <option value="2" {% if  fields == "2" %} selected {% endif %}>Anfiteatro</option>
+                                <option value="3"{% if  fields == "3" %} selected {% endif %}>ArLivre</option>
+                            </select>
+                        </div>
+                  </div>
+                        </td>
                         <td>
                     <div class="column">
                         <div class="control is-expanded">
@@ -124,12 +131,112 @@
                     </div>
                         </td>
                         <td>
-                        <button data-v-5aa16ff8="" type="button submit" form="addEspaco" class="button is-success" style="margin-top:40px" >
-                        <span class="icon is-small">
-                            <i class="mdi mdi-plus"></i>
-                        </span>
-                        <span>Adicionar Local</span>
-                    </button>
+                            {% if fields == "1" %}
+                        <div class="level-right"><button type="button" class="button is-large is-success is-outlined"
+                                data-toggle="modal"  data-target="#salaModal" data-backdrop="false">
+                                <!----> <span> Adicionar local </span>
+                                <!----></button></div>
+                                <!-- POP UP Sala-->
+                    <div class="dialog modal" id="salaModal">
+                    <div class="modal-background"></div>
+                    <br><br><br><br><br><br><br><br><br><br><br><br>
+                    <div class="modal-card animation" style="max-width:360px">
+                        <!---->
+                        <section class="modal-card-body is-titleless">
+                             <b>Sala</b>
+                            <div class="media">
+                                 <!---->
+                                 <div class="field"><div class="control">
+                                     <label class="">Edificio:</label><br>
+                                    <input required="required" class="input" name="edificioSala">
+                                 </div>
+                                 <!---->
+                                 <div class="field"><div class="control">
+                                     <label class="">Andar:</label><br>
+                                    <input required="required" class="input" name="andarSala" type="number">
+                                 </div>
+                                 <!---->
+                            </div>
+                        </section>
+                        <footer class="modal-card-foot"><button class="button" data-dismiss="modal">
+                                Cancelar
+                            </button>
+                            <button class="button is-success" type="submit">
+                                Adicionar local
+                            </button></a></footer>
+                            </form>
+                    </div>
+                     </div>
+                                                    {% elif fields == "2" %}
+                                <div class="level-right"><button type="button" class="button is-large is-success is-outlined"
+                                data-toggle="modal"data-target="#anfiteatroModal" data-backdrop="false">
+                                <!----> <span> Adicionar local </span>
+                                <!----></button></div>
+                           <!-- POP UP Anfiteatro-->
+                    <div class="dialog modal" id="anfiteatroModal">
+                    <div class="modal-background"></div>
+                    <br><br><br><br><br><br><br><br><br><br><br><br>
+                    <div class="modal-card animation" style="max-width:360px">
+                        <!---->
+                        <section class="modal-card-body is-titleless">
+                             <b>Anfiteatro</b>
+                            <div class="media">
+
+                                <!---->
+                                 <div class="field"><div class="control">
+                                     <label class="">Edificio:</label><br>
+                                    <input required="required" class="input" name="edificioAnfiteatro">
+                                 </div>
+                                 <!---->
+                                 <div class="field"><div class="control">
+                                     <label class="">Andar:</label><br>
+                                    <input required="required" class="input" name="andarAnfiteatro" type="number">
+                                 </div>
+                            </div>
+                        </section>
+                        <footer class="modal-card-foot"><button class="button" data-dismiss="modal">
+                                Cancelar
+                            </button>
+                            <button class="button is-success" type="submit">
+                                Adicionar local
+                            </button></a></footer>
+                            </form>
+                    </div>
+                    </div>
+                      {% elif fields == "3" %}
+                            <div class="level-right"><button type="button" class="button is-large is-success is-outlined"
+                                data-toggle="modal"data-target="#arlivreModal" data-backdrop="false">
+                                <!----> <span> Adicionar local </span>
+                                <!----></button></div>
+                      <!-- POP UP ArLivre-->
+                    <div class="dialog modal" id="arlivreModal">
+                    <div class="modal-background"></div>
+                    <br><br><br><br><br><br><br><br><br><br><br><br>
+                    <div class="modal-card animation" style="max-width:360px">
+                        <!---->
+                        <section class="modal-card-body is-titleless">
+                             <b>Espaço ao Ar Livre</b>
+                            <div class="media">
+
+
+                                 <!---->
+                                 <div class="field"><div class="control">
+                                     <label class="">Descrição:</label><br>
+                                    <input required="required" class="input" name="descrition">
+                                 </div>
+
+                            </div>
+                        </section>
+                        <footer class="modal-card-foot"><button class="button" data-dismiss="modal">
+                                Cancelar
+                            </button>
+                            <button class="button is-success">
+                                Adicionar local
+                            </button></a></footer>
+                            </form>
+                    </div>
+                     </div>
+                                                    {% endif %}
                         </td>
                     </tr>
                     </thead>
@@ -148,4 +255,24 @@
                 </div>
                 </div>
                 </div>
+
+
+
+
+
+
+
+        <script>
+            $(document).ready(function () {
+                $('#myTable').DataTable({
+                    "paging": true,
+                    "info": false,
+                    "searching": false,
+                    "bLengthChange": false,
+                    "aLengthMenu": [[5, 10, 25, -1], [5, 10, 25, "All"]],
+                    "columnDefs": [
+            { "orderable": false, "targets": 2 }]
+                });
+            });
+        </script>
 {% endblock content%}

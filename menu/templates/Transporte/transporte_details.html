@@ -1,0 +1,45 @@
+{% extends 'home.html' %}
+
+{% block content %}
+<nav class="breadcrumb" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="">Início</a></li>
+    <li><a href="/transporte">Consultar Transporte</a></li>
+    <li class="is-active"><a href="" aria-current="page">Detalhes sobre o Transporte "{{transporte.transporte_idtransporte.identificacao}}"</a></li>
+  </ul>
+</nav>
+<div class="table "></div>
+<div class="table-wrapper">
+    <table class="table has-mobile-cards is-hoverable is-fullwidth">
+        <thead>
+                <th></th>
+                <th></th>
+                <tr>
+                  <td><b>Identificação:</b></td>
+                    <td>{{transporte.transporte_idtransporte.identificacao}}</td>
+                </tr>
+                <td><b>Dia:</b></td>
+                    <td>{{transporte.horario_has_dia_id_dia_hora.dia_dia.dia | date:"d/m/Y"}}</td>
+                </tr>
+                <td><b>Hora:</b></td>
+                    <td>{{transporte.horario_has_dia_id_dia_hora.horario_hora.hora}}</td>
+                </tr>
+                <td><b>Capacidade:</b></td>
+                    <td>{{transporte.transporte_idtransporte.capacidade}}</td>
+                </tr>
+                <td><b>Partida: </b></td>
+                    <td>{{transporte.origem.paragem}}</td>
+                </tr>
+                <td><b>Chegada: </b></td>
+                    <td>{{transporte.destino.paragem}}</td>
+                </tr>
+                      </thead>
+                    </table>
+                      <a href="/transporte" class="button is-outlined" type="button">
+                        <span>Voltar</span>
+                      </a>
+                    </div>
+  
+  {% endblock content %}
+
+

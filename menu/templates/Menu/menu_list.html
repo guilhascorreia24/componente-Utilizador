@@ -1,0 +1,308 @@
+{% extends 'base_template.html' %}
+
+{% load static %}
+{% block steps %}
+<li><a href="{% url 'blog:blog-home' %}">Início</a></li>
+<li class="is-active"><a href="" aria-current="page">Consultar Menus</a></li>
+{% endblock %}
+{% block content %}
+<div class="columns">
+    <div class="column is-3">
+        <div>
+            <p data-v-1513178e="" class="menu-label">Filtros do Menu</p>
+            <form method="GET">
+                <div class="column">
+                    <div class="field">
+                        <div class="control is-expanded">
+                                <span class="select is-fullwidth is-empty">
+                                <select id="myInput"onchange="myFunction()">
+                                    <option hidden value="">Filtrar por Campus</option>
+                                    {% for campus in campus %}
+                                    <option  value="{{campus.nome}}">{{campus.nome}}</option>
+                                    {% endfor %}
+                                </select>
+                                </span>
+                            </div>
+                        </div>
+                </div>
+                <div class="column">
+                    <div class="field">
+                        <div class="control">
+                            <div class="select is-fullwidth">
+                                <span class="select is-fullwidth is-empty">
+                                    <select id="myInput1"onchange="myFunction()">
+                                        <option hidden value="">Filtrar por Data do Almoço</option>
+                                        {% for menu in menu %}
+                                        <option  value="{{menu.horario_has_dia_id_dia_hora.dia_dia.dia | date:"d/m/Y"}}">{{menu.horario_has_dia_id_dia_hora.dia_dia.dia | date:"d/m/Y"}}</option>
+                                        {% endfor %}
+                                    </select>
+                                    </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <button class="button is-outlined is-link is-danger" type="submit" style="
+                margin-left: 5%;">
+                    <span>Limpar</span>
+                    <span class="icon is-medium"><i class="mdi mdi-broom"></i></span>
+                </button>
+         </form>
+    </div>
+</div>
+<div class="column">
+        <div class="table ">
+        
+        <a href="{% url "menu:menu_criar" %}" class="button is-success is-outlined" type="button" style="margin-bottom: 0.9rem; margin-right: 1rem;">
+           <span class="icon is-small">
+               <i class="mdi mdi-plus"></i></span> 
+                   <span> Adicionar Menu </span> <!----></a>
+                   <a href="{% url "menu:prato_criar" %}" class="button is-success is-outlined" type="button" style="margin-bottom: 0.9rem; margin-right: 1rem;">
+                    <span class="icon is-small">
+                        <i class="mdi mdi-plus"></i></span> 
+                            <span> Adicionar Prato </span> <!----></a>
+
+                  <!---- <div class="field table-mobile-sort">
+                     <div class="field has-addons">
+                       <div class="control is-expanded">
+                         <span class="select is-fullwidth">
+                           <select><option value="[object Object]">
+                              Escola</option><option value="[object Object]">    
+                                Localidade</option><option value="[object Object]">    
+                                  Campus</option></select></span> </div> 
+                                  <div class="control"><button class="button is-primary">
+                                    <span class="icon is-small">
+                                      <i class="mdi mdi-menu-up"></i></span></button></div></div></div>-->
+            <div class="table-wrapper">
+                <table id="myTable" class="table has-mobile-cards is-hoverable is-fullwidth">
+                    <thead>
+                            <th>
+                                Menu:
+                            </th>
+                            <th>
+                                Campus:
+                            </th>
+                            <th>
+                                Dia:
+                            </th>
+                            <th>
+                                Hora:
+                            </th>
+                            <th>
+                                Almoços Disponivel:
+                            </th>
+                            <th>Ações</th>
+                        </thead>
+                        <tbody>
+                            {% for instance in menu %}
+                            
+                            <tr>
+                                <td>{{instance.menu}}</td>
+                                <td>{{instance.campus_idcampus}}</td>
+                                <td>{{instance.horario_has_dia_id_dia_hora.dia_dia.dia| date:"d/m/Y"                                }}</td> 
+                                <td>{{instance.horario_has_dia_id_dia_hora.horario_hora.hora}} </td>
+                                <td>{{instance.nralmocosdisponiveis}}</td>
+                                <td>
+                                    <a data-toggle="modal"
+                                    data-target="#{{forloop.counter}}">
+                                        <span class="icon is-small">
+                                            <i class="mdi mdi-account-search mdi-24px"></i>
+                                        </span>
+                                    </a>
+                                    
+                                    <a href="{{instance.idmenu}}/update/">
+                                        <span class="icon is-small">
+                                            <i class="mdi mdi-pencil mdi-24px"></i>
+                                        </span>
+                                    </a>
+
+                                        <a href="{% url 'menu:menu_delete' instance.idmenu %}">
+                                            <span class="icon is-small has-text-danger">
+                                                <i class="mdi mdi-close-box mdi-24px"></i>
+                                            </span>
+                                        </a>
+                                </td>
+                             </tr>
+                            {% endfor %}
+                    </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</div>
+
+{% for i in menu %}
+<div tabindex="-1" class="modal fade" id="{{forloop.counter}}" role="dialog" aria-hidden="true" aria-labelledby="exampleModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <button class="close" aria-label="Close" type="button" data-dismiss="modal">
+                    <span aria-hidden="true">X</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div>                   
+                        <div class="input-group col-sm-12">
+                            <div class="input-group-prepend labelForm">
+                                <span class="input-group-text w-100">Sopa e Sobremesa:</span>
+                            </div>
+                            <input disabled="" class="form-control bg-light" type="text" value="{{ i.descricao }}">
+                        </div>
+                        <br>
+                        {% for prato in prato %}
+                        {% if prato.menu_idmenu == i.pk %}
+                        {% if prato.tipo == "Carne" %}
+                        <div class="input-group col-sm-12">
+                            <div class="input-group-prepend labelForm">
+                                <span class="input-group-text w-100">Prato de Carne:</span>
+                            </div>
+                            <input disabled="" class="form-control col-sm-2 bg-light" type="text" value="{{ prato.descricao }}">
+                            <a href="{% url 'menu:prato_update' prato.idprato %}">
+                                <span class="icon is-small">
+                                    <i class="mdi mdi-tooltip-edit mdi-22px"></i>
+                                </span>
+                            </a>   
+                            <a href="{% url 'menu:prato_delete' prato.idprato %}">
+                                <span class="icon is-small">
+                                    <i class="mdi mdi-delete mdi-24px"></i>
+                                </span>
+                            </a>
+                        </div>
+                        <br>
+                        {% endif %}
+                        {% if prato.tipo == "Peixe" %}
+                        <div class="input-group col-sm-12">
+                            <div class="input-group-prepend labelForm">
+                                <span class="input-group-text w-100">Prato de Peixe:</span>
+                            </div>
+                            <input disabled="" class="form-control col-sm-2 bg-light" type="text" value="{{prato.descricao}} ">
+                            <a href="{% url 'menu:prato_update' prato.idprato %}">
+                                <span class="icon is-small">
+                                    <i class="mdi mdi-tooltip-edit mdi-22px"></i>
+                                </span>
+                            </a>   
+                            <a href="{% url 'menu:prato_delete' prato.idprato %}">
+                                <span class="icon is-small">
+                                    <i class="mdi mdi-delete mdi-24px"></i>
+                                </span>
+                            </a>
+                        </div>
+                        <br>
+                        {% endif %}
+                        {% if prato.tipo == "Vegetariano" %}
+                        <div class="input-group col-sm-12">
+                            <div class="input-group-prepend labelForm">
+                                <span class="input-group-text w-100">Prato Vegetariano:</span>
+                            </div>
+                            <input disabled="" class="form-control col-sm-2 bg-light" type="text" value="{{prato.descricao}} ">
+                            <a href="{% url 'menu:prato_update' prato.idprato %}">
+                                <span class="icon is-small">
+                                    <i class="mdi mdi-tooltip-edit mdi-22px"></i>
+                                </span>
+                            </a>   
+                            <a href="{% url 'menu:prato_delete' prato.idprato %}">
+                                <span class="icon is-small">
+                                    <i class="mdi mdi-delete mdi-24px"></i>
+                                </span>
+                            </a>
+                        </div>
+                        <br>
+                        {% endif %}
+                        {% endif %}
+                        {% endfor %}
+                        <div class="input-group col-sm-12">
+                            <div class="input-group-prepend labelForm">
+                                <span class="input-group-text w-100">Dia do almoço:</span>
+                            </div>
+                            <input disabled="" class="form-control bg-light" type="text" value="{{ i.horario_has_dia_id_dia_hora.dia_dia.dia }}">
+                        </div>
+                        <br>
+                        <div class="input-group col-sm-12">
+                            <div class="input-group-prepend labelForm">
+                                <span class="input-group-text w-100">Hora do Almoço:</span>
+                            </div>
+                            <input disabled="" class="form-control bg-light" type="text" value="{{ i.horario_has_dia_id_dia_hora.horario_hora.hora }}">
+                        </div>
+                        <br>
+                        <div class="input-group col-sm-12">
+                            <div class="input-group-prepend labelForm">
+                                <span class="input-group-text w-100">Campus:</span>
+                            </div>
+                            <input disabled="" class="form-control bg-light" type="text" value="{{ i.campus_idcampus }}">
+                        </div>
+                        <br>
+                        <div class="input-group col-sm-12">
+                            <div class="input-group-prepend labelForm">
+                                <span class="input-group-text w-100">Numero de Almoços disponiveis:</span>
+                            </div>
+                            <input disabled="" class="form-control bg-light" type="text" value="{{ i.nralmocosdisponiveis }}">
+                        </div>
+                        <br>
+                        {% for preco in preco %}
+                        {% if preco.ano == atual %}
+                        <div class="input-group col-sm-12">
+                            <div class="input-group-prepend labelForm">
+                                <span class="input-group-text w-100">Preço do almoço para estudantes:</span>
+                            </div>
+                            <input disabled="" class="form-control bg-light" type="text" value="{{preco.preco_almoco_estudante}}€">
+                        </div>
+                        <br>
+                        <div class="input-group col-sm-12">
+                            <div class="input-group-prepend labelForm">
+                                <span class="input-group-text w-100">Preço do almoço para professores:</span>
+                            </div>
+                            <input disabled="" class="form-control bg-light" type="text" value="{{preco.preco_almoco_professor}}€">
+                        </div>
+                        <br>
+                        {% endif %}
+                        {% endfor %}
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+<script>
+    function myFunction() {
+        var input,input2,input3,filter,filter2,filter3,filter5, table, tr, td,td1,td2,td3,td4, i, txtValue,txtValue1,txtValue2,txtValue3,txtValue4;
+        input = document.getElementById("myInput");
+        input2 = document.getElementById("myInput1");
+        filter = input.value.toUpperCase();
+        filter2 = input2.value.toUpperCase();
+        console.log(filter+" "+filter2);
+        table = document.getElementById("myTable");
+        tr = table.getElementsByTagName("tr");
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[1];
+            td1= tr[i].getElementsByTagName("td")[2];
+            if (td && td1) {
+                txtValue = td.textContent || td.innerText;
+                txtValue1 = td1.textContent || td1.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1 && txtValue1.toUpperCase().indexOf(filter2) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+</script>
+<script>
+    $(document).ready(function () {
+        $('#myTable').DataTable({
+            "paging": true,
+            "info": false,
+            "searching": false,
+            "bLengthChange": false,
+            "aLengthMenu": [[5, 10, 25, -1], [5, 10, 25, "All"]],
+            "columnDefs": [
+    { "orderable": false, "targets": 5 }
+  ]
+        });
+    });
+</script>
+
+
+{% endblock content %}
