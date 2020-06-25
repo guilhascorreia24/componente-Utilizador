@@ -1,7 +1,7 @@
-from django.test import SimpleTestCase
+from django.test import TestCase
 from tarefas.forms import *
  
-class testForms(SimpleTestCase):
+class FormsTest(TestCase):
  
     def test_Form_Disponibilidade_filled(self):
         form = Form_Disponibilidade(data={
