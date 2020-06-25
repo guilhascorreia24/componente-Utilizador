@@ -1,0 +1,164 @@
+{% extends 'base_template.html' %}
+{% block steps %}
+    <li><a href="{% url 'blog:blog-home' %}">Início</a></li>
+    <li class="is-active"><a href="" aria-current="page">Sessões de {{activity.titulo}}</a></li>
+{% endblock %}
+{% block content %}
+        <div class="table "></div>
+            <div class="table-wrapper">
+                <table class="table has-mobile-cards is-hoverable is-fullwidth">
+                    <thead>
+                            <th>
+                                Dia:
+                            </th>
+                            <th>
+                                Hora:
+                            </th>
+                            <th>
+                                Número inscritos:
+                            </th>
+                            <th>
+                                Total de Vagas:
+                            </th>
+                            <th></th>
+                            {% if not list %}
+                            <tr>
+                            <td>Sem sessões no momento</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            </tr>
+                            {% endif %}
+                            {% for session in list %}
+                            <tr>
+                                <td>{{session.horario_has_dia_id_dia_hora.dia_dia.dia|date:"Y-m-d"}}</td>
+                                <td>{{session.horario_has_dia_id_dia_hora.horario_hora.hora}}</td>
+                                <td>{{session.nrinscritos}}</td>
+                                <td>{{session.vagas}}</td>
+                                <td>
+                                     <div><a type="button"
+                                data-toggle="modal" data-target="#exampleModal" data-backdrop="false">
+                                <!----> <span class="icon is-small"> <i class="mdi mdi-delete mdi-24px"></i> </span>
+
+                                <!----></a></div>
+                                    <!-- POP UP Apagar-->
+                                <div class="dialog modal" id="exampleModal">
+                                <div class="modal-background"></div>
+                                <br><br><br><br><br><br><br><br><br><br><br><br>
+                                <div class="modal-card animation" style="max-width:360px">
+                                    <!---->
+                                    <section class="modal-card-body is-titleless">
+                                        <div class="media">
+                                            <!---->
+                                            <div class="media-content">
+                                                <p>Tem a certeza que quer apagar sessão?</p>
+                                                <!---->
+                                            </div>
+                                        </div>
+                                    </section>
+                                    <footer class="modal-card-foot"><button class="button" data-dismiss="modal">
+                                            Cancelar
+                                        </button>
+                                        <a href="{% url 'atividades:apagar_sessao' session.idsessao %}">
+                                        <button class="button is-success">
+                                            Confirmar
+                                        </button></a></footer>
+                                </div>
+                            </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            <tr>
+                                <td>
+                                    <form method="POST">
+                                       <a href="{% url 'atividades:consultar_minhas_atividades' %}">
+                                            <span class="icon is-small">
+                                                <i class="mdi mdi-arrow-left-drop-circle mdi-24px"></i>
+                                            </span>
+                                        </a>
+                                    </form>
+                                </td>
+                                <td></td>
+                                <td></td>
+                                <td>
+
+                                </td>
+                                <td></td>
+
+                            </tr>
+                    </thead>
+                </table>
+                <br>
+                <br>
+
+
+                <form method="POST" id="addSession"> {% csrf_token %}
+                    <div class="table "></div>
+                    <div class="table-wrapper">
+                    <table class="table has-mobile-cards is-hoverable is-fullwidth">
+                        <label class="">Adicionar Unidade Orgânica: </label>
+                        <h2 style="color: red;">{{messageError}}</h2>
+                    <thead>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <tr>
+                        <td>
+                    <div class="column">
+                        <div class="control is-expanded">
+                            <label class="label">Dia</label>
+                            <span class="select" >
+                                <select id="dia" name="dia">
+                                <option value="" disabled selected>Selecione dia</option>
+                                {% for diaInstance in dia %}
+                                    <option value="{{diaInstance.dia|date:"Y-m-d"}}">{{diaInstance.dia}}</option>
+                                {% endfor %}
+                                </select>
+                            </span>
+                        </div>
+                    </div>
+                        </td>
+                        <td>
+                    <div class="column">
+                        <div class="control is-expanded">
+                            <label class="label">Hora</label>
+                            <span class="select" >
+                                <select id="hora" name="hora">
+                                <option value="" disabled selected>Selecione hora</option>
+                                {% for hora in horario %}
+                                    <option value="{{hora.hora|time:"h:i a"}}">{{hora.hora|time:"h:i a"}}</option>
+                                {% endfor %}
+                                </select>
+                            </span>
+                        </div>
+                    </div>
+                        </td>
+                        <td>
+                        <button data-v-5aa16ff8="" type="button submit" form="addSession" class="button is-success" style="margin-top:40px" >
+                        <span class="icon is-small">
+                            <i class="mdi mdi-plus"></i>
+                        </span>
+                        <span>Adicionar Sessão</span>
+                    </button>
+                        </td>
+                    </tr>
+                    </thead>
+                    </table>
+                    </div>
+                </form>
+                <div  align="center">
+                <button data-v-5aa16ff8="" type="button" class="button is-success" style="margin-top:40px">
+                    <a href="{% url 'atividades:consultar_minhas_atividades' %}" style="color:white;">
+                    <span class="icon is-small">
+                        <i class="mdi mdi-check"></i>
+                    </span>
+                    <span >Finalizar</span>
+                    </a>
+                </button>
+                </div>
+
+
+
+
+{% endblock content %}

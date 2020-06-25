@@ -28,7 +28,6 @@
                                 Espaço:
                             </th>
                             <th></th>
-                            <th></th>
                             </tr>
                     </thead>
                     <tbody>
@@ -44,12 +43,12 @@
                                 </td>
                                 <td>
                                      <div><a type="button"
-                                data-toggle="modal" data-target="#exampleModal{{local.idespaco}}" data-backdrop="false">
+                                data-toggle="modal" data-target="#exampleModal" data-backdrop="false">
                                 <!----> <span class="icon is-small"> <i class="mdi mdi-delete mdi-24px"></i> </span>
 
                                 <!----></a></div>
                                     <!-- POP UP Apagar-->
-                                <div class="dialog modal" id="exampleModal{{local.idespaco}}">
+                                <div class="dialog modal" id="exampleModal">
                                 <div class="modal-background"></div>
                                 <br><br><br><br><br><br><br><br><br><br><br><br>
                                 <div class="modal-card animation" style="max-width:360px">
@@ -77,9 +76,11 @@
                             {% endfor %}
                     </tbody>
                 </table>
+            </div>
+</div>
                 <br>
                  <form method="POST" id="addEspaco" enctype="multipart/form-data"> {% csrf_token %}
-                    <div class="table "></div>
+                    <div class="table ">
                     <div class="table-wrapper">
                     <table class="table has-mobile-cards is-hoverable is-fullwidth">
                           <h3>Adicionar Local: </h3>
@@ -110,7 +111,6 @@
                             <label class="">Campus:</label>
                             <div class="control">
                                 {{form.campus_idcampus}}
-                                {{form.errors.campus_idcampus}}
                             </div>
                         </div>
                     </div>
@@ -120,7 +120,6 @@
                         <label class="">Nome:</label>
                         <div class="control is-expanded">
                             {{form.nome}}
-                            {{form.errors.nome}}
                         </div>
                     </div>
                         </td>
@@ -129,7 +128,6 @@
                         <label class="">Mapa do local:</label>
                         <div class="control is-expanded">
                             {{form.img}}
-                            {{form.errors.img}}
                         </div>
                     </div>
                         </td>
@@ -256,8 +254,8 @@
                     </a>
                 </button>
                 </div>
-                </div>
-                </div>
+
+
 
 
 
