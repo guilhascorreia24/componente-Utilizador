@@ -47,3 +47,7 @@ class TestUrls(SimpleTestCase):
     def test_validacoes(self):
         url = reverse('validacoes',args=[1,52])
         self.assertEquals(resolve(url).func, validacoes)
+
+    def test_user_type(self):
+        url = reverse('user_type')
+        self.assertEquals(resolve(url).func, getUserType)

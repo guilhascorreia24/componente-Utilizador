@@ -253,6 +253,7 @@ class Disponibilidade(models.Model):
     horario_hora = models.ForeignKey('Horario', models.DO_NOTHING, db_column='horario_hora',related_name="disponibilidade_hora_inicio")
     horario_hora1 = models.ForeignKey('Horario', models.DO_NOTHING, db_column='horario_hora1',related_name="disponibilidade_hora_fim")
     tipo_de_tarefa = models.CharField(max_length=45)
+    disponibilidade_id = models.AutoField(primary_key=True)
 
     class Meta:
         managed = False

@@ -236,7 +236,8 @@ class DiaAberto(models.Model):
 
 
 class Disponibilidade(models.Model):
-    colaborador_utilizador_idutilizador = models.OneToOneField(Colaborador, models.DO_NOTHING, db_column='colaborador_Utilizador_idutilizador', primary_key=True)  # Field name made lowercase.
+    disponibilidade_id = models.AutoField(primary_key=True)
+    colaborador_utilizador_idutilizador = models.ForeignKey(Colaborador, models.DO_NOTHING, db_column='colaborador_Utilizador_idutilizador')  # Field name made lowercase.
     dia_dia = models.ForeignKey(Dia, models.DO_NOTHING, db_column='dia_dia')
     horario_hora = models.ForeignKey('Horario', models.DO_NOTHING, db_column='horario_hora')
     horario_hora1 = models.ForeignKey('Horario', models.DO_NOTHING, db_column='horario_hora1')
@@ -245,7 +246,6 @@ class Disponibilidade(models.Model):
     class Meta:
         managed = False
         db_table = 'disponibilidade'
-        unique_together = (('colaborador_utilizador_idutilizador', 'dia_dia', 'horario_hora', 'horario_hora1', 'tipo_de_tarefa'),)
 
 
 class DjangoAdminLog(models.Model):
@@ -308,7 +308,6 @@ class Espaco(models.Model):
     idespaco = models.AutoField(primary_key=True)
     nome = models.CharField(max_length=255)
     campus_idcampus = models.ForeignKey(Campus, models.DO_NOTHING, db_column='campus_idCampus')  # Field name made lowercase.
-    img = models.CharField(max_length=100)
 
     class Meta:
         managed = False
