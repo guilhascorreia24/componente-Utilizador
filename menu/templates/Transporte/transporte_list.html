@@ -132,23 +132,22 @@
                                         </span>
                                     </a>
                                 
-                                    <a href="{% url 'menu:transporte-update' instance.id_transporte_has_horario %}">
+                                    <a href="{% url 'menu:transporte-update' instance.id_transporte_has_horario %}" style="margin-left:5%;">
                                         <span class="icon is-small icon has-text-success">
                                             <i class="mdi mdi-pencil mdi-24px"></i>
                                         </span>
                                     </a>
-                               
+                                    <a  href="{% url 'menu:transporte-grupo' instance.id_transporte_has_horario %}" style="margin-left:5%;">
+                                        <span class="icon is-small icon has-text-success">
+                                            <i class="mdi mdi-account-multiple-plus mdi-24px"></i>
+                                        </span>
+                                    </a>
                                          <a data-toggle="modal"
-                                         data-target="#{{forloop.counter}}">
+                                         data-target="#{{forloop.counter}}" style="margin-left:5%;">
                                              <span class="icon is-small has-text-danger">
                                                  <i class="mdi mdi-close-box mdi-24px"></i>
                                              </span>
                                          </a>
-                                        </a>
-                                        <a  href="{% url 'menu:transporte-grupo' instance.id_transporte_has_horario %}">
-                                            <span class="icon is-small icon has-text-success">
-                                                <i class="mdi mdi-account-multiple-plus mdi-24px"></i>
-                                            </span>
                                         </a>
                                     </td>
                                  </tr>

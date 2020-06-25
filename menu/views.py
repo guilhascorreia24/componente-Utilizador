@@ -6,6 +6,7 @@ from .filters import *
 from Notification.views import noti_not_checked
 from user.views import update_ano_user_null
 from django.utils import timezone
+from django.contrib import messages
 
 ###### Dia Aberto ##############
 def index(request):
