@@ -126,11 +126,11 @@
                               
                                 <td>{{instance.transporte_idtransporte.identificacao}}</td>
                                 <td>{{instance.horario_has_dia_id_dia_hora.dia_dia.dia | date:"d/m/Y"}}</td>
-                                <td>{{instance.horario_has_dia_id_dia_hora.horario_hora.hora}}</td>
+                                <td>{{instance.horario_has_dia_id_dia_hora.horario_hora.hora| time:"H:i"}}</td>
                                 <td>{{instance.origem.paragem}}</td> 
                                 <td>{{instance.destino.paragem}}</td>
                                 <td>
-                                    <a data-toggle="modal" data-target="#{{ forloop.counter }}">
+                                    <a data-toggle="modal" data-target="#{{forloop.counter}}_">
                                         <span class="icon is-small">
                                             <i class="mdi mdi-account-search mdi-24px"></i>
                                         </span>
@@ -165,7 +165,7 @@
     </div>
 
     {% for instance in hora %}
-    <div class="dialog modal" id="{{forloop.counter }}">
+    <div class="dialog modal" id="{{forloop.counter}}">
         <div class="modal-background"></div>
         <br><br><br><br><br><br><br><br><br><br><br><br>
         <div class="modal-card animation" style="max-width:360px">
@@ -190,7 +190,7 @@
     {% endfor %}
 
     {% for instance in hora %}
-    <div tabindex="-1" class="modal fade" id="{{forloop.counter}}" role="dialog" aria-hidden="true" aria-labelledby="exampleModalLabel">
+    <div tabindex="-1" class="modal fade" id="{{forloop.counter}}_" role="dialog" aria-hidden="true" aria-labelledby="exampleModalLabel">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">

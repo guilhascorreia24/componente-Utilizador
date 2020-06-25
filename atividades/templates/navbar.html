@@ -1,0 +1,74 @@
+{% load static %}
+<nav class="navbar" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a class="navbar-item" href="/">
+      <img src="{% static 'imgs/logo-navbar.png' %}">
+    </a>
+
+    <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+
+  <div class="navbar-menu">
+    <div class="navbar-start">
+      <a href=/diaaberto class="navbar-item">Configurações do Dia Aberto</a>  
+      <a href=/menu class="navbar-item">Almoços</a> 
+      <a href=/transporte class="navbar-item">Transporte</a> 
+    </div>
+    <div class="navbar-end">
+      <div class="navbar-item">
+        <div class="dropdown is-bottom-left is-mobile-modal">
+          <div role="button" class="dropdown-trigger">
+            <span role="button">
+              <button type="button" data-badge="0" class="button has-badge-rounded has-badge-warning is-text" style="margin-right: 0.9rem">
+                <span>
+                  <span class="icon">
+                    <i class="mdi mdi-bell mdi-24px"></i>
+                  </span>
+                </span>
+              </button>
+            </span>
+          </div>
+          <div class="background" style="display:none" aria-hidden="true"></div>
+          <div class="dropdown-menu" style="display:none" aria-hidden="true">
+            <div role="menu" class="dropdown-content">
+              <div role="menuitem" tabindex="0" class="dropdown-item">
+                <strong>test</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="dropdown is-bottom-left is-mobile-modal">
+          <div role="button" class="dropdown-trigger">
+            <span role="button">
+              <button type="button" data-badge="0" class="button has-badge-rounded has-badge-warning is-text" style="margin-right: 0.9rem">
+                <span>
+                  <span class="icon">
+                    <i class="mdi mdi-account-circle mdi-24px"></i>
+                  </span>
+                </span>
+              </button>
+            </span>
+          </div>
+          <div class="background" style="display:none" aria-hidden="true"></div>
+          <div class="dropdown-menu" style="display:none" aria-hidden="true">
+            <div role="menu" class="dropdown-content">
+              <div role="menuitem" tabindex="0" class="dropdown-item">
+                <strong>test</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div type="button" class="button">
+          <span class="icon is-small">
+            <i class="mdi mdi-login-variant"></i>
+          </span>
+          <span>Logout</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>

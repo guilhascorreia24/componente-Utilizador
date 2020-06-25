@@ -12,7 +12,7 @@ def curso_form(request):
     func=views.user(request)
     if request.method=='POST' and not(Curso.objects.filter(nome=request.POST['nome']).exists() and UnidadeOrganica.objects.filter(sigla=request.POST['unidade_organica_iduo'])):
         form=cursoForm(request.POST)
-        if form.is_valid():
+        if form.is_valid() and request.POST['nome'] != None:
             form.save()
     else:
          form=cursoForm()
