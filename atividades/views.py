@@ -273,15 +273,6 @@ def create_edit_session_view(request, idActivity):
         else:
             message = "Já existe sessão no horário escolhido"
     sessao = Sessao.objects.all().filter(atividade_idatividade=idActivity).order_by('horario_has_dia_id_dia_hora')
-    return render(request, "Menu/prato_create.html", context)
-
-def menu_update_view(request, id):
-    obj = get_object_or_404(Menu, idmenu=id)
-    form = MenuModelForm(request.POST or None, instance=obj)
-    pk_url_kwarg = 'idmenu'
-    if form.is_valid():
-        form.save()
-        return redirect("menu:menu_list")
     context = {
         "list": sessao,
         "horario": hora,
@@ -524,7 +515,7 @@ def criar_paragem_view(request):
 
 def apagar_paragem_view(request, paragem):
     paragem = get_object_or_404(Paragem, paragem=paragem)
-    if not(Paragem.objects.filter(paragem=request.POST['paragem']).exists() and TransporteHasHorario.objects.filter(origem=request.POST['paragem']).exists() and TransporteHasHorario.objects.filter(destino=request.POST['paragem']).exists()):
+    if not(Paragem.objects.filter(paragem=paragem).exists() and TransporteHasHorario.objects.filter(origem=Paragem.objects.get(pk=paragem)).exists() and TransporteHasHorario.objects.filter(destino=Paragem.objects.get(pk=paragem)).exists()):
         paragem.delete()
     return redirect("atividades:criar_paragem")
 

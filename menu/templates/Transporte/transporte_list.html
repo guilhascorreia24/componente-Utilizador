@@ -86,7 +86,7 @@
 </div>
 <div class="column">
         <div class="table ">
-        
+            {% if request.session.type == 4 %}
         <a href="{% url 'menu:transporte-criar' %}" class="button is-success is-outlined" type="button" style="margin-bottom: 0.9rem; margin-right: 1rem;">
            <span class="icon is-small">
                <i class="mdi mdi-plus"></i></span> 
@@ -94,7 +94,7 @@
                             <a href="{% url 'menu:transporte-horario' %}" class="button is-success is-outlined" type="button" style="margin-bottom: 0.9rem; margin-right: 1rem;">
                                 <span class="icon is-small">
                                     <i class="mdi mdi-plus"></i></span> 
-                                        <span> Adicionar Horário </span></a>
+                                        <span> Adicionar Horário </span></a>{% endif %}
             <div class="table-wrapper">
                 <table id="myTable" class="table has-mobile-cards is-hoverable is-fullwidth">
                     <thead>
@@ -131,25 +131,24 @@
                                             <i class="mdi mdi-account-search mdi-24px"></i>
                                         </span>
                                     </a>
-                                
-                                    <a href="{% url 'menu:transporte-update' instance.id_transporte_has_horario %}">
+                                    {% if request.session.type == 4 %}
+                                    <a href="{% url 'menu:transporte-update' instance.id_transporte_has_horario %}" style="margin-left:5%;">
                                         <span class="icon is-small icon has-text-success">
                                             <i class="mdi mdi-pencil mdi-24px"></i>
                                         </span>
                                     </a>
-                               
+                                    <a  href="{% url 'menu:transporte-grupo' instance.id_transporte_has_horario %}" style="margin-left:5%;">
+                                        <span class="icon is-small icon has-text-success">
+                                            <i class="mdi mdi-account-multiple-plus mdi-24px"></i>
+                                        </span>
+                                    </a>
                                          <a data-toggle="modal"
-                                         data-target="#{{forloop.counter}}">
+                                         data-target="#{{forloop.counter}}" style="margin-left:5%;">
                                              <span class="icon is-small has-text-danger">
                                                  <i class="mdi mdi-close-box mdi-24px"></i>
                                              </span>
                                          </a>
-                                        </a>
-                                        <a  href="{% url 'menu:transporte-grupo' instance.id_transporte_has_horario %}">
-                                            <span class="icon is-small icon has-text-success">
-                                                <i class="mdi mdi-account-multiple-plus mdi-24px"></i>
-                                            </span>
-                                        </a>
+                                        {% endif %}
                                     </td>
                                  </tr>
                                 {% endfor %}
@@ -187,6 +186,7 @@
 
     {% for instance in hora %}
     <div tabindex="-1" class="modal fade" id="{{forloop.counter}}_" role="dialog" aria-hidden="true" aria-labelledby="exampleModalLabel">
+        <div class="modal-background"></div>
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">

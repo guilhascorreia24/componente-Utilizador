@@ -351,22 +351,27 @@ def modify_user(request,id):
     funcao=False
     if Administrador.objects.filter(utilizador_idutilizador=id).exists():
         funcao = "Administardor"
+        ano = Utilizador.objects.get(pk=id).dia_aberto_ano.ano
     elif ProfessorUniversitario.objects.filter(utilizador_idutilizador=id).exists():
         funcao = "Docente Univesitario"
         depid = ProfessorUniversitario.objects.get(utilizador_idutilizador=id).departamento_iddepartamento
         dep= Departamento.objects.get(pk=depid.pk).nome
         UO=UnidadeOrganica.objects.get(pk=depid.pk).sigla
+        ano = Utilizador.objects.get(pk=id).dia_aberto_ano.ano
     elif Coordenador.objects.filter(utilizador_idutilizador=id).exists():
         funcao = "Coordenador"
         IDUO = Coordenador.objects.get(pk=id).unidade_organica_iduo
         UO=UnidadeOrganica.objects.get(pk=IDUO.pk).sigla
+        ano = Utilizador.objects.get(pk=id).dia_aberto_ano.ano
     elif Colaborador.objects.filter(utilizador_idutilizador=id).exists():
-        ano = Utilizador.objects.get(pk=id).dia_aberto_ano
+        ano = Utilizador.objects.get(pk=id).dia_aberto_ano.ano
         funcao = "Colaborador"
         cursoid=Colaborador.objects.get(utilizador_idutilizador=id).curso_idcurso
         UO=Curso.objects.get(pk=cursoid.pk).unidade_organica_iduo.sigla
+        ano = Utilizador.objects.get(pk=id).dia_aberto_ano.ano
     elif Participante.objects.filter(utilizador_idutilizador=id).exists():
         funcao = "Participante"
+        ano = Utilizador.objects.get(pk=id).dia_aberto_ano.ano
     return render(request, 'profile_modify.html', {"form": form, 'nome': name,'UO':UO, 'email': email, "ano":ano,
                     'telefone': telefone, 'funcao': funcao, 'ano': ano, 'curso': curso,'dep':dep,"me":me,'id':id,'func':user(request),'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
 
@@ -548,9 +553,9 @@ def getUserType(request):
     raise Exception("Error")
 
 def update_ano_user_null():
-    atual=datetime.date.today().year
+    atual=datetime.now().year
     users=Utilizador.objects.filter(dia_aberto_ano=None)
     if DiaAberto.objects.filter(ano=atual).exists():
         for user in users:
-            Utilizador.objects.filter(pk=user.pk).update(dia_aberto_ano=atual)
+            Utilizador.objects.filter(pk=user.pk).update(dia_aberto_ano=DiaAberto.objects.get(ano=atual))
 
