@@ -52,7 +52,7 @@ def disponibilidades(string):
 	disponibilidades=Disponibilidade.objects.all()
 	for tare in tarefas:
 		if isinstance(tare['hora_f_b'],float):
-			min=int(tare['hora_f_b']+tare['hora_i_b'].minute%60)
+			min=int(tare['hora_f_b']+tare['hora_i_b'].minute)%60
 			num=int(((tare['hora_f_b']+tare['hora_i_b'].minute)/60)+int(tare['hora_i_b'].hour))%24
 			tare['hora_f_b']=datetime.time(num,min)
 	dispos=[]
