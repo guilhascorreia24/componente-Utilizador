@@ -1,0 +1,123 @@
+{% extends 'base_template.html' %}
+{% block steps %}
+ <li><a href="{% url 'blog:blog-home' %}">Início</a></li>
+    <li class="is-active"><a href="" aria-current="page">Criar Paragem</a></li>
+{% endblock %}
+{% block content %}
+{% load static %}
+<div class="b-steps">
+    <nav class="steps is-success">
+        <ul class="step-items">
+            <li class="step-item is-success is-active"><a class="step-link">
+                    <div class="step-marker"><span class="icon"><i class="mdi mdi-book mdi-24px"></i></span></div>
+                    <div class="step-details"><span class="step-title">Paragem</span>
+                    </div>
+                </a></li>
+        </ul>
+    </nav>
+    </div>
+<div class="table " style="padding-left: 10%;padding-right: 10%;">
+            <div class="table-wrapper">
+                <table class="table has-mobile-cards is-hoverable is-fullwidth" id="myTable">
+                    <thead>
+                            <th>
+                                Nome da Paragem:
+                            </th>
+                            <th></th>
+                            </tr>
+                    </thead>
+                    <tbody>
+                            {% for paragem in paragem %}
+                            <tr>
+                                <td>{{paragem.paragem}}</td>
+                                <td>
+                                     <div><a type="button"
+                                data-toggle="modal" data-target="#exampleModal" data-backdrop="false">
+                                <!----> <span class="icon is-small"> <i class="mdi mdi-delete mdi-24px"></i> </span>
+
+                                <!----></a></div>
+                                    <!-- POP UP Apagar-->
+                                <div class="dialog modal" id="exampleModal">
+                                <div class="modal-background"></div>
+                                <br><br><br><br><br><br><br><br><br><br><br><br>
+                                <div class="modal-card animation" style="max-width:360px">
+                                    <!---->
+                                    <section class="modal-card-body is-titleless">
+                                        <div class="media">
+                                            <!---->
+                                            <div class="media-content">
+                                                <p>Tem a certeza que quer apagar a paragem?</p>
+                                                <!---->
+                                            </div>
+                                        </div>
+                                    </section>
+                                    <footer class="modal-card-foot"><button class="button" data-dismiss="modal">
+                                            Cancelar
+                                        </button>
+                                        <a href="{% url 'atividades:apagar_paragem' paragem.paragem %}">
+                                        <button class="button is-success">
+                                            Confirmar
+                                        </button></a></footer>
+                                </div>
+                            </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                    </tbody>
+                </table>
+                <br>
+                 <form method="POST" id="addParagem" enctype="multipart/form-data"> {% csrf_token %}
+                    <div class="table-wrapper">
+                    <table class="table has-mobile-cards is-hoverable is-fullwidth">
+                        <h3>Adicionar Paragem: </h3>
+                    <thead>
+                    <tr>
+                        <th style="padding-left: 0px;">
+                            <div class="column" style="padding-left: 0%;">
+                        <label class="">Nome da Paragem:</label>
+                        <div class="control is-expanded">
+                            <input type="text" class="input" name="paragem">
+                        </div>
+                    </div>
+                        </td>
+                        <td>
+                        <button data-v-5aa16ff8="" type="button submit" form="addParagem" class="button is-success" style="margin-top:40px" >
+                        <span class="icon is-small">
+                            <i class="mdi mdi-plus"></i>
+                        </span>
+                        <span>Adicionar Paragem</span>
+                    </button>
+                        </td>
+                    </tr>
+                    </thead>
+                    </table>
+                    </div>
+                </form>
+                <div  align="center">
+                <button data-v-5aa16ff8="" type="button" class="button is-success" style="margin-top:40px">
+                    <a href="{% url "blog:blog-home" %}" style="color:white;">
+                    <span class="icon is-small">
+                        <i class="mdi mdi-check"></i>
+                    </span>
+                    <span >Finalizar</span>
+                    </a>
+                </button>
+                </div>
+                </div>
+                </div>
+
+
+        <script>
+            $(document).ready(function () {
+                $('#myTable').DataTable({
+                    "paging": true,
+                    "info": false,
+                    "searching": false,
+                    "bLengthChange": false,
+                    "aLengthMenu": [[5, 10, 25, -1], [5, 10, 25, "All"]],
+                    "columnDefs": [
+            { "orderable": false, "targets": 1 }]
+                });
+            });
+        </script>
+{% endblock content%}

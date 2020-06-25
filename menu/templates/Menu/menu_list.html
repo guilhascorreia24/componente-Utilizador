@@ -104,7 +104,7 @@
                                 <td>{{instance.nralmocosdisponiveis}}</td>
                                 <td>
                                     <a data-toggle="modal"
-                                    data-target="#{{forloop.counter}}">
+                                    data-target="#{{forloop.counter}}_">
                                         <span class="icon is-small">
                                             <i class="mdi mdi-account-search mdi-24px"></i>
                                         </span>
@@ -116,11 +116,12 @@
                                         </span>
                                     </a>
 
-                                        <a href="{% url 'menu:menu_delete' instance.idmenu %}">
-                                            <span class="icon is-small has-text-danger">
-                                                <i class="mdi mdi-close-box mdi-24px"></i>
-                                            </span>
-                                        </a>
+                                    <a data-toggle="modal"
+                                    data-target="#{{forloop.counter}}">
+                                        <span class="icon is-small has-text-danger">
+                                            <i class="mdi mdi-close-box mdi-24px"></i>
+                                        </span>
+                                    </a>
                                 </td>
                              </tr>
                             {% endfor %}
@@ -131,8 +132,32 @@
 </div>
 </div>
 
+{% for instance in menu %}
+<div class="dialog modal" id="{{forloop.counter }}">
+    <div class="modal-background"></div>
+    <br><br><br><br><br><br><br><br><br><br><br><br>
+    <div class="modal-card animation" style="max-width:360px">
+        <!---->
+        <section class="modal-card-body is-titleless">
+            <div class="media">
+                <!---->
+                <div class="media-content">
+                    <p>Tem a certeza que quer eliminar o {{instance.menu}}?</p>
+                    <!---->
+                </div>
+            </div>
+        </section>
+        <footer class="modal-card-foot"><button class="button" data-dismiss="modal">
+                Cancelar
+            </button><a href="{% url 'menu:menu_delete' instance.idmenu %}" style="text-decoration: none;"> <button
+                    class="button is-success">
+                    Confirmar
+                </button></a></footer>
+    </div>
+</div> 
+{% endfor %}
 {% for i in menu %}
-<div tabindex="-1" class="modal fade" id="{{forloop.counter}}" role="dialog" aria-hidden="true" aria-labelledby="exampleModalLabel">
+<div tabindex="-1" class="modal fade" id="{{forloop.counter}}_" role="dialog" aria-hidden="true" aria-labelledby="exampleModalLabel">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -222,7 +247,7 @@
                             <div class="input-group-prepend labelForm">
                                 <span class="input-group-text w-100">Hora do Almoço:</span>
                             </div>
-                            <input disabled="" class="form-control bg-light" type="text" value="{{ i.horario_has_dia_id_dia_hora.horario_hora.hora }}">
+                            <input disabled="" class="form-control bg-light" type="text" value="{{ i.horario_has_dia_id_dia_hora.horario_hora.hora | time:"H:i"}}">
                         </div>
                         <br>
                         <div class="input-group col-sm-12">

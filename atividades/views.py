@@ -497,4 +497,26 @@ def logout_view(request):
     return redirect("atividades:login")
 
 
+# --------------------------------Paragens:
+
+def criar_paragem_view(request):
+    paragem = Paragem.objects.all()
+    if request.method == 'POST' and not(Paragem.objects.filter(paragem=request.POST['paragem']).exists()):
+        new = Paragem(paragem=request.POST.get('paragem'))
+        new.save()
+    context = {
+        "paragem": paragem,
+        "account": return_account_type(request.session["user_id"]),
+        'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)
+    }
+    return render(request, "atividades/criar_paragem.html", context)
+
+
+def apagar_paragem_view(request, paragem):
+    paragem = get_object_or_404(Paragem, paragem=paragem)
+    if not(Paragem.objects.filter(paragem=paragem).exists() and TransporteHasHorario.objects.filter(origem=paragem).exists() and TransporteHasHorario.objects.filter(destino=paragem).exists()):
+        paragem.delete()
+    return redirect("atividades:criar_paragem")
+
+
 

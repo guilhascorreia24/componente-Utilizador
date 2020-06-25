@@ -38,6 +38,7 @@
                   <div class="control is-expanded">
                     <div class="select is-fullwidth">
                       {{form.menu_idmenu}}
+                      {{form.errors.menu_idmenu}}
                     </div>
                   </div>
                 </div>
@@ -54,6 +55,7 @@
                         <option value="Peixe">Peixe</option>
                         </option>
                       </select>
+                      {{form.errors.tipo}}
                     </div>
                   </div>
                 </div>
@@ -63,6 +65,7 @@
                   <label class="label">Numero de Almoços</label>
                   <div class="control is-clearfix">
                     {{form.nralmocos}}
+                    {{form.errors.nralmocos}}
                   </div>
                 </div>
               </div>
@@ -109,6 +112,8 @@
       font-size: 1rem;
     }
   </style>
+</div>
+</div>
 </div>
 
 

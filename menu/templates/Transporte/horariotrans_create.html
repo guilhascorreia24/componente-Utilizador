@@ -20,9 +20,9 @@
             <li class="step-item is-success is-active"><a class="step-link">
                     <div class="step-marker"><span class="icon"><i class="mdi mdi-book mdi-24px"></i></span></div>
                     <div class="step-details"><span class="step-title">{% if o %}
-                      Criar Hora
+                      Criar horario do Transporte
                       {% else %}
-                      Criar Hora
+                      Criar horario do Transporte
                       {% endif %}</span>
                     </div>
                 </a></li>
@@ -33,11 +33,22 @@
     <div style="padding: 1rem 2vw 0px;">
         <hr><h2 class="title has-text-grey is-uppercase" style="font-size: 0.9rem;"> Horario </h2>
         <div class="columns">
+        <div class="column">
+          <div class="field">
+              <label class="label">Dia</label>
+              <div class="control is-expanded">
+                <div class="select is-fullwidth">
+                   {{form.dia_dia}}
+                  </span> <!----></div> <!---->
+                  </div>
+              </div>
+            </div>
                <div class="column">
                    <div class="field">
                        <label class="label">Hora</label>
-                        <div class="control is-clearfix">
-                           {{form.hora}}
+                       <div class="control is-expanded">
+                        <div class="select is-fullwidth">
+                           {{form.horario_hora}}
                           </div>
                         </div>
                       </div>

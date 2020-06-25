@@ -37,5 +37,8 @@ urlpatterns = [
     # extras:
     path('logout', atividades.logout_view, name='logout'),
     path('login', atividades.login_view, name="login"),
+    #Paragem:
+    path('criar_paragem', atividades.criar_paragem_view, name='criar_paragem'),
+    path('apagar_paragem/<str:paragem>/', atividades.apagar_paragem_view, name='apagar_paragem'),
 
 ]

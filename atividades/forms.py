@@ -1,6 +1,7 @@
 from django import forms
 from django.forms.models import ModelMultipleChoiceField
-from blog.models import Atividade, Utilizador, Espaco, Campus, UnidadeOrganica, Departamento
+from blog.models import Atividade, Utilizador, Espaco, Campus, UnidadeOrganica, Departamento, Paragem
+from django.forms import TextInput
 
 
 class AtividadeForm(forms.ModelForm):
@@ -35,3 +36,4 @@ class DepartamentoForm(forms.ModelForm):
         model = Departamento
         unidade_organica_iduo = forms.ModelMultipleChoiceField(queryset=UnidadeOrganica.objects.all(), to_field_name="sigla")
         fields = ['nome', 'unidade_organica_iduo']
+

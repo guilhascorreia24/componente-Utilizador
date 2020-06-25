@@ -163,10 +163,6 @@ class HorarioForm(forms.ModelForm):
             'id_dia_hora',
         ]
 
-        widgets = {
-            'horario_hora': TimeInput(attrs={'class': 'input', 'type':'time'}),
-            'dia_dia': DateInput(attrs={'class': 'input', 'type':'date'}),
-        }
 
 class InscricaoForm(forms.ModelForm):
 
