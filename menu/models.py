@@ -219,7 +219,7 @@ class Departamento(models.Model):
 class Dia(models.Model):
     dia = models.DateField(primary_key=True)
 
-    def date (self):
+    def __str__(self):
         return str(self.dia)
 
     class Meta:
@@ -330,8 +330,8 @@ class Espaco(models.Model):
 class Horario(models.Model):
     hora = models.TimeField(primary_key=True)
 
-    def time (self):
-        return (self.hora)
+    def __str__(self):
+        return str(self.hora)
 
     class Meta:
         managed = False
