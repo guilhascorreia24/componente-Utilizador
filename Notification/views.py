@@ -33,7 +33,7 @@ def createnot(request):
                 else:
                     form.add_error('Destinatario','email invalido ou não existe')
                     messages.error(request,"Email Invalido")
-                    return render(request, 'compor_not.html', {'form': form,'me_id':signing.dumps(me_id),'funcao':funcao,'contacts':contacts})
+                    return render(request, 'compor_not.html', {'form': form,'me_id':me_id,'funcao':funcao,'contacts':contacts})
             for email in emails:
                 email=email.strip()
                 if email in list:
@@ -51,7 +51,7 @@ def createnot(request):
             return redirect('check_not')
     else:
         form = NotificationForm()
-    return render(request, 'compor_not.html', {'form': form,'me_id':signing.dumps(me_id),'funcao':funcao,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request),'contacts':contacts})
+    return render(request, 'compor_not.html', {'form': form,'me_id':me_id,'funcao':funcao,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request),'contacts':contacts})
 
 def send_to_org(email,request):
     email=email.split(".")
@@ -105,7 +105,7 @@ def checknot(request):
                 noti.emissor=Utilizador.objects.get(pk=noti.notificacao.idutilizadorenvia).email
             else:
                 noti.emissor='Diaaberto@ualg.pt'
-            noti.pk=signing.dumps(noti.pk)
+            noti.pk=noti.pk
             notis.append(noti)
     func=user_views.user(request)
     #print(func)
@@ -117,7 +117,7 @@ def deletenot(request):
         pressed = request.POST.getlist('noti')
         for press in pressed:
             print("eliminadas:"+str(signing.loads(press)))
-            UtilizadorHasNotificacao.objects.filter(pk=signing.loads(press)).delete()
+            UtilizadorHasNotificacao.objects.filter(pk=press).delete()
         messages.success(request, 'Notificação/Notificações eliminada(s)')
          
 def enviados(request):
@@ -128,7 +128,7 @@ def enviados(request):
     for noti in nots:
         if noti.notificacao.idutilizadorenvia==me_id and noti.utilizador_idutilizador.pk==noti.notificacao.utilizadorrecebe and not(has_noti(notis,noti)):
             noti.recept=Utilizador.objects.get(pk=noti.notificacao.utilizadorrecebe).email
-            noti.pk=signing.dumps(noti.pk)
+            noti.pk=noti.pk
             notis.append(noti)
     func=user_views.user(request)
     my=True
@@ -136,17 +136,21 @@ def enviados(request):
     return render(request,'check.html',{'nots':notis,'me_id':me_id,'funcao':func,'my':my,'i':i,'not_checked':noti_not_checked(request)})
 
 def noti(request,id):
-    me_id=signing.loads(id)
+    me_id=id
     noti=pk=UtilizadorHasNotificacao.objects.get(pk=me_id).notificacao
     destinatario=noti.utilizadorrecebe
     tipo="Destinatario"
     if request.session['user_id']==noti.utilizadorrecebe:
-        destinatario=noti.idutilizadorenvia
+        if noti.idutilizadorenvia==-1:
+            destinatario="Diaaberto@ualg.pt"
+        else:
+            destinatario=noti.idutilizadorenvia
+            destinatario=Utilizador.objects.get(pk=destinatario).email
         tipo="Emissor"
-    form = NotificationForm(initial={'Destinatario':Utilizador.objects.get(pk=destinatario).email,'Assunto':noti.assunto,'Descricao':noti.descricao})
+    form = NotificationForm(initial={'Destinatario':destinatario,'Assunto':noti.assunto,'Descricao':noti.descricao})
     print(form)
     UtilizadorHasNotificacao.objects.filter(notificacao=noti).update(estado=1)
-    return render(request,"consultar_not.html",{'form':form,'me_id':signing.dumps(me_id),'funcao':user_views.user(request),'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request),'tipo':tipo})
+    return render(request,"consultar_not.html",{'form':form,'me_id':me_id,'funcao':user_views.user(request),'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request),'tipo':tipo})
 
 def noti_not_checked(request):
     noti=[]
@@ -156,7 +160,7 @@ def noti_not_checked(request):
         my_noti=UtilizadorHasNotificacao.objects.all()
         for n in my_noti:
             if n.notificacao.utilizadorrecebe==user.pk and n.estado==0 and n.utilizador_idutilizador==user:
-                n.pk=signing.dumps(n.pk)
+                n.pk=n.pk
                 noti.append(n)
     return noti
 
@@ -188,9 +192,13 @@ def get_my_lists(request,list):
     return list
 
 def new_noti(request,destinatario_pk,assunto,texto):
-    noti=Notificacao.objects.create(descricao=texto,utilizadorrecebe=destinatario_pk,idutilizadorenvia=request.session['user_id'],criadoem=datetime.now(),assunto=assunto)
+    user_id=request.session['user_id']
+    if destinatario_pk==request.session['user_id'] or assunto=='Bem-vindo':
+        user_id=-1
+    noti=Notificacao.objects.create(descricao=texto,utilizadorrecebe=destinatario_pk,idutilizadorenvia=user_id,criadoem=datetime.now(),assunto=assunto)
     UtilizadorHasNotificacao.objects.create(utilizador_idutilizador=Utilizador.objects.get(pk=destinatario_pk),notificacao=noti,estado=0)
-    UtilizadorHasNotificacao.objects.create(utilizador_idutilizador=Utilizador.objects.get(pk=request.session['user_id']),notificacao=noti,estado=0)
+    if destinatario_pk!=request.session['user_id']:
+        UtilizadorHasNotificacao.objects.create(utilizador_idutilizador=Utilizador.objects.get(pk=user_id),notificacao=noti,estado=0)
 
 
 def joins(uos,x,list):
