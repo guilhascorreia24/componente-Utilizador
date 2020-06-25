@@ -3,7 +3,7 @@ from user.forms import *
 
 class TestForms(SimpleTestCase):
 
-    '''def test_User_RegisterForm_filled(self):
+    def test_User_RegisterForm_filled(self):
         form = UserRegisterForm(data={
             'name': 'Guilherme',
             'email': 'Teste@gmail.com',
@@ -87,7 +87,7 @@ class TestForms(SimpleTestCase):
         form = EmailSender(data={})
 
         self.assertFalse(form.is_valid())
-        self.assertEquals(len(form.errors),1)'''
+        self.assertEquals(len(form.errors),1)
 
     def test_DeleteUserForm_filled(self):
         form = DeleteUser(data={
