@@ -119,10 +119,10 @@ def diaaberto_delete(request, id):
             del request.session['user_id']
             del request.session['type']
         obj.delete()
-        messages.success(request, f'Configurações do Dia Aberto eliminado com Sucesso!')
-        noti_views.new_noti(request,request.session['user_id'],'Submissao das Configurações do Dia Aberto','Configurações do Dia Aberto eliminado com Sucesso!')
         if Utilizador.objects.filter(pk=user).exists():
             return redirect("blog:blog-home")
+        messages.success(request, f'Configurações do Dia Aberto eliminado com Sucesso!')
+        noti_views.new_noti(request,request.session['user_id'],'Submissao das Configurações do Dia Aberto','Configurações do Dia Aberto eliminado com Sucesso!')
     return redirect('menu:diaaberto_list')
 
 ### Menuuuu ###########

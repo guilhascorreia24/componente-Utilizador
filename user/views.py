@@ -553,9 +553,9 @@ def getUserType(request):
     raise Exception("Error")
 
 def update_ano_user_null():
-    atual=datetime.date.today().year
+    atual=datetime.now().year
     users=Utilizador.objects.filter(dia_aberto_ano=None)
     if DiaAberto.objects.filter(ano=atual).exists():
         for user in users:
-            Utilizador.objects.filter(pk=user.pk).update(dia_aberto_ano=atual)
+            Utilizador.objects.filter(pk=user.pk).update(dia_aberto_ano=DiaAberto.objects.get(ano=atual))
 
