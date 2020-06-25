@@ -24,7 +24,7 @@ urlpatterns = [
     path('menu/criarprato/', views.prato_create_view, name='prato_criar'),
     path('menu/<int:id>/details/', views.menu_detail_view, name='menu_detail'),
     path('menu/update/<int:id>', views.menu_update_view, name='menu_update'),
-    path('menu/updateprat/<int:id>', views.prato_update_view, name='prato_update'),
+    path('menu/updateprato/<int:id>', views.prato_update_view, name='prato_update'),
     path('menu/apagar/<int:id>', views.menu_delete_view, name='menu_delete'),
     path('menu/apagarprato/<int:id>', views.prato_delete_view, name='prato_delete'),
     

@@ -59,8 +59,6 @@ def diaaberto_update(request, id):
         #preencher_hora(hora_inicio,hora_fim)
         Horario(hora="12:00:00").save()
         hora1 = Horario.objects.filter(hora="12:00:00")
-        print(inicio.day)
-        print(final.day)
         for x in range(inicio.day, final.day+1):
             Dia(dia=inicio+datetime.timedelta(days=x-inicio.day)).save()
             dia1 = Dia.objects.filter(dia = inicio+datetime.timedelta(days=x-inicio.day))
@@ -129,6 +127,7 @@ def prato_create_view(request):
 def menu_update_view(request, id):
     obj = get_object_or_404(Menu, idmenu=id)
     form = MenuModelForm(request.POST or None, instance=obj)
+    pk_url_kwarg = 'idmenu'
     if form.is_valid():
         form.save()
         return redirect("menu:menu_list")
@@ -141,6 +140,7 @@ def menu_update_view(request, id):
 def prato_update_view(request, id):
     obj = get_object_or_404(Prato, idprato=id)
     form = PratoForm(request.POST or None, instance=obj)
+    pk_url_kwarg = 'idprato'
     if form.is_valid():
         form.save()
         return redirect("menu:menu_list")
@@ -253,7 +253,7 @@ def transporte_update2_view(request, id):
     if form.is_valid():
         print("aaaaaaaaaaaaaaaaaaaa")
         form.save()
-        return redirect("/transporte")
+        return redirect("menu:transporte-list")
     context = {
         'form': form,
         'hora': hora,
@@ -277,9 +277,11 @@ def transporte_list_view(request):
 def transporte_detail_view(request, id):
     obj = get_object_or_404(Transporte,idtransporte =id)
     transporte = TransporteHasHorario.objects.get(transporte_idtransporte=id)
+    inscricao = TransporteHasInscricao.objects.get(inscricao_idinscricao=id)
     context = {
         "obj": obj,
         "transporte": transporte,
+        "inscricao": incricao,
         'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)
 
     }

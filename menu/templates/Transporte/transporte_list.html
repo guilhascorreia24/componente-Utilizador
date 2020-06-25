@@ -183,6 +183,20 @@
                                 </div>
                                 <input disabled="" class="form-control col-sm-2 bg-light" type="text" value="{{ instance.transporte_idtransporte.capacidade }}">
                             </div>
+                            {% for inscricao in inscricao %}
+                            <div class="input-group col-sm-12">
+                                <div class="input-group-prepend labelForm">
+                                    <span class="input-group-text w-100">Grupos:</span>
+                                </div>
+                                <input disabled="" class="form-control col-sm-2 bg-light" type="text" value="{{ inscricao.inscricao_idinscricao }}">
+                            </div>
+                            <div class="input-group col-sm-12">
+                                <div class="input-group-prepend labelForm">
+                                    <span class="input-group-text w-100">Número de Passageiros:</span>
+                                </div>
+                                <input disabled="" class="form-control col-sm-2 bg-light" type="text" value="{{ inscricao.n_passageiros }}">
+                            </div>
+                            {% endfor %}
                     </div>
                 </div>
             </div>
