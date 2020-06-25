@@ -1,7 +1,7 @@
 {% extends 'base_template.html' %}
 {% block steps %}
-    <li><a href="{% url 'blog:blog-home' %}">Início</a></li>
-    <li class="is-active"><a href="" aria-current="page">Unidade Orgânica</a></li>
+ <li><a href="{% url 'blog:blog-home' %}">Início</a></li>
+    <li class="is-active"><a href="" aria-current="page">Criar Campus</a></li>
 {% endblock %}
 {% block content %}
 {% load static %}
@@ -10,13 +10,12 @@
         <ul class="step-items">
             <li class="step-item is-success is-active"><a class="step-link">
                     <div class="step-marker"><span class="icon"><i class="mdi mdi-book mdi-24px"></i></span></div>
-                    <div class="step-details"><span class="step-title">Unidades Organicas</span>
+                    <div class="step-details"><span class="step-title">Campus</span>
                     </div>
                 </a></li>
         </ul>
     </nav>
     </div>
-    <br>
 <div class="table " style="padding-left: 10%;padding-right: 10%;">
             <div class="table-wrapper">
                 <table class="table has-mobile-cards is-hoverable is-fullwidth" id="myTable">
@@ -24,25 +23,21 @@
                             <th>
                                 Nome:
                             </th>
-                            <th>
-                                Campus:
-                            </th>
                             <th></th>
                             </tr>
                     </thead>
                     <tbody>
-                            {% for unidade in uo %}
+                            {% for campi in campus %}
                             <tr>
-                                <td>{{unidade.sigla}}</td>
-                                <td>{{unidade.campus_idcampus.nome}}</td>
+                                <td>{{campi.nome}}</td>
                                 <td>
-                                   <div><a type="button"
-                                data-toggle="modal" data-target="#exampleModal" data-backdrop="false">
+                                     <div><a type="button"
+                                data-toggle="modal" data-target="#exampleModal{{campi.idcampus}}" data-backdrop="false">
                                 <!----> <span class="icon is-small"> <i class="mdi mdi-delete mdi-24px"></i> </span>
 
                                 <!----></a></div>
                                     <!-- POP UP Apagar-->
-                                <div class="dialog modal" id="exampleModal">
+                                <div class="dialog modal" id="exampleModal{{campi.idcampus}}">
                                 <div class="modal-background"></div>
                                 <br><br><br><br><br><br><br><br><br><br><br><br>
                                 <div class="modal-card animation" style="max-width:360px">
@@ -51,7 +46,7 @@
                                         <div class="media">
                                             <!---->
                                             <div class="media-content">
-                                                <p>Tem a certeza que quer apagar unidade orgânica?</p>
+                                                <p>Tem a certeza que quer apagar campus?</p>
                                                 <!---->
                                             </div>
                                         </div>
@@ -59,7 +54,7 @@
                                     <footer class="modal-card-foot"><button class="button" data-dismiss="modal">
                                             Cancelar
                                         </button>
-                                        <a href="{% url 'atividades:apagar_uo' unidade.iduo %}">
+                                        <a href="{% url 'atividades:apagar_campus' campi.idcampus %}">
                                         <button class="button is-success">
                                             Confirmar
                                         </button></a></footer>
@@ -71,39 +66,28 @@
                     </tbody>
                 </table>
                 <br>
-                <br>
-                 <form method="POST" id="addUo" enctype="multipart/form-data"> {% csrf_token %}
-                    <div class="table ">
+                 <form method="POST" id="addCampus" enctype="multipart/form-data"> {% csrf_token %}
                     <div class="table-wrapper">
                     <table class="table has-mobile-cards is-hoverable is-fullwidth">
-                        <label class="">Adicionar Unidade Orgânica: </label>
+                        <h3>Adicionar campus: </h3>
                     <thead>
                     <tr>
                         <th style="padding-left: 0px;">
                             <div class="column" style="padding-left: 0%;">
-                                <label class="">Sigla:</label>
-                                <div class="control is-expanded">
-                                    {{form.sigla}}
-                                </div>
-                            </div>
-                         </th>
-                         <th style="padding-left: 0px;">
-                            <div class="column" style="padding-left: 0%;">
-                            <label class="">Campus:</label>
-                            <div class="control">
-                                {{form.campus_idcampus}}
-                            </div>
+                        <label class="">Nome:</label>
+                        <div class="control is-expanded">
+                            <input type="text" class="input" name="nome">
                         </div>
                     </div>
-                        </th>
-                        <th>
-                        <button data-v-5aa16ff8="" type="button submit" form="addUo" class="button is-success" style="margin-top:5%" >
+                        </td>
+                        <td>
+                        <button data-v-5aa16ff8="" type="button submit" form="addCampus" class="button is-success" style="margin-top:40px" >
                         <span class="icon is-small">
                             <i class="mdi mdi-plus"></i>
                         </span>
-                        <span>Adicionar Unidade Orgânica</span>
+                        <span>Adicionar Campus</span>
                     </button>
-                </th>
+                        </td>
                     </tr>
                     </thead>
                     </table>
@@ -111,7 +95,7 @@
                 </form>
                 <div  align="center">
                 <button data-v-5aa16ff8="" type="button" class="button is-success" style="margin-top:40px">
-                    <a href="{% url 'blog:blog-home' %}" style="color:white;">
+                    <a href="{% url "blog:blog-home" %}" style="color:white;">
                     <span class="icon is-small">
                         <i class="mdi mdi-check"></i>
                     </span>
@@ -132,9 +116,8 @@
                     "bLengthChange": false,
                     "aLengthMenu": [[5, 10, 25, -1], [5, 10, 25, "All"]],
                     "columnDefs": [
-            { "orderable": false, "targets": 2 }]
+            { "orderable": false, "targets": 1 }]
                 });
             });
         </script>
-
 {% endblock content%}
