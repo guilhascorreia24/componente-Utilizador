@@ -139,6 +139,7 @@
         </div>
     </div>
     <div class="column">
+        {% if user_type == 0 %}
         <div>
             <div>
                 <a href={% url 'inscricao:register_individual' %}  class="button is-success is-outlined" type="button" style="margin-bottom: 0.9rem; margin-right: 1rem;">
@@ -151,6 +152,7 @@
                     </a></span>
             </div>
         </div>
+        {% endif %}
         <div>
             <div class="b-table">
                 <div class="table-wrapper">
@@ -206,7 +208,7 @@
                                     {{ inscricao.inscricao.idinscricao }}
                                 </td>
                                 <td data-label="Email" class="">
-                                    {{ inscricao.inscricao.email }}
+                                    {{ inscricao.user.email }}
                                 </td>
                                 <td data-label="Telefone" class="">
                                     {{ inscricao.inscricao.telefone }}

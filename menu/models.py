@@ -56,6 +56,7 @@ class Atividade(models.Model):
     tematica = models.CharField(max_length=250, blank=True, null=True)
     nrcolaborador = models.CharField(db_column='nrColaborador', max_length=45, blank=True, null=True)  # Field name made lowercase.
 
+
     class Meta:
         managed = False
         db_table = 'atividade'
@@ -241,6 +242,19 @@ class DiaAberto(models.Model):
     administrador_utilizador_idutilizador = models.ForeignKey(Administrador, models.CASCADE, db_column='Administrador_Utilizador_idutilizador')  # Field name made lowercase.
     preco_almoco_estudante = models.FloatField()
     preco_almoco_professor = models.FloatField()
+
+    def clean(self):
+        super().clean()
+        errors = dict()
+        if self.datainscricaonasatividadesinicio > self.datainscricaonasatividadesfim:
+            errors['datainscricaonasatividadesinicio'] = 'Data de inicio não pode ser maior que a de fim'
+        
+        if self.datapropostaatividadeinicio > self.datapropostaatividadesfim:
+            errors['datapropostaatividadeinicio'] = 'Data de inicio não pode ser maior que a de fim'
+
+        if len(errors) > 0:
+            raise ValidationError(errors)
+
 
     class Meta:
         managed = False
