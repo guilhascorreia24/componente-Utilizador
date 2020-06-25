@@ -1,13 +1,10 @@
 from django.shortcuts import render, get_object_or_404, redirect, reverse
 import datetime, time
 from .forms import *
-<<<<<<< HEAD
 from blog.models import Atividade, Utilizador, Administrador, Coordenador, ProfessorUniversitario, Espaco, Departamento, \
     UnidadeOrganica, Sessao, Horario, Campus, Dia, HorarioHasDia, Sala, Anfiteatro, Arlivre, Menu, CoordenadorHasDepartamento
-=======
 from .models import *
 from .filters import *
->>>>>>> 7f8c21681e99a27f6670a5f18e1ed8a767df7915
 from Notification.views import noti_not_checked
 from user.views import update_ano_user_null
 from django.utils import timezone
