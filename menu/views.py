@@ -14,12 +14,12 @@ def index(request):
         'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)
     }
     return render(request, "index.html", context)
-def preencher_hora(hora_incio, hora_fim):
+'''def preencher_hora(hora_incio, hora_fim):
     inter=datetime.time(0,30,0)
     while inter<hora_fim:
         Horario.objects.create(pk=hora_inicio)
         hora_incio+=inter
-    Horario.objects.create(pk=hora_fim)
+    Horario.objects.create(pk=hora_fim)'''
 
 def diaaberto_create(request):
     user = Utilizador.objects.get(idutilizador=request.session['user_id'])
@@ -130,7 +130,7 @@ def prato_update_view(request, id):
     form = PratoForm(request.POST or None, instance=obj)
     if form.is_valid():
         form.save()
-        return redirect("menu:menu_list")
+        return redirect("menu: ")
     context = {
         'form': form,
         'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)
