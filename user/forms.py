@@ -16,7 +16,7 @@ class UserRegisterForm(forms.Form):
     password2=forms.CharField(max_length=255,label="Password Confirm",widget=forms.PasswordInput())
     funcao=forms.IntegerField(label="funcao")
     curso=forms.IntegerField(label="curso",required=False)
-    Perferencias=forms.CharField(max_length=45,label="perferencia",widget=forms.Textarea)
+    Preferencias=forms.CharField(max_length=45,label="preferencia",widget=forms.Textarea)
     UO=forms.IntegerField(label="UO",required=False)
     departamento=forms.IntegerField(label="departamento",required=False)
 
