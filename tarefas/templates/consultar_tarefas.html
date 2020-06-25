@@ -17,7 +17,7 @@
         </ul>
     </nav>
 <br>
-</div>
+</div>  
 <div class="table" style="padding-left: 10%;padding-right: 10%;">
     <div class="table-wrapper">
         <form id="regForm" method="POST">
@@ -57,12 +57,20 @@
                     <!---->
                 </thead>
                 {{ form.management_form }}
+                {% for disponibilidade in form %}
+                            {% for hidden in disponibilidade.hidden_fields %}
+                            {{ hidden }}
+                            {% endfor %}
+                {% endfor %}
                 <tbody id="disponibilidade">
                     {% for disponibilidade in form %}
                     <tr draggable="false" class="" scope="row">
                         <!---->
                         <td data-label="Dia" class="">
                             {{ disponibilidade.dia_dia }}
+                            {% if disponibilidade.dia_dia.errors.0 %}
+                            <div class="has-text-danger"><i class="mdi mdi-alert-circle mdi-24px"></i>{{ disponibilidade.dia_dia.errors.0 }}</div>
+                        {% endif %}
                         </td>
                         <td data-label="Hora Início" class="">
                             {{ disponibilidade.horario_hora }}
@@ -74,13 +82,10 @@
                         {% endif %}
                         </td>
                         <td data-label="Tipo Tarefa" class="">
-                            <select name="{{ disponibilidade.tipo_de_tarefa.html_name }}" id="{{ disponibilidade.tipo_de_tarefa.id_for_label }}">
-                                <option value="Sem preferência" selected="">Sem preferência</option>
-
-                                <option value="Guiar Grupo">Guiar Grupo</option>
-
-                                <option value="Ajudar Docente">Ajudar Docente</option>
-
+                            <select value="{{ disponibilidade.tipo_de_tarefa.value }}"  name="{{ disponibilidade.tipo_de_tarefa.html_name }}" id="{{ disponibilidade.tipo_de_tarefa.id_for_label }}">
+                                <option value="Sem preferência" {% if disponibilidade.tipo_de_tarefa.value == "Sem preferência"  %} selected="" {% endif %} >Sem preferência</option>
+                                <option value="Guiar Grupo" {% if disponibilidade.tipo_de_tarefa.value == "Guiar Grupo"  %} selected="" {% endif %} >Guiar Grupo</option>
+                                <option value="Ajudar Docente" {% if disponibilidade.tipo_de_tarefa.value == "Ajudar Docente"  %} selected="" {% endif %} >Ajudar Docente</option>
                             </select>
                         </td>
                         <td data-label="Ações" class="">
@@ -183,5 +188,19 @@
     }
 
 </script>
+
+<!--Tipo de tarefa after submeter-->
+
+<script>
+    var tipo = "{{form.tipo.id_for_label}}";
+    var prato = "{{form.tipo.value}}";
+    $(document).ready(function () {
+      console.log(tipo);
+      var prato_name = "option[value='" + prato + "']";
+      var p = $("#" + tipo).find(prato_name);
+      p.attr("selected", "selected");
+      console.log(p);
+    });
+  </script>
 
 {% endblock content %}
