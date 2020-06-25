@@ -141,7 +141,7 @@ def noti(request,id):
     destinatario=noti.utilizadorrecebe
     tipo="Destinatario"
     if request.session['user_id']==noti.utilizadorrecebe:
-        if noti.utilizadorrecebe==-1:
+        if noti.idutilizadorenvia==-1:
             destinatario="Diaaberto@ualg.pt"
         else:
             destinatario=noti.idutilizadorenvia
