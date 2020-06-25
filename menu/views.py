@@ -195,7 +195,7 @@ def prato_delete_view(request, id):
     obj = get_object_or_404(Prato, idprato=id)
     if Prato.objects.filter(pk=id).exists():
         obj.delete()
-    return redirect('blog:blog-home')
+    return redirect('menu:menu_list')
 
 ######## TRANSPORTEEE ############################
 def transporte_create_view(request):
