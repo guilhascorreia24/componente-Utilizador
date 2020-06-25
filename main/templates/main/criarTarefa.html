@@ -1,6 +1,7 @@
 {% extends 'base_template.html' %}
 {% block steps %}
-  <li><a href="/">Início</a></li>
+  <li><a href="/">Inicio</a></li>
+  <li><a href="{% url 'tarefa_coordenador:consultar_tarefa' %}">Consultar Tarefa</a></li>
   <li class="is-active"><a href="" aria-current="page"> Criar Tarefa - Selecionar Tipo Tarefa</a></li>
 {% endblock %}
 {% block content %}

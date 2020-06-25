@@ -80,6 +80,10 @@
     <div class="column">
         <div class="table "></div>
             <div class="table-wrapper">
+                <a href="{% url 'tarefa_coordenador:criar_tarefa' %}" class="button is-success is-outlined" type="button" style="margin-bottom: 0.9rem; margin-right: 1rem;">
+                    <span class="icon is-small">
+                        <i class="mdi mdi-plus"></i></span> 
+                            <span> Criar Tarefa</span></a>
                 <table id="myTable" class="table has-mobile-cards is-hoverable is-fullwidth">
                     <thead>
                         <tr>
@@ -172,11 +176,11 @@
 {% endfor %}
 
 {% for i in tarefas %}
-<div tabindex="-1" class="modal fade" id="{{forloop.counter}}" role="dialog" aria-hidden="true" aria-labelledby="exampleModalLabel">
+<div tabindex="-1"  class="modal fade" id="{{forloop.counter}}" role="dialog" aria-hidden="true" aria-labelledby="exampleModalLabel">
+    <div class="modal-background"></div>
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-
                 <button class="close" aria-label="Close" type="button" data-dismiss="modal">
                     <span aria-hidden="true">X</span>
                 </button>
