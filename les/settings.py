@@ -53,10 +53,6 @@ INSTALLED_APPS = [
     'atividades',
     'formularios',
     'main.apps.MainConfig',
-<<<<<<< HEAD
-#    'menu.apps.MenuConfig',
-=======
->>>>>>> b3a35d54b566f2b62bbc3a33cdc366d3f90d1fa2
     'menu',
 ]
 
