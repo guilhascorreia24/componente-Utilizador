@@ -6,7 +6,19 @@
         class="router-link-exact-active router-link-active">Disponibilidade</a></li>
 {% endblock %}
 {% block content %}
-<div data-v-8716d23a="" class="columns">
+<div class="b-steps">
+    <nav class="steps is-success">
+        <ul class="step-items">
+            <li class="step-item is-success is-active"><a class="step-link">
+                    <div class="step-marker"><span class="icon"><i class="mdi mdi-book mdi-24px"></i></span></div>
+                    <div class="step-details"><span class="step-title">Disponibilidade</span>
+                    </div>
+                </a></li>
+        </ul>
+    </nav>
+<br>
+</div>
+<div class="table" style="padding-left: 10%;padding-right: 10%;">
     <div class="table-wrapper">
         <form id="regForm" method="POST">
             {% csrf_token %}
@@ -35,7 +47,7 @@
                             </div>
                         </th>
                         <th class="is-sortable">
-                            <div class="th-wrap"> Ação <span class="icon is-small" style="display: none;"><i
+                            <div class="th-wrap"> Ações <span class="icon is-small" style="display: none;"><i
                                         class="mdi mdi-menu-up"></i></span>
                             </div>
                         </th>
@@ -57,10 +69,13 @@
                         </td>
                         <td data-label="Hora Final" class="">
                             {{ disponibilidade.horario_hora1 }}
+                        {% if disponibilidade.horario_hora1.errors.0 %}
+                            <div class="has-text-danger"><i class="mdi mdi-alert-circle mdi-24px"></i>{{ disponibilidade.horario_hora1.errors.0 }}</div>
+                        {% endif %}
                         </td>
                         <td data-label="Tipo Tarefa" class="">
                             <select name="{{ disponibilidade.tipo_de_tarefa.html_name }}" id="{{ disponibilidade.tipo_de_tarefa.id_for_label }}">
-                                <option value="None" selected="">---------</option>
+                                <option value="Sem preferência" selected="">Sem preferência</option>
 
                                 <option value="Guiar Grupo">Guiar Grupo</option>
 
@@ -103,7 +118,7 @@
                         <td data-label="Tipo Tarefa" class="">
                             <select name="{{ form.empty_form.tipo_de_tarefa.html_name }}"
                                 id="{{ form.empty_form.tipo_de_tarefa.id_for_label }}">
-                                <option value="None" selected="">---------</option>
+                                <option value="Sem preferência" selected="">Sem preferência</option>
 
                                 <option value="Guiar Grupo">Guiar Grupo</option>
 
@@ -125,15 +140,14 @@
 
             <!--END TEMPLATE-->
             <br>
-            <button type="button" class="button" onclick="add_responsavel()">
+            <button type="button" class="button is-success" onclick="add_responsavel()">
                 <span class="icon is-small"><i class="mdi mdi-plus"></i></span>
                 <span>Adicionar disponibilidade</span>
-            </button>
-
-            <button type="submit">
-                <span class="icon is-small"><i class="mdi mdi-plus"></i></span>
-                <span>Submeter</span>
-            </button>
+            </button>        
+            <button type="submit" class="button is-success" style="top:80px;left:235px;">
+                    <span class="icon is-small"><i class="mdi mdi-check""></i></span>
+                    <span>Submeter</span>
+            </button>        
         </form>
     </div>
 </div>

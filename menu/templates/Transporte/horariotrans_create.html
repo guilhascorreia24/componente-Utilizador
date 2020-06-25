@@ -1,0 +1,84 @@
+
+{% extends 'base_template.html' %}
+{% block steps %}
+<li><a href="{% url 'blog:blog-home' %}">Início</a></li>
+<li><a href="{% url 'menu:transporte-list' %}">Consultar Transporte</a></li>
+{% if o %}
+<li class="is-active"><a href="" aria-current="page">Criar horario para do Transporte</a></li>
+{% else %}
+<li class="is-active"><a href="" aria-current="page">Editar horario para do Transporte</a></li>
+{% endif %}
+{% endblock %}
+{% block content %}
+{{form1.errors}}
+{{form2.errors}}
+<div style="padding: 3rem 2vw 1rem">
+    <form action='.' method='POST'>{% csrf_token %}
+    <div class="b-steps">
+      <nav class="steps is-success">
+        <ul class="step-items">
+            <li class="step-item is-success is-active"><a class="step-link">
+                    <div class="step-marker"><span class="icon"><i class="mdi mdi-book mdi-24px"></i></span></div>
+                    <div class="step-details"><span class="step-title">{% if o %}
+                      Criar horario do Transporte
+                      {% else %}
+                      Criar horario do Transporte
+                      {% endif %}</span>
+                    </div>
+                </a></li>
+        </ul>
+    </nav>
+      <section class="step-content">
+          <div class="step-item">
+    <div style="padding: 1rem 2vw 0px;">
+        <hr><h2 class="title has-text-grey is-uppercase" style="font-size: 0.9rem;"> Horario </h2>
+        <div class="columns">
+        <div class="column">
+          <div class="field">
+              <label class="label">Dia</label>
+              <div class="control is-expanded">
+                <div class="select is-fullwidth">
+                   {{form.dia_dia}}
+                  </span> <!----></div> <!---->
+                  </div>
+              </div>
+            </div>
+               <div class="column">
+                   <div class="field">
+                       <label class="label">Hora</label>
+                       <div class="control is-expanded">
+                        <div class="select is-fullwidth">
+                           {{form.horario_hora}}
+                          </div>
+                        </div>
+                      </div>
+                     </div>
+                   </div>
+                 </div>  
+                 </div>     
+              </section>
+              <div class="column is-8 is-offset-2">
+                  <div class="level">
+                  <div class="level-left">
+                  <a href="{% url 'menu:transporte-list' %}" class="button is-outlined" type="button">
+                  <span>Cancelar</span>
+            </a>          
+            </div>
+              <div class="level-right">
+                  <input class="button is-large is-success is-outlined is-link" type='submit' value='Submeter'>
+                 </button>
+                 </div>
+                 </div>
+                 </div>
+                 </div>
+                 </form>
+                 </div>
+                   <style>
+                       .label {
+                       font-weight: normal;
+                       }
+                       .b-steps .steps .step-items .step-item .step-details .step-title {
+                       font-size: 1rem;
+                       }          
+                   </style>
+                   {% endblock content%}

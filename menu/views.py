@@ -5,6 +5,7 @@ from .models import *
 from .filters import *
 from Notification.views import noti_not_checked
 from user.views import update_ano_user_null
+from django.utils import timezone
 
 ###### Dia Aberto ##############
 def index(request):
@@ -14,11 +15,16 @@ def index(request):
         'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)
     }
     return render(request, "index.html", context)
+
 def preencher_hora(hora_incio, hora_fim):
     inter=datetime.time(0,30,0)
-    while inter<hora_fim:
-        Horario.objects.create(pk=hora_inicio)
-        hora_incio+=inter
+    while hora_incio<hora_fim:
+        h=str(datetime.timedelta(hours=hora_incio.hour,minutes=hora_incio.minute)+datetime.timedelta(hours=inter.hour,minutes=inter.minute))
+        hora_incio=datetime.time(int(h.split(':')[0]),int(h.split(':')[1]))
+        if not(Horario.objects.filter(pk=hora_incio).exists()):
+            Horario.objects.create(pk=hora_incio)
+        h=str(datetime.timedelta(hours=hora_incio.hour,minutes=hora_incio.minute)+datetime.timedelta(hours=inter.hour,minutes=inter.minute))
+        hora_incio=datetime.time(int(h.split(':')[0]),int(h.split(':')[1]))
     Horario.objects.create(pk=hora_fim)
 
 def diaaberto_create(request):
@@ -31,15 +37,18 @@ def diaaberto_create(request):
             form.save()
             inicio = form.cleaned_data['datadiaabertoinicio']
             final = form.cleaned_data['datadiaabertofim']
+            hora_inicio=request.POST['h_inicio']
+            hora_fim=request.POST['h_fim']
+            print(hora_fim)
             #preencher_hora(hora_inicio,hora_fim)
             Horario(hora="12:00:00").save()
             hora1 = Horario.objects.filter(hora="12:00:00")
-            for x in range(inicio.day, final.day):
-                Dia(dia=inicio+datetime.timedelta(days=x)).save()
-                dia1 = Dia.objects.filter(dia = inicio+datetime.timedelta(days=x))
+            for x in range(inicio.day, final.day+1):
+                Dia(dia=inicio+datetime.timedelta(days=x-inicio.day)).save()
+                dia1 = Dia.objects.filter(dia = inicio+datetime.timedelta(days=x-inicio.day))
                 HorarioHasDia(horario_hora=hora1[0], dia_dia=dia1[0]).save()
             update_ano_user_null()
-            return redirect("blog:blog-home")
+            return redirect("menu:diaaberto_list")
     return render(request,
                  template_name="DiaAberto/diaaberto_create.html", 
                     context={'form': form,'o':True,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
@@ -52,7 +61,21 @@ def diaaberto_update(request, id):
     pk_url_kwarg = 'ano'
     if form.is_valid():
         form.save()
-        return redirect("blog:blog-home")
+        #Horario.objects.all().delete()
+        inicio = form.cleaned_data['datadiaabertoinicio']
+        final = form.cleaned_data['datadiaabertofim']
+        #preencher_hora(hora_inicio,hora_fim)
+        print(request.POST)
+        hora_inicio=datetime.time(int(request.POST['h_incio'].split(':')[0]),int(request.POST['h_incio'].split(':')[1]))
+        hora_fim=datetime.time(int(request.POST['h_fim'].split(':')[0]),int(request.POST['h_fim'].split(':')[1]))
+        #preencher_hora(hora_inicio,hora_fim)
+        Horario(hora="12:00:00").save()
+        hora1 = Horario.objects.filter(hora="12:00:00")
+        for x in range(inicio.day, final.day+1):
+            Dia(dia=inicio+datetime.timedelta(days=x-inicio.day)).save()
+            dia1 = Dia.objects.filter(dia = inicio+datetime.timedelta(days=x-inicio.day))
+            HorarioHasDia(horario_hora=hora1[0], dia_dia=dia1[0]).save()
+        return redirect("menu:diaaberto_list")
     context = {
         'form': form,
         'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)
@@ -116,6 +139,7 @@ def prato_create_view(request):
 def menu_update_view(request, id):
     obj = get_object_or_404(Menu, idmenu=id)
     form = MenuModelForm(request.POST or None, instance=obj)
+    pk_url_kwarg = 'idmenu'
     if form.is_valid():
         form.save()
         return redirect("menu:menu_list")
@@ -128,6 +152,7 @@ def menu_update_view(request, id):
 def prato_update_view(request, id):
     obj = get_object_or_404(Prato, idprato=id)
     form = PratoForm(request.POST or None, instance=obj)
+    pk_url_kwarg = 'idprato'
     if form.is_valid():
         form.save()
         return redirect("menu:menu_list")
@@ -171,14 +196,15 @@ def menu_detail_view(request, id):
 def menu_delete_view(request, id):
     obj = get_object_or_404(Menu, idmenu=id)
     if Menu.objects.filter(pk=id).exists():
-        obj.delete()
+        Prato.objects.filter(menu_idmenu=Menu.objects.get(pk=id)).delete()
+        Menu.objects.filter(pk=id).delete()
     return redirect('menu:menu_list')
 
 def prato_delete_view(request, id):
     obj = get_object_or_404(Prato, idprato=id)
     if Prato.objects.filter(pk=id).exists():
         obj.delete()
-    return redirect('blog:blog-home')
+    return redirect('menu:menu_list')
 
 ######## TRANSPORTEEE ############################
 def transporte_create_view(request):
@@ -239,7 +265,7 @@ def transporte_update2_view(request, id):
     if form.is_valid():
         print("aaaaaaaaaaaaaaaaaaaa")
         form.save()
-        return redirect("/transporte")
+        return redirect("menu:transporte-list")
     context = {
         'form': form,
         'hora': hora,
@@ -263,9 +289,11 @@ def transporte_list_view(request):
 def transporte_detail_view(request, id):
     obj = get_object_or_404(Transporte,idtransporte =id)
     transporte = TransporteHasHorario.objects.get(transporte_idtransporte=id)
+    inscricao = TransporteHasInscricao.objects.get(inscricao_idinscricao=id)
     context = {
         "obj": obj,
         "transporte": transporte,
+        "inscricao": incricao,
         'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)
 
     }
@@ -279,20 +307,42 @@ def transporte_delete_view(request, id):
 	return redirect("menu:transporte-list")
 
 def transportehora_create_view(request):
-    form1 = DiaForm(request.POST or None)
-    form2 = HoraForm(request.POST or None)
-    if request.method == "POST":
-        if form1.is_valid() & form2.is_valid():
-            form1.save()
-            form2.save()
-            utl = Horario.objects.latest('hora')
-            utl1 = Dia.objects.latest('dia')
-            horario = HorarioHasDia(horario_hora=utl, dia_dia=utl1)
-            horario.save()
-            return redirect("menu:transporte-list")
+    form = HoraForm(request.POST or None)
+    if form.is_valid():
+        form.save()
+        return redirect("menu:transporte-list")
     context = {
-        'form1': form1,
-        'form2': form2,
+        'form': form,'o':True,
         'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)
     }
     return render(request, "Transporte/hora_create.html", context)
+
+
+
+def horariotransporte_create_view(request):
+    form = HorarioForm(request.POST or None)
+    if form.is_valid():
+        form.save()
+        return redirect("menu:transporte-list")
+    context = {
+        'form': form,'o':True,
+        'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)
+    }
+    return render(request, "Transporte/horariotrans_create.html", context)
+
+
+def transporte_grupo_view(request, id):
+    form = InscricaoForm(request.POST or None)
+    if request.method == "POST":
+        if form.is_valid():
+            form.save(id)
+            print("aaaaaaaaaaaaaaaaaaa")
+            return redirect("menu:transporte-list")
+            
+    context = {
+        'form': form,
+        'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)
+    }
+    return render(request, "Transporte/grupos_ass.html", context)
+
+

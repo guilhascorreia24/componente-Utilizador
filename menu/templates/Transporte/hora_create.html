@@ -10,7 +10,8 @@
 {% endif %}
 {% endblock %}
 {% block content %}
-{{form.errors}}
+{{form1.errors}}
+{{form2.errors}}
 <div style="padding: 3rem 2vw 1rem">
     <form action='.' method='POST'>{% csrf_token %}
     <div class="b-steps">
@@ -19,9 +20,9 @@
             <li class="step-item is-success is-active"><a class="step-link">
                     <div class="step-marker"><span class="icon"><i class="mdi mdi-book mdi-24px"></i></span></div>
                     <div class="step-details"><span class="step-title">{% if o %}
-                      Criar horario do Transporte
+                      Criar Hora
                       {% else %}
-                      Editar horario do Transporte
+                      Criar Hora
                       {% endif %}</span>
                     </div>
                 </a></li>
@@ -32,19 +33,11 @@
     <div style="padding: 1rem 2vw 0px;">
         <hr><h2 class="title has-text-grey is-uppercase" style="font-size: 0.9rem;"> Horario </h2>
         <div class="columns">
-        <div class="column">
-          <div class="field">
-              <label class="label">Dia</label>
-               <div class="control is-clearfix">
-                   {{form1.dia}}
-                  </span> <!----></div> <!---->
-                  </div>
-              </div>
                <div class="column">
                    <div class="field">
                        <label class="label">Hora</label>
                         <div class="control is-clearfix">
-                           {{form2.hora}}
+                           {{form.hora}}
                           </div>
                         </div>
                       </div>

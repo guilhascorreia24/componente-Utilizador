@@ -8,10 +8,6 @@ class TestUrls(SimpleTestCase):
         url = reverse('inscricao:consulta')
         self.assertEquals(resolve(url).func, consultar_inscricao)
     
-    '''def test_consultar_inscricoes(self):
-        url = reverse('inscricao:consultar_inscricoes')
-        self.assertEquals(resolve(url).func, consultar_inscricoes)'''
-    
     def test_register(self):
         url = reverse('inscricao:register')
         self.assertEquals(resolve(url).func, inscricao_form)

@@ -94,7 +94,11 @@
                    <a href="{% url 'menu:transportehora-criar' %}" class="button is-success is-outlined" type="button" style="margin-bottom: 0.9rem; margin-right: 1rem;">
                     <span class="icon is-small">
                         <i class="mdi mdi-plus"></i></span> 
-                            <span> Adicionar Horário </span></a>
+                            <span> Adicionar Hora </span></a>
+                            <a href="{% url 'menu:transporte-horario' %}" class="button is-success is-outlined" type="button" style="margin-bottom: 0.9rem; margin-right: 1rem;">
+                                <span class="icon is-small">
+                                    <i class="mdi mdi-plus"></i></span> 
+                                        <span> Adicionar Horário </span></a>
             <div class="table-wrapper">
                 <table id="myTable" class="table has-mobile-cards is-hoverable is-fullwidth">
                     <thead>
@@ -122,11 +126,11 @@
                               
                                 <td>{{instance.transporte_idtransporte.identificacao}}</td>
                                 <td>{{instance.horario_has_dia_id_dia_hora.dia_dia.dia | date:"d/m/Y"}}</td>
-                                <td>{{instance.horario_has_dia_id_dia_hora.horario_hora.hora}}</td>
+                                <td>{{instance.horario_has_dia_id_dia_hora.horario_hora.hora| time:"H:i"}}</td>
                                 <td>{{instance.origem.paragem}}</td> 
                                 <td>{{instance.destino.paragem}}</td>
                                 <td>
-                                    <a data-toggle="modal" data-target="#{{ forloop.counter }}">
+                                    <a data-toggle="modal" data-target="#{{forloop.counter}}_">
                                         <span class="icon is-small">
                                             <i class="mdi mdi-account-search mdi-24px"></i>
                                         </span>
@@ -138,9 +142,16 @@
                                         </span>
                                     </a>
                                
-                                        <a data-toggle="modal" data-target="#{{ forloop.counter }}_">
-                                            <span class="icon is-small has-text-danger">
-                                                <i class="mdi mdi-close-box mdi-24px"></i>
+                                         <a data-toggle="modal"
+                                         data-target="#{{forloop.counter}}">
+                                             <span class="icon is-small has-text-danger">
+                                                 <i class="mdi mdi-close-box mdi-24px"></i>
+                                             </span>
+                                         </a>
+                                        </a>
+                                        <a  href="{% url 'menu:transporte-grupo' instance.id_transporte_has_horario %}">
+                                            <span class="icon is-small">
+                                                <i class="mdi mdi-account-multiple-plus mdi-24px"></i>
                                             </span>
                                         </a>
                                     </td>
@@ -154,7 +165,32 @@
     </div>
 
     {% for instance in hora %}
-    <div tabindex="-1" class="modal fade" id="{{forloop.counter}}" role="dialog" aria-hidden="true" aria-labelledby="exampleModalLabel">
+    <div class="dialog modal" id="{{forloop.counter}}">
+        <div class="modal-background"></div>
+        <br><br><br><br><br><br><br><br><br><br><br><br>
+        <div class="modal-card animation" style="max-width:360px">
+            <!---->
+            <section class="modal-card-body is-titleless">
+                <div class="media">
+                    <!---->
+                    <div class="media-content">
+                        <p>Tem a certeza que quer eliminar o transporte  {{instance.transporte_idtransporte.identificacao}}?</p>
+                        <!---->
+                    </div>
+                </div>
+            </section>
+            <footer class="modal-card-foot"><button class="button" data-dismiss="modal">
+                    Cancelar
+                </button><a href="{% url 'menu:transporte-delete' instance.transporte_idtransporte.idtransporte %}" style="text-decoration: none;"> <button
+                        class="button is-success">
+                        Confirmar
+                    </button></a></footer>
+        </div>
+    </div> 
+    {% endfor %}
+
+    {% for instance in hora %}
+    <div tabindex="-1" class="modal fade" id="{{forloop.counter}}_" role="dialog" aria-hidden="true" aria-labelledby="exampleModalLabel">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -174,10 +210,24 @@
                             <br>
                             <div class="input-group col-sm-12">
                                 <div class="input-group-prepend labelForm">
-                                    <span class="input-group-text w-100">Colaborador Atribuído:</span>
+                                    <span class="input-group-text w-100">Capacidade:</span>
                                 </div>
-                                <input disabled="" class="form-control col-sm-2 bg-light" type="text" value="{{ i.colaborador_utilizador_idutilizador.utilizador_idutilizador.nome }}">
+                                <input disabled="" class="form-control col-sm-2 bg-light" type="text" value="{{ instance.transporte_idtransporte.capacidade }}">
                             </div>
+                            {% for inscricao in inscricao %}
+                            <div class="input-group col-sm-12">
+                                <div class="input-group-prepend labelForm">
+                                    <span class="input-group-text w-100">Grupos:</span>
+                                </div>
+                                <input disabled="" class="form-control col-sm-2 bg-light" type="text" value="{{ inscricao.inscricao_idinscricao }}">
+                            </div>
+                            <div class="input-group col-sm-12">
+                                <div class="input-group-prepend labelForm">
+                                    <span class="input-group-text w-100">Número de Passageiros:</span>
+                                </div>
+                                <input disabled="" class="form-control col-sm-2 bg-light" type="text" value="{{ inscricao.n_passageiros }}">
+                            </div>
+                            {% endfor %}
                     </div>
                 </div>
             </div>
