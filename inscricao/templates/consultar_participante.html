@@ -140,6 +140,18 @@
     </div>
     <div class="column">
         <div>
+            <div>
+                <a href={% url 'inscricao:register_individual' %}  class="button is-success is-outlined" type="button" style="margin-bottom: 0.9rem; margin-right: 1rem;">
+                    <span class="icon is-small"><i class="mdi mdi-account-plus mdi-24px"></i></span>
+                    <span>Nova Inscrição Individual</span>
+                </a>
+                <span><a href={% url 'inscricao:register' %}  class="button is-success is-outlined" type="button" style="margin-bottom: 0.9rem; margin-right: 1rem;">
+                        <span class="icon is-small"><i class="mdi mdi-account-multiple-plus mdi-24px"></i></span>
+                        <span>Nova Inscrição Coletiva</span>
+                    </a></span>
+            </div>
+        </div>
+        <div>
             <div class="b-table">
                 <div class="table-wrapper">
                     <table class="sort-table table table-striped">
@@ -283,19 +295,6 @@
         </div>
     </div>
 </div>
-<hr>
-<div style="display: flex;align-items: center;justify-content: center;">
-    <div style="display: flex;align-items: center;justify-content: center;">
-        <a href={% url 'inscricao:register_individual' %} type="button" class="button" style="margin-right:12%;">
-            <span class="icon is-small"><i class="mdi mdi-account-plus mdi-24px"></i></span>
-            <span>Nova Inscrição Individual</span>
-        </a>
-        <span><a href={% url 'inscricao:register' %} type="button" class="button">
-                <span class="icon is-small"><i class="mdi mdi-account-multiple-plus mdi-24px"></i></span>
-                <span>Nova Inscrição Coletiva</span>
-            </a></span>
-    </div>
-</div>
 <!-----BUTTON_COLETIVO---->
 
 {% for inscricao in inscricoes_coletivas %}
@@ -349,6 +348,7 @@
                 </div>
                 <div>
                     <!--Atividades inscritas-->
+                    {% if inscricao.atividade|length > 0 %}
                     <h1 class="mx-3"> Atividades Inscritas </h1>
                     <div class="panel panel-default panel-table">
                         <div class="table-wrapper">
@@ -428,6 +428,10 @@
                             </table>
                         </div>
                     </div>
+                    {% else %}
+                    <p><b>Sem atividades</b></p>
+                    {% endif %}
+                    {% if inscricao.transportes|length > 0 %}
                     <h1 class="mx-3"> Transportes </h1>
                     <div class="panel panel-default panel-table">
                         <div class="table-wrapper">
@@ -484,6 +488,10 @@
                             </table>
                         </div>
                     </div>
+                    {% else %}
+                    <p><b>Sem transportes</b></p>
+                    {% endif %}
+                    {% if inscricao.responsaveis|length > 0 %}
                     <h1 class="mx-3"> Responsaveis </h1>
                     <div class="panel panel-default panel-table">
                         <div class="table-wrapper">
@@ -532,6 +540,10 @@
                             </table>
                         </div>
                     </div>
+                    {% else %}
+                    <p><b>Sem responsáveis</b></p>
+                    {% endif %}
+                    {% if inscricao.almoco|length > 0 %}
                     <h1 class="mx-3"> Almoços </h1>
                     <div class="panel panel-default panel-table">
                         <div class="table-wrapper">
@@ -580,6 +592,9 @@
                             </table>
                         </div>
                     </div>
+                    {% else %}
+                    <p><b>Sem almoços</b></p>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -633,6 +648,7 @@
                 </div>
                 <div>
                     <!--Atividades inscritas-->
+                    {% if inscricao.atividade|length > 0 %}
                     <h1 class="mx-3"> Atividades Inscritas </h1>
                     <div class="panel panel-default panel-table">
                         <div class="table-wrapper">
@@ -712,6 +728,10 @@
                             </table>
                         </div>
                     </div>
+                    {% else %}
+                    <p><b>Sem atividades</b></p>
+                    {% endif %}
+                    {% if inscricao.transportes|length > 0 %}
                     <h1 class="mx-3"> Transportes </h1>
                     <div class="panel panel-default panel-table">
                         <div class="table-wrapper">
@@ -768,6 +788,10 @@
                             </table>
                         </div>
                     </div>
+                    {% else %}
+                    <p><b>Sem transportes</b></p>
+                    {% endif %}
+                    {% if inscricao.almoco|length > 0 %}
                     <h1 class="mx-3"> Almoços </h1>
                     <div class="panel panel-default panel-table">
                         <div class="table-wrapper">
@@ -816,6 +840,9 @@
                             </table>
                         </div>
                     </div>
+                    {% else %}
+                    <p><b>Sem almoços</b></p>
+                    {% endif %}
                 </div>
             </div>
         </div>

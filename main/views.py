@@ -81,7 +81,7 @@ def criar_tarefa_atividade(request):
 			new_tarefa.save()
 			noti_views.new_noti(request,user.pk,'Tarefa','Foi atribuido uma Nova Tarefa')
 			messages.success(request, f'Tarefa Criada com Sucesso!')
-			return redirect("blog:blog-home")
+			return redirect("tarefa_coordenador:consultar_tarefa")
 
 	return render(request=request,
 				  template_name="main/criarTarefaAtividade.html",
@@ -125,7 +125,7 @@ def criar_tarefa_grupo(request):
 			new_tarefa.save()
 			noti_views.new_noti(request,user.pk,'Tarefa','Foi atribuido uma Nova Tarefa')
 			messages.success(request, f'Tarefa Criada com Sucesso!')
-			return redirect("blog:blog-home")
+			return redirect("tarefa_coordenador:consultar_tarefa")
 	
 	return render(request=request,
 				  template_name="main/criarTarefaAcompanhar.html",
