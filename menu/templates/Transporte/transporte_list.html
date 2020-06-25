@@ -132,7 +132,7 @@
                                         </span>
                                     </a>
                                 
-                                    <a href="{% url 'menu:transporte-detail' instance.id_transporte_has_horario %}">
+                                    <a href="{% url 'menu:transporte-update' instance.id_transporte_has_horario %}">
                                         <span class="icon is-small">
                                             <i class="mdi mdi-pencil mdi-24px"></i>
                                         </span>
@@ -207,7 +207,11 @@
             </section>
             <footer class="modal-card-foot"><button class="button" data-dismiss="modal">
                     Cancelar
+<<<<<<< HEAD
                 </button><a href="{% url 'menu:transporte-delete' instance.transporte_idtransporte.idtransporte %}" style="text-decoration: none;"> <button
+=======
+                </button><a href="{% url 'menu:transporte-delete' instance.transporte_idtransporte.idtransporte%}" style="text-decoration: none;"> <button
+>>>>>>> e7752dd7bf6ae00cdbeaa2998637d701e1df6b0f
                         class="button is-success" type="submit">
                         Confirmar
                     </button></a></footer>

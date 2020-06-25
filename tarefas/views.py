@@ -28,6 +28,9 @@ def consultar_tarefas(request):
             if form.is_valid():
 
                 for disps in form:
+
+                    print(disps)
+                    #if Disponibilidade.objects.filter(dia_dia = disp.)
                     disps.save_user(colaborador)
                 form.save()
 
@@ -36,7 +39,7 @@ def consultar_tarefas(request):
                 return render(request, "consultar_tarefas.html", {'form': form,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
 
         else:   
-            form = disp(queryset=Disponibilidade.objects.none(), prefix="tarefa")
+            form = disp(queryset=Disponibilidade.objects.all(), prefix="tarefa")
 
         return render(request, "consultar_tarefas.html", {'form': form,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
 

@@ -48,7 +48,7 @@ class Atividade(models.Model):
     publico_alvo = models.CharField(max_length=45)
     duracao = models.FloatField()
     descricao = models.CharField(max_length=250)
-    validada = models.IntegerField()
+    validada = models.IntegerField(default=0)
     professor_universitario_utilizador_idutilizador = models.ForeignKey('ProfessorUniversitario', models.DO_NOTHING, db_column='professor_universitario_Utilizador_idutilizador')  # Field name made lowercase.
     unidade_organica_iduo = models.ForeignKey('UnidadeOrganica', models.DO_NOTHING, db_column='unidade_organica_idUO')  # Field name made lowercase.
     departamento_iddepartamento = models.ForeignKey('Departamento', models.DO_NOTHING, db_column='Departamento_idDepartamento')  # Field name made lowercase.
@@ -253,6 +253,7 @@ class Disponibilidade(models.Model):
     horario_hora = models.ForeignKey('Horario', models.DO_NOTHING, db_column='horario_hora',related_name="disponibilidade_hora_inicio")
     horario_hora1 = models.ForeignKey('Horario', models.DO_NOTHING, db_column='horario_hora1',related_name="disponibilidade_hora_fim")
     tipo_de_tarefa = models.CharField(max_length=45, blank=True, null=True)
+    disponibilidade_id = models.AutoField(primary_key=True)
 
     class Meta:
         managed = False

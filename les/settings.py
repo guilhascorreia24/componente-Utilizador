@@ -53,7 +53,8 @@ INSTALLED_APPS = [
     'atividades',
     'formularios',
     'main.apps.MainConfig',
-    'menu'
+    'menu.apps.MenuConfig',
+    'menu',
 ]
 
 MIDDLEWARE = [
