@@ -60,19 +60,17 @@ def send_to_org(email,request):
         if len(email)==2:
             users_send=[]
             for dep in Departamento.objects.filter(unidade_organica_iduo=UnidadeOrganica.objects.get(sigla=email[1])):
-                users_send.append(ProfessorUniversitario.objects.filter(departamento_iddepartamento=dep))
+                users_send=ProfessorUniversitario.objects.filter(departamento_iddepartamento=dep)
     if email[0]=="Coordenadores":
         users_send=Coordenador.objects.all()
         if len(email)==2:
-            users_send=[]
-            for uo in UnidadeOrganica.objects.get(sigla=email[1]):
-                users_send.append(Coordenador.objects.filter(unidade_organica_iduo=uo))
+            users_send=Coordenador.objects.filter(unidade_organica_iduo=UnidadeOrganica.objects.get(sigla=email[1]))
     if email[0]=="Colaboradores":
         users_send=Colaborador.objects.all()
         if len(email)==2:
             users_send=[]
-            for curso in Curso.objects.get(unidade_organica_iduo=email[1]):
-                users_send.append(Colaborador.objects.filter(curso_idcurso=curso))
+            for curso in Curso.objects.filter(unidade_organica_iduo=UnidadeOrganica.objects.get(sigla=email[1])):
+                users_send=Colaborador.objects.filter(curso_idcurso=curso)
     if email[0]=="Administradores":
         users_send=Administrador.objects.all()
     if email[0]=="Participantes":
