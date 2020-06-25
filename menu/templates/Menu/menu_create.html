@@ -73,8 +73,10 @@
                                                      <label >Horário</label>
                                                      <div class="control is-clearfix">
                                                        <div class="select is-fullwidth">
+                                                         {% if horario_has_dia_id_dia_hora.hora = "12:00:00" %}
                                                          {{form.horario_has_dia_id_dia_hora}} 
                                                          {{form.errors.horario_has_dia_id_dia_hora}}<!----> <!----> <!----></div>
+                                                         {% endif %}
                                                          <!----></div>
                                                         </div>     
                                                        </div>                                         

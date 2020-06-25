@@ -66,7 +66,7 @@ CREATE TABLE IF NOT EXISTS `les`.`utilizador` (
     FOREIGN KEY (`dia_aberto_ano`)
     REFERENCES `les`.`dia_aberto` (`ano`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 52
+AUTO_INCREMENT = 1002
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -95,7 +95,7 @@ CREATE TABLE IF NOT EXISTS `les`.`campus` (
   `nome` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`idCampus`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 3
+AUTO_INCREMENT = 4
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -107,7 +107,7 @@ CREATE TABLE IF NOT EXISTS `les`.`espaco` (
   `idespaco` INT NOT NULL AUTO_INCREMENT,
   `nome` VARCHAR(255) NOT NULL,
   `campus_idCampus` INT NOT NULL,
-  `img` VARCHAR(100) NULL DEFAULT NULL, 
+  `img` VARCHAR(100) NULL DEFAULT NULL,
   PRIMARY KEY (`idespaco`),
   INDEX `fk_espaco_campus1_idx` (`campus_idCampus` ASC) VISIBLE,
   CONSTRAINT `fk_espaco_campus1`
@@ -116,7 +116,7 @@ CREATE TABLE IF NOT EXISTS `les`.`espaco` (
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
-AUTO_INCREMENT = 4
+AUTO_INCREMENT = 7
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -173,7 +173,7 @@ CREATE TABLE IF NOT EXISTS `les`.`unidade_organica` (
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
-AUTO_INCREMENT = 4
+AUTO_INCREMENT = 6
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -193,7 +193,7 @@ CREATE TABLE IF NOT EXISTS `les`.`departamento` (
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
-AUTO_INCREMENT = 3
+AUTO_INCREMENT = 5
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -264,7 +264,7 @@ CREATE TABLE IF NOT EXISTS `les`.`atividade` (
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
-AUTO_INCREMENT = 3
+AUTO_INCREMENT = 6
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -450,7 +450,7 @@ CREATE TABLE IF NOT EXISTS `les`.`curso` (
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
-AUTO_INCREMENT = 4
+AUTO_INCREMENT = 6
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -521,7 +521,7 @@ CREATE TABLE IF NOT EXISTS `les`.`horario_has_dia` (
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
-AUTO_INCREMENT = 4
+AUTO_INCREMENT = 5
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -632,11 +632,12 @@ CREATE TABLE IF NOT EXISTS `les`.`disponibilidade` (
   `horario_hora` TIME NOT NULL,
   `horario_hora1` TIME NOT NULL,
   `tipo_de_tarefa` VARCHAR(45) NOT NULL,
+  `disponibilidade_id` INT NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`disponibilidade_id`),
   INDEX `fk_table1_colaborador1_idx` (`colaborador_Utilizador_idutilizador` ASC) VISIBLE,
   INDEX `fk_table1_dia1_idx` (`dia_dia` ASC) VISIBLE,
   INDEX `fk_table1_horario1_idx` (`horario_hora` ASC) VISIBLE,
   INDEX `fk_table1_horario2_idx` (`horario_hora1` ASC) VISIBLE,
-  PRIMARY KEY (`colaborador_Utilizador_idutilizador`, `dia_dia`, `horario_hora`, `horario_hora1`, `tipo_de_tarefa`),
   CONSTRAINT `fk_table1_colaborador1`
     FOREIGN KEY (`colaborador_Utilizador_idutilizador`)
     REFERENCES `les`.`colaborador` (`Utilizador_idutilizador`),
@@ -650,7 +651,7 @@ CREATE TABLE IF NOT EXISTS `les`.`disponibilidade` (
     FOREIGN KEY (`horario_hora1`)
     REFERENCES `les`.`horario` (`hora`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 31
+AUTO_INCREMENT = 3
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -691,6 +692,7 @@ CREATE TABLE IF NOT EXISTS `les`.`django_migrations` (
   `applied` DATETIME(6) NOT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB
+AUTO_INCREMENT = 39
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -835,7 +837,7 @@ CREATE TABLE IF NOT EXISTS `les`.`menu` (
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
-AUTO_INCREMENT = 10
+AUTO_INCREMENT = 14
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -855,7 +857,7 @@ CREATE TABLE IF NOT EXISTS `les`.`prato` (
     FOREIGN KEY (`menu_idMenu`)
     REFERENCES `les`.`menu` (`idMenu`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 18
+AUTO_INCREMENT = 24
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -909,7 +911,7 @@ CREATE TABLE IF NOT EXISTS `les`.`sessao` (
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
-AUTO_INCREMENT = 4
+AUTO_INCREMENT = 5
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -979,7 +981,7 @@ CREATE TABLE IF NOT EXISTS `les`.`notificacao` (
   `assunto` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 8
+AUTO_INCREMENT = 46
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -1114,7 +1116,7 @@ CREATE TABLE IF NOT EXISTS `les`.`tarefa` (
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
-AUTO_INCREMENT = 3
+AUTO_INCREMENT = 23
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -1128,6 +1130,7 @@ CREATE TABLE IF NOT EXISTS `les`.`transporte` (
   `identificacao` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`idtransporte`))
 ENGINE = InnoDB
+AUTO_INCREMENT = 2
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -1251,7 +1254,7 @@ CREATE TABLE IF NOT EXISTS `les`.`utilizador_has_notificacao` (
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
-AUTO_INCREMENT = 8
+AUTO_INCREMENT = 84
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 

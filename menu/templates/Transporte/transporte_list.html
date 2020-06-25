@@ -91,10 +91,6 @@
            <span class="icon is-small">
                <i class="mdi mdi-plus"></i></span> 
                    <span> Adicionar Transporte </span></a>
-                   <a href="{% url 'menu:transportehora-criar' %}" class="button is-success is-outlined" type="button" style="margin-bottom: 0.9rem; margin-right: 1rem;">
-                    <span class="icon is-small">
-                        <i class="mdi mdi-plus"></i></span> 
-                            <span> Adicionar Hora </span></a>
                             <a href="{% url 'menu:transporte-horario' %}" class="button is-success is-outlined" type="button" style="margin-bottom: 0.9rem; margin-right: 1rem;">
                                 <span class="icon is-small">
                                     <i class="mdi mdi-plus"></i></span> 
@@ -131,13 +127,13 @@
                                 <td>{{instance.destino.paragem}}</td>
                                 <td>
                                     <a data-toggle="modal" data-target="#{{forloop.counter}}_">
-                                        <span class="icon is-small">
+                                        <span class="icon is-small icon has-text-success">
                                             <i class="mdi mdi-account-search mdi-24px"></i>
                                         </span>
                                     </a>
                                 
                                     <a href="{% url 'menu:transporte-update' instance.id_transporte_has_horario %}">
-                                        <span class="icon is-small">
+                                        <span class="icon is-small icon has-text-success">
                                             <i class="mdi mdi-pencil mdi-24px"></i>
                                         </span>
                                     </a>
@@ -150,7 +146,7 @@
                                          </a>
                                         </a>
                                         <a  href="{% url 'menu:transporte-grupo' instance.id_transporte_has_horario %}">
-                                            <span class="icon is-small">
+                                            <span class="icon is-small icon has-text-success">
                                                 <i class="mdi mdi-account-multiple-plus mdi-24px"></i>
                                             </span>
                                         </a>
