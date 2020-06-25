@@ -273,6 +273,18 @@ def create_edit_session_view(request, idActivity):
         else:
             message = "Já existe sessão no horário escolhido"
     sessao = Sessao.objects.all().filter(atividade_idatividade=idActivity).order_by('horario_has_dia_id_dia_hora')
+<<<<<<< HEAD
+    return render(request, "Menu/prato_create.html", context)
+
+def menu_update_view(request, id):
+    obj = get_object_or_404(Menu, idmenu=id)
+    form = MenuModelForm(request.POST or None, instance=obj)
+    pk_url_kwarg = 'idmenu'
+    if form.is_valid():
+        form.save()
+        return redirect("menu:menu_list")
+=======
+>>>>>>> fee90b5dc56e893b3cfbb763395dfd4fab6e0fef
     context = {
         "list": sessao,
         "horario": hora,
