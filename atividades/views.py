@@ -524,7 +524,7 @@ def criar_paragem_view(request):
 
 def apagar_paragem_view(request, paragem):
     paragem = get_object_or_404(Paragem, paragem=paragem)
-    if not(Paragem.objects.filter(paragem=request.POST['paragem']).exists() and TransporteHasHorario.objects.filter(origem=request.POST['paragem']).exists() and TransporteHasHorario.objects.filter(destino=request.POST['paragem']).exists()):
+    if not(Paragem.objects.filter(paragem=paragem).exists() and TransporteHasHorario.objects.filter(origem=Paragem.objects.get(pk=paragem)).exists() and TransporteHasHorario.objects.filter(destino=Paragem.objects.get(pk=paragem)).exists()):
         paragem.delete()
     return redirect("atividades:criar_paragem")
 

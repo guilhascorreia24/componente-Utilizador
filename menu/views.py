@@ -8,7 +8,6 @@ from user.views import update_ano_user_null
 from django.utils import timezone
 from django.contrib import messages
 from Notification import views as noti_views
-
 ###### Dia Aberto ##############
 def index(request):
     queryset = DiaAberto.objects.all() # list of objects
@@ -39,7 +38,7 @@ def diaaberto_create(request):
             form.save()
             inicio = form.cleaned_data['datadiaabertoinicio']
             final = form.cleaned_data['datadiaabertofim']
-            hora_inicio=request.POST['h_inicio']
+            hora_inicio=request.POST['h_incio']
             hora_fim=request.POST['h_fim']
             print(hora_fim)
             #preencher_hora(hora_inicio,hora_fim)
@@ -115,9 +114,15 @@ def diaaberto_details(request, id):
 def diaaberto_delete(request, id):
     obj = get_object_or_404(DiaAberto, ano=id)
     if DiaAberto.objects.filter(ano=id).exists():
+        user=request.session['user_id']
+        if Utilizador.objects.filter(dia_aberto_ano=id,pk=request.session['user_id']).exists():
+            del request.session['user_id']
+            del request.session['type']
         obj.delete()
         messages.success(request, f'Configurações do Dia Aberto eliminado com Sucesso!')
         noti_views.new_noti(request,request.session['user_id'],'Submissao das Configurações do Dia Aberto','Configurações do Dia Aberto eliminado com Sucesso!')
+        if Utilizador.objects.filter(pk=user).exists():
+            return redirect("blog:blog-home")
     return redirect('menu:diaaberto_list')
 
 ### Menuuuu ###########
