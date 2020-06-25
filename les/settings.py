@@ -53,11 +53,7 @@ INSTALLED_APPS = [
     'atividades',
     'formularios',
     'main.apps.MainConfig',
-<<<<<<< HEAD
     'menu.apps.MenuConfig'
-=======
-    'menu',
->>>>>>> 29ed097d5578dd5f072f9c5d5b7db9c4e8971513
 ]
 
 MIDDLEWARE = [
@@ -101,11 +97,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'les',
         'USER': 'root',
-<<<<<<< HEAD
         'PASSWORD': '1234',
-=======
-        'PASSWORD': '12345abcd',
->>>>>>> 29ed097d5578dd5f072f9c5d5b7db9c4e8971513
         'HOST': '127.0.0.1',
         'PORT': '3306',
     }

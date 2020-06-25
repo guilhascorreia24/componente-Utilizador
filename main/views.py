@@ -59,7 +59,7 @@ def disponibilidades(string):
 	#print(disponibilidades)
 	for dispo in disponibilidades:
 		#print(str(same(dispo,tarefas,'colab','dia_a','hora_i_a') or same2(dispo,tarefas,'colab','dia_b','hora_i_b','hora_f_b')))
-		if not(same(dispo,tarefas,'colab','dia_a','hora_i_a')) and (dispo.tipo_de_tarefa==string or dispo.tipo_de_tarefa=='Indiferente'):
+		if not(same(dispo,tarefas,'colab','dia_a','hora_i_a')) and (dispo.tipo_de_tarefa==string or dispo.tipo_de_tarefa=='Sem preferência'):
 			dispos.append(dispo)
 	return dispos
 
