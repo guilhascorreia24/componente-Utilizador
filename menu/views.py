@@ -295,23 +295,28 @@ def transporte_delete_view(request, id):
 	return redirect("menu:transporte-list")
 
 def transportehora_create_view(request):
-    form1 = DiaForm(request.POST or None)
-    form2 = HoraForm(request.POST or None)
-    if request.method == "POST":
-        if form1.is_valid() & form2.is_valid():
-            form1.save()
-            form2.save()
-            utl = Horario.objects.latest('hora')
-            utl1 = Dia.objects.latest('dia')
-            horario = HorarioHasDia(horario_hora=utl, dia_dia=utl1)
-            horario.save()
-            return redirect("menu:transporte-list")
+    form = HoraForm(request.POST or None)
+    if form.is_valid():
+        form.save()
+        return redirect("menu:transporte-list")
     context = {
-        'form1': form1,
-        'form2': form2,
+        'form': form,'o':True,
         'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)
     }
     return render(request, "Transporte/hora_create.html", context)
+
+
+
+def horariotransporte_create_view(request):
+    form = HorarioForm(request.POST or None)
+    if form.is_valid():
+        form.save()
+        return redirect("menu:transporte-list")
+    context = {
+        'form': form,'o':True,
+        'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)
+    }
+    return render(request, "Transporte/horariotrans_create.html", context)
 
 
 def transporte_grupo_view(request, id):

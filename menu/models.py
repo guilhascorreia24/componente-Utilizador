@@ -220,7 +220,7 @@ class Dia(models.Model):
     dia = models.DateField(primary_key=True)
 
     def date (self):
-        return self.dia
+        return str(self.dia)
 
     class Meta:
         managed = False
@@ -331,7 +331,7 @@ class Horario(models.Model):
     hora = models.TimeField(primary_key=True)
 
     def time (self):
-        return self.hora
+        return (self.hora)
 
     class Meta:
         managed = False
