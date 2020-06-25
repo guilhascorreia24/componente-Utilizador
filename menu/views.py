@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect, reverse
 import datetime, time
+from django.contrib import messages
 from .forms import *
 from .models import *
 from .filters import *
@@ -48,6 +49,7 @@ def diaaberto_create(request):
                 dia1 = Dia.objects.filter(dia = inicio+datetime.timedelta(days=x-inicio.day))
                 HorarioHasDia(horario_hora=hora1[0], dia_dia=dia1[0]).save()
             update_ano_user_null()
+            messages.success(request, f'Dia Aberto Criado com Sucesso!')
             return redirect("menu:diaaberto_list")
     return render(request,
                  template_name="DiaAberto/diaaberto_create.html", 
@@ -75,6 +77,7 @@ def diaaberto_update(request, id):
             Dia(dia=inicio+datetime.timedelta(days=x-inicio.day)).save()
             dia1 = Dia.objects.filter(dia = inicio+datetime.timedelta(days=x-inicio.day))
             HorarioHasDia(horario_hora=hora1[0], dia_dia=dia1[0]).save()
+        messages.success(request, f'Dia Aberto editado com Sucesso!')
         return redirect("menu:diaaberto_list")
     context = {
         'form': form,
@@ -110,6 +113,7 @@ def diaaberto_delete(request, id):
     obj = get_object_or_404(DiaAberto, ano=id)
     if DiaAberto.objects.filter(ano=id).exists():
         obj.delete()
+        messages.success(request, f'Dia Aberto Elimando com Sucesso!')
     return redirect('menu:diaaberto_list')
 
 ### Menuuuu ###########
@@ -117,6 +121,7 @@ def menu_create_view(request):
     form = MenuModelForm(request.POST or None)
     if form.is_valid():
         form.save()
+        messages.success(request, f'Menu Criado com Sucesso!')
         return redirect("menu:menu_list")
     context = {
         'form': form,'o':True,
@@ -129,6 +134,7 @@ def prato_create_view(request):
     form = PratoForm(request.POST or None)
     if form.is_valid():
         form.save()
+        messages.success(request, f'Prato Criado com Sucesso!')
         return redirect("menu:menu_list")
     context = {
         'form': form,'o':True,
@@ -142,6 +148,7 @@ def menu_update_view(request, id):
     pk_url_kwarg = 'idmenu'
     if form.is_valid():
         form.save()
+        messages.success(request, f'Menu Editado com Sucesso!')
         return redirect("menu:menu_list")
     context = {
         'form': form,
@@ -155,6 +162,7 @@ def prato_update_view(request, id):
     pk_url_kwarg = 'idprato'
     if form.is_valid():
         form.save()
+        messages.success(request, f'Prato Editado com Sucesso!')
         return redirect("menu:menu_list")
     context = {
         'form': form,
@@ -198,12 +206,14 @@ def menu_delete_view(request, id):
     if Menu.objects.filter(pk=id).exists():
         Prato.objects.filter(menu_idmenu=Menu.objects.get(pk=id)).delete()
         Menu.objects.filter(pk=id).delete()
+        messages.success(request, f'Menu Eliminado com Sucesso!')
     return redirect('menu:menu_list')
 
 def prato_delete_view(request, id):
     obj = get_object_or_404(Prato, idprato=id)
     if Prato.objects.filter(pk=id).exists():
         obj.delete()
+        messages.success(request, f'Prato Eliminado com Sucesso!')
     return redirect('menu:menu_list')
 
 ######## TRANSPORTEEE ############################
@@ -212,6 +222,7 @@ def transporte_create_view(request):
     if request.method == "POST":
         if form.is_valid():
             form.save()
+            messages.success(request, f'Transporte Criada com Sucesso!')
             return redirect("menu:horario-list")
     context = {
         'form': form,'o':True,
@@ -234,6 +245,7 @@ def horario_create_view(request):
             new_horario.destino = dest
             new_horario.horario_has_dia_id_dia_hora = hor
             new_horario.save()
+            messages.success(request, f'Horario Criado com Sucesso!')
             return redirect("menu:transporte-list")
     context = {
         'form': form,
@@ -250,6 +262,7 @@ def transporte_update_view(request, id):
     print("uuuuuuuuuuuuuuuuuuuuu")
     if form.is_valid():
         form.save()
+        messages.success(request, f'Transporte Editado com Sucesso!')
         return redirect('menu:transporte-update2', id=id)
     context = {
         'form': form,
@@ -265,6 +278,7 @@ def transporte_update2_view(request, id):
     if form.is_valid():
         print("aaaaaaaaaaaaaaaaaaaa")
         form.save()
+        messages.success(request, f'Transporte Editado com Sucesso!')
         return redirect("menu:transporte-list")
     context = {
         'form': form,
@@ -299,17 +313,18 @@ def transporte_detail_view(request, id):
     }
     return render(request, "Transporte/transporte_details.html", context)
 
-
-def transporte_delete_view(request, id):
-	transporte = Transporte.objects.get(idtransporte=id)
-	if Transporte.objects.filter(pk=id).exists():
-		transporte.delete()
-	return redirect("menu:transporte-list")
+def transporte_delete_view(request,id):
+    transporte = Transporte.object.get(idtransporte=id)
+    if Transporte.objects.filter(pk=id).exists():
+        transporte.delete()
+        messages.success(request, f'Transporte Elimiado com Sucesso!')
+    return redirect("menu:transporte-list")
 
 def transportehora_create_view(request):
     form = HoraForm(request.POST or None)
     if form.is_valid():
         form.save()
+        messages.success(request, f'Horário Criado com Sucesso!')
         return redirect("menu:transporte-list")
     context = {
         'form': form,'o':True,
@@ -323,6 +338,7 @@ def horariotransporte_create_view(request):
     form = HorarioForm(request.POST or None)
     if form.is_valid():
         form.save()
+        messages.success(request, f'Horário do Transporte Criado com Sucesso')
         return redirect("menu:transporte-list")
     context = {
         'form': form,'o':True,
