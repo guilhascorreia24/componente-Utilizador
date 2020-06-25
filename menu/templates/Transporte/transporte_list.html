@@ -142,10 +142,12 @@
                                         </span>
                                     </a>
                                
-                                        <a data-toggle="modal" data-target="#{{ forloop.counter }}_">
-                                            <span class="icon is-small has-text-danger">
-                                                <i class="mdi mdi-close-box mdi-24px"></i>
-                                            </span>
+                                         <a data-toggle="modal"
+                                         data-target="#{{forloop.counter}}">
+                                             <span class="icon is-small has-text-danger">
+                                                 <i class="mdi mdi-close-box mdi-24px"></i>
+                                             </span>
+                                         </a>
                                         </a>
                                         <a  href="{% url 'menu:transporte-grupo' instance.id_transporte_has_horario %}">
                                             <span class="icon is-small">
@@ -161,6 +163,31 @@
         </div>
     </div>
     </div>
+
+    {% for instance in hora %}
+    <div class="dialog modal" id="{{forloop.counter }}">
+        <div class="modal-background"></div>
+        <br><br><br><br><br><br><br><br><br><br><br><br>
+        <div class="modal-card animation" style="max-width:360px">
+            <!---->
+            <section class="modal-card-body is-titleless">
+                <div class="media">
+                    <!---->
+                    <div class="media-content">
+                        <p>Tem a certeza que quer eliminar o transporte  {{instance.transporte_idtransporte.identificacao}}?</p>
+                        <!---->
+                    </div>
+                </div>
+            </section>
+            <footer class="modal-card-foot"><button class="button" data-dismiss="modal">
+                    Cancelar
+                </button><a href="{% url 'menu:transporte-delete' instance.transporte_idtransporte.idtransporte %}" style="text-decoration: none;"> <button
+                        class="button is-success">
+                        Confirmar
+                    </button></a></footer>
+        </div>
+    </div> 
+    {% endfor %}
 
     {% for instance in hora %}
     <div tabindex="-1" class="modal fade" id="{{forloop.counter}}" role="dialog" aria-hidden="true" aria-labelledby="exampleModalLabel">
