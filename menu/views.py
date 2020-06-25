@@ -289,3 +289,20 @@ def transportehora_create_view(request):
         'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)
     }
     return render(request, "Transporte/hora_create.html", context)
+
+
+def transporte_grupo_view(request, id):
+    form = InscricaoForm(request.POST or None)
+    if request.method == "POST":
+        if form.is_valid():
+            form.save(id)
+            print("aaaaaaaaaaaaaaaaaaa")
+            return redirect("menu:transporte-list")
+            
+    context = {
+        'form': form,
+        'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)
+    }
+    return render(request, "Transporte/grupos_ass.html", context)
+
+

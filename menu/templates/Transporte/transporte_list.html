@@ -143,6 +143,11 @@
                                                 <i class="mdi mdi-close-box mdi-24px"></i>
                                             </span>
                                         </a>
+                                        <a  href="{% url 'menu:transporte-grupo' instance.id_transporte_has_horario %}">
+                                            <span class="icon is-small">
+                                                <i class="mdi mdi-account-multiple-plus mdi-24px"></i>
+                                            </span>
+                                        </a>
                                     </td>
                                  </tr>
                                 {% endfor %}
@@ -174,9 +179,9 @@
                             <br>
                             <div class="input-group col-sm-12">
                                 <div class="input-group-prepend labelForm">
-                                    <span class="input-group-text w-100">Colaborador Atribuído:</span>
+                                    <span class="input-group-text w-100">Capacidade:</span>
                                 </div>
-                                <input disabled="" class="form-control col-sm-2 bg-light" type="text" value="{{ i.colaborador_utilizador_idutilizador.utilizador_idutilizador.nome }}">
+                                <input disabled="" class="form-control col-sm-2 bg-light" type="text" value="{{ instance.transporte_idtransporte.capacidade }}">
                             </div>
                     </div>
                 </div>
@@ -202,7 +207,7 @@
             </section>
             <footer class="modal-card-foot"><button class="button" data-dismiss="modal">
                     Cancelar
-                </button><a href="{% url 'menu:transporte-delete' %}" style="text-decoration: none;"> <button
+                </button><a href="{% url 'menu:transporte-delete' instance.transporte_idtransporte.idtransporte %}" style="text-decoration: none;"> <button
                         class="button is-success" type="submit">
                         Confirmar
                     </button></a></footer>

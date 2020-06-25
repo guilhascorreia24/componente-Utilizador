@@ -7,6 +7,11 @@
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
 import datetime
+from inscricao.validators import email_validator, not_zero_validator, telefone_validator,escola_ano_validator,smaller_zero_validator
+from django.dispatch import receiver
+from django.db.models import F, DEFERRED
+from django.core.exceptions import ObjectDoesNotExist, ValidationError
+from django.utils.translation import gettext_lazy as _
 
 
 class Administrador(models.Model):
@@ -363,6 +368,9 @@ class Inscricao(models.Model):
     areacientifica = models.CharField(max_length=255)
     transporte = models.IntegerField()
 
+    def __str__(self):
+        return str(self.idinscricao)
+
     class Meta:
         managed = False
         db_table = 'inscricao'
@@ -387,9 +395,36 @@ class InscricaoHasPrato(models.Model):
     inscricao_has_prato_id = models.AutoField(primary_key=True)
     nralmocos = models.IntegerField()
 
+    def save(self, *args, **kwargs):
+        inst = Prato.objects.get(pk=self.prato_idprato.pk)
+        try:
+            obj = InscricaoHasPrato.objects.get(pk=self.inscricao_has_prato_id)
+        except ObjectDoesNotExist:
+            #self.prato_idprato.save(nralmocos=F('nralmocos')+self.nralmocos)
+            inst.nralmocos+=self.nralmocos
+            inst.save()
+            return super(InscricaoHasPrato, self).save(*args, **kwargs)
+
+
+        #self.prato_idprato.save(nralmocos=F('nralmocos')+(self.nralmocos-obj.nralmocos))
+        inst.nralmocos+=(self.nralmocos-obj.nralmocos)
+        inst.save()
+        return super(InscricaoHasPrato, self).save(*args, **kwargs)
+
     class Meta:
         managed = False
         db_table = 'inscricao_has_prato'
+
+@receiver(models.signals.post_delete, sender=InscricaoHasPrato)
+def delete_Inscricao_prato(sender, instance, using, **kwargs):
+    inst = Prato.objects.get(pk=instance.prato_idprato.pk)
+    val = inst.nralmocos
+    inst.nralmocos = val - instance.nralmocos
+
+    inst.save()
+
+    #instance.prato_idprato.save(nralmocos=F('nralmocos')-instance.nralmocos)
+    #delete_prato(None,instance.prato_idprato,None)
 
 
 class InscricaoHasSessao(models.Model):
@@ -476,6 +511,22 @@ class Prato(models.Model):
     descricao = models.CharField(max_length=125)
     nralmocos = models.IntegerField(blank=True, null=True)
     menu_idmenu = models.ForeignKey(Menu, models.DO_NOTHING, db_column='menu_idMenu')  # Field name made lowercase.
+        
+        
+    def save(self, *args, **kwargs):
+        ins = self.menu_idmenu
+        try:
+            obj = Prato.objects.get(pk=self.idprato)
+        except ObjectDoesNotExist:
+            menu = Menu.objects.get(pk=self.menu_idmenu.pk)
+            menu.nralmocosdisponiveis -= self.nralmocos
+            menu.save()
+            return super(Prato, self).save(*args, **kwargs)
+
+        menu = Menu.objects.get(pk=self.menu_idmenu.pk)
+        menu.nralmocosdisponiveis -= (self.nralmocos-obj.nralmocos)
+        menu.save()
+        return super(Prato, self).save(*args, **kwargs)
 
     class Meta:
         managed = False
@@ -577,15 +628,52 @@ class TransporteHasHorario(models.Model):
         db_table = 'transporte_has_horario'
 
 
+#Validation is checked
 class TransporteHasInscricao(models.Model):
     inscricao_idinscricao = models.ForeignKey(Inscricao, models.DO_NOTHING, db_column='inscricao_idinscricao')
     transporte_has_inscricao_id = models.AutoField(primary_key=True)
-    transporte_has_horario_id_transporte_has_horario = models.ForeignKey(TransporteHasHorario, models.DO_NOTHING, db_column='transporte_has_horario_id_transporte_has_horario')
-    n_passageiros = models.IntegerField(blank=True, null=True)
+    horario = models.ForeignKey(TransporteHasHorario, models.DO_NOTHING, db_column='transporte_has_horario_id_transporte_has_horario')
+    n_passageiros = models.IntegerField(validators=[smaller_zero_validator])
+
+    def save(self, *args, **kwargs):
+        TransporteHasHorario.objects.filter(id_transporte_has_horario=self.horario.pk).update(n_passageiros=F('n_passageiros')+self.n_passageiros)
+        return super(TransporteHasInscricao, self).save(*args, **kwargs)
+    
+    def update(self, *args, **kwargs):
+        old = TransporteHasInscricao.objects.filter(transporte_has_inscricao_id=self.transporte_has_inscricao_id).n_passageiros
+        delta = self.n_passageiros - old
+        TransporteHasHorario.objects.filter(id_transporte_has_horario=self.horario).update(n_passageiros=F('n_passageiros')+delta)
+        super(TransporteHasInscricao,self).update(*args, **kwargs)
+    
+    def clean(self):
+        super().clean()
+        try:
+            data = TransporteHasHorario.objects.select_related('transporte_idtransporte').get(id_transporte_has_horario=self.horario.pk)
+        except:
+            raise ValidationError({'horario': "Opção inválida"})
+        capacidade = data.transporte_idtransporte.capacidade - data.n_passageiros
+        print(str(data.n_passageiros) + " - " + str(data.transporte_idtransporte.capacidade))
+        if capacidade < self.n_passageiros:
+            #Check for equal entry already in database
+            try:
+                curr = TransporteHasInscricao.objects.get(transporte_has_inscricao_id=self.transporte_has_inscricao_id).n_passageiros
+                passageiros = self.n_passageiros - curr
+                if capacidade < passageiros:
+                    error = validators.TRANSPORTE_FULL.replace('_NUM_',str(capacidade))
+                    raise ValidationError({'n_passageiros': error})
+
+            except ObjectDoesNotExist:
+                print("Error")
+                error = validators.TRANSPORTE_FULL.replace('_NUM_',str(capacidade))
+                raise ValidationError({'n_passageiros': error}) 
 
     class Meta:
         managed = False
         db_table = 'transporte_has_inscricao'
+
+@receiver(models.signals.post_delete, sender=TransporteHasInscricao)
+def delete_transporte(sender, instance, using, **kwargs):
+    TransporteHasHorario.objects.filter(id_transporte_has_horario=instance.horario.pk).update(n_passageiros=F('n_passageiros')-instance.n_passageiros)
 
 
 class TransportePessoal(models.Model):
