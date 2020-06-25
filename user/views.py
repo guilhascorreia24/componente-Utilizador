@@ -523,7 +523,7 @@ def validacoes(request,acao,id):
         from_user=Utilizador.objects.get(pk=request.session['user_id']).email
         subject="Validação da conta"
         message="A sua conta foi aceite. Bem-vindo ao site do dia aberto. "
-        send_mail(subject,message,'a61098@ualg.pt',[recepient])
+        send_mail(subject,message,'diaabertoworking@gmail.com',[recepient])
         noti_views.new_noti(request,user.pk,'Bem-vindo','Seja bem-vindo ao site do dia aberto')
         messages.success(request,f'Utilizador {user.nome} validado com sucesso.')
     else:
