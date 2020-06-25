@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, HttpResponse
 from Notification.views import noti_not_checked,noti_not_checked
+from django.contrib import messages as messages_info
 from inscricao import models
 from django.contrib.auth import authenticate, login, logout
 from blog import userValidation
@@ -112,6 +113,10 @@ def form(request,_type,inscricao=None,user=None):
             if form.is_valid():
                 form.save(user)
                 messages.send_notification(request,form)
+                if(inscricao!=None):
+                    messages_info.success(request, f'Inscrição alterada com sucesso!')
+                else:
+                    messages_info.success(request, f'Inscrição criada com sucesso!')
                 return redirect('inscricao:consulta')
             else:
                 campus = models.Campus.objects.all()
@@ -130,6 +135,10 @@ def form(request,_type,inscricao=None,user=None):
             if form.is_valid():
                 form.save(user)
                 messages.send_notification(request,form)
+                if(inscricao!=None):
+                    messages_info.success(request, f'Inscrição alterada com sucesso!')
+                else:
+                    messages_info.success(request, f'Inscrição criada com sucesso!')
                 return redirect('inscricao:consulta')
             else:
                 campus = models.Campus.objects.all()
@@ -146,7 +155,8 @@ def form(request,_type,inscricao=None,user=None):
         return render(request,"not_for-u.html",{'context' : context , 'message' : "Erro desconhecido"})
 
 def inscricao_form(request,inscricao=None):
-    return form(request,0,inscricao=inscricao)
+    var = form(request,0,inscricao=inscricao)
+    return var
 
 def inscricao_individual_form(request,inscricao=None):
     return form(request,1,inscricao=inscricao)

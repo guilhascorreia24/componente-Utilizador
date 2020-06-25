@@ -21,25 +21,23 @@ def consultar_tarefas(request):
     if utilizador.validada == 1 :
 
 
-        disp = modelformset_factory(Disponibilidade,form = forms.Form_Disponibilidade,extra=1, can_delete=True)
+        disp = modelformset_factory(Disponibilidade,form = forms.Form_Disponibilidade,extra=0, can_delete=True)
         if request.method == 'POST':
             form = disp(request.POST, prefix="tarefa")
 
+            for disps in form:
+                disps.save_user(colaborador)
+
+            print(form.deleted_forms)
+
             if form.is_valid():
-
-                for disps in form:
-
-                    print(disps)
-                    #if Disponibilidade.objects.filter(dia_dia = disp.)
-                    disps.save_user(colaborador)
+              
                 form.save()
 
-                form_reminder = disp(queryset=form, prefix="tarefa")
-
+                form = disp(queryset=Disponibilidade.objects.filter(colaborador_utilizador_idutilizador = colaborador), prefix="tarefa")
                 return render(request, "consultar_tarefas.html", {'form': form,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
-
-        else:   
-            form = disp(queryset=Disponibilidade.objects.all(), prefix="tarefa")
+  
+        form = disp(queryset=Disponibilidade.objects.filter(colaborador_utilizador_idutilizador = colaborador), prefix="tarefa")
 
         return render(request, "consultar_tarefas.html", {'form': form,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
 

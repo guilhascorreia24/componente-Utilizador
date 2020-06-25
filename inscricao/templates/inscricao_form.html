@@ -105,7 +105,7 @@
                         <hr>
                         <h2 class="title has-text-grey is-uppercase" style="font-size: 0.9rem;">
                             Docentes responsáveis</h2>
-                        <div class="columns">
+                        <div class="columns table-head">
                             <div class="column is-4">
                                 <div class="field"><label class="label">Nome</label>
                                 </div>
@@ -1428,6 +1428,13 @@
     //Aply the remove button to the tables
     function applyClickRemoveRow(el) {
         el.on('click', function () {
+            var row = $(this).closest('.row');
+            if(row.hasClass('responsavel')){
+                console.log(row.siblings(':visible').length);
+                if(row.siblings(':visible').length == 0){
+                    return;
+                }
+            }
             $(this).next('input').prop("checked", true);
             $(this).next('input').val(1);
             $(this).closest('.row').hide();
