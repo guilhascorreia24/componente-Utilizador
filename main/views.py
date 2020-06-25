@@ -59,9 +59,8 @@ def disponibilidades(string):
 	#print(disponibilidades)
 	for dispo in disponibilidades:
 		#print(str(same(dispo,tarefas,'colab','dia_a','hora_i_a') or same2(dispo,tarefas,'colab','dia_b','hora_i_b','hora_f_b')))
-		if not(same(dispo,tarefas,'colab','dia_a','hora_i_a')) and dispo.tipo_de_tarefa==string:
-			if not(has(dispos,dispo.colaborador_utilizador_idutilizador.pk)):
-				dispos.append(dispo)
+		if not(same(dispo,tarefas,'colab','dia_a','hora_i_a')) and (dispo.tipo_de_tarefa==string or dispo.tipo_de_tarefa=='Indiferente'):
+			dispos.append(dispo)
 	return dispos
 
 def criar_tarefa_atividade(request):
@@ -143,7 +142,10 @@ def consultar_tarefa(request):
 	tarefas = Tarefa.objects.all()
 	sessao = Sessao.objects.all()
 	iduo = Coordenador.objects.get(pk=request.session['user_id']).unidade_organica_iduo
-	colab = Colaborador.objects.filter(curso_idcurso= Curso.objects.get(unidade_organica_iduo = iduo))
+	cursoid=Curso.objects.filter(unidade_organica_iduo = iduo)
+	colab=[]
+	for id in cursoid:
+		colab.append(Colaborador.objects.filter(curso_idcurso= cursoid))
 	atividade = Atividade.objects.filter(unidade_organica_iduo = iduo)
 	myFilter = TarefaFilter(request.GET, queryset=tarefas)
 	tarefas = myFilter.qs

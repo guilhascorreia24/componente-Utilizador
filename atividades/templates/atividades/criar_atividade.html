@@ -5,6 +5,9 @@
 {% endblock %}
 {% block content %}
 <h1 style="font-size:large;"><b>Informações sobre atividade</b></h1>
+{% for errorMsg in erros %}
+<p style="color:red;">{{errorMsg}}</p>
+{% endfor %}
 <div style="padding: 3rem 2vw 1rem">
   <form method="POST" action="" id="atividade"> {% csrf_token %}
   <div class="b-steps">
@@ -18,6 +21,7 @@
                     <label class="">Titulo da atividade:</label>
                     <div class="control">
                         <input type="text" class="input" name="titulo" value="{{activity.titulo}}" >
+
                     </div>
                   </div>
                 </div>
@@ -55,7 +59,7 @@
                     <div class="field">
                       <label class="">Número de Participantes:</label>
                         <div class="control is-clearfix">
-                           <input type="number"  name="capacidade" class="input" value="{{activity.capacidade}}">
+                           <input type="number"  name="capacidade" class="input" min="0"  value="{{activity.capacidade}}">
                         </div>
                     </div>
                   </div>
@@ -71,9 +75,10 @@
               <div class="columns">
                 <div class="column">
                   <div class="field">
-                    <label class="">Duração da atividade (minutos):</label>
+                    <label class="">Duração da atividade (minutos):</label><br>
                         <div class="control is-clearfix">
-                           <input type="number" name="duracao" class="input" value="{{activity.duracao|floatformat:0}}">
+                            <br>
+                           <input type="number" name="duracao" class="input" min="0"  value="{{activity.duracao|floatformat:0}}">
                         </div>
                   </div>
                 </div>
@@ -82,7 +87,7 @@
                     <label class="">Número de colaboradores desejados:</label>
                     <div class="control is-expanded">
                        <div class="control is-clearfix">
-                           <input type="number" name="ncolaboradores" class="input" value="{{activity.ncolboradores}}">
+                           <input type="number" name="nrcolaboradores" class="input" min="0" value="{{activity.nrcolaborador}}">
                         </div>
                     </div>
                   </div>
@@ -153,7 +158,7 @@
     <div class="column is-8 is-offset-2">
       <div class="level">
         <div class="level-left">
-          <a class="button is-outlined" type="button" href="javascript:history.back()">
+          <a class="button is-outlined" type="button" href="{% url 'atividades:consultar_minhas_atividades' %}">
             <span>Cancelar</span>
           </a>
         </div>
@@ -167,11 +172,11 @@
         </div>
       </div>
     </div>
-  </div>
+
 
 
 </form>
-</div>
+
 <style>
   .label {
   font-weight: normal;

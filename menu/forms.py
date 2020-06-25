@@ -167,3 +167,10 @@ class HorarioForm(forms.ModelForm):
             'horario_hora': TimeInput(attrs={'class': 'input', 'type':'time'}),
             'dia_dia': DateInput(attrs={'class': 'input', 'type':'date'}),
         }
+
+class InscricaoForm(forms.Form):
+    n_passageiros = IntegerField()
+    inscricao_idinscricao = ModelChoiceField(Inscricao.objects)
+    def save(self,id):
+        base = TransporteHasInscricao(n_passageiros=self.cleaned_data['n_passageiros'],inscricao_idinscricao=self.cleaned_data['inscricao_idinscricao'], horario=TransporteHasHorario.objects.get(id))
+        return base.save()
