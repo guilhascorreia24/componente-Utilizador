@@ -53,7 +53,10 @@ INSTALLED_APPS = [
     'atividades',
     'formularios',
     'main.apps.MainConfig',
+<<<<<<< HEAD
 #    'menu.apps.MenuConfig',
+=======
+>>>>>>> b3a35d54b566f2b62bbc3a33cdc366d3f90d1fa2
     'menu',
 ]
 
@@ -98,7 +101,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'les',
         'USER': 'root',
-        'PASSWORD': 'viviSnow',
+        'PASSWORD': '1234',
         'HOST': '127.0.0.1',
         'PORT': '3306',
     }

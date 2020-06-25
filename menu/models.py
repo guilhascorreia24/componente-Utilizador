@@ -644,28 +644,6 @@ class TransporteHasInscricao(models.Model):
         delta = self.n_passageiros - old
         TransporteHasHorario.objects.filter(id_transporte_has_horario=self.horario).update(n_passageiros=F('n_passageiros')+delta)
         super(TransporteHasInscricao,self).update(*args, **kwargs)
-    
-    def clean(self):
-        super().clean()
-        try:
-            data = TransporteHasHorario.objects.select_related('transporte_idtransporte').get(id_transporte_has_horario=self.horario.pk)
-        except:
-            raise ValidationError({'horario': "Opção inválida"})
-        capacidade = data.transporte_idtransporte.capacidade - data.n_passageiros
-        print(str(data.n_passageiros) + " - " + str(data.transporte_idtransporte.capacidade))
-        if capacidade < self.n_passageiros:
-            #Check for equal entry already in database
-            try:
-                curr = TransporteHasInscricao.objects.get(transporte_has_inscricao_id=self.transporte_has_inscricao_id).n_passageiros
-                passageiros = self.n_passageiros - curr
-                if capacidade < passageiros:
-                    error = validators.TRANSPORTE_FULL.replace('_NUM_',str(capacidade))
-                    raise ValidationError({'n_passageiros': error})
-
-            except ObjectDoesNotExist:
-                print("Error")
-                error = validators.TRANSPORTE_FULL.replace('_NUM_',str(capacidade))
-                raise ValidationError({'n_passageiros': error}) 
 
     class Meta:
         managed = False
