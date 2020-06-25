@@ -9,300 +9,292 @@
         text-decoration: none;
     }
 </style>
-<div style="padding: 3rem 2vw 1rem;">
-    {% if inscricoes_coletivas|length > 0 or inscricoes_individuais|length > 0 %}
-    <div data-v-8716d23a="" class="columns">
-        <div class="column is-3">
-            <div data-v-1513178e="">
-                <div data-v-1513178e="" class="menu">
-                    <p class="" data-v-1513178e="" class="menu-label"></p>
-                    <p> Filtros Inscrição </p>
-                    <ul data-v-1513178e="" class="menu-list"></ul>
-                    <div class="field">
-                        <div class="control is-expanded">
-                            <span class="select is-fullwidth">
-                                <select name="inscricao_type" id="inscricao_type">
-                                    <option value="0"selected>Coletiva e Individual</option>
-                                    <option value="1">Individual</option>
-                                    <option value="2">Coletiva</option>
-                                </select>
+<div data-v-8716d23a="" class="columns">
+    <div class="column is-3">
+        <div data-v-1513178e="">
+            <div data-v-1513178e="" class="menu">
+                <p data-v-1513178e="" class="menu-label">Filtros Inscrições</p>
+                <ul data-v-1513178e="" class="menu-list"></ul>
+                <div class="field">
+                    <div class="control is-expanded">
+                        <span class="select is-fullwidth">
+                            <select name="inscricao_type" id="inscricao_type">
+                                <option value="0" selected>Coletiva e Individual</option>
+                                <option value="1">Individual</option>
+                                <option value="2">Coletiva</option>
+                            </select>
+                        </span>
+                        <!---->
+                    </div>
+                    <!---->
+                </div>
+                <div data-v-1513178e="" class="field">
+                    <!---->
+                    <div data-v-1513178e="" class="autocomplete control">
+                        <div class="control has-icons-left is-clearfix">
+                            <input type="text" id="filter_curso" autocomplete="off" placeholder="Area Científica"
+                                class="input">
+                            <span class="icon is-left">
+                                <i class="mdi mdi-magnify mdi-24px"></i>
                             </span>
                             <!---->
-                        </div>
-                        <!---->
-                    </div>
-                    <div data-v-1513178e="" class="field">
-                        <!---->
-                        <div data-v-1513178e="" class="autocomplete control">
-                            <div class="control has-icons-left is-clearfix">
-                                <input type="text" id="filter_curso" autocomplete="off" placeholder="Area Científica"
-                                    class="input">
-                                <span class="icon is-left">
-                                    <i class="mdi mdi-magnify mdi-24px"></i>
-                                </span>
-                                <!---->
-                                <!---->
-                            </div>
-                        </div>
-                        <!---->
-                    </div>
-                    <div data-v-1513178e="" class="field">
-                        <!---->
-                        <div data-v-1513178e="" class="autocomplete control">
-                            <div class="control has-icons-left is-clearfix">
-                                <input type="text" id="filter_atividade" autocomplete="off" placeholder="Atividade"
-                                    class="input">
-                                <span class="icon is-left">
-                                    <i class="mdi mdi-magnify mdi-24px"></i>
-                                </span>
-                                <!---->
-                                <!---->
-                            </div>
-                        </div>
-                        <!---->
-                    </div>
-                    <div data-v-1513178e="" class="field">
-                        <!---->
-                        <div data-v-1513178e="" class="autocomplete control">
-                            <div class="control has-icons-left is-clearfix">
-                                <input type="text" id="filter_email" autocomplete="off" placeholder="E-mail"
-                                    class="input">
-                                <span class="icon is-left">
-                                    <i class="mdi mdi-magnify mdi-24px"></i>
-                                </span>
-                                <!---->
-                                <!---->
-                            </div>
-                        </div>
-                        <!---->
-                    </div>
-                    <div data-v-1513178e="" class="field">
-                        <!---->
-                        <div data-v-1513178e="" class="autocomplete control">
-                            <div class="control has-icons-left is-clearfix">
-                                <input type="text" id="filter_telemovel" autocomplete="off" placeholder="Telemovel"
-                                    class="input">
-                                <span class="icon is-left">
-                                    <i class="mdi mdi-magnify mdi-24px"></i>
-                                </span>
-                                <!---->
-                                <!---->
-                            </div>
-                        </div>
-                        <!---->
-                    </div>
-                    <div data-v-1513178e="" class="field">
-                        <!---->
-                        <div data-v-1513178e="" class="autocomplete control">
-                            <div class="control has-icons-left is-clearfix">
-                                <input type="text" id="filter_escola" autocomplete="off" placeholder="Escola"
-                                    class="input">
-                                <span class="icon is-left">
-                                    <i class="mdi mdi-magnify mdi-24px"></i>
-                                </span>
-                                <!---->
-                                <!---->
-                            </div>
-                        </div>
-                        <!---->
-                    </div>
-                    <div data-v-1513178e="" class="field">
-                        <!---->
-                        <div data-v-1513178e="" class="autocomplete control">
-                            <div class="control has-icons-left is-clearfix">
-                                <input type="text" id="filter_local" autocomplete="off" placeholder="Local"
-                                    class="input">
-                                <span class="icon is-left">
-                                    <i class="mdi mdi-magnify mdi-24px"></i>
-                                </span>
-                                <!---->
-                                <!---->
-                            </div>
-                        </div>
-                        <!---->
-                    </div>
-                    <div data-v-1513178e="" class="field">
-                        <!---->
-                        <div data-v-1513178e="" class="autocomplete control">
-                            <div class="control has-icons-left is-clearfix">
-                                <input type="text" id="filter_ano" autocomplete="off" placeholder="Ano Escolar"
-                                    class="input">
-                                <span class="icon is-left">
-                                    <i class="mdi mdi-magnify mdi-24px"></i>
-                                </span>
-                                <!---->
-                                <!---->
-                            </div>
-                        </div>
-                        <!---->
-                    </div>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div class="column">
-            <div>
-                <div class="b-table">
-                    <div class="table-wrapper">
-                        <table class="sort-table table table-striped">
-                            <thead>
-                                <tr>
-                                    <!---->
-                                    <th class="is-sortable">
-                                        <div class="th-wrap"> Grupo <span class="icon is-small"
-                                                style="display: none;"><i class="mdi mdi-menu-up"></i></span>
-                                        </div>
-                                    </th>
-                                    <th class="is-sortable">
-                                        <div class="th-wrap"> Email<span class="icon is-small" style="display: none;"><i
-                                                    class="mdi mdi-menu-up"></i></span>
-                                        </div>
-                                    </th>
-                                    <th class="is-sortable">
-                                        <div class="th-wrap"> Telefone <span class="icon is-small"
-                                                style="display: none;"><i class="mdi mdi-menu-up"></i></span>
-                                        </div>
-                                    </th>
-                                    <th class="is-sortable">
-                                        <div class="th-wrap">Participantes/Acompanhantes <span class="icon is-small"
-                                                style="display: none;"><i class="mdi mdi-menu-up"></i></span>
-                                        </div>
-                                    </th>
-                                    <th class="is-sortable">
-                                        <div class="th-wrap"> Ano Escolar<span class="icon is-small"
-                                                style="display: none;"><i class="mdi mdi-menu-up"></i></span>
-                                        </div>
-                                    </th>
-                                    <th class="is-sortable">
-                                        <div class="th-wrap"> Escola <span class="icon is-small"
-                                                style="display: none;"><i class="mdi mdi-menu-up"></i></span>
-                                        </div>
-                                    </th>
-                                    <th class="is-sortable">
-                                        <div class="th-wrap"> Ações <span class="icon is-small"
-                                                style="display: none;"><i class="mdi mdi-menu-up"></i></span>
-                                        </div>
-                                    </th>
-                                    <!---->
-                                </tr>
-                                <!---->
-                                <!---->
-                            </thead>
-                            <tbody>
-                                {% for inscricao in inscricoes_coletivas %}
-                                <tr draggable="false" class="is-coletiva" scope="row">
-                                    <!---->
-                                    <td data-label="Grupo" class="">
-                                        {{ inscricao.inscricao.idinscricao }}
-                                    </td>
-                                    <td data-label="Email" class="">
-                                        {{ inscricao.inscricao.email }}
-                                    </td>
-                                    <td data-label="Telefone" class="">
-                                        {{ inscricao.inscricao.telefone }}
-                                    </td>
-                                    <td data-label="Nº participantes" class="">
-                                        {{ inscricao.inscricao.nparticipantes }}
-                                    </td>
-                                    <td data-label="Ano Escolar" class="">
-                                        {{ inscricao.inscricao.ano }}
-                                    </td>
-                                    <td data-label="Escola" class="">
-                                        {{ inscricao.inscricao.escola }}
-                                    </td>
-                                    <td data-label="Ações">
-                                        {% if user_type == 0 or user_type == 4 %}
-                                        <a role="button" class="no_underline"
-                                            href={% url 'inscricao:delete' inscricao=inscricao.inscricao.idinscricao  %}>
-                                            <span class="icon has-text-danger"> <i
-                                                    class="mdi mdi-close-box mdi-24px"></i></button></span>
-                                        </a>
-                                        {% endif %}
-                                        <a role="button" class="no_underline has-target" data-toggle="modal"
-                                            data-target="#coletiva_{{ forloop.counter }}">
-                                            <span class="icon has-text-success"> <i
-                                                    class="mdi mdi-account-search mdi-24px"></i></button></span>
-                                        </a>
-                                        {% if user_type == 0 or user_type == 4 %}
-                                        <a role="button" class="no_underline"
-                                            href={% url 'inscricao:alterar' inscricao=inscricao.inscricao.idinscricao  %}>
-                                            <span class="icon has-text-success"> <i
-                                                    class="mdi mdi-pencil mdi-24px"></i></button></span>
-                                        </a>
-                                        {% endif %}
-                                    </td>
-                                </tr>
-                                {% endfor inscricao %}
-                                {% for inscricao in inscricoes_individuais %}
-                                <tr draggable="false" class="is-individual" scope="row">
-                                    <!---->
-                                    <td data-label="Grupo" class="">
-                                        {{ inscricao.inscricao.idinscricao }}
-                                    </td>
-                                    <td data-label="Email" class="">
-                                        {{ inscricao.user.email }}
-                                    </td>
-                                    <td data-label="Telefone" class="">
-                                        {{ inscricao.inscricao.telefone }}
-                                    </td>
-                                    <td data-label="Nº Acompanhantes" class="">
-                                        {{ inscricao.inscricao.nracompanhantes }}
-                                    </td>
-                                    <td data-label="Ano Escolar" class="">
-                                        {{ inscricao.inscricao.ano }}
-                                    </td>
-                                    <td data-label="Escola" class="">
-                                        {{ inscricao.inscricao.escola }}
-                                    </td>
-                                    <td data-label="Ações">
-                                        {% if user_type == 0 or user_type == 4 %}
-                                        <a role="button" class="no_underline"
-                                            href={% url 'inscricao:delete' inscricao=inscricao.inscricao.idinscricao  %}>
-                                            <span class="icon has-text-danger"> <i
-                                                    class="mdi mdi-close-box mdi-24px"></i></button></span>
-                                        </a>
-                                        {% endif %}
-                                        <a role="button" class="no_underline has-target" data-toggle="modal"
-                                            data-target="#individual_{{ forloop.counter }}">
-                                            <span class="icon has-text-success"> <i
-                                                    class="mdi mdi-account-search mdi-24px"></i></button></span>
-                                        </a>
-                                        {% if user_type == 0 or user_type == 4 %}
-                                        <a role="button" class="no_underline"
-                                            href={% url 'inscricao:alterar' inscricao=inscricao.inscricao.idinscricao  %}>
-                                            <span class="icon has-text-success"> <i
-                                                    class="mdi mdi-pencil mdi-24px"></i></button></span>
-                                        </a>
-                                        {% endif %}
-                                    </td>
-                                    </td>
-                                    {% endfor inscricao %}
-                            </tbody>
                             <!---->
-                        </table>
+                        </div>
                     </div>
+                    <!---->
+                </div>
+                <div data-v-1513178e="" class="field">
+                    <!---->
+                    <div data-v-1513178e="" class="autocomplete control">
+                        <div class="control has-icons-left is-clearfix">
+                            <input type="text" id="filter_atividade" autocomplete="off" placeholder="Atividade"
+                                class="input">
+                            <span class="icon is-left">
+                                <i class="mdi mdi-magnify mdi-24px"></i>
+                            </span>
+                            <!---->
+                            <!---->
+                        </div>
+                    </div>
+                    <!---->
+                </div>
+                <div data-v-1513178e="" class="field">
+                    <!---->
+                    <div data-v-1513178e="" class="autocomplete control">
+                        <div class="control has-icons-left is-clearfix">
+                            <input type="text" id="filter_email" autocomplete="off" placeholder="E-mail" class="input">
+                            <span class="icon is-left">
+                                <i class="mdi mdi-magnify mdi-24px"></i>
+                            </span>
+                            <!---->
+                            <!---->
+                        </div>
+                    </div>
+                    <!---->
+                </div>
+                <div data-v-1513178e="" class="field">
+                    <!---->
+                    <div data-v-1513178e="" class="autocomplete control">
+                        <div class="control has-icons-left is-clearfix">
+                            <input type="text" id="filter_telemovel" autocomplete="off" placeholder="Telemovel"
+                                class="input">
+                            <span class="icon is-left">
+                                <i class="mdi mdi-magnify mdi-24px"></i>
+                            </span>
+                            <!---->
+                            <!---->
+                        </div>
+                    </div>
+                    <!---->
+                </div>
+                <div data-v-1513178e="" class="field">
+                    <!---->
+                    <div data-v-1513178e="" class="autocomplete control">
+                        <div class="control has-icons-left is-clearfix">
+                            <input type="text" id="filter_escola" autocomplete="off" placeholder="Escola" class="input">
+                            <span class="icon is-left">
+                                <i class="mdi mdi-magnify mdi-24px"></i>
+                            </span>
+                            <!---->
+                            <!---->
+                        </div>
+                    </div>
+                    <!---->
+                </div>
+                <div data-v-1513178e="" class="field">
+                    <!---->
+                    <div data-v-1513178e="" class="autocomplete control">
+                        <div class="control has-icons-left is-clearfix">
+                            <input type="text" id="filter_local" autocomplete="off" placeholder="Local" class="input">
+                            <span class="icon is-left">
+                                <i class="mdi mdi-magnify mdi-24px"></i>
+                            </span>
+                            <!---->
+                            <!---->
+                        </div>
+                    </div>
+                    <!---->
+                </div>
+                <div data-v-1513178e="" class="field">
+                    <!---->
+                    <div data-v-1513178e="" class="autocomplete control">
+                        <div class="control has-icons-left is-clearfix">
+                            <input type="text" id="filter_ano" autocomplete="off" placeholder="Ano Escolar"
+                                class="input">
+                            <span class="icon is-left">
+                                <i class="mdi mdi-magnify mdi-24px"></i>
+                            </span>
+                            <!---->
+                            <!---->
+                        </div>
+                    </div>
+                    <!---->
+                </div>
+                </ul>
+                <button class="button is-outlined is-link is-danger" type="submit" id="clean">
+                    <span>Limpar</span>
+                    <span class="icon is-medium"><i class="mdi mdi-broom"></i></span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="column">
+        <div>
+            <div class="b-table">
+                <div class="table-wrapper">
+                    <table class="sort-table table table-striped">
+                        <thead>
+                            <tr>
+                                <!---->
+                                <th class="is-sortable">
+                                    <div class="th-wrap"> Grupo <span class="icon is-small" style="display: none;"><i
+                                                class="mdi mdi-menu-up"></i></span>
+                                    </div>
+                                </th>
+                                <th class="is-sortable">
+                                    <div class="th-wrap"> Email<span class="icon is-small" style="display: none;"><i
+                                                class="mdi mdi-menu-up"></i></span>
+                                    </div>
+                                </th>
+                                <th class="is-sortable">
+                                    <div class="th-wrap"> Telefone <span class="icon is-small" style="display: none;"><i
+                                                class="mdi mdi-menu-up"></i></span>
+                                    </div>
+                                </th>
+                                <th class="is-sortable">
+                                    <div class="th-wrap">Participantes/Acompanhantes <span class="icon is-small"
+                                            style="display: none;"><i class="mdi mdi-menu-up"></i></span>
+                                    </div>
+                                </th>
+                                <th class="is-sortable">
+                                    <div class="th-wrap"> Ano Escolar<span class="icon is-small"
+                                            style="display: none;"><i class="mdi mdi-menu-up"></i></span>
+                                    </div>
+                                </th>
+                                <th class="is-sortable">
+                                    <div class="th-wrap"> Escola <span class="icon is-small" style="display: none;"><i
+                                                class="mdi mdi-menu-up"></i></span>
+                                    </div>
+                                </th>
+                                <th class="is-sortable">
+                                    <div class="th-wrap"> Ações <span class="icon is-small" style="display: none;"><i
+                                                class="mdi mdi-menu-up"></i></span>
+                                    </div>
+                                </th>
+                                <!---->
+                            </tr>
+                            <!---->
+                            <!---->
+                        </thead>
+                        <tbody>
+                            {% for inscricao in inscricoes_coletivas %}
+                            <tr draggable="false" class="is-coletiva" scope="row">
+                                <!---->
+                                <td data-label="Grupo" class="">
+                                    {{ inscricao.inscricao.idinscricao }}
+                                </td>
+                                <td data-label="Email" class="">
+                                    {{ inscricao.inscricao.email }}
+                                </td>
+                                <td data-label="Telefone" class="">
+                                    {{ inscricao.inscricao.telefone }}
+                                </td>
+                                <td data-label="Nº participantes" class="">
+                                    {{ inscricao.inscricao.nparticipantes }}
+                                </td>
+                                <td data-label="Ano Escolar" class="">
+                                    {{ inscricao.inscricao.ano }}
+                                </td>
+                                <td data-label="Escola" class="">
+                                    {{ inscricao.inscricao.escola }}
+                                </td>
+                                <td data-label="Ações">
+                                    {% if user_type == 0 or user_type == 4 %}
+                                    <a role="button" class="no_underline"
+                                        href={% url 'inscricao:delete' inscricao=inscricao.inscricao.idinscricao  %}>
+                                        <span class="icon has-text-danger"> <i
+                                                class="mdi mdi-close-box mdi-24px"></i></button></span>
+                                    </a>
+                                    {% endif %}
+                                    <a role="button" class="no_underline has-target" data-toggle="modal"
+                                        data-target="#coletiva_{{ forloop.counter }}">
+                                        <span class="icon has-text-success"> <i
+                                                class="mdi mdi-account-search mdi-24px"></i></button></span>
+                                    </a>
+                                    {% if user_type == 0 or user_type == 4 %}
+                                    <a role="button" class="no_underline"
+                                        href={% url 'inscricao:alterar' inscricao=inscricao.inscricao.idinscricao  %}>
+                                        <span class="icon has-text-success"> <i
+                                                class="mdi mdi-pencil mdi-24px"></i></button></span>
+                                    </a>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor inscricao %}
+                            {% for inscricao in inscricoes_individuais %}
+                            <tr draggable="false" class="is-individual" scope="row">
+                                <!---->
+                                <td data-label="Grupo" class="">
+                                    {{ inscricao.inscricao.idinscricao }}
+                                </td>
+                                <td data-label="Email" class="">
+                                    {{ inscricao.user.email }}
+                                </td>
+                                <td data-label="Telefone" class="">
+                                    {{ inscricao.inscricao.telefone }}
+                                </td>
+                                <td data-label="Nº Acompanhantes" class="">
+                                    {{ inscricao.inscricao.nracompanhantes }}
+                                </td>
+                                <td data-label="Ano Escolar" class="">
+                                    {{ inscricao.inscricao.ano }}
+                                </td>
+                                <td data-label="Escola" class="">
+                                    {{ inscricao.inscricao.escola }}
+                                </td>
+                                <td data-label="Ações">
+                                    {% if user_type == 0 or user_type == 4 %}
+                                    <a role="button" class="no_underline"
+                                        href={% url 'inscricao:delete' inscricao=inscricao.inscricao.idinscricao  %}>
+                                        <span class="icon has-text-danger"> <i
+                                                class="mdi mdi-close-box mdi-24px"></i></button></span>
+                                    </a>
+                                    {% endif %}
+                                    <a role="button" class="no_underline has-target" data-toggle="modal"
+                                        data-target="#individual_{{ forloop.counter }}">
+                                        <span class="icon has-text-success"> <i
+                                                class="mdi mdi-account-search mdi-24px"></i></button></span>
+                                    </a>
+                                    {% if user_type == 0 or user_type == 4 %}
+                                    <a role="button" class="no_underline"
+                                        href={% url 'inscricao:alterar' inscricao=inscricao.inscricao.idinscricao  %}>
+                                        <span class="icon has-text-success"> <i
+                                                class="mdi mdi-pencil mdi-24px"></i></button></span>
+                                    </a>
+                                    {% endif %}
+                                </td>
+                                </td>
+                                {% endfor inscricao %}
+                        </tbody>
+                        <!---->
+                    </table>
                 </div>
             </div>
         </div>
     </div>
-    <hr>
-    {% else %}
-        <b>Ainda não existem inscrições</b>
-    {% endif %}
-    {% if user_type == 0 %}
+</div>
+<hr>
+<div style="display: flex;align-items: center;justify-content: center;">
     <div style="display: flex;align-items: center;justify-content: center;">
-        <div style="display: flex;align-items: center;justify-content: center;">
-            <a href={% url 'inscricao:register_individual' %} type="button" class="button" style="margin-right:12%;">
-                <span class="icon is-small"><i class="mdi mdi-account-plus mdi-24px"></i></span>
-                <span>Nova Inscrição Individual</span>
-            </a>
-            <span><a href={% url 'inscricao:register' %} type="button" class="button">
-                    <span class="icon is-small"><i class="mdi mdi-account-multiple-plus mdi-24px"></i></span>
-                    <span>Nova Inscrição Coletiva</span>
-                </a></span>
-        </div>
+        <a href={% url 'inscricao:register_individual' %} type="button" class="button" style="margin-right:12%;">
+            <span class="icon is-small"><i class="mdi mdi-account-plus mdi-24px"></i></span>
+            <span>Nova Inscrição Individual</span>
+        </a>
+        <span><a href={% url 'inscricao:register' %} type="button" class="button">
+                <span class="icon is-small"><i class="mdi mdi-account-multiple-plus mdi-24px"></i></span>
+                <span>Nova Inscrição Coletiva</span>
+            </a></span>
     </div>
-    {% endif %}
 </div>
 <!-----BUTTON_COLETIVO---->
 
@@ -892,11 +884,11 @@
             var tr = table.row(dataIndex).nodes().to$();
             var filter_value = $('#inscricao_type').val();
 
-            if((filter_value == 0 || filter_value == 1) && tr.hasClass("is-individual")){
+            if ((filter_value == 0 || filter_value == 1) && tr.hasClass("is-individual")) {
                 return true;
             }
 
-            if((filter_value == 0 || filter_value == 2) && tr.hasClass("is-coletiva")){
+            if ((filter_value == 0 || filter_value == 2) && tr.hasClass("is-coletiva")) {
                 return true;
             }
 
@@ -918,7 +910,32 @@
         $('#filter_curso').on('keyup', redrawTable);
         $('#filter_atividade').on('keyup', redrawTable);
         $('#filter_local').on('keyup', redrawTable);
-        $('#inscricao_type').on('change',redrawTable);
+        $('#inscricao_type').on('change', redrawTable);
+
+        $('#clean').on('click',function(){
+            $('#filter_escola').val('');
+            $('#filter_escola').trigger('keyup');
+
+            $('#filter_ano').val('');
+            $('#filter_ano').trigger('keyup');
+
+            $('#filter_email').val('');
+            $('#filter_email').trigger('keyup');
+
+            $('#filter_telemovel').val('');
+            $('#filter_telemovel').trigger('keyup');
+
+            $('#filter_curso').val('');
+            $('#filter_curso').trigger('keyup');
+
+            $('#filter_atividade').val('');
+            $('#filter_atividade').trigger('keyup');
+
+            $('#filter_local').val('');
+            $('#filter_local').trigger('keyup');
+
+            $('#inscricao_type').val(0).change();
+        });
     });
 
     function redrawTable(tr) {
