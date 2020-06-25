@@ -424,6 +424,7 @@ def profile_list(request):
         context={'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)}
         return render(request,"not_for-u.html",context)
     users=Utilizador.objects.all().annotate(cargo=Value('Participante',CharField()),estado=Value('Pendente',CharField()),UO=Value('-',CharField()), no_enc=Value(0,IntegerField()))
+    atual=datetime.now().year
     for u in users:
         if Coordenador.objects.filter(pk=u.idutilizador).exists():
             u.cargo="Coordenador"
@@ -459,7 +460,7 @@ def profile_list(request):
     me_id=user_id
     campus=Campus.objects.all()
     uos=uo()
-    return render(request,"list_users.html",{"users":users,"funcao":funcao,"me":me,"me_id":me_id,"campus":campus,"uos":uos,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request),'colaboradores':Colaborador.objects.all(),'docentes':ProfessorUniversitario.objects.all()})
+    return render(request,"list_users.html",{'atual':atual,"users":users,"funcao":funcao,"me":me,"me_id":me_id,"campus":campus,"uos":uos,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request),'colaboradores':Colaborador.objects.all(),'docentes':ProfessorUniversitario.objects.all()})
 #--------------------------------------------recuperaçao de password---------------------------------
 def change_password(request, id):
     id_deccryp=decrypt(id)
