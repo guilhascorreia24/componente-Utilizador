@@ -1,0 +1,313 @@
+
+{% extends 'base_template.html' %}
+
+{% load static %}
+{% block steps %}
+<li><a href="{% url 'blog:blog-home' %}">Início</a></li>
+<li class="is-active"><a href="" aria-current="page">Consultar Transportes</a></li>
+{% endblock %}
+{% block content %}
+<div class="columns">
+    <div class="column is-3">
+        <div>
+            <p data-v-1513178e="" class="menu-label">Filtros do Transporte</p>
+            <form method="GET">
+                <div class="column">
+                    <div class="field">
+                        <div class="control is-expanded">
+                                <span class="select is-fullwidth is-empty">
+                                <select id="myInput"onchange="myFunction()">
+                                    <option hidden value="">Filtrar por Data</option>
+                                    {% for hora in hora %}
+                                    <option  value="{{hora.horario_has_dia_id_dia_hora.dia_dia.dia | date:"d/m/Y"}}">{{hora.horario_has_dia_id_dia_hora.dia_dia.dia | date:"d/m/Y"}}</option>
+                                    {% endfor %}
+                                </select>
+                                </span>
+                            </div>
+                        </div>
+                </div>
+                <div class="column">
+                    <div class="field">
+                        <div class="control">
+                            <div class="select is-fullwidth">
+                                <span class="select is-fullwidth is-empty">
+                                    <select id="myInput1"onchange="myFunction()">
+                                        <option hidden value="">Filtrar por Hora</option>
+                                        {% for hora in hora %}
+                                        <option  value="{{hora.horario_has_dia_id_dia_hora.horario_hora.hora}}">{{hora.horario_has_dia_id_dia_hora.horario_hora.hora}}</option>
+                                        {% endfor %}
+                                    </select>
+                                    </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="field">
+                        <div class="control">
+                            <div class="select is-fullwidth">
+                                <span class="select is-fullwidth is-empty">
+                                    <select id="myInput2"onchange="myFunction()">
+                                        <option hidden value="">Filtrar por Partida</option>
+                                        {% for par in par %}
+                                        <option  value="{{par.paragem}}">{{par.paragem}}</option>
+                                        {% endfor %}
+                                    </select>
+                                    </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="field">
+                        <div class="control">
+                            <div class="select is-fullwidth">
+                                <span class="select is-fullwidth is-empty">
+                                    <select id="myInput3"onchange="myFunction()">
+                                        <option hidden value="">Filtrar por Chegada</option>
+                                        {% for par in par %}
+                                        <option  value="{{par.paragem}}">{{par.paragem}}</option>
+                                        {% endfor %}
+                                    </select>
+                                    </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <button class="button is-outlined is-link is-danger" type="submit" style="
+                margin-left: 5%;"
+            >
+                    <span>Limpar</span>
+                    <span class="icon is-medium"><i class="mdi mdi-broom"></i></span>
+                </button>
+         </form>
+    </div>
+</div>
+<div class="column">
+        <div class="table ">
+        
+        <a href="{% url 'menu:transporte-criar' %}" class="button is-success is-outlined" type="button" style="margin-bottom: 0.9rem; margin-right: 1rem;">
+           <span class="icon is-small">
+               <i class="mdi mdi-plus"></i></span> 
+                   <span> Adicionar Transporte </span></a>
+                   <a href="{% url 'menu:transportehora-criar' %}" class="button is-success is-outlined" type="button" style="margin-bottom: 0.9rem; margin-right: 1rem;">
+                    <span class="icon is-small">
+                        <i class="mdi mdi-plus"></i></span> 
+                            <span> Adicionar Hora </span></a>
+                            <a href="{% url 'menu:transporte-horario' %}" class="button is-success is-outlined" type="button" style="margin-bottom: 0.9rem; margin-right: 1rem;">
+                                <span class="icon is-small">
+                                    <i class="mdi mdi-plus"></i></span> 
+                                        <span> Adicionar Horário </span></a>
+            <div class="table-wrapper">
+                <table id="myTable" class="table has-mobile-cards is-hoverable is-fullwidth">
+                    <thead>
+                            <th>
+                                Identificação
+                            </th>
+                            <th>
+                               Dia
+                            </th>
+                            <th>
+                                Hora
+                            </th>
+                            <th>
+                                Partida
+                            </th>
+                            <th>
+                                Chegada
+                            </th>
+                            <th>Ações</th>
+                        </thead>
+                        <tbody>
+                            {% for instance in hora %}
+                            
+                            <tr>
+                              
+                                <td>{{instance.transporte_idtransporte.identificacao}}</td>
+                                <td>{{instance.horario_has_dia_id_dia_hora.dia_dia.dia | date:"d/m/Y"}}</td>
+                                <td>{{instance.horario_has_dia_id_dia_hora.horario_hora.hora}}</td>
+                                <td>{{instance.origem.paragem}}</td> 
+                                <td>{{instance.destino.paragem}}</td>
+                                <td>
+                                    <a data-toggle="modal" data-target="#{{ forloop.counter }}">
+                                        <span class="icon is-small">
+                                            <i class="mdi mdi-account-search mdi-24px"></i>
+                                        </span>
+                                    </a>
+                                
+                                    <a href="{% url 'menu:transporte-update' instance.id_transporte_has_horario %}">
+                                        <span class="icon is-small">
+                                            <i class="mdi mdi-pencil mdi-24px"></i>
+                                        </span>
+                                    </a>
+                               
+                                         <a data-toggle="modal"
+                                         data-target="#{{forloop.counter}}">
+                                             <span class="icon is-small has-text-danger">
+                                                 <i class="mdi mdi-close-box mdi-24px"></i>
+                                             </span>
+                                         </a>
+                                        </a>
+                                        <a  href="{% url 'menu:transporte-grupo' instance.id_transporte_has_horario %}">
+                                            <span class="icon is-small">
+                                                <i class="mdi mdi-account-multiple-plus mdi-24px"></i>
+                                            </span>
+                                        </a>
+                                    </td>
+                                 </tr>
+                                {% endfor %}
+                        </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    {% for instance in hora %}
+    <div class="dialog modal" id="{{forloop.counter }}">
+        <div class="modal-background"></div>
+        <br><br><br><br><br><br><br><br><br><br><br><br>
+        <div class="modal-card animation" style="max-width:360px">
+            <!---->
+            <section class="modal-card-body is-titleless">
+                <div class="media">
+                    <!---->
+                    <div class="media-content">
+                        <p>Tem a certeza que quer eliminar o transporte  {{instance.transporte_idtransporte.identificacao}}?</p>
+                        <!---->
+                    </div>
+                </div>
+            </section>
+            <footer class="modal-card-foot"><button class="button" data-dismiss="modal">
+                    Cancelar
+                </button><a href="{% url 'menu:transporte-delete' instance.transporte_idtransporte.idtransporte %}" style="text-decoration: none;"> <button
+                        class="button is-success">
+                        Confirmar
+                    </button></a></footer>
+        </div>
+    </div> 
+    {% endfor %}
+
+    {% for instance in hora %}
+    <div tabindex="-1" class="modal fade" id="{{forloop.counter}}" role="dialog" aria-hidden="true" aria-labelledby="exampleModalLabel">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+    
+                    <button class="close" aria-label="Close" type="button" data-dismiss="modal">
+                        <span aria-hidden="true">X</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div>                   
+                            <div class="input-group col-sm-12">
+                                <div class="input-group-prepend labelForm">
+                                    <span class="input-group-text w-100">Identificação:</span>
+                                </div>
+                                <input disabled="" class="form-control bg-light" type="text" value="{{ instance.transporte_idtransporte.identificacao }}">
+                            </div>
+                            <br>
+                            <div class="input-group col-sm-12">
+                                <div class="input-group-prepend labelForm">
+                                    <span class="input-group-text w-100">Capacidade:</span>
+                                </div>
+                                <input disabled="" class="form-control col-sm-2 bg-light" type="text" value="{{ instance.transporte_idtransporte.capacidade }}">
+                            </div>
+                            {% for inscricao in inscricao %}
+                            <div class="input-group col-sm-12">
+                                <div class="input-group-prepend labelForm">
+                                    <span class="input-group-text w-100">Grupos:</span>
+                                </div>
+                                <input disabled="" class="form-control col-sm-2 bg-light" type="text" value="{{ inscricao.inscricao_idinscricao }}">
+                            </div>
+                            <div class="input-group col-sm-12">
+                                <div class="input-group-prepend labelForm">
+                                    <span class="input-group-text w-100">Número de Passageiros:</span>
+                                </div>
+                                <input disabled="" class="form-control col-sm-2 bg-light" type="text" value="{{ inscricao.n_passageiros }}">
+                            </div>
+                            {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% endfor %}
+    {% for instance in hora %}
+    <div class="dialog modal" id="{{ forloop.counter }}_">
+        <div class="modal-background"></div>
+        <br><br><br><br><br><br><br><br><br><br><br><br>
+        <div class="modal-card animation" style="max-width:360px">
+            <!---->
+            <section class="modal-card-body is-titleless">
+                <div class="media">
+                    <!---->
+                    <div class="media-content">
+                        <p>Tem a certeza que quer eliminar o utilizador {{user.nome}}?</p>
+                        <!---->
+                    </div>
+                </div>
+            </section>
+            <footer class="modal-card-foot"><button class="button" data-dismiss="modal">
+                    Cancelar
+                </button><a href="{% url 'menu:transporte-delete' instance.transporte_idtransporte.idtransporte%}" style="text-decoration: none;"> <button
+                        class="button is-success" type="submit">
+                        Confirmar
+                    </button></a></footer>
+        </div>
+    </div>
+    </form>
+    {% endfor %}
+
+    <script>
+        function myFunction() {
+            var input,input2,input3,input4,filter,filter2,filter3,filter4, table, tr, td,td1,td2,td3,td4, i, txtValue,txtValue1,txtValue2,txtValue3,txtValue4;
+            input = document.getElementById("myInput");
+            input2 = document.getElementById("myInput1");
+            input3 = document.getElementById("myInput2");
+            input4 = document.getElementById("myInput3");
+            filter = input.value.toUpperCase();
+            filter2 = input2.value.toUpperCase();
+            filter3 = input3.value.toUpperCase();
+            filter4 = input4.value.toUpperCase();
+            console.log(filter+" "+filter2);
+            table = document.getElementById("myTable");
+            tr = table.getElementsByTagName("tr");
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[1];
+                td1= tr[i].getElementsByTagName("td")[2];
+                td2= tr[i].getElementsByTagName("td")[3];
+                td3= tr[i].getElementsByTagName("td")[4];
+                if (td && td1 && td2 && td3) {
+                    txtValue = td.textContent || td.innerText;
+                    txtValue1 = td1.textContent || td1.innerText;
+                    txtValue2 = td2.textContent || td2.innerText;
+                    txtValue3 = td3.textContent || td3.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1 && txtValue1.toUpperCase().indexOf(filter2) > -1 &&
+                         txtValue2.toUpperCase().indexOf(filter3) > -1 && txtValue3.toUpperCase().indexOf(filter4) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('#myTable').DataTable({
+                "paging": true,
+                "info": false,
+                "searching": false,
+                "bLengthChange": false,
+                "aLengthMenu": [[5, 10, 25, -1], [5, 10, 25, "All"]],
+                "columnDefs": [
+        { "orderable": false, "targets": 5 }
+      ]
+            });
+        });
+    </script>
+
+{% endblock content %}

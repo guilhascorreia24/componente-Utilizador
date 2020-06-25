@@ -1,0 +1,121 @@
+{% extends 'home.html' %}
+
+{% load static %}
+
+{% block content %}
+<nav class="breadcrumb" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="/">Início</a></li>
+    <li><a href="/menu">Consultar Menus</a></li>
+    <li class="is-active"><a href="" aria-current="page">Detalhes sobre o Menu {{menu.tipo}}</a></li>
+  </ul>
+</nav>
+<div class="table "></div>
+<div class="table-wrapper">
+    <table class="table has-mobile-cards is-hoverable is-fullwidth">
+        <thead>
+                <th></th>
+                <th></th>
+
+                <tr>
+                  <td><b>Sopa e Sobremesa:</b></td>
+                    <td>{{menu.descricao}}                     
+                  </td>
+                </tr>
+
+                <tr>
+                  {% for prato in prato %}
+                  {% if prato.tipo == "Carne" %}
+                  <td><b>Prato de Carne:</b></td>
+                    <td>{{prato.descricao}}
+                      <td><a href="{% url 'menu:prato_update' prato.idprato %}">
+                        <span class="icon is-small">
+                            <i class="mdi mdi-tooltip-edit mdi-22px"></i>
+                        </span>
+                    </a>   
+                  </td>
+                    <form method="POST">
+                      <td><a href="{% url 'menu:prato_delete' prato.idprato %}">
+                          <span class="icon is-small">
+                              <i class="mdi mdi-delete mdi-24px"></i>
+                          </span>
+                      </a>
+                    </form>
+                    </td>
+                  </td>
+                  {% endif %}
+                </tr>
+
+                <tr>
+                  {% if prato.tipo == "Peixe" %}
+                  <td><b>Prato de Peixe:</b></td>
+                    <td>{{prato.descricao}} 
+                      <td><a href="{% url 'menu:prato_update' prato.idprato %}">
+                        <span class="icon is-small">
+                            <i class="mdi mdi-tooltip-edit mdi-22px"></i>
+                        </span>
+                    </a>   
+                  </td>
+                    <form method="POST">
+                      <td><a href="{% url 'menu:prato_delete' prato.idprato %}">
+                          <span class="icon is-small">
+                              <i class="mdi mdi-delete mdi-24px"></i>
+                          </span>
+                      </a>
+                    </form>                    
+                  </td>
+                  {% endif %}
+                </tr>
+
+                <tr>
+                  {% if prato.tipo == "Vegetariano" %}
+                  <td><b>Prato Vegetariano:</b></td>
+                    <td>{{prato.descricao}} 
+                      <td><a href="{% url 'menu:prato_update' prato.idprato %}">
+                        <span class="icon is-small">
+                            <i class="mdi mdi-tooltip-edit mdi-22px"></i>
+                        </span>
+                    </a>   
+                  </td>
+                    <form method="POST">
+                      <td><a href="{% url 'menu:prato_delete' prato.idprato %}">
+                          <span class="icon is-small">
+                              <i class="mdi mdi-delete mdi-24px"></i>
+                          </span>
+                      </a>
+                    </form>                    
+                  </td>
+                  {% endif %}
+                  {% endfor %}
+                </tr>
+
+                <td><b>Dia do almoço:</b></td>
+                    <td>{{menu.horario_has_dia_id_dia_hora.dia_dia.dia}}</td>
+                </tr>
+                <td><b>Hora do Almoço: </b></td>
+                    <td>{{menu.horario_has_dia_id_dia_hora.horario_hora.hora}}</td>
+                </tr>
+                
+                <td><b>Campus: </b></td>
+                    <td>{{menu.campus_idcampus}}</td>
+                </tr>
+                <td><b>Numero de Almoços disponiveis: </b></td>
+                    <td>{{menu.nralmocosdisponiveis}}</td>
+                </tr>
+                {% for preco in preco %}
+                {% if preco.ano == 2020 %}
+                <td><b>Preço do almoço para estudantes: </b></td>
+                    <td>{{preco.preco_almoco_estudante}}€</td>
+                </tr>
+                <td><b>Preço do almoço para professores: </b></td>
+                    <td>{{preco.preco_almoco_professor}}€</td>
+                </tr>
+                {% endif %}
+                {% endfor %}
+                      </thead>
+                    </table>
+                      <a href="/menu" class="button is-outlined" type="button">
+                        <span>Voltar</span>
+                      </a>
+                  </div>
+  {% endblock content %}
