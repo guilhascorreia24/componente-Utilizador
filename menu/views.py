@@ -18,15 +18,13 @@ def index(request):
     return render(request, "index.html", context)
 
 def preencher_hora(hora_incio, hora_fim):
-    inter=datetime.time(0,30,0)
-    while hora_incio<hora_fim:
-        h=str(datetime.timedelta(hours=hora_incio.hour,minutes=hora_incio.minute)+datetime.timedelta(hours=inter.hour,minutes=inter.minute))
-        hora_incio=datetime.time(int(h.split(':')[0]),int(h.split(':')[1]))
-        if not(Horario.objects.filter(pk=hora_incio).exists()):
-            Horario.objects.create(pk=hora_incio)
-        h=str(datetime.timedelta(hours=hora_incio.hour,minutes=hora_incio.minute)+datetime.timedelta(hours=inter.hour,minutes=inter.minute))
-        hora_incio=datetime.time(int(h.split(':')[0]),int(h.split(':')[1]))
-    Horario.objects.create(pk=hora_fim)
+    time_start = datetime.datetime.strptime(hora_incio, '%H:%M')
+    time_end = datetime.datetime.strptime(hora_fim, '%H:%M')
+
+    while time_start < time_end:
+        time_start += datetime.timedelta(minutes=30)
+        Horario.objects.get_or_create(pk=time_start)
+
 
 def diaaberto_create(request):
     user = Utilizador.objects.get(idutilizador=request.session['user_id'])
@@ -40,8 +38,7 @@ def diaaberto_create(request):
             final = form.cleaned_data['datadiaabertofim']
             hora_inicio=request.POST['h_incio']
             hora_fim=request.POST['h_fim']
-            print(hora_fim)
-            #preencher_hora(hora_inicio,hora_fim)
+            preencher_hora(hora_inicio,hora_fim)
             Horario(hora="12:00:00").save()
             hora1 = Horario.objects.filter(hora="12:00:00")
             for x in range(inicio.day, final.day+1):
