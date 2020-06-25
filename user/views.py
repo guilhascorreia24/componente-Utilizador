@@ -109,6 +109,8 @@ def type_user(data,user_id):
     elif data['funcao']=='4':
         if user_id is not None:
             admin=Administrador(pk=user_id)
+            if len(Administrador.objects.all())==0:
+                Utilizador.objects.filter(pk=user_id).update(validada=4)
             admin.save()
         else:
             t=4
