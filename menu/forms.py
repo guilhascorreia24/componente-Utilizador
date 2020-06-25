@@ -167,3 +167,15 @@ class HorarioForm(forms.ModelForm):
             'horario_hora': TimeInput(attrs={'class': 'input', 'type':'time'}),
             'dia_dia': DateInput(attrs={'class': 'input', 'type':'date'}),
         }
+
+class InscricaoForm(forms.ModelForm):
+
+    def save(self,id):
+        base = super(InscricaoForm, self).save(commit=False)
+        base.horario = TransporteHasHorario.objects.get(pk=id)
+        return base.save()
+
+    class Meta:
+        model = TransporteHasInscricao
+        exclude = ['transporte_has_inscricao_id','horario']
+
