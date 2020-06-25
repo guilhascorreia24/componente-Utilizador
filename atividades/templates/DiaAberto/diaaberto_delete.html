@@ -1,0 +1,45 @@
+
+{% extends 'home.html' %}
+{% block content %}
+<nav class="breadcrumb" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="/diaaberto">Início</a></li>
+    <li class="is-active"><a href="/diaaberto" aria-current="page">Consultar Anos Anteriores</a></li>
+    <li class="is-active"><a href="/apagar" aria-current="page">Eliminar Dia</a></li>
+  </ul>
+</nav>
+<div style="padding: 3rem 2vw 1rem">
+  <form method="POST" action=""> 
+    {% csrf_token %}
+    <div class="table-wrapper">
+      <table class="table has-mobile-cards is-hoverable is-fullwidth">
+        <font size="4"><p align="center"> Deseja mesmo eliminar o ano <font size="4">"{{diaaberto.ano}}"</font> ?</p></font>
+      <hr>
+      </div>
+    <div class="column is-8 is-offset-2">
+      <div class="level">
+        <div class="level-left">
+          <a href="/diaaberto" class="button is-outlined" type="button">
+            <span>  </i>Retroceder</span>
+          </a>
+        </div>
+        <div class="level-right">
+          <button class="button is-large is-success is-outlined is-link" type="submit">
+            <span>Eliminar</span>
+          </span>
+        </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+</div>
+<style>
+  .label {
+  font-weight: normal;
+}
+.b-steps .steps .step-items .step-item .step-details .step-title {
+  font-size: 1rem;
+}
+</style>
+{% endblock content%}

@@ -2,7 +2,7 @@ from django.shortcuts import render, HttpResponse, get_object_or_404, redirect, 
 from les import settings
 from .forms import *
 from blog.models import Atividade, Utilizador, Administrador, Coordenador, ProfessorUniversitario, Espaco, Departamento, \
-    UnidadeOrganica, Sessao, Horario, Campus, Dia, HorarioHasDia, Sala, Anfiteatro, Arlivre
+    UnidadeOrganica, Sessao, Horario, Campus, Dia, HorarioHasDia, Sala, Anfiteatro, Arlivre, Menu, CoordenadorHasDepartamento
 from Notification.views import noti_not_checked
 from Notification import views as noti_views
 
@@ -264,7 +264,7 @@ def create_edit_session_view(request, idActivity):
         horario = get_object_or_404(HorarioHasDia, dia_dia=request.POST.get("dia"), horario_hora=request.POST.get("hora"))
         if not Sessao.objects.all().filter(atividade_idatividade=idActivity, horario_has_dia_id_dia_hora=horario):
             atividade = get_object_or_404(Atividade, idatividade=idActivity)
-            newSession = Sessao(nrinscritos=0, vagas=atividade.capacidade,
+            newSession = Sessao(nrinscritos=0, capacidade=atividade.capacidade,
                                 atividade_idatividade=get_object_or_404(Atividade, idatividade=idActivity),
                                 horario_has_dia_id_dia_hora=horario)
             newSession.save()
@@ -273,6 +273,19 @@ def create_edit_session_view(request, idActivity):
         else:
             message = "Já existe sessão no horário escolhido"
     sessao = Sessao.objects.all().filter(atividade_idatividade=idActivity).order_by('horario_has_dia_id_dia_hora')
+<<<<<<< HEAD
+                  }
+    return render(request, "Menu/prato_create.html", context)
+
+def menu_update_view(request, id):
+    obj = get_object_or_404(Menu, idmenu=id)
+    form = MenuModelForm(request.POST or None, instance=obj)
+    pk_url_kwarg = 'idmenu'
+    if form.is_valid():
+        form.save()
+        return redirect("menu:menu_list")
+=======
+>>>>>>> 20ecdf704d4fa649d1a7605501b26d84d97e3467
     context = {
         "list": sessao,
         "horario": hora,
@@ -429,6 +442,7 @@ def criar_campus_view(request):
 
 def apagar_campus_view(request, idCampus):
     campus = get_object_or_404(Campus, idcampus=idCampus)
+    print(str(UnidadeOrganica.objects.filter(campus_idcampus=idCampus).exists() and Menu.objects.filter(campus_idcampus=idCampus).exists() and Espaco.objects.filter(campus_idcampus=idCampus).exists()))
     if not(UnidadeOrganica.objects.filter(campus_idcampus=idCampus).exists() and Menu.objects.filter(campus_idcampus=idCampus).exists() and Espaco.objects.filter(campus_idcampus=idCampus).exists()):
         campus.delete()
     return redirect("atividades:criar_campus")
@@ -514,7 +528,7 @@ def criar_paragem_view(request):
 
 def apagar_paragem_view(request, paragem):
     paragem = get_object_or_404(Paragem, paragem=paragem)
-    if not(Paragem.objects.filter(paragem=paragem).exists() and TransporteHasHorario.objects.filter(origem=paragem).exists() and TransporteHasHorario.objects.filter(destino=paragem).exists()):
+    if not(Paragem.objects.filter(paragem=request.POST['paragem']).exists() and TransporteHasHorario.objects.filter(origem=request.POST['paragem']).exists() and TransporteHasHorario.objects.filter(destino=request.POST['paragem']).exists()):
         paragem.delete()
     return redirect("atividades:criar_paragem")
 

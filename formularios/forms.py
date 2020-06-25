@@ -8,8 +8,8 @@ import hashlib
 import datetime
 
 class cursoForm(forms.ModelForm):
-    unidade_organica_iduo=forms.ModelChoiceField(queryset=UnidadeOrganica.objects.all(), to_field_name="sigla")
-    nome=forms.CharField(max_length=255)
+    unidade_organica_iduo=forms.ModelChoiceField(queryset=UnidadeOrganica.objects.all(), to_field_name="sigla", required = False)
+    nome=forms.CharField(max_length=255, required = False)
     
     class Meta:
         model=Curso

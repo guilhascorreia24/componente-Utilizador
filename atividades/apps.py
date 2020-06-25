@@ -1,5 +1,5 @@
 from django.apps import AppConfig
 
 
-class AtividadesConfig(AppConfig):
-    name = 'atividades'
+class MenuConfig(AppConfig):
+    name = 'menu'

@@ -15,12 +15,17 @@ def index(request):
         'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)
     }
     return render(request, "index.html", context)
-'''def preencher_hora(hora_incio, hora_fim):
+
+def preencher_hora(hora_incio, hora_fim):
     inter=datetime.time(0,30,0)
-    while inter<hora_fim:
-        Horario.objects.create(pk=hora_inicio)
-        hora_incio+=inter
-    Horario.objects.create(pk=hora_fim)'''
+    while hora_incio<hora_fim:
+        h=str(datetime.timedelta(hours=hora_incio.hour,minutes=hora_incio.minute)+datetime.timedelta(hours=inter.hour,minutes=inter.minute))
+        hora_incio=datetime.time(int(h.split(':')[0]),int(h.split(':')[1]))
+        if not(Horario.objects.filter(pk=hora_incio).exists()):
+            Horario.objects.create(pk=hora_incio)
+        h=str(datetime.timedelta(hours=hora_incio.hour,minutes=hora_incio.minute)+datetime.timedelta(hours=inter.hour,minutes=inter.minute))
+        hora_incio=datetime.time(int(h.split(':')[0]),int(h.split(':')[1]))
+    Horario.objects.create(pk=hora_fim)
 
 def diaaberto_create(request):
     user = Utilizador.objects.get(idutilizador=request.session['user_id'])
@@ -32,6 +37,9 @@ def diaaberto_create(request):
             form.save()
             inicio = form.cleaned_data['datadiaabertoinicio']
             final = form.cleaned_data['datadiaabertofim']
+            hora_inicio=request.POST['h_inicio']
+            hora_fim=request.POST['h_fim']
+            print(hora_fim)
             #preencher_hora(hora_inicio,hora_fim)
             Horario(hora="12:00:00").save()
             hora1 = Horario.objects.filter(hora="12:00:00")
@@ -56,6 +64,10 @@ def diaaberto_update(request, id):
         #Horario.objects.all().delete()
         inicio = form.cleaned_data['datadiaabertoinicio']
         final = form.cleaned_data['datadiaabertofim']
+        #preencher_hora(hora_inicio,hora_fim)
+        print(request.POST)
+        hora_inicio=datetime.time(int(request.POST['h_incio'].split(':')[0]),int(request.POST['h_incio'].split(':')[1]))
+        hora_fim=datetime.time(int(request.POST['h_fim'].split(':')[0]),int(request.POST['h_fim'].split(':')[1]))
         #preencher_hora(hora_inicio,hora_fim)
         Horario(hora="12:00:00").save()
         hora1 = Horario.objects.filter(hora="12:00:00")
@@ -192,7 +204,7 @@ def prato_delete_view(request, id):
     obj = get_object_or_404(Prato, idprato=id)
     if Prato.objects.filter(pk=id).exists():
         obj.delete()
-    return redirect('blog:blog-home')
+    return redirect('menu:menu_list')
 
 ######## TRANSPORTEEE ############################
 def transporte_create_view(request):
