@@ -197,7 +197,7 @@ def new_noti(request,destinatario_pk,assunto,texto):
         user_id=-1
     noti=Notificacao.objects.create(descricao=texto,utilizadorrecebe=destinatario_pk,idutilizadorenvia=user_id,criadoem=datetime.now(),assunto=assunto)
     UtilizadorHasNotificacao.objects.create(utilizador_idutilizador=Utilizador.objects.get(pk=destinatario_pk),notificacao=noti,estado=0)
-    if destinatario_pk==request.session['user_id']:
+    if destinatario_pk!=request.session['user_id']:
         UtilizadorHasNotificacao.objects.create(utilizador_idutilizador=Utilizador.objects.get(pk=user_id),notificacao=noti,estado=0)
 
 
