@@ -184,8 +184,8 @@ def menu_detail_view(request, id):
 def menu_delete_view(request, id):
     obj = get_object_or_404(Menu, idmenu=id)
     if Menu.objects.filter(pk=id).exists():
-        
-        obj.delete()
+        Prato.objects.filter(menu_idmenu=Menu.objects.get(pk=id)).delete()
+        Menu.objects.filter(pk=id).delete()
     return redirect('menu:menu_list')
 
 def prato_delete_view(request, id):

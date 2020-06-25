@@ -8,7 +8,6 @@
     <li class="is-active"><a href="" aria-current="page">Criar Transporte</a></li>
   </ul>
 </nav>
-{{form.errors}}
 <div style="padding: 3rem 2vw 1rem">
     <form action='.' method='POST'>{% csrf_token %}
     <div class="b-steps">
@@ -23,6 +22,7 @@
                      <div class="control">
                       <div class="select is-fullwidth">
                         {{form.origem}}
+                        {{form.errors.origem}}
               </div>
             </div>
           </div>
