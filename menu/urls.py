@@ -37,7 +37,7 @@ urlpatterns = [
     path('transporte/update/<int:id>', views.transporte_update_view, name='transporte-update'),
     path('/update2/<int:id>', views.transporte_update2_view, name='transporte-update2'),
     path('transporte/apagar/<int:id>', views.transporte_delete_view, name='transporte-delete'),
-    path('transporte/grupos/<int:id>', transporte_grupo_view, name='transporte-grupo'),
+    path('transporte/grupos/<int:id>', views.transporte_grupo_view, name='transporte-grupo'),
     
     path('', views.index, name='index'),
     path('diaaberto/', views.diaaberto_list, name='diaaberto_list'),

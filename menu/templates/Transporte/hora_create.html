@@ -10,7 +10,8 @@
 {% endif %}
 {% endblock %}
 {% block content %}
-{{form.errors}}
+{{form1.errors}}
+{{form2.errors}}
 <div style="padding: 3rem 2vw 1rem">
     <form action='.' method='POST'>{% csrf_token %}
     <div class="b-steps">
@@ -21,7 +22,7 @@
                     <div class="step-details"><span class="step-title">{% if o %}
                       Criar horario do Transporte
                       {% else %}
-                      Editar horario do Transporte
+                      Criar horario do Transporte
                       {% endif %}</span>
                     </div>
                 </a></li>

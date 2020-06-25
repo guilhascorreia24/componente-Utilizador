@@ -115,8 +115,11 @@
   var tipo = "{{form.tipo.id_for_label}}";
   var prato = "{{form.tipo.value}}";
   $(document).ready(function () {
-    var prato_name = "option[value=" + tipo + "]";
-    $("#" + prato).find(prato_name).attr("selected", "selected");
+    console.log(tipo);
+    var prato_name = "option[value='" + prato + "']";
+    var p = $("#" + tipo).find(prato_name);
+    p.attr("selected", "selected");
+    console.log(p);
   });
 </script>
 {% endblock content%}
