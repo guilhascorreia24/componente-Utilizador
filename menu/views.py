@@ -40,7 +40,7 @@ def diaaberto_create(request):
                 dia1 = Dia.objects.filter(dia = inicio+datetime.timedelta(days=x-inicio.day))
                 HorarioHasDia(horario_hora=hora1[0], dia_dia=dia1[0]).save()
             update_ano_user_null()
-            return redirect("blog:blog-home")
+            return redirect("menu:diaaberto_list")
     return render(request,
                  template_name="DiaAberto/diaaberto_create.html", 
                     context={'form': form,'o':True,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
@@ -53,7 +53,7 @@ def diaaberto_update(request, id):
     pk_url_kwarg = 'ano'
     if form.is_valid():
         form.save()
-        Horario.objects.all().delete()
+        #Horario.objects.all().delete()
         inicio = form.cleaned_data['datadiaabertoinicio']
         final = form.cleaned_data['datadiaabertofim']
         #preencher_hora(hora_inicio,hora_fim)
@@ -65,7 +65,7 @@ def diaaberto_update(request, id):
             Dia(dia=inicio+datetime.timedelta(days=x-inicio.day)).save()
             dia1 = Dia.objects.filter(dia = inicio+datetime.timedelta(days=x-inicio.day))
             HorarioHasDia(horario_hora=hora1[0], dia_dia=dia1[0]).save()
-        return redirect("blog:blog-home")
+        return redirect("menu:diaaberto_list")
     context = {
         'form': form,
         'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)
