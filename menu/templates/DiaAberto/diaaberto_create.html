@@ -71,8 +71,7 @@
                                 <div class="field">
                                     <label class="label">Descrição</label>
                                     <div class="control is-clearfix">
-                                        <textarea maxlength="300" class="textarea" id='{{form.descricao}}'
-                                            style="margin-top: 0px; margin-bottom: 0px; height: 30%;"></textarea>
+                                        <textarea style="margin-top: 0px; margin-bottom: 0px; height: 30%;" maxlength="300" class="textarea" id={{form.descricao}}></textarea>
                                     </div>
                                     <!---->
                                 </div>
@@ -231,8 +230,8 @@
                                 </a>
                             </div>
                             <div class="level-right">
-                                <input href="{% url "blog:blog-home" %}"
-                                    class="button is-large is-success is-outlined is-link" type='submit'
+                                <input href="{% url "menu:diaaberto_list" %}" 
+                                class="button is-large is-success is-outlined is-link" type='submit'
                                     value='Submeter'>
                                 </button>
                             </div>

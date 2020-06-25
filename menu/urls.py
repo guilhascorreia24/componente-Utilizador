@@ -24,20 +24,21 @@ urlpatterns = [
     path('menu/criarprato/', views.prato_create_view, name='prato_criar'),
     path('menu/<int:id>/details/', views.menu_detail_view, name='menu_detail'),
     path('menu/update/<int:id>', views.menu_update_view, name='menu_update'),
-    path('menu/updateprat/<int:id>', views.prato_update_view, name='prato_update'),
+    path('menu/updateprato/<int:id>', views.prato_update_view, name='prato_update'),
     path('menu/apagar/<int:id>', views.menu_delete_view, name='menu_delete'),
     path('menu/apagarprato/<int:id>', views.prato_delete_view, name='prato_delete'),
     
 
     path('transporte/', views.transporte_list_view, name='transporte-list'),
     path('transporte/criar/', views.transporte_create_view, name='transporte-criar'),
-    path('transporte/criarhorario/', views.transportehora_create_view, name='transportehora-criar'),
+    path('transporte/criarhora/', views.transportehora_create_view, name='transportehora-criar'),
     path('horario/', views.horario_create_view, name='horario-list'),
     path('transporte/details/<int:id>', views.transporte_detail_view, name='transporte-detail'),
     path('transporte/update/<int:id>', views.transporte_update_view, name='transporte-update'),
     path('/update2/<int:id>', views.transporte_update2_view, name='transporte-update2'),
     path('transporte/apagar/<int:id>', views.transporte_delete_view, name='transporte-delete'),
     path('transporte/grupos/<int:id>', views.transporte_grupo_view, name='transporte-grupo'),
+    path('transporte/criarhorarario/', views.horariotransporte_create_view, name='transporte-horario'),
     
     path('', views.index, name='index'),
     path('diaaberto/', views.diaaberto_list, name='diaaberto_list'),

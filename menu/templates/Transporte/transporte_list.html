@@ -94,7 +94,11 @@
                    <a href="{% url 'menu:transportehora-criar' %}" class="button is-success is-outlined" type="button" style="margin-bottom: 0.9rem; margin-right: 1rem;">
                     <span class="icon is-small">
                         <i class="mdi mdi-plus"></i></span> 
-                            <span> Adicionar Horário </span></a>
+                            <span> Adicionar Hora </span></a>
+                            <a href="{% url 'menu:transporte-horario' %}" class="button is-success is-outlined" type="button" style="margin-bottom: 0.9rem; margin-right: 1rem;">
+                                <span class="icon is-small">
+                                    <i class="mdi mdi-plus"></i></span> 
+                                        <span> Adicionar Horário </span></a>
             <div class="table-wrapper">
                 <table id="myTable" class="table has-mobile-cards is-hoverable is-fullwidth">
                     <thead>
@@ -183,6 +187,20 @@
                                 </div>
                                 <input disabled="" class="form-control col-sm-2 bg-light" type="text" value="{{ instance.transporte_idtransporte.capacidade }}">
                             </div>
+                            {% for inscricao in inscricao %}
+                            <div class="input-group col-sm-12">
+                                <div class="input-group-prepend labelForm">
+                                    <span class="input-group-text w-100">Grupos:</span>
+                                </div>
+                                <input disabled="" class="form-control col-sm-2 bg-light" type="text" value="{{ inscricao.inscricao_idinscricao }}">
+                            </div>
+                            <div class="input-group col-sm-12">
+                                <div class="input-group-prepend labelForm">
+                                    <span class="input-group-text w-100">Número de Passageiros:</span>
+                                </div>
+                                <input disabled="" class="form-control col-sm-2 bg-light" type="text" value="{{ inscricao.n_passageiros }}">
+                            </div>
+                            {% endfor %}
                     </div>
                 </div>
             </div>

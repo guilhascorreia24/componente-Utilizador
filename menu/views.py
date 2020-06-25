@@ -40,7 +40,7 @@ def diaaberto_create(request):
                 dia1 = Dia.objects.filter(dia = inicio+datetime.timedelta(days=x-inicio.day))
                 HorarioHasDia(horario_hora=hora1[0], dia_dia=dia1[0]).save()
             update_ano_user_null()
-            return redirect("blog:blog-home")
+            return redirect("menu:diaaberto_list")
     return render(request,
                  template_name="DiaAberto/diaaberto_create.html", 
                     context={'form': form,'o':True,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
@@ -53,19 +53,17 @@ def diaaberto_update(request, id):
     pk_url_kwarg = 'ano'
     if form.is_valid():
         form.save()
-        Horario.objects.all().delete()
+        #Horario.objects.all().delete()
         inicio = form.cleaned_data['datadiaabertoinicio']
         final = form.cleaned_data['datadiaabertofim']
         #preencher_hora(hora_inicio,hora_fim)
         Horario(hora="12:00:00").save()
         hora1 = Horario.objects.filter(hora="12:00:00")
-        print(inicio.day)
-        print(final.day)
         for x in range(inicio.day, final.day+1):
             Dia(dia=inicio+datetime.timedelta(days=x-inicio.day)).save()
             dia1 = Dia.objects.filter(dia = inicio+datetime.timedelta(days=x-inicio.day))
             HorarioHasDia(horario_hora=hora1[0], dia_dia=dia1[0]).save()
-        return redirect("blog:blog-home")
+        return redirect("menu:diaaberto_list")
     context = {
         'form': form,
         'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)
@@ -129,6 +127,7 @@ def prato_create_view(request):
 def menu_update_view(request, id):
     obj = get_object_or_404(Menu, idmenu=id)
     form = MenuModelForm(request.POST or None, instance=obj)
+    pk_url_kwarg = 'idmenu'
     if form.is_valid():
         form.save()
         return redirect("menu:menu_list")
@@ -141,6 +140,7 @@ def menu_update_view(request, id):
 def prato_update_view(request, id):
     obj = get_object_or_404(Prato, idprato=id)
     form = PratoForm(request.POST or None, instance=obj)
+    pk_url_kwarg = 'idprato'
     if form.is_valid():
         form.save()
         return redirect("menu:menu_list")
@@ -253,7 +253,7 @@ def transporte_update2_view(request, id):
     if form.is_valid():
         print("aaaaaaaaaaaaaaaaaaaa")
         form.save()
-        return redirect("/transporte")
+        return redirect("menu:transporte-list")
     context = {
         'form': form,
         'hora': hora,
@@ -277,9 +277,11 @@ def transporte_list_view(request):
 def transporte_detail_view(request, id):
     obj = get_object_or_404(Transporte,idtransporte =id)
     transporte = TransporteHasHorario.objects.get(transporte_idtransporte=id)
+    inscricao = TransporteHasInscricao.objects.get(inscricao_idinscricao=id)
     context = {
         "obj": obj,
         "transporte": transporte,
+        "inscricao": incricao,
         'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)
 
     }
@@ -293,23 +295,28 @@ def transporte_delete_view(request, id):
 	return redirect("menu:transporte-list")
 
 def transportehora_create_view(request):
-    form1 = DiaForm(request.POST or None)
-    form2 = HoraForm(request.POST or None)
-    if request.method == "POST":
-        if form1.is_valid() & form2.is_valid():
-            form1.save()
-            form2.save()
-            utl = Horario.objects.latest('hora')
-            utl1 = Dia.objects.latest('dia')
-            horario = HorarioHasDia(horario_hora=utl, dia_dia=utl1)
-            horario.save()
-            return redirect("menu:transporte-list")
+    form = HoraForm(request.POST or None)
+    if form.is_valid():
+        form.save()
+        return redirect("menu:transporte-list")
     context = {
-        'form1': form1,
-        'form2': form2,
+        'form': form,'o':True,
         'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)
     }
     return render(request, "Transporte/hora_create.html", context)
+
+
+
+def horariotransporte_create_view(request):
+    form = HorarioForm(request.POST or None)
+    if form.is_valid():
+        form.save()
+        return redirect("menu:transporte-list")
+    context = {
+        'form': form,'o':True,
+        'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)
+    }
+    return render(request, "Transporte/horariotrans_create.html", context)
 
 
 def transporte_grupo_view(request, id):

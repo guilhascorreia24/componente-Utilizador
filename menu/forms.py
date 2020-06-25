@@ -73,8 +73,8 @@ class MenuModelForm(forms.ModelForm):
                                     "placeholder": "Sopa e Sobremesa",
                                     "class": "new-class-name two",
                                     "id": "my-id-for-textarea",
-                                    "rows": 2,
-                                    'cols': 10,
+                                    "rows": 0.5,
+                                    'cols': 5,
                                 }
                             )
                         )
@@ -163,10 +163,6 @@ class HorarioForm(forms.ModelForm):
             'id_dia_hora',
         ]
 
-        widgets = {
-            'horario_hora': TimeInput(attrs={'class': 'input', 'type':'time'}),
-            'dia_dia': DateInput(attrs={'class': 'input', 'type':'date'}),
-        }
 
 class InscricaoForm(forms.ModelForm):
 
@@ -178,4 +174,7 @@ class InscricaoForm(forms.ModelForm):
     class Meta:
         model = TransporteHasInscricao
         exclude = ['transporte_has_inscricao_id','horario']
+        widgets = {
+            'n_passageiros': NumberInput(attrs={'class': 'input'}),
+        }
 
