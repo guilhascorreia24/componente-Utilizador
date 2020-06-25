@@ -54,26 +54,32 @@ def createnot(request):
     return render(request, 'compor_not.html', {'form': form,'me_id':signing.dumps(me_id),'funcao':funcao,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request),'contacts':contacts})
 
 def send_to_org(email,request):
-    email=email.split("@")[0]
     email=email.split(".")
     if email[0]=="Docentes":
         users_send=ProfessorUniversitario.objects.all()
         if len(email)==2:
-            users_send=ProfessorUniversitario.objects.get(departamento_iddepartamento=Departamento.objects.get(unidade_organica_iduo=UnidadeOrganica.objects.get(sigla=email[1])))
+            users_send=[]
+            for dep in Departamento.objects.filter(unidade_organica_iduo=UnidadeOrganica.objects.get(sigla=email[1])):
+                users_send.append(ProfessorUniversitario.objects.filter(departamento_iddepartamento=dep))
     if email[0]=="Coordenadores":
         users_send=Coordenador.objects.all()
         if len(email)==2:
-            users_send=Coordenador.objects.get(unidade_organica_iduo=UnidadeOrganica.objects.get(sigla=email[1]))
+            users_send=[]
+            for uo in UnidadeOrganica.objects.get(sigla=email[1]):
+                users_send.append(Coordenador.objects.filter(unidade_organica_iduo=uo))
     if email[0]=="Colaboradores":
         users_send=Colaborador.objects.all()
         if len(email)==2:
-            users_send=Colaborador.objects.get(curso_idcurso=Curso.objects.get(unidade_organica_iduo=email[1]))
+            users_send=[]
+            for curso in Curso.objects.get(unidade_organica_iduo=email[1]):
+                users_send.append(Colaborador.objects.filter(curso_idcurso=curso))
     if email[0]=="Administradores":
         users_send=Administrador.objects.all()
     if email[0]=="Participantes":
         users_send=Participante.objects.all()
     for user in users_send:
-        if user.pk != request.session['user_id']:
+        print(user)
+        if user.pk != Utilizador.objects.get(pk=request.session['user_id']):
             d=request.POST['Descricao']
             a=request.POST['Assunto']
             destinatario_pk= int(user.pk)
