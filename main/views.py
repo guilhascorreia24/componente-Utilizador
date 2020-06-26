@@ -80,7 +80,7 @@ def criar_tarefa_atividade(request):
 				new_tarefa.colaborador_utilizador_idutilizador = colaborador_user	#Enviamos esse colaborador para a nova tarefa
 			new_tarefa.save()
 			if request.POST['id_colaborador_utilizador_idutilizador'] != '':
-				noti_views.new_noti(request,user.pk,'Tarefa','Foi atribuido uma Nova Tarefa')
+				noti_views.new_noti(request,colaborador_user.pk,'Tarefa','Foi atribuido uma Nova Tarefa')
 			messages.success(request, f'Tarefa Criada com Sucesso!')
 			return redirect("tarefa_coordenador:consultar_tarefa")
 
