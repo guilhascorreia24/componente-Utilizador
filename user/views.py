@@ -109,8 +109,8 @@ def type_user(data,user_id):
     elif data['funcao']=='4':
         if user_id is not None:
             admin=Administrador(pk=user_id)
-            if len(Administrador.objects.all())==0:
-                Utilizador.objects.filter(pk=user_id).update(validada=4)
+            #if len(Administrador.objects.all())==0:
+             #   Utilizador.objects.filter(pk=user_id).update(validada=4)
             admin.save()
         else:
             t=4
@@ -467,6 +467,7 @@ def profile_list(request):
     me_id=user_id
     campus=Campus.objects.all()
     uos=uo()
+    print(users)
     return render(request,"list_users.html",{'atual':atual,"users":users,"funcao":funcao,"me":me,"me_id":me_id,"campus":campus,"uos":uos,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request),'colaboradores':Colaborador.objects.all(),'docentes':ProfessorUniversitario.objects.all()})
 #--------------------------------------------recuperaçao de password---------------------------------
 def change_password(request, id):

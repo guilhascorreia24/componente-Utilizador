@@ -182,7 +182,7 @@
                                 <tbody>
 
                                     {% for user in users %}
-                                    {% if user.idutilizador != me_id and user.dia_aberto_ano.ano == atual %}
+                                    {% if user.idutilizador != me_id %}
                                     {% if funcao == "Coordenador" %}
                                     {% if user.cargo != "Coordenador" %}
                                     {% ifequal user.UO me %}
