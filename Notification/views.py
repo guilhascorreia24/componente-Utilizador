@@ -198,7 +198,7 @@ def new_noti(request,destinatario_pk,assunto,texto):
     noti=Notificacao.objects.create(descricao=texto,utilizadorrecebe=destinatario_pk,idutilizadorenvia=user_id,criadoem=datetime.now(),assunto=assunto)
     UtilizadorHasNotificacao.objects.create(utilizador_idutilizador=Utilizador.objects.get(pk=destinatario_pk),notificacao=noti,estado=0)
     if Utilizador.objects.filter(pk=user_id).exists():
-        UtilizadorHasNotificacao.objects.create(utilizador_idutilizador=Utilizador.objects.get(pk=user_id).pk,notificacao=noti,estado=0)
+        UtilizadorHasNotificacao.objects.create(utilizador_idutilizador=Utilizador.objects.get(pk=user_id),notificacao=noti,estado=0)
 
 
 def joins(uos,x,list):
