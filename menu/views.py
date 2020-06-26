@@ -366,8 +366,8 @@ def transporte_grupo_view(request, id):
         if form.is_valid():
             form.save(id)
             print("aaaaaaaaaaaaaaaaaaa")
-            messages.success(request, f'Transporte grupo criado com Sucesso!')
-            noti_views.new_noti(request,request.session['user_id'],'Submissao do Transporte','  Transporte criado com Sucesso!')
+            messages.success(request, f'Transporte associado com Sucesso!')
+            noti_views.new_noti(request,request.session['user_id'],'Submissao do Transporte','  Transporte Associado com Sucesso!')
             return redirect("menu:transporte-list")
             
     context = {
