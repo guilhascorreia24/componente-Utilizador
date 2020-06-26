@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect, reverse
 import datetime, time
+from django.contrib import messages
 from .forms import *
 from .models import *
 from .filters import *
@@ -18,15 +19,13 @@ def index(request):
     return render(request, "index.html", context)
 
 def preencher_hora(hora_incio, hora_fim):
-    inter=datetime.time(0,30,0)
-    while hora_incio<hora_fim:
-        h=str(datetime.timedelta(hours=hora_incio.hour,minutes=hora_incio.minute)+datetime.timedelta(hours=inter.hour,minutes=inter.minute))
-        hora_incio=datetime.time(int(h.split(':')[0]),int(h.split(':')[1]))
-        if not(Horario.objects.filter(pk=hora_incio).exists()):
-            Horario.objects.create(pk=hora_incio)
-        h=str(datetime.timedelta(hours=hora_incio.hour,minutes=hora_incio.minute)+datetime.timedelta(hours=inter.hour,minutes=inter.minute))
-        hora_incio=datetime.time(int(h.split(':')[0]),int(h.split(':')[1]))
-    Horario.objects.create(pk=hora_fim)
+    time_start = datetime.datetime.strptime(hora_incio, '%H:%M')
+    time_end = datetime.datetime.strptime(hora_fim, '%H:%M')
+
+    while time_start < time_end:
+        time_start += datetime.timedelta(minutes=30)
+        Horario.objects.get_or_create(pk=time_start)
+
 
 def diaaberto_create(request):
     user = Utilizador.objects.get(idutilizador=request.session['user_id'])
@@ -40,8 +39,7 @@ def diaaberto_create(request):
             final = form.cleaned_data['datadiaabertofim']
             hora_inicio=request.POST['h_incio']
             hora_fim=request.POST['h_fim']
-            print(hora_fim)
-            #preencher_hora(hora_inicio,hora_fim)
+            preencher_hora(hora_inicio,hora_fim)
             Horario(hora="12:00:00").save()
             hora1 = Horario.objects.filter(hora="12:00:00")
             for x in range(inicio.day, final.day+1):
@@ -49,8 +47,7 @@ def diaaberto_create(request):
                 dia1 = Dia.objects.filter(dia = inicio+datetime.timedelta(days=x-inicio.day))
                 HorarioHasDia(horario_hora=hora1[0], dia_dia=dia1[0]).save()
             update_ano_user_null()
-            messages.success(request, f'Configurações do Dia Aberto registadas com Sucesso!')
-            noti_views.new_noti(request,request.session['user_id'],'Submissao das Configurações do Dia Aberto','Configurações do Dia Aberto registadas com Sucesso!')
+            messages.success(request, f'Dia Aberto Criado com Sucesso!')
             return redirect("menu:diaaberto_list")
     return render(request,
                  template_name="DiaAberto/diaaberto_create.html", 
@@ -78,8 +75,7 @@ def diaaberto_update(request, id):
             Dia(dia=inicio+datetime.timedelta(days=x-inicio.day)).save()
             dia1 = Dia.objects.filter(dia = inicio+datetime.timedelta(days=x-inicio.day))
             HorarioHasDia(horario_hora=hora1[0], dia_dia=dia1[0]).save()
-        messages.success(request, f'Configurações do Dia Aberto alteradas com Sucesso!')
-        noti_views.new_noti(request,request.session['user_id'],'Submissao das Configurações do Dia Aberto','Configurações do Dia Aberto alteradas com Sucesso!')
+        messages.success(request, f'Dia Aberto editado com Sucesso!')
         return redirect("menu:diaaberto_list")
     context = {
         'form': form,
@@ -119,10 +115,18 @@ def diaaberto_delete(request, id):
             del request.session['user_id']
             del request.session['type']
         obj.delete()
-        if Utilizador.objects.filter(pk=user).exists():
+<<<<<<< HEAD
+        if not(Utilizador.objects.filter(pk=user).exists()):
+            notis=Notificacao.objects.all()
+            for noti in notis:
+                if noti.criadoem.year==id:
+                    noti.delete()
             return redirect("blog:blog-home")
         messages.success(request, f'Configurações do Dia Aberto eliminado com Sucesso!')
         noti_views.new_noti(request,request.session['user_id'],'Submissao das Configurações do Dia Aberto','Configurações do Dia Aberto eliminado com Sucesso!')
+=======
+        messages.success(request, f'Dia Aberto Elimando com Sucesso!')
+>>>>>>> 5f03abe5179e1dddbb0bca3a30180bf452e08a76
     return redirect('menu:diaaberto_list')
 
 ### Menuuuu ###########
@@ -130,8 +134,7 @@ def menu_create_view(request):
     form = MenuModelForm(request.POST or None)
     if form.is_valid():
         form.save()
-        messages.success(request, f'Menu criado com Sucesso!')
-        noti_views.new_noti(request,request.session['user_id'],'Submissao do Menu','Menu criado com Sucesso!')
+        messages.success(request, f'Menu Criado com Sucesso!')
         return redirect("menu:menu_list")
     context = {
         'form': form,'o':True,
@@ -144,8 +147,7 @@ def prato_create_view(request):
     form = PratoForm(request.POST or None)
     if form.is_valid():
         form.save()
-        messages.success(request, f'Prato criado com Sucesso!')
-        noti_views.new_noti(request,request.session['user_id'],'Submissao do Prato','Prato criado com Sucesso!')
+        messages.success(request, f'Prato Criado com Sucesso!')
         return redirect("menu:menu_list")
     context = {
         'form': form,'o':True,
@@ -159,6 +161,7 @@ def menu_update_view(request, id):
     pk_url_kwarg = 'idmenu'
     if form.is_valid():
         form.save()
+        messages.success(request, f'Menu Editado com Sucesso!')
         return redirect("menu:menu_list")
     context = {
         'form': form,
@@ -172,8 +175,7 @@ def prato_update_view(request, id):
     pk_url_kwarg = 'idprato'
     if form.is_valid():
         form.save()
-        messages.success(request, f'Prato alterado com Sucesso!')
-        noti_views.new_noti(request,request.session['user_id'],'Submissao do Prato','Prato alterado com Sucesso!')
+        messages.success(request, f'Prato Editado com Sucesso!')
         return redirect("menu:menu_list")
     context = {
         'form': form,
@@ -217,16 +219,14 @@ def menu_delete_view(request, id):
     if Menu.objects.filter(pk=id).exists():
         Prato.objects.filter(menu_idmenu=Menu.objects.get(pk=id)).delete()
         Menu.objects.filter(pk=id).delete()
-    messages.success(request, f'Menu eliminado com Sucesso!')
-    noti_views.new_noti(request,request.session['user_id'],'Submissao do Menu','Menu eliminado com Sucesso!')
+        messages.success(request, f'Menu Eliminado com Sucesso!')
     return redirect('menu:menu_list')
 
 def prato_delete_view(request, id):
     obj = get_object_or_404(Prato, idprato=id)
     if Prato.objects.filter(pk=id).exists():
         obj.delete()
-    messages.success(request, f'Prato eliminado com Sucesso!')
-    noti_views.new_noti(request,request.session['user_id'],'Submissao do Prato','Prato eliminado com Sucesso!')
+        messages.success(request, f'Prato Eliminado com Sucesso!')
     return redirect('menu:menu_list')
 
 ######## TRANSPORTEEE ############################
@@ -235,6 +235,7 @@ def transporte_create_view(request):
     if request.method == "POST":
         if form.is_valid():
             form.save()
+            messages.success(request, f'Transporte Criada com Sucesso!')
             return redirect("menu:horario-list")
     context = {
         'form': form,'o':True,
@@ -257,8 +258,7 @@ def horario_create_view(request):
             new_horario.destino = dest
             new_horario.horario_has_dia_id_dia_hora = hor
             new_horario.save()
-            messages.success(request, f'Horario do Transporte criado com Sucesso!')
-            noti_views.new_noti(request,request.session['user_id'],'Submissao Horario do Transporte','Horario do Transporte criado com Sucesso!')
+            messages.success(request, f'Horario Criado com Sucesso!')
             return redirect("menu:transporte-list")
     context = {
         'form': form,
@@ -275,8 +275,7 @@ def transporte_update_view(request, id):
     print("uuuuuuuuuuuuuuuuuuuuu")
     if form.is_valid():
         form.save()
-        messages.success(request, f'Transporte alterado com Sucesso!')
-        noti_views.new_noti(request,request.session['user_id'],'Submissao do Transporte','  Transporte alterado com Sucesso!')
+        messages.success(request, f'Transporte Editado com Sucesso!')
         return redirect('menu:transporte-update2', id=id)
     context = {
         'form': form,
@@ -292,7 +291,7 @@ def transporte_update2_view(request, id):
     if form.is_valid():
         print("aaaaaaaaaaaaaaaaaaaa")
         form.save()
-
+        messages.success(request, f'Transporte Editado com Sucesso!')
         return redirect("menu:transporte-list")
     context = {
         'form': form,
@@ -327,19 +326,18 @@ def transporte_detail_view(request, id):
     }
     return render(request, "Transporte/transporte_details.html", context)
 
-
-def transporte_delete_view(request, id):
-	transporte = Transporte.objects.get(idtransporte=id)
-	if Transporte.objects.filter(pk=id).exists():
-		transporte.delete()
-    #messages.success(request, f'Transporte eliminado com Sucesso!')
-    #noti_views.new_noti(request,request.session['user_id'],'Submissao  do Transporte',' Transporte eliminado com Sucesso!')
-	return redirect("menu:transporte-list")
+def transporte_delete_view(request,id):
+    transporte = Transporte.object.get(idtransporte=id)
+    if Transporte.objects.filter(pk=id).exists():
+        transporte.delete()
+        messages.success(request, f'Transporte Elimiado com Sucesso!')
+    return redirect("menu:transporte-list")
 
 def transportehora_create_view(request):
     form = HoraForm(request.POST or None)
     if form.is_valid():
         form.save()
+        messages.success(request, f'Horário Criado com Sucesso!')
         return redirect("menu:transporte-list")
     context = {
         'form': form,'o':True,
@@ -353,6 +351,7 @@ def horariotransporte_create_view(request):
     form = HorarioForm(request.POST or None)
     if form.is_valid():
         form.save()
+        messages.success(request, f'Horário do Transporte Criado com Sucesso')
         return redirect("menu:transporte-list")
     context = {
         'form': form,'o':True,

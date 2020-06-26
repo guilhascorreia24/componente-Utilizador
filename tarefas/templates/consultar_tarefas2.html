@@ -14,47 +14,84 @@
                             <ul data-v-1513178e="" class="menu-list"></ul>
 
                             <!--FILTROS-->
-                            
-                                <div data-v-1513178e="" class="field">
-                                    <!---->
-                                    <div data-v-1513178e="" class="autocomplete control">
-                                        <div class="control has-icons-left is-clearfix">
-                                            <input type="text" id="myInput" onkeyup="myFunction()" autocomplete="off" 
-                                                placeholder="Tipo de Tarefa" class="input">
-                                            <span class="icon is-left">
-                                                <i class="mdi mdi-magnify mdi-24px"></i>
-                                            </span>
-                                            <!---->
+                            <div class="column">
+                                <form action="">
+                                    <div data-v-1513178e="" class="field">
+                                        <!---->
+                                        <div data-v-1513178e="" class="autocomplete control">
+                                            <div class="control has-icons-left is-clearfix">
+                                                <input type="text" id="myInput" onkeyup="myFunction()" autocomplete="off" 
+                                                    placeholder="Tipo de Tarefa" class="input">
+                                                <span class="icon is-left">
+                                                    <i class="mdi mdi-magnify mdi-24px"></i>
+                                                </span>
+                                                <!---->
+                                            </div>
                                         </div>
+                                        <!---->
                                     </div>
-                                    <!---->
-                                </div>
-                                <div data-v-1513178e="" class="field">
-                                    <!---->
-                                    <div data-v-1513178e="" class="autocomplete control">
-                                        <div class="control has-icons-left is-clearfix">
-                                            <input type="text" id="myInput2" onkeyup="myFunction()" 
-                                                autocomplete="off" placeholder="Dia" class="input">
-                                            <span class="icon is-left">
-                                                <i class="mdi mdi-magnify mdi-24px"></i>
-                                            </span>
+                                    <div data-v-1513178e="" class="field">
+                                        <!---->
+                                        <div data-v-1513178e="" class="autocomplete control">
+                                            <div class="control has-icons-left is-clearfix">
+                                                <input type="text" id="myInput2" onkeyup="myFunction()" autocomplete="off" 
+                                                    placeholder="Atividade" class="input">
+                                                <span class="icon is-left">
+                                                    <i class="mdi mdi-magnify mdi-24px"></i>
+                                                </span>
+                                                <!---->
+                                            </div>
                                         </div>
+                                        <!---->
                                     </div>
-                                    <!---->
-                                </div>
-                                <div class="control is-expanded has-icons-left"><span
-                                    class="select is-fullwidth is-empty">
-                                    <select id="myInput5" onchange="myFunction2()" placeholder="Estado">
-                                        <option hidden value="">
-                                            Estado
-                                        </option>
-                                        <option value=""></option>
-                                        <option value="Concluída">Concluída</option>
-                                        <option value="Pendente">Pendente</option>
-                                    </select>
-                                    </span> <span class="icon is-left"><i class="mdi mdi-magnify mdi-24px"></i></span>
-                                </div>
+                                    <div data-v-1513178e="" class="field">
+                                        <!---->
+                                        <div data-v-1513178e="" class="autocomplete control">
+                                            <div class="control has-icons-left is-clearfix">
+                                                <input type="text" id="myInput3" onkeyup="myFunction()" 
+                                                    autocomplete="off" placeholder="Dia" class="input">
+                                                <span class="icon is-left">
+                                                    <i class="mdi mdi-magnify mdi-24px"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <!---->
+                                    </div>
+                                    <div data-v-1513178e="" class="field">
+                                        <!---->
+                                        <div data-v-1513178e="" class="autocomplete control">
+                                            <div class="control has-icons-left is-clearfix">
+                                                <input type="text" id="myInput4" onkeyup="myFunction()" 
+                                                    autocomplete="off" placeholder="Hora" class="input">
+                                                <span class="icon is-left">
+                                                    <i class="mdi mdi-magnify mdi-24px"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <!---->
+                                    </div>
+                                    <div class="control is-expanded has-icons-left"><span
+                                        class="select is-fullwidth is-empty">
+                                        <select id="myInput5" onchange="myFunction2()" placeholder="Estado">
+                                            <option hidden value="">
+                                                Estado
+                                            </option>
+                                            <option value=""></option>
+                                            <option value="Concluída">Concluída</option>
+                                            <option value="Pendente">Pendente</option>
+                                        </select>
+                                        </span> <span class="icon is-left"><i class="mdi mdi-magnify mdi-24px"></i></span>
+                                    </div>
+                                    <br>
+                                    <div class="field">
+                                        <button class="button is-outlined is-link is-danger"  type="submit">
+                                            <span>Limpar</span>
+                                            <span class="icon is-medium"><i class="mdi mdi-broom"></i></span>
+                                        </button>
+                                    </div>
+                                </form>
                             </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -310,21 +347,29 @@
 <script>
     function myFunction() 
     {
-        var input,input2,filter,filter2, table, tr, td,td1, i, txtValue,txtValue1;
+        var input,input2,input3,input4,filter,filter2,filter3,filter4, table, tr, td,td2,td3,td4, i, txtValue,txtValue2,txtValue3,txtValue4;
         input = document.getElementById("myInput");
         input2 = document.getElementById("myInput2");
+        input3 = document.getElementById("myInput3");
+        input4 = document.getElementById("myInput4");
         filter = input.value.toUpperCase();
         filter2 = input2.value.toUpperCase();
-        console.log(filter+" "+filter2);
+        filter3 = input3.value.toUpperCase();
+        filter4 = input4.value.toUpperCase();
+        console.log(filter+" "+filter2+" "+filter3+" "+filter4);
         table = document.getElementById("myTable");
         tr = table.getElementsByTagName("tr");
         for (i = 0; i < tr.length; i++) {
             td = tr[i].getElementsByTagName("td")[0];
-            td1= tr[i].getElementsByTagName("td")[2];
-            if (td && td1) {
+            td2= tr[i].getElementsByTagName("td")[1];
+            td3= tr[i].getElementsByTagName("td")[2];
+            td4= tr[i].getElementsByTagName("td")[3];
+            if (td && td2 && td3 && td4) {
                 txtValue = td.textContent || td.innerText;
-                txtValue1 = td1.textContent || td1.innerText;
-                if (txtValue.toUpperCase().indexOf(filter) > -1 && txtValue1.toUpperCase().indexOf(filter2) > -1) 
+                txtValue2 = td2.textContent || td2.innerText;
+                txtValue3 = td3.textContent || td3.innerText;
+                txtValue4 = td4.textContent || td4.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1 && txtValue2.toUpperCase().indexOf(filter2) > -1 && txtValue3.toUpperCase().indexOf(filter3) > -1 && txtValue4.toUpperCase().indexOf(filter4) > -1) 
                 {
                     tr[i].style.display = "";
                 } else {

@@ -123,7 +123,8 @@ def criar_tarefa_grupo(request):
 			grupo = Inscricao.objects.get(idinscricao = request.POST['grupos'])
 			new_tarefa.inscricao_coletiva_inscricao_idinscricao = InscricaoColetiva.objects.get(inscricao_idinscricao = grupo)
 			new_tarefa.save()
-			noti_views.new_noti(request,user.pk,'Tarefa','Foi atribuido uma Nova Tarefa')
+			if request.POST['id_colaborador_utilizador_idutilizador'] != '':
+				noti_views.new_noti(request,colaborador_user.pk,'Tarefa','Foi atribuido uma Nova Tarefa')
 			messages.success(request, f'Tarefa Criada com Sucesso!')
 			return redirect("tarefa_coordenador:consultar_tarefa")
 	
@@ -141,11 +142,8 @@ def load_cities(request):
 def consultar_tarefa(request):
 	tarefas = Tarefa.objects.all()
 	sessao = Sessao.objects.all()
-	iduo = Coordenador.objects.get(pk=request.session['user_id']).unidade_organica_iduo
-	cursoid=Curso.objects.filter(unidade_organica_iduo = iduo)
-	colab=[]
-	for id in cursoid:
-		colab.append(Colaborador.objects.filter(curso_idcurso= cursoid))
+	colab = Colaborador.objects.all()
+	iduo = Coordenador.objects.get(pk = Utilizador.objects.get(pk= request.session["user_id"])).unidade_organica_iduo
 	atividade = Atividade.objects.filter(unidade_organica_iduo = iduo)
 	myFilter = TarefaFilter(request.GET, queryset=tarefas)
 	tarefas = myFilter.qs
