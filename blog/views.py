@@ -1,6 +1,6 @@
 
 from django.shortcuts import render
-from .models import Administrador, Coordenador, Colaborador, Participante, ProfessorUniversitario
+from .models import Administrador, Coordenador, Colaborador, Participante, ProfessorUniversitario, Notificacao
 from django.core import signing
 from cryptography.fernet import Fernet
 import base64
@@ -9,6 +9,9 @@ import traceback
 from django.conf import settings
 from Notification.views import noti_not_checked
 def home(request):
+    notis=Notificacao.objects.all()
+    for noti in notis:
+        print(type(noti.criadoem))
     if 'cookie_id' in request.COOKIES:
         cookie=request.COOKIES['cookie_id']
         request.session['user_id']=decrypt(cookie)
