@@ -77,19 +77,19 @@
                 <table id="myTable" class="table has-mobile-cards is-hoverable is-fullwidth">
                     <thead>
                             <th>
-                                Menu:
+                                Menu
                             </th>
                             <th>
-                                Campus:
+                                Campus
                             </th>
                             <th>
-                                Dia:
+                                Dia
                             </th>
                             <th>
-                                Hora:
+                                Hora
                             </th>
                             <th>
-                                Almoços Disponivel:
+                                Almoços Disponivel
                             </th>
                             <th>Ações</th>
                         </thead>
@@ -172,7 +172,7 @@
                 <div>                   
                         <div class="input-group col-sm-12">
                             <div class="input-group-prepend labelForm">
-                                <span class="input-group-text w-100">Sopa e Sobremesa:</span>
+                                <span class="input-group-text w-100">Sopa e Sobremesa</span>
                             </div>
                             <input disabled="" class="form-control bg-light" type="text" value="{{ i.descricao }}">
                         </div>
@@ -182,7 +182,7 @@
                         {% if prato.tipo == "Carne" %}
                         <div class="input-group col-sm-12">
                             <div class="input-group-prepend labelForm">
-                                <span class="input-group-text w-100">Prato de Carne:</span>
+                                <span class="input-group-text w-100">Prato de Carne</span>
                             </div>
                             <span><textarea disabled="" class="form-control col-sm-2 bg-light" style="width: 94%;" type="text" >{{ prato.descricao }}</textarea>
                             <a href="{% url 'menu:prato_update' prato.idprato %}">
@@ -201,7 +201,7 @@
                         {% if prato.tipo == "Peixe" %}
                         <div class="input-group col-sm-12">
                             <div class="input-group-prepend labelForm">
-                                <span class="input-group-text w-100">Prato de Peixe:</span>
+                                <span class="input-group-text w-100">Prato de Peixe</span>
                             </div>
                             <textarea disabled="" class="form-control col-sm-2 bg-light" type="text" style="width: 94%;">{{prato.descricao}}</textarea>
                             <a href="{% url 'menu:prato_update' prato.idprato %}">
@@ -220,7 +220,7 @@
                         {% if prato.tipo == "Vegetariano" %}
                         <div class="input-group col-sm-12">
                             <div class="input-group-prepend labelForm">
-                                <span class="input-group-text w-100">Prato Vegetariano:</span>
+                                <span class="input-group-text w-100">Prato Vegetariano</span>
                             </div>
                             <textarea disabled="" class="form-control col-sm-2 bg-light" type="text"  style="width: 94%;">{{prato.descricao}}</textarea>
                             <a href="{% url 'menu:prato_update' prato.idprato %}">
@@ -240,28 +240,28 @@
                         {% endfor %}
                         <div class="input-group col-sm-12">
                             <div class="input-group-prepend labelForm">
-                                <span class="input-group-text w-100">Dia do almoço:</span>
+                                <span class="input-group-text w-100">Dia do almoço</span>
                             </div>
                             <input disabled="" class="form-control bg-light" type="text" value="{{ i.horario_has_dia_id_dia_hora.dia_dia.dia | date:"d/m/Y" }}">
                         </div>
                         <br>
                         <div class="input-group col-sm-12">
                             <div class="input-group-prepend labelForm">
-                                <span class="input-group-text w-100">Hora do Almoço:</span>
+                                <span class="input-group-text w-100">Hora do Almoço</span>
                             </div>
                             <input disabled="" class="form-control bg-light" type="text" value="{{ i.horario_has_dia_id_dia_hora.horario_hora.hora | time:"H:i"}}">
                         </div>
                         <br>
                         <div class="input-group col-sm-12">
                             <div class="input-group-prepend labelForm">
-                                <span class="input-group-text w-100">Campus:</span>
+                                <span class="input-group-text w-100">Campus</span>
                             </div>
                             <input disabled="" class="form-control bg-light" type="text" value="{{ i.campus_idcampus }}">
                         </div>
                         <br>
                         <div class="input-group col-sm-12">
                             <div class="input-group-prepend labelForm">
-                                <span class="input-group-text w-100">Numero de Almoços disponiveis:</span>
+                                <span class="input-group-text w-100">Numero de Almoços disponiveis</span>
                             </div>
                             <input disabled="" class="form-control bg-light" type="text" value="{{ i.nralmocosdisponiveis }}">
                         </div>
@@ -270,14 +270,14 @@
                         {% if preco.ano == atual %}
                         <div class="input-group col-sm-12">
                             <div class="input-group-prepend labelForm">
-                                <span class="input-group-text w-100">Preço do almoço para estudantes:</span>
+                                <span class="input-group-text w-100">Preço do almoço para estudantes</span>
                             </div>
                             <input disabled="" class="form-control bg-light" type="text" value="{{preco.preco_almoco_estudante}}€">
                         </div>
                         <br>
                         <div class="input-group col-sm-12">
                             <div class="input-group-prepend labelForm">
-                                <span class="input-group-text w-100">Preço do almoço para professores:</span>
+                                <span class="input-group-text w-100">Preço do almoço para professores</span>
                             </div>
                             <input disabled="" class="form-control bg-light" type="text" value="{{preco.preco_almoco_professor}}€">
                         </div>
