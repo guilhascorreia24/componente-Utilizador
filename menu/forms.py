@@ -31,8 +31,8 @@ class DiaAbertoForm(ModelForm):
             'datadiaabertofim': DateInput(attrs={'class': 'input', 'type':'date'}),
             'datapropostaatividadeinicio': DateInput(attrs={'class': 'input', 'type':'date'}),
             'datapropostaatividadesfim': DateInput(attrs={'class': 'input', 'type':'date'}),
-            'preco_almoco_estudante': NumberInput(attrs={'class': 'input', 'value': '2.80', 'step': '0.01'}),
-            'preco_almoco_professor': NumberInput(attrs={'class': 'input', 'value': '4.20', 'step': '0.01'}),
+            'preco_almoco_estudante': NumberInput(attrs={'class': 'input', 'value': '2.80', 'step': '0.01','min':0}, ),
+            'preco_almoco_professor': NumberInput(attrs={'class': 'input', 'value': '4.20', 'step': '0.01','min':0}),
         }
 
 ### Transporte ####
@@ -45,7 +45,7 @@ class TransportForm(ModelForm):
             'identificacao',
         ]
         widgets = { 
-            'capacidade': NumberInput(attrs={'class': 'input'}),
+            'capacidade': NumberInput(attrs={'class': 'input','min':0}),
             'identificacao': TextInput(attrs={'class': 'input'}),
         }
 
@@ -90,7 +90,7 @@ class MenuModelForm(forms.ModelForm):
             ]
         widgets = {
             'menu': TextInput(attrs={'class': 'input', 'value': 'Menu do dia'}),
-            'nralmocosdisponiveis': NumberInput(attrs={'class': 'input'}),
+            'nralmocosdisponiveis': NumberInput(attrs={'class': 'input','min':0}),
         }
 
 class MenuPrecoForm(forms.ModelForm):
@@ -128,7 +128,7 @@ class PratoForm(forms.ModelForm):
         ]
 
         widgets = {
-            'nralmocos': NumberInput(attrs={'class': 'input'}),
+            'nralmocos': NumberInput(attrs={'class': 'input','min':0}),
         }
 
 
@@ -175,6 +175,6 @@ class InscricaoForm(forms.ModelForm):
         model = TransporteHasInscricao
         exclude = ['transporte_has_inscricao_id','horario']
         widgets = {
-            'n_passageiros': NumberInput(attrs={'class': 'input'}),
+            'n_passageiros': NumberInput(attrs={'class': 'input','min':0}),
         }
 
