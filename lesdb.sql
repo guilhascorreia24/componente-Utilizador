@@ -8,19 +8,19 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,N
 -- Schema mydb
 -- -----------------------------------------------------
 -- -----------------------------------------------------
--- Schema les
+-- Schema test_les
 -- -----------------------------------------------------
 
 -- -----------------------------------------------------
--- Schema les
+-- Schema test_les
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `les` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci ;
-USE `les` ;
+CREATE SCHEMA IF NOT EXISTS `test_les` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci ;
+USE `test_les` ;
 
 -- -----------------------------------------------------
--- Table `les`.`dia_aberto`
+-- Table `test_les`.`dia_aberto`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `les`.`dia_aberto` (
+CREATE TABLE IF NOT EXISTS `test_les`.`dia_aberto` (
   `ano` YEAR NOT NULL,
   `descricao` VARCHAR(120) NULL DEFAULT NULL,
   `emailDiaAberto` VARCHAR(120) NOT NULL,
@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS `les`.`dia_aberto` (
   INDEX `fk_dia_aberto_Administrador_id` (`Administrador_Utilizador_idutilizador` ASC) VISIBLE,
   CONSTRAINT `fk_dia_aberto_Administrador`
     FOREIGN KEY (`Administrador_Utilizador_idutilizador`)
-    REFERENCES `les`.`administrador` (`Utilizador_idutilizador`)
+    REFERENCES `test_les`.`administrador` (`Utilizador_idutilizador`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
@@ -47,9 +47,9 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `les`.`utilizador`
+-- Table `test_les`.`utilizador`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `les`.`utilizador` (
+CREATE TABLE IF NOT EXISTS `test_les`.`utilizador` (
   `idutilizador` INT NOT NULL AUTO_INCREMENT,
   `nome` VARCHAR(255) NOT NULL,
   `email` VARCHAR(255) NOT NULL,
@@ -64,7 +64,7 @@ CREATE TABLE IF NOT EXISTS `les`.`utilizador` (
   INDEX `fk_utilizador_dia_aberto1_idx` (`dia_aberto_ano` ASC) VISIBLE,
   CONSTRAINT `fk_utilizador_dia_aberto1`
     FOREIGN KEY (`dia_aberto_ano`)
-    REFERENCES `les`.`dia_aberto` (`ano`))
+    REFERENCES `test_les`.`dia_aberto` (`ano`))
 ENGINE = InnoDB
 AUTO_INCREMENT = 1002
 DEFAULT CHARACTER SET = utf8mb4
@@ -72,14 +72,14 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `les`.`administrador`
+-- Table `test_les`.`administrador`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `les`.`administrador` (
+CREATE TABLE IF NOT EXISTS `test_les`.`administrador` (
   `Utilizador_idutilizador` INT NOT NULL,
   PRIMARY KEY (`Utilizador_idutilizador`),
   CONSTRAINT `fk_Administrador_Utilizador`
     FOREIGN KEY (`Utilizador_idutilizador`)
-    REFERENCES `les`.`utilizador` (`idutilizador`)
+    REFERENCES `test_les`.`utilizador` (`idutilizador`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
@@ -88,9 +88,9 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `les`.`campus`
+-- Table `test_les`.`campus`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `les`.`campus` (
+CREATE TABLE IF NOT EXISTS `test_les`.`campus` (
   `idCampus` INT NOT NULL AUTO_INCREMENT,
   `nome` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`idCampus`))
@@ -101,9 +101,9 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `les`.`espaco`
+-- Table `test_les`.`espaco`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `les`.`espaco` (
+CREATE TABLE IF NOT EXISTS `test_les`.`espaco` (
   `idespaco` INT NOT NULL AUTO_INCREMENT,
   `nome` VARCHAR(255) NOT NULL,
   `campus_idCampus` INT NOT NULL,
@@ -112,7 +112,7 @@ CREATE TABLE IF NOT EXISTS `les`.`espaco` (
   INDEX `fk_espaco_campus1_idx` (`campus_idCampus` ASC) VISIBLE,
   CONSTRAINT `fk_espaco_campus1`
     FOREIGN KEY (`campus_idCampus`)
-    REFERENCES `les`.`campus` (`idCampus`)
+    REFERENCES `test_les`.`campus` (`idCampus`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
@@ -122,9 +122,9 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `les`.`anfiteatro`
+-- Table `test_les`.`anfiteatro`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `les`.`anfiteatro` (
+CREATE TABLE IF NOT EXISTS `test_les`.`anfiteatro` (
   `edificio` VARCHAR(45) NOT NULL,
   `andar` VARCHAR(45) NOT NULL,
   `espaco_idespaco` INT NOT NULL,
@@ -132,7 +132,7 @@ CREATE TABLE IF NOT EXISTS `les`.`anfiteatro` (
   INDEX `fk_anfiteatro_espaco_id` (`espaco_idespaco` ASC) VISIBLE,
   CONSTRAINT `fk_anfiteatro_espaco`
     FOREIGN KEY (`espaco_idespaco`)
-    REFERENCES `les`.`espaco` (`idespaco`)
+    REFERENCES `test_les`.`espaco` (`idespaco`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
@@ -141,16 +141,16 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `les`.`arlivre`
+-- Table `test_les`.`arlivre`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `les`.`arlivre` (
+CREATE TABLE IF NOT EXISTS `test_les`.`arlivre` (
   `descricao` VARCHAR(255) NOT NULL,
   `espaco_idespaco` INT NOT NULL,
   PRIMARY KEY (`espaco_idespaco`),
   INDEX `fk_arlivre_espaco_id` (`espaco_idespaco` ASC) VISIBLE,
   CONSTRAINT `fk_arlivre_espaco`
     FOREIGN KEY (`espaco_idespaco`)
-    REFERENCES `les`.`espaco` (`idespaco`)
+    REFERENCES `test_les`.`espaco` (`idespaco`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
@@ -159,9 +159,9 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `les`.`unidade_organica`
+-- Table `test_les`.`unidade_organica`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `les`.`unidade_organica` (
+CREATE TABLE IF NOT EXISTS `test_les`.`unidade_organica` (
   `idUO` INT NOT NULL AUTO_INCREMENT,
   `sigla` VARCHAR(255) NOT NULL,
   `Campus_idCampus` INT NOT NULL,
@@ -169,7 +169,7 @@ CREATE TABLE IF NOT EXISTS `les`.`unidade_organica` (
   INDEX `fk_unidade_organica_Campus_id` (`Campus_idCampus` ASC) VISIBLE,
   CONSTRAINT `fk_unidade_organica_Campus`
     FOREIGN KEY (`Campus_idCampus`)
-    REFERENCES `les`.`campus` (`idCampus`)
+    REFERENCES `test_les`.`campus` (`idCampus`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
@@ -179,9 +179,9 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `les`.`departamento`
+-- Table `test_les`.`departamento`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `les`.`departamento` (
+CREATE TABLE IF NOT EXISTS `test_les`.`departamento` (
   `idDepartamento` INT NOT NULL AUTO_INCREMENT,
   `nome` VARCHAR(255) NOT NULL,
   `unidade_organica_idUO` INT NOT NULL,
@@ -189,7 +189,7 @@ CREATE TABLE IF NOT EXISTS `les`.`departamento` (
   INDEX `fk_Departamento_unidade_organica_id` (`unidade_organica_idUO` ASC) VISIBLE,
   CONSTRAINT `fk_Departamento_unidade_organica`
     FOREIGN KEY (`unidade_organica_idUO`)
-    REFERENCES `les`.`unidade_organica` (`idUO`)
+    REFERENCES `test_les`.`unidade_organica` (`idUO`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
@@ -199,21 +199,21 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `les`.`professor_universitario`
+-- Table `test_les`.`professor_universitario`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `les`.`professor_universitario` (
+CREATE TABLE IF NOT EXISTS `test_les`.`professor_universitario` (
   `Utilizador_idutilizador` INT NOT NULL,
   `departamento_idDepartamento` INT NOT NULL,
   PRIMARY KEY (`Utilizador_idutilizador`),
   INDEX `fk_professor_universitario_departamento1_idx` (`departamento_idDepartamento` ASC) VISIBLE,
   CONSTRAINT `fk_professor_universitario_departamento1`
     FOREIGN KEY (`departamento_idDepartamento`)
-    REFERENCES `les`.`departamento` (`idDepartamento`)
+    REFERENCES `test_les`.`departamento` (`idDepartamento`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT `fk_professor_universitario_Utilizador`
     FOREIGN KEY (`Utilizador_idutilizador`)
-    REFERENCES `les`.`utilizador` (`idutilizador`)
+    REFERENCES `test_les`.`utilizador` (`idutilizador`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
@@ -222,9 +222,9 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `les`.`atividade`
+-- Table `test_les`.`atividade`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `les`.`atividade` (
+CREATE TABLE IF NOT EXISTS `test_les`.`atividade` (
   `idAtividade` INT NOT NULL AUTO_INCREMENT,
   `titulo` VARCHAR(45) NOT NULL,
   `capacidade` INT NOT NULL,
@@ -245,22 +245,22 @@ CREATE TABLE IF NOT EXISTS `les`.`atividade` (
   INDEX `fk_atividade_espaco1_idx` (`espaco_idespaco` ASC) VISIBLE,
   CONSTRAINT `fk_Atividade_Departamento`
     FOREIGN KEY (`Departamento_idDepartamento`)
-    REFERENCES `les`.`departamento` (`idDepartamento`)
+    REFERENCES `test_les`.`departamento` (`idDepartamento`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT `fk_atividade_espaco`
     FOREIGN KEY (`espaco_idespaco`)
-    REFERENCES `les`.`espaco` (`idespaco`)
+    REFERENCES `test_les`.`espaco` (`idespaco`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT `fk_Atividade_professor_universitario`
     FOREIGN KEY (`professor_universitario_Utilizador_idutilizador`)
-    REFERENCES `les`.`professor_universitario` (`Utilizador_idutilizador`)
+    REFERENCES `test_les`.`professor_universitario` (`Utilizador_idutilizador`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT `fk_Atividade_unidade_organica`
     FOREIGN KEY (`unidade_organica_idUO`)
-    REFERENCES `les`.`unidade_organica` (`idUO`)
+    REFERENCES `test_les`.`unidade_organica` (`idUO`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
@@ -270,9 +270,9 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `les`.`material`
+-- Table `test_les`.`material`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `les`.`material` (
+CREATE TABLE IF NOT EXISTS `test_les`.`material` (
   `idMaterial` INT NOT NULL AUTO_INCREMENT,
   `descricao` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`idMaterial`))
@@ -282,9 +282,9 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `les`.`atividade_has_material`
+-- Table `test_les`.`atividade_has_material`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `les`.`atividade_has_material` (
+CREATE TABLE IF NOT EXISTS `test_les`.`atividade_has_material` (
   `Atividade_idAtividade` INT NOT NULL,
   `Material_idMaterial` INT NOT NULL,
   PRIMARY KEY (`Atividade_idAtividade`, `Material_idMaterial`),
@@ -292,12 +292,12 @@ CREATE TABLE IF NOT EXISTS `les`.`atividade_has_material` (
   INDEX `fk_Atividade_has_Material_Atividade_id` (`Atividade_idAtividade` ASC) VISIBLE,
   CONSTRAINT `fk_Atividade_has_Material_Atividade`
     FOREIGN KEY (`Atividade_idAtividade`)
-    REFERENCES `les`.`atividade` (`idAtividade`)
+    REFERENCES `test_les`.`atividade` (`idAtividade`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT `fk_Atividade_has_Material_Material`
     FOREIGN KEY (`Material_idMaterial`)
-    REFERENCES `les`.`material` (`idMaterial`)
+    REFERENCES `test_les`.`material` (`idMaterial`)
     ON DELETE CASCADE)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
@@ -305,9 +305,9 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `les`.`auth_group`
+-- Table `test_les`.`auth_group`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `les`.`auth_group` (
+CREATE TABLE IF NOT EXISTS `test_les`.`auth_group` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(150) NOT NULL,
   PRIMARY KEY (`id`),
@@ -318,9 +318,9 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `les`.`django_content_type`
+-- Table `test_les`.`django_content_type`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `les`.`django_content_type` (
+CREATE TABLE IF NOT EXISTS `test_les`.`django_content_type` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `app_label` VARCHAR(100) NOT NULL,
   `model` VARCHAR(100) NOT NULL,
@@ -332,9 +332,9 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `les`.`auth_permission`
+-- Table `test_les`.`auth_permission`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `les`.`auth_permission` (
+CREATE TABLE IF NOT EXISTS `test_les`.`auth_permission` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(255) NOT NULL,
   `content_type_id` INT NOT NULL,
@@ -343,7 +343,7 @@ CREATE TABLE IF NOT EXISTS `les`.`auth_permission` (
   UNIQUE INDEX `auth_permission_content_type_id_codename_01ab375a_uniq` (`content_type_id` ASC, `codename` ASC) VISIBLE,
   CONSTRAINT `auth_permission_content_type_id_2f476e4b_fk_django_co`
     FOREIGN KEY (`content_type_id`)
-    REFERENCES `les`.`django_content_type` (`id`))
+    REFERENCES `test_les`.`django_content_type` (`id`))
 ENGINE = InnoDB
 AUTO_INCREMENT = 5285
 DEFAULT CHARACTER SET = utf8mb4
@@ -351,9 +351,9 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `les`.`auth_group_permissions`
+-- Table `test_les`.`auth_group_permissions`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `les`.`auth_group_permissions` (
+CREATE TABLE IF NOT EXISTS `test_les`.`auth_group_permissions` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `group_id` INT NOT NULL,
   `permission_id` INT NOT NULL,
@@ -362,19 +362,19 @@ CREATE TABLE IF NOT EXISTS `les`.`auth_group_permissions` (
   INDEX `auth_group_permissio_permission_id_84c5c92e_fk_auth_perm` (`permission_id` ASC) VISIBLE,
   CONSTRAINT `auth_group_permissio_permission_id_84c5c92e_fk_auth_perm`
     FOREIGN KEY (`permission_id`)
-    REFERENCES `les`.`auth_permission` (`id`),
+    REFERENCES `test_les`.`auth_permission` (`id`),
   CONSTRAINT `auth_group_permissions_group_id_b120cbf9_fk_auth_group_id`
     FOREIGN KEY (`group_id`)
-    REFERENCES `les`.`auth_group` (`id`))
+    REFERENCES `test_les`.`auth_group` (`id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `les`.`auth_user`
+-- Table `test_les`.`auth_user`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `les`.`auth_user` (
+CREATE TABLE IF NOT EXISTS `test_les`.`auth_user` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `password` VARCHAR(128) NOT NULL,
   `last_login` DATETIME(6) NULL DEFAULT NULL,
@@ -394,9 +394,9 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `les`.`auth_user_groups`
+-- Table `test_les`.`auth_user_groups`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `les`.`auth_user_groups` (
+CREATE TABLE IF NOT EXISTS `test_les`.`auth_user_groups` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `user_id` INT NOT NULL,
   `group_id` INT NOT NULL,
@@ -405,19 +405,19 @@ CREATE TABLE IF NOT EXISTS `les`.`auth_user_groups` (
   INDEX `auth_user_groups_group_id_97559544_fk_auth_group_id` (`group_id` ASC) VISIBLE,
   CONSTRAINT `auth_user_groups_group_id_97559544_fk_auth_group_id`
     FOREIGN KEY (`group_id`)
-    REFERENCES `les`.`auth_group` (`id`),
+    REFERENCES `test_les`.`auth_group` (`id`),
   CONSTRAINT `auth_user_groups_user_id_6a12ed8b_fk_auth_user_id`
     FOREIGN KEY (`user_id`)
-    REFERENCES `les`.`auth_user` (`id`))
+    REFERENCES `test_les`.`auth_user` (`id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `les`.`auth_user_user_permissions`
+-- Table `test_les`.`auth_user_user_permissions`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `les`.`auth_user_user_permissions` (
+CREATE TABLE IF NOT EXISTS `test_les`.`auth_user_user_permissions` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `user_id` INT NOT NULL,
   `permission_id` INT NOT NULL,
@@ -426,19 +426,19 @@ CREATE TABLE IF NOT EXISTS `les`.`auth_user_user_permissions` (
   INDEX `auth_user_user_permi_permission_id_1fbb5f2c_fk_auth_perm` (`permission_id` ASC) VISIBLE,
   CONSTRAINT `auth_user_user_permi_permission_id_1fbb5f2c_fk_auth_perm`
     FOREIGN KEY (`permission_id`)
-    REFERENCES `les`.`auth_permission` (`id`),
+    REFERENCES `test_les`.`auth_permission` (`id`),
   CONSTRAINT `auth_user_user_permissions_user_id_a95ead1b_fk_auth_user_id`
     FOREIGN KEY (`user_id`)
-    REFERENCES `les`.`auth_user` (`id`))
+    REFERENCES `test_les`.`auth_user` (`id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `les`.`curso`
+-- Table `test_les`.`curso`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `les`.`curso` (
+CREATE TABLE IF NOT EXISTS `test_les`.`curso` (
   `idcurso` INT NOT NULL AUTO_INCREMENT,
   `unidade_organica_idUO` INT NOT NULL,
   `nome` VARCHAR(250) NOT NULL,
@@ -446,7 +446,7 @@ CREATE TABLE IF NOT EXISTS `les`.`curso` (
   INDEX `fk_curso_unidade_organica1_idx` (`unidade_organica_idUO` ASC) VISIBLE,
   CONSTRAINT `fk_curso_unidade_organica1`
     FOREIGN KEY (`unidade_organica_idUO`)
-    REFERENCES `les`.`unidade_organica` (`idUO`)
+    REFERENCES `test_les`.`unidade_organica` (`idUO`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
@@ -456,21 +456,21 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `les`.`colaborador`
+-- Table `test_les`.`colaborador`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `les`.`colaborador` (
+CREATE TABLE IF NOT EXISTS `test_les`.`colaborador` (
   `Utilizador_idutilizador` INT NOT NULL,
   `curso_idcurso` INT NULL DEFAULT NULL,
   PRIMARY KEY (`Utilizador_idutilizador`),
   INDEX `fk_colaborador_curso1_idx` (`curso_idcurso` ASC) VISIBLE,
   CONSTRAINT `fk_colaborador_curso1`
     FOREIGN KEY (`curso_idcurso`)
-    REFERENCES `les`.`curso` (`idcurso`)
+    REFERENCES `test_les`.`curso` (`idcurso`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT `fk_colaborador_Utilizador`
     FOREIGN KEY (`Utilizador_idutilizador`)
-    REFERENCES `les`.`utilizador` (`idutilizador`)
+    REFERENCES `test_les`.`utilizador` (`idutilizador`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
@@ -479,9 +479,9 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `les`.`dia`
+-- Table `test_les`.`dia`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `les`.`dia` (
+CREATE TABLE IF NOT EXISTS `test_les`.`dia` (
   `dia` DATE NOT NULL,
   PRIMARY KEY (`dia`))
 ENGINE = InnoDB
@@ -490,9 +490,9 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `les`.`horario`
+-- Table `test_les`.`horario`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `les`.`horario` (
+CREATE TABLE IF NOT EXISTS `test_les`.`horario` (
   `hora` TIME NOT NULL,
   PRIMARY KEY (`hora`))
 ENGINE = InnoDB
@@ -501,9 +501,9 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `les`.`horario_has_dia`
+-- Table `test_les`.`horario_has_dia`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `les`.`horario_has_dia` (
+CREATE TABLE IF NOT EXISTS `test_les`.`horario_has_dia` (
   `horario_hora` TIME NOT NULL,
   `Dia_dia` DATE NOT NULL,
   `id_dia_hora` INT NOT NULL AUTO_INCREMENT,
@@ -512,12 +512,12 @@ CREATE TABLE IF NOT EXISTS `les`.`horario_has_dia` (
   INDEX `fk_horario_has_Dia_horario1_idx` (`horario_hora` ASC) VISIBLE,
   CONSTRAINT `fk_horario_has_Dia_Dia`
     FOREIGN KEY (`Dia_dia`)
-    REFERENCES `les`.`dia` (`dia`)
+    REFERENCES `test_les`.`dia` (`dia`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT `fk_horario_has_Dia_horario`
     FOREIGN KEY (`horario_hora`)
-    REFERENCES `les`.`horario` (`hora`)
+    REFERENCES `test_les`.`horario` (`hora`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
@@ -527,9 +527,9 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `les`.`colaborador_has_horario`
+-- Table `test_les`.`colaborador_has_horario`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `les`.`colaborador_has_horario` (
+CREATE TABLE IF NOT EXISTS `test_les`.`colaborador_has_horario` (
   `colaborador_Utilizador_idutilizador` INT NOT NULL,
   `horario_has_dia_id_dia_hora` INT NOT NULL,
   `colaborador_has_horario_id` INT NOT NULL AUTO_INCREMENT,
@@ -538,12 +538,12 @@ CREATE TABLE IF NOT EXISTS `les`.`colaborador_has_horario` (
   INDEX `fk_colaborador_has_horario_horario_has_dia1_idx` (`horario_has_dia_id_dia_hora` ASC) VISIBLE,
   CONSTRAINT `fk_colaborador_has_Horario_colaborador`
     FOREIGN KEY (`colaborador_Utilizador_idutilizador`)
-    REFERENCES `les`.`colaborador` (`Utilizador_idutilizador`)
+    REFERENCES `test_les`.`colaborador` (`Utilizador_idutilizador`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT `fk_colaborador_has_horario_horario_has_dia1`
     FOREIGN KEY (`horario_has_dia_id_dia_hora`)
-    REFERENCES `les`.`horario_has_dia` (`id_dia_hora`)
+    REFERENCES `test_les`.`horario_has_dia` (`id_dia_hora`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
@@ -552,9 +552,9 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `les`.`colaborador_has_unidade_organica`
+-- Table `test_les`.`colaborador_has_unidade_organica`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `les`.`colaborador_has_unidade_organica` (
+CREATE TABLE IF NOT EXISTS `test_les`.`colaborador_has_unidade_organica` (
   `colaborador_Utilizador_idutilizador` INT NOT NULL,
   `unidade_organica_idUO` INT NOT NULL,
   `colaborador_has_unidade_organica_id` INT NOT NULL AUTO_INCREMENT,
@@ -563,12 +563,12 @@ CREATE TABLE IF NOT EXISTS `les`.`colaborador_has_unidade_organica` (
   INDEX `fk_colaborador_has_unidade_organica_colaborador_id` (`colaborador_Utilizador_idutilizador` ASC) VISIBLE,
   CONSTRAINT `fk_colaborador_has_unidade_organica_colaborador`
     FOREIGN KEY (`colaborador_Utilizador_idutilizador`)
-    REFERENCES `les`.`colaborador` (`Utilizador_idutilizador`)
+    REFERENCES `test_les`.`colaborador` (`Utilizador_idutilizador`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT `fk_colaborador_has_unidade_organica_unidade_Organica`
     FOREIGN KEY (`unidade_organica_idUO`)
-    REFERENCES `les`.`unidade_organica` (`idUO`)
+    REFERENCES `test_les`.`unidade_organica` (`idUO`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
@@ -577,21 +577,21 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `les`.`coordenador`
+-- Table `test_les`.`coordenador`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `les`.`coordenador` (
+CREATE TABLE IF NOT EXISTS `test_les`.`coordenador` (
   `Utilizador_idutilizador` INT NOT NULL,
   `unidade_organica_idUO` INT NOT NULL,
   PRIMARY KEY (`Utilizador_idutilizador`),
   INDEX `fk_Coordenador_unidade_organica_id` (`unidade_organica_idUO` ASC) VISIBLE,
   CONSTRAINT `fk_Coordenador_unidade_organica`
     FOREIGN KEY (`unidade_organica_idUO`)
-    REFERENCES `les`.`unidade_organica` (`idUO`)
+    REFERENCES `test_les`.`unidade_organica` (`idUO`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT `fk_Coordenador_Utilizador`
     FOREIGN KEY (`Utilizador_idutilizador`)
-    REFERENCES `les`.`utilizador` (`idutilizador`)
+    REFERENCES `test_les`.`utilizador` (`idutilizador`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
@@ -600,9 +600,9 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `les`.`coordenador_has_departamento`
+-- Table `test_les`.`coordenador_has_departamento`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `les`.`coordenador_has_departamento` (
+CREATE TABLE IF NOT EXISTS `test_les`.`coordenador_has_departamento` (
   `Coordenador_Utilizador_idutilizador` INT NOT NULL,
   `Departamento_idDepartamento` INT NOT NULL,
   PRIMARY KEY (`Coordenador_Utilizador_idutilizador`),
@@ -610,12 +610,12 @@ CREATE TABLE IF NOT EXISTS `les`.`coordenador_has_departamento` (
   INDEX `fk_Coordenador_has_Departamento_Coordenador_id` (`Coordenador_Utilizador_idutilizador` ASC) VISIBLE,
   CONSTRAINT `fk_Coordenador_has_Departamento_Coordenador`
     FOREIGN KEY (`Coordenador_Utilizador_idutilizador`)
-    REFERENCES `les`.`coordenador` (`Utilizador_idutilizador`)
+    REFERENCES `test_les`.`coordenador` (`Utilizador_idutilizador`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT `fk_Coordenador_has_Departamento_Departamento`
     FOREIGN KEY (`Departamento_idDepartamento`)
-    REFERENCES `les`.`departamento` (`idDepartamento`)
+    REFERENCES `test_les`.`departamento` (`idDepartamento`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
@@ -624,9 +624,9 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `les`.`disponibilidade`
+-- Table `test_les`.`disponibilidade`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `les`.`disponibilidade` (
+CREATE TABLE IF NOT EXISTS `test_les`.`disponibilidade` (
   `colaborador_Utilizador_idutilizador` INT NOT NULL,
   `dia_dia` DATE NOT NULL,
   `horario_hora` TIME NOT NULL,
@@ -640,16 +640,16 @@ CREATE TABLE IF NOT EXISTS `les`.`disponibilidade` (
   INDEX `fk_table1_horario2_idx` (`horario_hora1` ASC) VISIBLE,
   CONSTRAINT `fk_table1_colaborador1`
     FOREIGN KEY (`colaborador_Utilizador_idutilizador`)
-    REFERENCES `les`.`colaborador` (`Utilizador_idutilizador`),
+    REFERENCES `test_les`.`colaborador` (`Utilizador_idutilizador`),
   CONSTRAINT `fk_table1_dia1`
     FOREIGN KEY (`dia_dia`)
-    REFERENCES `les`.`dia` (`dia`),
+    REFERENCES `test_les`.`dia` (`dia`),
   CONSTRAINT `fk_table1_horario1`
     FOREIGN KEY (`horario_hora`)
-    REFERENCES `les`.`horario` (`hora`),
+    REFERENCES `test_les`.`horario` (`hora`),
   CONSTRAINT `fk_table1_horario2`
     FOREIGN KEY (`horario_hora1`)
-    REFERENCES `les`.`horario` (`hora`))
+    REFERENCES `test_les`.`horario` (`hora`))
 ENGINE = InnoDB
 AUTO_INCREMENT = 3
 DEFAULT CHARACTER SET = utf8mb4
@@ -657,9 +657,9 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `les`.`django_admin_log`
+-- Table `test_les`.`django_admin_log`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `les`.`django_admin_log` (
+CREATE TABLE IF NOT EXISTS `test_les`.`django_admin_log` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `action_time` DATETIME(6) NOT NULL,
   `object_id` LONGTEXT NULL DEFAULT NULL,
@@ -673,19 +673,19 @@ CREATE TABLE IF NOT EXISTS `les`.`django_admin_log` (
   INDEX `django_admin_log_user_id_c564eba6_fk_auth_user_id` (`user_id` ASC) VISIBLE,
   CONSTRAINT `django_admin_log_content_type_id_c4bce8eb_fk_django_co`
     FOREIGN KEY (`content_type_id`)
-    REFERENCES `les`.`django_content_type` (`id`),
+    REFERENCES `test_les`.`django_content_type` (`id`),
   CONSTRAINT `django_admin_log_user_id_c564eba6_fk_auth_user_id`
     FOREIGN KEY (`user_id`)
-    REFERENCES `les`.`auth_user` (`id`))
+    REFERENCES `test_les`.`auth_user` (`id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `les`.`django_migrations`
+-- Table `test_les`.`django_migrations`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `les`.`django_migrations` (
+CREATE TABLE IF NOT EXISTS `test_les`.`django_migrations` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `app` VARCHAR(255) NOT NULL,
   `name` VARCHAR(255) NOT NULL,
@@ -698,9 +698,9 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `les`.`django_session`
+-- Table `test_les`.`django_session`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `les`.`django_session` (
+CREATE TABLE IF NOT EXISTS `test_les`.`django_session` (
   `session_key` VARCHAR(40) NOT NULL,
   `session_data` LONGTEXT NOT NULL,
   `expire_date` DATETIME(6) NOT NULL,
@@ -712,9 +712,9 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `les`.`escola`
+-- Table `test_les`.`escola`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `les`.`escola` (
+CREATE TABLE IF NOT EXISTS `test_les`.`escola` (
   `idescola` INT NOT NULL AUTO_INCREMENT,
   `nome` VARCHAR(255) NOT NULL,
   `local` VARCHAR(45) NOT NULL,
@@ -728,9 +728,9 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `les`.`idioma`
+-- Table `test_les`.`idioma`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `les`.`idioma` (
+CREATE TABLE IF NOT EXISTS `test_les`.`idioma` (
   `nome` VARCHAR(255) NOT NULL,
   `sigla` VARCHAR(45) NOT NULL,
   `Administrador_Utilizador_idutilizador` INT NOT NULL,
@@ -739,7 +739,7 @@ CREATE TABLE IF NOT EXISTS `les`.`idioma` (
   INDEX `fk_idioma_Administrador_id` (`Administrador_Utilizador_idutilizador` ASC) VISIBLE,
   CONSTRAINT `fk_idioma_Administrador`
     FOREIGN KEY (`Administrador_Utilizador_idutilizador`)
-    REFERENCES `les`.`administrador` (`Utilizador_idutilizador`)
+    REFERENCES `test_les`.`administrador` (`Utilizador_idutilizador`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
@@ -748,9 +748,9 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `les`.`inscricao`
+-- Table `test_les`.`inscricao`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `les`.`inscricao` (
+CREATE TABLE IF NOT EXISTS `test_les`.`inscricao` (
   `idinscricao` INT NOT NULL AUTO_INCREMENT,
   `ano` INT NOT NULL,
   `local` VARCHAR(255) NOT NULL,
@@ -764,14 +764,14 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `les`.`participante`
+-- Table `test_les`.`participante`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `les`.`participante` (
+CREATE TABLE IF NOT EXISTS `test_les`.`participante` (
   `Utilizador_idutilizador` INT NOT NULL,
   PRIMARY KEY (`Utilizador_idutilizador`),
   CONSTRAINT `fk_Participante_Utilizador`
     FOREIGN KEY (`Utilizador_idutilizador`)
-    REFERENCES `les`.`utilizador` (`idutilizador`)
+    REFERENCES `test_les`.`utilizador` (`idutilizador`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
@@ -780,9 +780,9 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `les`.`inscricao_coletiva`
+-- Table `test_les`.`inscricao_coletiva`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `les`.`inscricao_coletiva` (
+CREATE TABLE IF NOT EXISTS `test_les`.`inscricao_coletiva` (
   `nresponsaveis` INT NOT NULL,
   `turma` CHAR(1) NOT NULL,
   `Participante_Utilizador_idutilizador` INT NOT NULL,
@@ -795,17 +795,17 @@ CREATE TABLE IF NOT EXISTS `les`.`inscricao_coletiva` (
   INDEX `fk_inscricao_coletiva_inscricao_id` (`inscricao_idinscricao` ASC) VISIBLE,
   CONSTRAINT `fk_inscricao_coletiva_escola`
     FOREIGN KEY (`escola_idescola`)
-    REFERENCES `les`.`escola` (`idescola`)
+    REFERENCES `test_les`.`escola` (`idescola`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT `fk_inscricao_coletiva_inscricao`
     FOREIGN KEY (`inscricao_idinscricao`)
-    REFERENCES `les`.`inscricao` (`idinscricao`)
+    REFERENCES `test_les`.`inscricao` (`idinscricao`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT `fk_inscricao_coletiva_Participante`
     FOREIGN KEY (`Participante_Utilizador_idutilizador`)
-    REFERENCES `les`.`participante` (`Utilizador_idutilizador`)
+    REFERENCES `test_les`.`participante` (`Utilizador_idutilizador`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
@@ -814,9 +814,9 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `les`.`menu`
+-- Table `test_les`.`menu`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `les`.`menu` (
+CREATE TABLE IF NOT EXISTS `test_les`.`menu` (
   `idMenu` INT NOT NULL AUTO_INCREMENT,
   `menu` VARCHAR(45) NOT NULL,
   `descricao` VARCHAR(125) NULL DEFAULT NULL,
@@ -828,12 +828,12 @@ CREATE TABLE IF NOT EXISTS `les`.`menu` (
   INDEX `fk_menu_horario_has_dia1_idx` (`horario_has_dia_id_dia_hora` ASC) VISIBLE,
   CONSTRAINT `fk_Menu_Campus`
     FOREIGN KEY (`Campus_idCampus`)
-    REFERENCES `les`.`campus` (`idCampus`)
+    REFERENCES `test_les`.`campus` (`idCampus`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT `fk_menu_horario_has_dia1`
     FOREIGN KEY (`horario_has_dia_id_dia_hora`)
-    REFERENCES `les`.`horario_has_dia` (`id_dia_hora`)
+    REFERENCES `test_les`.`horario_has_dia` (`id_dia_hora`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
@@ -843,9 +843,9 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `les`.`prato`
+-- Table `test_les`.`prato`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `les`.`prato` (
+CREATE TABLE IF NOT EXISTS `test_les`.`prato` (
   `idPrato` INT NOT NULL AUTO_INCREMENT,
   `tipo` VARCHAR(45) NOT NULL,
   `descricao` VARCHAR(125) NOT NULL,
@@ -855,7 +855,7 @@ CREATE TABLE IF NOT EXISTS `les`.`prato` (
   INDEX `fk_prato_menu1_idx` (`menu_idMenu` ASC) VISIBLE,
   CONSTRAINT `fk_prato_menu1`
     FOREIGN KEY (`menu_idMenu`)
-    REFERENCES `les`.`menu` (`idMenu`))
+    REFERENCES `test_les`.`menu` (`idMenu`))
 ENGINE = InnoDB
 AUTO_INCREMENT = 24
 DEFAULT CHARACTER SET = utf8mb4
@@ -863,9 +863,9 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `les`.`inscricao_has_prato`
+-- Table `test_les`.`inscricao_has_prato`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `les`.`inscricao_has_prato` (
+CREATE TABLE IF NOT EXISTS `test_les`.`inscricao_has_prato` (
   `inscricao_idinscricao` INT NOT NULL,
   `Prato_idPrato` INT NOT NULL,
   `inscricao_has_prato_id` INT NOT NULL AUTO_INCREMENT,
@@ -875,12 +875,12 @@ CREATE TABLE IF NOT EXISTS `les`.`inscricao_has_prato` (
   INDEX `fk_inscricao_has_Prato_inscricao_id` (`inscricao_idinscricao` ASC) VISIBLE,
   CONSTRAINT `fk_inscricao_has_Prato_inscricao`
     FOREIGN KEY (`inscricao_idinscricao`)
-    REFERENCES `les`.`inscricao` (`idinscricao`)
+    REFERENCES `test_les`.`inscricao` (`idinscricao`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT `fk_inscricao_has_Prato_Prato`
     FOREIGN KEY (`Prato_idPrato`)
-    REFERENCES `les`.`prato` (`idPrato`)
+    REFERENCES `test_les`.`prato` (`idPrato`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
@@ -889,9 +889,9 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `les`.`sessao`
+-- Table `test_les`.`sessao`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `les`.`sessao` (
+CREATE TABLE IF NOT EXISTS `test_les`.`sessao` (
   `idsessao` INT NOT NULL AUTO_INCREMENT,
   `nrinscritos` INT NOT NULL DEFAULT '0',
   `capacidade` INT NOT NULL DEFAULT '0',
@@ -902,12 +902,12 @@ CREATE TABLE IF NOT EXISTS `les`.`sessao` (
   INDEX `fk_sessao_horario_has_dia1_idx` (`horario_has_dia_id_dia_hora` ASC) VISIBLE,
   CONSTRAINT `fk_sessao_Atividade`
     FOREIGN KEY (`Atividade_idAtividade`)
-    REFERENCES `les`.`atividade` (`idAtividade`)
+    REFERENCES `test_les`.`atividade` (`idAtividade`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT `fk_sessao_horario_has_dia1`
     FOREIGN KEY (`horario_has_dia_id_dia_hora`)
-    REFERENCES `les`.`horario_has_dia` (`id_dia_hora`)
+    REFERENCES `test_les`.`horario_has_dia` (`id_dia_hora`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
@@ -917,9 +917,9 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `les`.`inscricao_has_sessao`
+-- Table `test_les`.`inscricao_has_sessao`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `les`.`inscricao_has_sessao` (
+CREATE TABLE IF NOT EXISTS `test_les`.`inscricao_has_sessao` (
   `inscricao_idinscricao` INT NOT NULL,
   `sessao_idsessao` INT NOT NULL,
   `inscricao_has_sessao_id` INT NOT NULL AUTO_INCREMENT,
@@ -929,12 +929,12 @@ CREATE TABLE IF NOT EXISTS `les`.`inscricao_has_sessao` (
   INDEX `fk_inscricao_has_sessao_inscricao_id` (`inscricao_idinscricao` ASC) VISIBLE,
   CONSTRAINT `fk_inscricao_has_sessao_inscricao`
     FOREIGN KEY (`inscricao_idinscricao`)
-    REFERENCES `les`.`inscricao` (`idinscricao`)
+    REFERENCES `test_les`.`inscricao` (`idinscricao`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT `fk_inscricao_has_sessao_sessao`
     FOREIGN KEY (`sessao_idsessao`)
-    REFERENCES `les`.`sessao` (`idsessao`)
+    REFERENCES `test_les`.`sessao` (`idsessao`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
@@ -944,9 +944,9 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `les`.`inscricao_individual`
+-- Table `test_les`.`inscricao_individual`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `les`.`inscricao_individual` (
+CREATE TABLE IF NOT EXISTS `test_les`.`inscricao_individual` (
   `nracompanhantes` INT(10) UNSIGNED ZEROFILL NOT NULL,
   `Participante_Utilizador_idutilizador` INT NOT NULL,
   `inscricao_idinscricao` INT NOT NULL,
@@ -956,12 +956,12 @@ CREATE TABLE IF NOT EXISTS `les`.`inscricao_individual` (
   INDEX `fk_inscricao_individual_inscricao_id` (`inscricao_idinscricao` ASC) VISIBLE,
   CONSTRAINT `fk_inscricao_individual_inscricao`
     FOREIGN KEY (`inscricao_idinscricao`)
-    REFERENCES `les`.`inscricao` (`idinscricao`)
+    REFERENCES `test_les`.`inscricao` (`idinscricao`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT `fk_inscricao_individual_Participante`
     FOREIGN KEY (`Participante_Utilizador_idutilizador`)
-    REFERENCES `les`.`participante` (`Utilizador_idutilizador`)
+    REFERENCES `test_les`.`participante` (`Utilizador_idutilizador`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
@@ -970,9 +970,9 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `les`.`notificacao`
+-- Table `test_les`.`notificacao`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `les`.`notificacao` (
+CREATE TABLE IF NOT EXISTS `test_les`.`notificacao` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `descricao` VARCHAR(255) NOT NULL,
   `criadoem` DATETIME(6) NOT NULL,
@@ -987,9 +987,9 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `les`.`paragem`
+-- Table `test_les`.`paragem`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `les`.`paragem` (
+CREATE TABLE IF NOT EXISTS `test_les`.`paragem` (
   `paragem` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`paragem`))
 ENGINE = InnoDB
@@ -998,9 +998,9 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `les`.`responsaveis`
+-- Table `test_les`.`responsaveis`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `les`.`responsaveis` (
+CREATE TABLE IF NOT EXISTS `test_les`.`responsaveis` (
   `idresponsavel` INT NOT NULL AUTO_INCREMENT,
   `nome` VARCHAR(255) NOT NULL,
   `email` VARCHAR(255) NOT NULL,
@@ -1010,7 +1010,7 @@ CREATE TABLE IF NOT EXISTS `les`.`responsaveis` (
   INDEX `fk_Responsáveis_Inscricao` (`idInscricao` ASC) VISIBLE,
   CONSTRAINT `fk_Responsáveis_Inscricao`
     FOREIGN KEY (`idInscricao`)
-    REFERENCES `les`.`inscricao` (`idinscricao`))
+    REFERENCES `test_les`.`inscricao` (`idinscricao`))
 ENGINE = InnoDB
 AUTO_INCREMENT = 3
 DEFAULT CHARACTER SET = utf8mb4
@@ -1018,9 +1018,9 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `les`.`sala`
+-- Table `test_les`.`sala`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `les`.`sala` (
+CREATE TABLE IF NOT EXISTS `test_les`.`sala` (
   `edificio` VARCHAR(45) NOT NULL,
   `andar` VARCHAR(45) NOT NULL,
   `gabinete` VARCHAR(45) NULL DEFAULT NULL,
@@ -1029,7 +1029,7 @@ CREATE TABLE IF NOT EXISTS `les`.`sala` (
   INDEX `fk_sala_espaco_id` (`espaco_idespaco` ASC) VISIBLE,
   CONSTRAINT `fk_sala_espaco`
     FOREIGN KEY (`espaco_idespaco`)
-    REFERENCES `les`.`espaco` (`idespaco`)
+    REFERENCES `test_les`.`espaco` (`idespaco`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
@@ -1038,9 +1038,9 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `les`.`sessao_has_horario_has_dia`
+-- Table `test_les`.`sessao_has_horario_has_dia`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `les`.`sessao_has_horario_has_dia` (
+CREATE TABLE IF NOT EXISTS `test_les`.`sessao_has_horario_has_dia` (
   `sessao_idsessao` INT NOT NULL,
   `horario_has_dia_id_dia_hora` INT NOT NULL,
   `sessao_has_horario_has_dia_id` INT NOT NULL AUTO_INCREMENT,
@@ -1049,12 +1049,12 @@ CREATE TABLE IF NOT EXISTS `les`.`sessao_has_horario_has_dia` (
   INDEX `fk_sessao_has_horario_has_dia_sessao1_idx` (`sessao_idsessao` ASC) VISIBLE,
   CONSTRAINT `fk_sessao_has_horario_has_dia_horario_has_dia1`
     FOREIGN KEY (`horario_has_dia_id_dia_hora`)
-    REFERENCES `les`.`horario_has_dia` (`id_dia_hora`)
+    REFERENCES `test_les`.`horario_has_dia` (`id_dia_hora`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT `fk_sessao_has_horario_has_dia_sessao1`
     FOREIGN KEY (`sessao_idsessao`)
-    REFERENCES `les`.`sessao` (`idsessao`)
+    REFERENCES `test_les`.`sessao` (`idsessao`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
@@ -1064,9 +1064,9 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `les`.`tarefa`
+-- Table `test_les`.`tarefa`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `les`.`tarefa` (
+CREATE TABLE IF NOT EXISTS `test_les`.`tarefa` (
   `idtarefa` INT NOT NULL AUTO_INCREMENT,
   `nome` VARCHAR(255) NOT NULL,
   `concluida` TINYINT NOT NULL,
@@ -1088,31 +1088,31 @@ CREATE TABLE IF NOT EXISTS `les`.`tarefa` (
   INDEX `fk_tarefa_inscricao_coletiva1_idx` (`inscricao_coletiva_inscricao_idinscricao` ASC) VISIBLE,
   CONSTRAINT `fk_tarefa_colaborador`
     FOREIGN KEY (`colaborador_Utilizador_idutilizador`)
-    REFERENCES `les`.`colaborador` (`Utilizador_idutilizador`)
+    REFERENCES `test_les`.`colaborador` (`Utilizador_idutilizador`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT `fk_tarefa_Coordenador`
     FOREIGN KEY (`Coordenador_Utilizador_idutilizador`)
-    REFERENCES `les`.`coordenador` (`Utilizador_idutilizador`)
+    REFERENCES `test_les`.`coordenador` (`Utilizador_idutilizador`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT `fk_tarefa_dia1`
     FOREIGN KEY (`dia_dia`)
-    REFERENCES `les`.`dia` (`dia`)
+    REFERENCES `test_les`.`dia` (`dia`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT `fk_tarefa_espaco1`
     FOREIGN KEY (`buscar`)
-    REFERENCES `les`.`espaco` (`idespaco`),
+    REFERENCES `test_les`.`espaco` (`idespaco`),
   CONSTRAINT `fk_tarefa_espaco2`
     FOREIGN KEY (`levar`)
-    REFERENCES `les`.`espaco` (`idespaco`),
+    REFERENCES `test_les`.`espaco` (`idespaco`),
   CONSTRAINT `fk_tarefa_inscricao_coletiva1`
     FOREIGN KEY (`inscricao_coletiva_inscricao_idinscricao`)
-    REFERENCES `les`.`inscricao_coletiva` (`inscricao_idinscricao`),
+    REFERENCES `test_les`.`inscricao_coletiva` (`inscricao_idinscricao`),
   CONSTRAINT `fk_tarefa_sessao1`
     FOREIGN KEY (`sessao_idsessao`)
-    REFERENCES `les`.`sessao` (`idsessao`)
+    REFERENCES `test_les`.`sessao` (`idsessao`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
@@ -1122,9 +1122,9 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `les`.`transporte`
+-- Table `test_les`.`transporte`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `les`.`transporte` (
+CREATE TABLE IF NOT EXISTS `test_les`.`transporte` (
   `idtransporte` INT NOT NULL AUTO_INCREMENT,
   `capacidade` INT NOT NULL,
   `identificacao` VARCHAR(255) NOT NULL,
@@ -1136,9 +1136,9 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `les`.`transporte_has_horario`
+-- Table `test_les`.`transporte_has_horario`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `les`.`transporte_has_horario` (
+CREATE TABLE IF NOT EXISTS `test_les`.`transporte_has_horario` (
   `transporte_idtransporte` INT NOT NULL,
   `id_transporte_has_horario` INT NOT NULL AUTO_INCREMENT,
   `origem` VARCHAR(45) NOT NULL,
@@ -1152,20 +1152,20 @@ CREATE TABLE IF NOT EXISTS `les`.`transporte_has_horario` (
   INDEX `fk_transporte_has_horario_horario_has_dia1_idx` (`horario_has_dia_id_dia_hora` ASC) VISIBLE,
   CONSTRAINT `fk_transporte_has_horario_horario_has_dia1`
     FOREIGN KEY (`horario_has_dia_id_dia_hora`)
-    REFERENCES `les`.`horario_has_dia` (`id_dia_hora`)
+    REFERENCES `test_les`.`horario_has_dia` (`id_dia_hora`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT `fk_transporte_has_horario_paragem1`
     FOREIGN KEY (`origem`)
-    REFERENCES `les`.`paragem` (`paragem`)
+    REFERENCES `test_les`.`paragem` (`paragem`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT `fk_transporte_has_horario_paragem2`
     FOREIGN KEY (`destino`)
-    REFERENCES `les`.`paragem` (`paragem`),
+    REFERENCES `test_les`.`paragem` (`paragem`),
   CONSTRAINT `fk_transporte_has_Horario_transporte`
     FOREIGN KEY (`transporte_idtransporte`)
-    REFERENCES `les`.`transporte` (`idtransporte`)
+    REFERENCES `test_les`.`transporte` (`idtransporte`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
@@ -1174,9 +1174,9 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `les`.`transporte_has_inscricao`
+-- Table `test_les`.`transporte_has_inscricao`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `les`.`transporte_has_inscricao` (
+CREATE TABLE IF NOT EXISTS `test_les`.`transporte_has_inscricao` (
   `inscricao_idinscricao` INT NOT NULL,
   `transporte_has_inscricao_id` INT NOT NULL AUTO_INCREMENT,
   `transporte_has_horario_id_transporte_has_horario` INT NOT NULL,
@@ -1186,12 +1186,12 @@ CREATE TABLE IF NOT EXISTS `les`.`transporte_has_inscricao` (
   INDEX `fk_transporte_has_inscricao_transporte_has_horario1_idx` (`transporte_has_horario_id_transporte_has_horario` ASC) VISIBLE,
   CONSTRAINT `fk_transporte_has_inscricao_inscricao`
     FOREIGN KEY (`inscricao_idinscricao`)
-    REFERENCES `les`.`inscricao` (`idinscricao`)
+    REFERENCES `test_les`.`inscricao` (`idinscricao`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT `fk_transporte_has_inscricao_transporte_has_horario1`
     FOREIGN KEY (`transporte_has_horario_id_transporte_has_horario`)
-    REFERENCES `les`.`transporte_has_horario` (`id_transporte_has_horario`)
+    REFERENCES `test_les`.`transporte_has_horario` (`id_transporte_has_horario`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
@@ -1200,14 +1200,14 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `les`.`transporte_pessoal`
+-- Table `test_les`.`transporte_pessoal`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `les`.`transporte_pessoal` (
+CREATE TABLE IF NOT EXISTS `test_les`.`transporte_pessoal` (
   `transporte_idtransporte` INT NOT NULL,
   PRIMARY KEY (`transporte_idtransporte`),
   CONSTRAINT `fk_Transporte_pessoal_transporte`
     FOREIGN KEY (`transporte_idtransporte`)
-    REFERENCES `les`.`transporte` (`idtransporte`)
+    REFERENCES `test_les`.`transporte` (`idtransporte`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
@@ -1216,15 +1216,15 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `les`.`transporte_universitario`
+-- Table `test_les`.`transporte_universitario`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `les`.`transporte_universitario` (
+CREATE TABLE IF NOT EXISTS `test_les`.`transporte_universitario` (
   `capacidade` INT NOT NULL,
   `transporte_idtransporte` INT NOT NULL,
   PRIMARY KEY (`transporte_idtransporte`),
   CONSTRAINT `fk_transporte Universitario_transporte`
     FOREIGN KEY (`transporte_idtransporte`)
-    REFERENCES `les`.`transporte` (`idtransporte`)
+    REFERENCES `test_les`.`transporte` (`idtransporte`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
@@ -1233,9 +1233,9 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `les`.`utilizador_has_notificacao`
+-- Table `test_les`.`utilizador_has_notificacao`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `les`.`utilizador_has_notificacao` (
+CREATE TABLE IF NOT EXISTS `test_les`.`utilizador_has_notificacao` (
   `Utilizador_idutilizador` INT NOT NULL,
   `notificacao_id` INT NOT NULL,
   `utilizador_has_notificacao_id` INT NOT NULL AUTO_INCREMENT,
@@ -1245,12 +1245,12 @@ CREATE TABLE IF NOT EXISTS `les`.`utilizador_has_notificacao` (
   INDEX `fk_Utilizador_has_notificacao_Utilizador_id` (`Utilizador_idutilizador` ASC) VISIBLE,
   CONSTRAINT `fk_Utilizador_has_notificacao_notificacao`
     FOREIGN KEY (`notificacao_id`)
-    REFERENCES `les`.`notificacao` (`id`)
+    REFERENCES `test_les`.`notificacao` (`id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT `fk_Utilizador_has_notificacao_Utilizador`
     FOREIGN KEY (`Utilizador_idutilizador`)
-    REFERENCES `les`.`utilizador` (`idutilizador`)
+    REFERENCES `test_les`.`utilizador` (`idutilizador`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB

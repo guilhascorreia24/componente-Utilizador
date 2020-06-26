@@ -4,8 +4,7 @@ from .models import *
 
 class TransporteHorarioFilter(django_filters.FilterSet):
     
-    origem = django_filters.ChoiceFilter(choices = [("", "")] +
-	[(par.paragem, par.paragem) for par in Paragem.objects.all()])
+    origem = django_filters.ChoiceFilter(choices = [("", "")] + [(par.paragem, par.paragem) for par in Paragem.objects.all()])
 
     destino = django_filters.ChoiceFilter(choices = [("","")] +
 	[(par.paragem, par.paragem) for par in Paragem.objects.all()])
