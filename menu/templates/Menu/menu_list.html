@@ -172,7 +172,7 @@
                 <div>                   
                         <div class="input-group col-sm-12">
                             <div class="input-group-prepend labelForm">
-                                <span class="input-group-text w-100">Sopa e Sobremesa:</span>
+                                <span class="input-group-text w-100">Sopa e Sobremesa</span>
                             </div>
                             <input disabled="" class="form-control bg-light" type="text" value="{{ i.descricao }}">
                         </div>
@@ -182,7 +182,7 @@
                         {% if prato.tipo == "Carne" %}
                         <div class="input-group col-sm-12">
                             <div class="input-group-prepend labelForm">
-                                <span class="input-group-text w-100">Prato de Carne:</span>
+                                <span class="input-group-text w-100">Prato de Carne</span>
                             </div>
                             <span><textarea disabled="" class="form-control col-sm-2 bg-light" style="width: 94%;" type="text" >{{ prato.descricao }}</textarea>
                             <a href="{% url 'menu:prato_update' prato.idprato %}">
@@ -201,7 +201,7 @@
                         {% if prato.tipo == "Peixe" %}
                         <div class="input-group col-sm-12">
                             <div class="input-group-prepend labelForm">
-                                <span class="input-group-text w-100">Prato de Peixe:</span>
+                                <span class="input-group-text w-100">Prato de Peixe</span>
                             </div>
                             <textarea disabled="" class="form-control col-sm-2 bg-light" type="text" style="width: 94%;">{{prato.descricao}}</textarea>
                             <a href="{% url 'menu:prato_update' prato.idprato %}">
@@ -220,7 +220,7 @@
                         {% if prato.tipo == "Vegetariano" %}
                         <div class="input-group col-sm-12">
                             <div class="input-group-prepend labelForm">
-                                <span class="input-group-text w-100">Prato Vegetariano:</span>
+                                <span class="input-group-text w-100">Prato Vegetariano</span>
                             </div>
                             <textarea disabled="" class="form-control col-sm-2 bg-light" type="text"  style="width: 94%;">{{prato.descricao}}</textarea>
                             <a href="{% url 'menu:prato_update' prato.idprato %}">
@@ -261,7 +261,7 @@
                         <br>
                         <div class="input-group col-sm-12">
                             <div class="input-group-prepend labelForm">
-                                <span class="input-group-text w-100">Numero de Almoços disponiveis:</span>
+                                <span class="input-group-text w-100">Numero de Almoços disponiveis</span>
                             </div>
                             <input disabled="" class="form-control bg-light" type="text" value="{{ i.nralmocosdisponiveis }}">
                         </div>
