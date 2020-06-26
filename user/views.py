@@ -532,7 +532,7 @@ def validacoes(request,acao,id):
             user.validada=4
             Participante.objects.filter(pk=id).delete()
         user.save()
-        noti_views.new_noti(request,user.pk,'Bem-vindo','Seja bem-vindo ao site do dia aberto')
+        noti_views.new_noti(request,id,'Bem-vindo','Seja bem-vindo ao site do dia aberto')
         recepient=user.email
         from_user=Utilizador.objects.get(pk=request.session['user_id']).email
         subject="Validação da conta"
