@@ -327,7 +327,7 @@ def transporte_detail_view(request, id):
     return render(request, "Transporte/transporte_details.html", context)
 
 def transporte_delete_view(request,id):
-    transporte = Transporte.object.get(idtransporte=id)
+    transporte = Transporte.objects.get(idtransporte=id)
     if Transporte.objects.filter(pk=id).exists():
         transporte.delete()
         messages.success(request, f'Transporte Elimiado com Sucesso!')
