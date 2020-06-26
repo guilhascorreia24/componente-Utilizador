@@ -4,7 +4,7 @@ from django.urls import reverse,resolve
 
 class TestUrls(SimpleTestCase):
 
-    '''def test_user_register(self):
+    def test_user_register(self):
         url = reverse('register')
         self.assertEquals(resolve(url).func, register)
 
@@ -50,4 +50,4 @@ class TestUrls(SimpleTestCase):
 
     def test_user_type(self):
         url = reverse('user_type')
-        self.assertEquals(resolve(url).func, getUserType)'''
+        self.assertEquals(resolve(url).func, getUserType)
