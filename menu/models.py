@@ -481,7 +481,7 @@ class Menu(models.Model):
     nralmocosdisponiveis = models.IntegerField()
 
     def __str__ (self):
-        return self.menu
+        return ' {} no Campus {}'.format(self.menu ,self.campus_idcampus)
 
     class Meta:
         managed = False
