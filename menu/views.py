@@ -66,9 +66,9 @@ def diaaberto_update(request, id):
         final = form.cleaned_data['datadiaabertofim']
         #preencher_hora(hora_inicio,hora_fim)
         print(request.POST)
-        hora_inicio=datetime.time(int(request.POST['h_incio'].split(':')[0]),int(request.POST['h_incio'].split(':')[1]))
-        hora_fim=datetime.time(int(request.POST['h_fim'].split(':')[0]),int(request.POST['h_fim'].split(':')[1]))
-        #preencher_hora(hora_inicio,hora_fim)
+        hora_inicio=request.POST['h_incio']
+        hora_fim=request.POST['h_fim']
+        preencher_hora(hora_inicio,hora_fim)
         Horario(hora="12:00:00").save()
         hora1 = Horario.objects.filter(hora="12:00:00")
         for x in range(inicio.day, final.day+1):
@@ -327,7 +327,7 @@ def transporte_detail_view(request, id):
     return render(request, "Transporte/transporte_details.html", context)
 
 def transporte_delete_view(request,id):
-    transporte = Transporte.object.get(idtransporte=id)
+    transporte = Transporte.objects.get(idtransporte=id)
     if Transporte.objects.filter(pk=id).exists():
         transporte.delete()
         messages.success(request, f'Transporte Elimiado com Sucesso!')

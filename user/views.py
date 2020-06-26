@@ -109,8 +109,8 @@ def type_user(data,user_id):
     elif data['funcao']=='4':
         if user_id is not None:
             admin=Administrador(pk=user_id)
-            if len(Administrador.objects.all())==0:
-                Utilizador.objects.filter(pk=user_id).update(validada=4)
+            #if len(Administrador.objects.all())==0:
+             #   Utilizador.objects.filter(pk=user_id).update(validada=4)
             admin.save()
         else:
             t=4
@@ -351,27 +351,32 @@ def modify_user(request,id):
     funcao=False
     if Administrador.objects.filter(utilizador_idutilizador=id).exists():
         funcao = "Administardor"
-        ano = Utilizador.objects.get(pk=id).dia_aberto_ano.ano
+        if Utilizador.objects.get(pk=id).dia_aberto_ano!=None:
+            ano = Utilizador.objects.get(pk=id).dia_aberto_ano.ano
     elif ProfessorUniversitario.objects.filter(utilizador_idutilizador=id).exists():
         funcao = "Docente Univesitario"
         depid = ProfessorUniversitario.objects.get(utilizador_idutilizador=id).departamento_iddepartamento
         dep= Departamento.objects.get(pk=depid.pk).nome
         UO=UnidadeOrganica.objects.get(pk=depid.pk).sigla
-        ano = Utilizador.objects.get(pk=id).dia_aberto_ano.ano
+        if Utilizador.objects.get(pk=id).dia_aberto_ano!=None:
+            ano = Utilizador.objects.get(pk=id).dia_aberto_ano.ano
     elif Coordenador.objects.filter(utilizador_idutilizador=id).exists():
         funcao = "Coordenador"
         IDUO = Coordenador.objects.get(pk=id).unidade_organica_iduo
         UO=UnidadeOrganica.objects.get(pk=IDUO.pk).sigla
-        ano = Utilizador.objects.get(pk=id).dia_aberto_ano.ano
+        if Utilizador.objects.get(pk=id).dia_aberto_ano!=None:
+            ano = Utilizador.objects.get(pk=id).dia_aberto_ano.ano
     elif Colaborador.objects.filter(utilizador_idutilizador=id).exists():
         ano = Utilizador.objects.get(pk=id).dia_aberto_ano.ano
         funcao = "Colaborador"
         cursoid=Colaborador.objects.get(utilizador_idutilizador=id).curso_idcurso
         UO=Curso.objects.get(pk=cursoid.pk).unidade_organica_iduo.sigla
-        ano = Utilizador.objects.get(pk=id).dia_aberto_ano.ano
+        if Utilizador.objects.get(pk=id).dia_aberto_ano!=None:
+            ano = Utilizador.objects.get(pk=id).dia_aberto_ano.ano
     elif Participante.objects.filter(utilizador_idutilizador=id).exists():
         funcao = "Participante"
-        ano = Utilizador.objects.get(pk=id).dia_aberto_ano.ano
+        if Utilizador.objects.get(pk=id).dia_aberto_ano!=None:
+            ano = Utilizador.objects.get(pk=id).dia_aberto_ano.ano
     return render(request, 'profile_modify.html', {"form": form, 'nome': name,'UO':UO, 'email': email, "ano":ano,
                     'telefone': telefone, 'funcao': funcao, 'ano': ano, 'curso': curso,'dep':dep,"me":me,'id':id,'func':user(request),'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
 
@@ -467,6 +472,7 @@ def profile_list(request):
     me_id=user_id
     campus=Campus.objects.all()
     uos=uo()
+    print(users)
     return render(request,"list_users.html",{'atual':atual,"users":users,"funcao":funcao,"me":me,"me_id":me_id,"campus":campus,"uos":uos,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request),'colaboradores':Colaborador.objects.all(),'docentes':ProfessorUniversitario.objects.all()})
 #--------------------------------------------recuperaçao de password---------------------------------
 def change_password(request, id):
@@ -526,7 +532,7 @@ def validacoes(request,acao,id):
             user.validada=4
             Participante.objects.filter(pk=id).delete()
         user.save()
-        noti_views.new_noti(request,user.pk,'Bem-vindo','Seja bem-vindo ao site do dia aberto')
+        noti_views.new_noti(request,id,'Bem-vindo','Seja bem-vindo ao site do dia aberto')
         recepient=user.email
         from_user=Utilizador.objects.get(pk=request.session['user_id']).email
         subject="Validação da conta"
