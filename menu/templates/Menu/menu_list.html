@@ -77,19 +77,19 @@
                 <table id="myTable" class="table has-mobile-cards is-hoverable is-fullwidth">
                     <thead>
                             <th>
-                                Menu:
+                                Menu
                             </th>
                             <th>
-                                Campus:
+                                Campus
                             </th>
                             <th>
-                                Dia:
+                                Dia
                             </th>
                             <th>
-                                Hora:
+                                Hora
                             </th>
                             <th>
-                                Almoços Disponivel:
+                                Almoços Disponivel
                             </th>
                             <th>Ações</th>
                         </thead>
@@ -240,21 +240,21 @@
                         {% endfor %}
                         <div class="input-group col-sm-12">
                             <div class="input-group-prepend labelForm">
-                                <span class="input-group-text w-100">Dia do almoço:</span>
+                                <span class="input-group-text w-100">Dia do almoço</span>
                             </div>
                             <input disabled="" class="form-control bg-light" type="text" value="{{ i.horario_has_dia_id_dia_hora.dia_dia.dia | date:"d/m/Y" }}">
                         </div>
                         <br>
                         <div class="input-group col-sm-12">
                             <div class="input-group-prepend labelForm">
-                                <span class="input-group-text w-100">Hora do Almoço:</span>
+                                <span class="input-group-text w-100">Hora do Almoço</span>
                             </div>
                             <input disabled="" class="form-control bg-light" type="text" value="{{ i.horario_has_dia_id_dia_hora.horario_hora.hora | time:"H:i"}}">
                         </div>
                         <br>
                         <div class="input-group col-sm-12">
                             <div class="input-group-prepend labelForm">
-                                <span class="input-group-text w-100">Campus:</span>
+                                <span class="input-group-text w-100">Campus</span>
                             </div>
                             <input disabled="" class="form-control bg-light" type="text" value="{{ i.campus_idcampus }}">
                         </div>
@@ -270,14 +270,14 @@
                         {% if preco.ano == atual %}
                         <div class="input-group col-sm-12">
                             <div class="input-group-prepend labelForm">
-                                <span class="input-group-text w-100">Preço do almoço para estudantes:</span>
+                                <span class="input-group-text w-100">Preço do almoço para estudantes</span>
                             </div>
                             <input disabled="" class="form-control bg-light" type="text" value="{{preco.preco_almoco_estudante}}€">
                         </div>
                         <br>
                         <div class="input-group col-sm-12">
                             <div class="input-group-prepend labelForm">
-                                <span class="input-group-text w-100">Preço do almoço para professores:</span>
+                                <span class="input-group-text w-100">Preço do almoço para professores</span>
                             </div>
                             <input disabled="" class="form-control bg-light" type="text" value="{{preco.preco_almoco_professor}}€">
                         </div>
