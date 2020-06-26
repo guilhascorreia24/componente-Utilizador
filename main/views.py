@@ -21,7 +21,9 @@ def criar_tarefa(request):
 
 def mais_info(request, pk):
 	tarefa = Tarefa.objects.get(idtarefa = pk)
-	context={'tarefa':tarefa,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)}
+	sala_buscar = Sala.Objects.get(espaco_idespaco= tarefa.buscar)
+	sala_levar= Sala.Objects.get(espaco_idespaco= tarefa.levar)
+	context={'tarefa':tarefa,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request), 'sala_buscar':sala_b, "sala_levar":sala_v}
 	return render(request=request,
 				template_name="main/info_atividade.html",
 				context=context)
@@ -64,8 +66,8 @@ def disponibilidades(string):
 	return dispos
 
 def criar_tarefa_atividade(request):
-	user2 = Utilizador.objects.get(idutilizador = request.session["user_id"])
-	coord_user = Coordenador.objects.get(utilizador_idutilizador = user2)
+	user_coord = Utilizador.objects.get(idutilizador = request.session["user_id"])
+	coord_user = Coordenador.objects.get(utilizador_idutilizador = user_coord)
 	new_form = Tarefa(concluida = 0, coordenador_utilizador_idutilizador = coord_user)
 	form = TarefasFormAtividade(request.POST, instance = new_form)
 	dispos=disponibilidades('Ajudar Docente')
@@ -73,13 +75,14 @@ def criar_tarefa_atividade(request):
 		if form.is_valid():
 			new_tarefa = form.save(commit = False)
 			new_tarefa.sessao_idsessao = Sessao.objects.get(idsessao = request.POST['idsession'])
-			print(request.POST)
 			if request.POST['id_colaborador_utilizador_idutilizador'] != '':
 				user = Utilizador.objects.get(idutilizador = request.POST['id_colaborador_utilizador_idutilizador']) #Vamos Buscar o Utilizador com o ID especificado no formulario
 				colaborador_user = Colaborador.objects.get(utilizador_idutilizador = user)	#Vamos buscar o colaborador associado aquele objeto utilizador
 				new_tarefa.colaborador_utilizador_idutilizador = colaborador_user	#Enviamos esse colaborador para a nova tarefa
-			new_tarefa.save()
-			noti_views.new_noti(request,user.pk,'Tarefa','Foi atribuido uma Nova Tarefa')
+				new_tarefa.save()
+				noti_views.new_noti(request,colaborador_user.pk,'Tarefa','Foi atribuido uma Nova Tarefa')
+			else:
+				new_tarefa.save()
 			messages.success(request, f'Tarefa Criada com Sucesso!')
 			return redirect("tarefa_coordenador:consultar_tarefa")
 
@@ -140,11 +143,11 @@ def load_cities(request):
 				  context={'sessao':sessao,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
 
 def consultar_tarefa(request):
-	tarefas = Tarefa.objects.all()
+	tarefas = Tarefa.objects.filter(coordenador_utilizador_idutilizador = request.session["user_id"])
 	sessao = Sessao.objects.all()
 	colab = Colaborador.objects.all()
 	iduo = Coordenador.objects.get(pk = Utilizador.objects.get(pk= request.session["user_id"])).unidade_organica_iduo
-	atividade = Atividade.objects.filter(unidade_organica_iduo = iduo)
+	atividade = Atividade.objects.all()
 	myFilter = TarefaFilter(request.GET, queryset=tarefas)
 	tarefas = myFilter.qs
 

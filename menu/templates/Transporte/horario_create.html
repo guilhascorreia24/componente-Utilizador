@@ -38,7 +38,7 @@
                      <div class="control">
                       <div class="select is-fullwidth">
                         {{form.origem}}
-                        {{form.errors.origem}}
+                        
               </div>
             </div>
           </div>
@@ -80,7 +80,7 @@
           <div class="column is-8 is-offset-2">
               <div class="level">
               <div class="level-left">
-              <a  class="button is-outlined" type="button">
+              <a  href="{% url 'menu:transporte-list' %}" class="button is-outlined" type="button">
               <span>Cancelar</span>
         </a>
         </div>
@@ -92,7 +92,6 @@
              </div>
              </div>
              </form>
-             </div>
                <style>
                    .label {
                    font-weight: normal;

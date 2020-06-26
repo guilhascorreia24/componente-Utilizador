@@ -29,6 +29,7 @@ class UserRegisterForm(forms.Form):
         data = self.cleaned_data
         if DiaAberto.objects.filter(ano=datetime.date.today().year).exists():
             ano=DiaAberto.objects.get(ano=datetime.date.today().year)
+            ano=DiaAberto.objects.get(ano=datetime.datetime.now().year)
         else:
             ano=None
         user=Utilizador(nome=data['name'],

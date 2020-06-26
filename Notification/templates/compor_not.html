@@ -2,8 +2,8 @@
 {% block steps %}
 <li><a href="/" class="router-link-active">Início</a></li>
 <li><a href="{% url "check_not" %}" class="">Notificações</a></li>
-<li class="is-active"><a href="{% url "create_not" %}"
-    class="router-link-exact-active router-link-active">Compor notificação</a></li>
+<li class="is-active"><a href="{% url "create_not" %}" class="router-link-exact-active router-link-active">Compor
+    notificação</a></li>
 {% endblock %}
 {% block content %}
 
@@ -29,17 +29,18 @@
     }
 
     .label {
-    display: inline;
-    padding: 0%;
-    font-size: 75%;
-    font-weight: 700;
-    line-height: 1;
-    color: #fff;
-    text-align: center;
-    white-space: nowrap;
-    vertical-align: baseline;
-    border-radius: .25em;
-} 
+      display: inline;
+      padding: 0%;
+      font-size: 75%;
+      font-weight: 700;
+      line-height: 1;
+      color: #fff;
+      text-align: center;
+      white-space: nowrap;
+      vertical-align: baseline;
+      border-radius: .25em;
+    }
+
     .bootstrap-tagsinput input {
       border: none;
       box-shadow: none;
@@ -91,126 +92,126 @@
     .bootstrap-tagsinput .tag [data-role="remove"]:hover:active {
       box-shadow: inset 0 0px 5px rgba(0, 0, 0, 0.125);
     }
+
     .label:not(:last-child) {
-      margin-bottom: 0%;}
-}
+      margin-bottom: 0%;
+    }
+    }
   </style>
 </head>
-    <div data-v-8716d23a="" class="card-content" style="height: 0px;">
-      <div data-v-8716d23a="" id="top">
-          {% block content2 %}
-        <div style="padding: 0rem 1vw 0px;">
-          <hr>
-          <h2 class="title has-text-grey is-uppercase" style="font-size: 0.9rem;"> Nova notificação </h2>
-          <div class="columns">
-            <div class="column">
-              <form method="Post">
-                {% csrf_token %}
-                {% if form.Destinatario.errors %}
-                <div class="field"><label class="">Destinatario</label>
-                  <div class="control is-clearfix">
-                    <datalist id="brow">
-                      {% for contact in contacts %}
-                      <option value="{{contact}}">
-                        {% endfor %}
-                    </datalist>
-                    <div class="control has-icons-right"><input class="input" id="{{form.Destinatario.id_for_label}}" class="input" name="Destinatario"
-                      data-role="tagsinput" value="{{form.Destinatario.value|default_if_none:''}}">
-                    <!----> <span class="icon is-right has-text-danger"><i
-                        class="mdi mdi-alert-circle mdi-24px"></i></span></div>
-                    <!---->
-                    <!---->
-                    <!---->
-                  </div>
-                  <p class="help is-danger">{{form.Destinatario.errors}}</p>
-                  <!---->
-                </div>
-                {% else %}
-                <div class="field"><label class="">Destinatario</label>
-                  <div class="control is-clearfix">
-                    <datalist id="brow">
-                      {% for contact in contacts %}
-                      <option value={{contact}}>
-                      {% endfor %}
-                    </datalist>
-                    <input class="input" id="{{form.Destinatario.id_for_label}}" class="input" name="Destinatario"
-                      data-role="tagsinput" value="{{form.Destinatario.value|default_if_none:''}}">
-                    <!---->
-                    <!---->
-                    <!---->
-                  </div>
-                  <!---->
-                </div>
-                {% endif %}
-            </div>
-            {% if form.Assunto.errors %}
-            <div class="column">
-              <div class="field"><label class="">Assunto</label>
-                <div class="control has-icons-right"><input type="text" id="{{form.Assunto.id_for_label}}" name="Assunto"
-                    value="{{form.Assunto.value|default_if_none:''}}" autocomplete="on" class="input">
+  <div data-v-8716d23a="" id="top">
+    {% block content2 %}
+    <div style="padding: 0rem 1vw 0px;">
+      <hr>
+      <h2 class="title has-text-grey is-uppercase" style="font-size: 0.9rem;"> Nova notificação </h2>
+      <div class="columns">
+        <div class="column">
+          <form method="Post">
+            {% csrf_token %}
+            {% if form.Destinatario.errors %}
+            <div class="field"><label class="">Destinatario</label>
+              <div class="control is-clearfix">
+                <datalist id="brow">
+                  {% for contact in contacts %}
+                  <option value="{{contact}}">
+                    {% endfor %}
+                </datalist>
+                <div class="control has-icons-right"><input class="input" id="{{form.Destinatario.id_for_label}}"
+                    class="input" name="Destinatario" data-role="tagsinput"
+                    value="{{form.Destinatario.value|default_if_none:''}}">
                   <!----> <span class="icon is-right has-text-danger"><i
-                      class="mdi mdi-alert-circle mdi-24px"></i></span>
-                  <!---->
-                  <!---->
-                  <!---->
-                </div>
-                {{form.Assunto.errors}}
+                      class="mdi mdi-alert-circle mdi-24px"></i></span></div>
+                <!---->
+                <!---->
                 <!---->
               </div>
+              <p class="help is-danger">{{form.Destinatario.errors}}</p>
+              <!---->
             </div>
-            {% else%}
-            <div class="column">
-              <div class="field"><label class="">Assunto</label>
-                <div class="control is-clearfix"><input type="text" id="{{form.Assunto.id_for_label}}" name="Assunto"
-                    value="{{form.Assunto.value|default_if_none:''}}" autocomplete="on" class="input">
-                  <!---->
-                  <!---->
-                  <!---->
-                </div>
+            {% else %}
+            <div class="field"><label class="">Destinatario</label>
+              <div class="control is-clearfix">
+                <datalist id="brow">
+                  {% for contact in contacts %}
+                  <option value={{contact}}>
+                    {% endfor %}
+                </datalist>
+                <input class="input" id="{{form.Destinatario.id_for_label}}" class="input" name="Destinatario"
+                  data-role="tagsinput" value="{{form.Destinatario.value|default_if_none:''}}">
+                <!---->
+                <!---->
                 <!---->
               </div>
+              <!---->
             </div>
             {% endif %}
-          </div>
-          {% if form.Descricao.errors %}
-          <div class="field"><label class="">Descrição</label>
-            <div class="control has-icons-right"><textarea maxlength="300" id="{{form.Descricao.id_for_label}}"
-                value="{{form.Descricao.value|default_if_none:''}}" name="Descricao" class="textarea"></textarea>
+        </div>
+        {% if form.Assunto.errors %}
+        <div class="column">
+          <div class="field"><label class="">Assunto</label>
+            <div class="control has-icons-right"><input type="text" id="{{form.Assunto.id_for_label}}" name="Assunto"
+                value="{{form.Assunto.value|default_if_none:''}}" autocomplete="on" class="input">
+              <!----> <span class="icon is-right has-text-danger"><i class="mdi mdi-alert-circle mdi-24px"></i></span>
               <!---->
-              <!----> <small class="help counter is-invisible">
-                0 / 300
-              </small></div>
-            <!----> <span class="icon is-right has-text-danger"><i class="mdi mdi-alert-circle mdi-24px"></i></span>
-            {{form.Descricao.errors}}
+              <!---->
+              <!---->
+            </div>
+            {{form.Assunto.errors}}
             <!---->
           </div>
-          {% else %}
-          <div class="field"><label class="">Descrição</label>
-            <div class="control is-clearfix"><textarea maxlength="300" id="{{form.Descricao.id_for_label}}"
-                value="{{form.Descricao.value|default_if_none:''}}" name="Descricao" class="textarea"></textarea>
+        </div>
+        {% else%}
+        <div class="column">
+          <div class="field"><label class="">Assunto</label>
+            <div class="control is-clearfix"><input type="text" id="{{form.Assunto.id_for_label}}" name="Assunto"
+                value="{{form.Assunto.value|default_if_none:''}}" autocomplete="on" class="input">
               <!---->
-              <!----> <small class="help counter is-invisible">
-                0 / 300
-              </small></div>
+              <!---->
+              <!---->
+            </div>
             <!---->
           </div>
-          {% endif %}
-          </tr>
         </div>
-        <div class="column is-8 is-offset-2">
-          <div class="level">
-            <div class="level-left"><a href="{% url "check_not" %}" class="button is-outlined" type="button">
-                <!----> <span> Cancelar </span>
-                <!----></a></div>
-            <div class="level-right"><button type="submit" class="button is-large is-success is-outlined">
-                <!----> <span> Enviar </span> <span class="icon is-medium"><i
-                    class="mdi mdi-forward mdi-36px"></i></span></button></div>
-            </form>
-            {% endblock content2 %}
-          </div>
-        </div>
+        {% endif %}
       </div>
+      {% if form.Descricao.errors %}
+      <div class="field"><label class="">Descrição</label>
+        <div class="control has-icons-right"><textarea maxlength="300" id="{{form.Descricao.id_for_label}}"
+            value="{{form.Descricao.value|default_if_none:''}}" name="Descricao" class="textarea"></textarea>
+          <!---->
+          <!----> <small class="help counter is-invisible">
+            0 / 300
+          </small></div>
+        <!----> <span class="icon is-right has-text-danger"><i class="mdi mdi-alert-circle mdi-24px"></i></span>
+        {{form.Descricao.errors}}
+        <!---->
+      </div>
+      {% else %}
+      <div class="field"><label class="">Descrição</label>
+        <div class="control is-clearfix"><textarea maxlength="300" id="{{form.Descricao.id_for_label}}"
+            value="{{form.Descricao.value|default_if_none:''}}" name="Descricao" class="textarea"></textarea>
+          <!---->
+          <!----> <small class="help counter is-invisible">
+            0 / 300
+          </small></div>
+        <!---->
+      </div>
+      {% endif %}
+    <div class="column is-8 is-offset-2">
+      <div class="level">
+        <div class="level-left"><a href="{% url "check_not" %}" class="button is-outlined" type="button">
+            <!----> <span> Cancelar </span>
+            <!----></a></div>
+        <div class="level-right"><button type="submit" class="button is-large is-success is-outlined">
+            <!----> <span> Enviar </span> <span class="icon is-medium"><i
+                class="mdi mdi-forward mdi-36px"></i></span></button></div>
+        </form>
+        </div>
     </div>
+  </div>
+        {% endblock content2 %}
+      </div>
+
 <script>
   // bootstrap-tagsinput.js file - add in local
 
@@ -863,6 +864,6 @@
 </script>
 
 <script>
-    document.getElementsByClassName("bootstrap-tagsinput")[0].getElementsByClassName("INPUT").setAttribute("list", "brow"); 
-  </script>
+  document.getElementsByClassName("bootstrap-tagsinput")[0].getElementsByClassName("INPUT").setAttribute("list", "brow"); 
+</script>
 {% endblock content %}
