@@ -357,7 +357,7 @@ def modify_user(request,id):
         funcao = "Docente Univesitario"
         depid = ProfessorUniversitario.objects.get(utilizador_idutilizador=id).departamento_iddepartamento
         dep= Departamento.objects.get(pk=depid.pk).nome
-        UO=UnidadeOrganica.objects.get(pk=depid.pk).sigla
+        UO=depid.unidade_organica_iduo.sigla
         if Utilizador.objects.get(pk=id).dia_aberto_ano!=None:
             ano = Utilizador.objects.get(pk=id).dia_aberto_ano.ano
     elif Coordenador.objects.filter(utilizador_idutilizador=id).exists():
@@ -367,7 +367,6 @@ def modify_user(request,id):
         if Utilizador.objects.get(pk=id).dia_aberto_ano!=None:
             ano = Utilizador.objects.get(pk=id).dia_aberto_ano.ano
     elif Colaborador.objects.filter(utilizador_idutilizador=id).exists():
-        ano = Utilizador.objects.get(pk=id).dia_aberto_ano.ano
         funcao = "Colaborador"
         cursoid=Colaborador.objects.get(utilizador_idutilizador=id).curso_idcurso
         UO=Curso.objects.get(pk=cursoid.pk).unidade_organica_iduo.sigla
