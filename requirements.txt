@@ -1,0 +1,16 @@
+asgiref==3.2.10
+bcrypt==3.1.7
+cffi==1.14.0
+cryptography==2.8
+Django==3.0.4
+django-crispy-forms==1.9.0
+django-filter==2.3.0
+django-filters==0.2.1
+mysqlclient==1.4.6
+Pillow==7.1.2
+pycparser==2.20
+pycrypto==2.6.1
+pytz==2020.1
+PyYAML==5.3.1
+six==1.15.0
+sqlparse==0.3.1
