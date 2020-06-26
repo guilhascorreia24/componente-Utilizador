@@ -22,7 +22,7 @@ class DiaAbertoForm(ModelForm):
         model = DiaAberto
         exclude = ['administrador_utilizador_idutilizador']
         widgets = {
-            'ano': TextInput(attrs={'class': 'input'}),
+            'ano': NumberInput(attrs={'class': 'input'}),
             'emaildiaaberto' : EmailInput(attrs={'class': 'input'}),
             'enderecopaginaweb': URLInput(attrs={'class': 'input'}),
             'datainscricaonasatividadesinicio': DateInput(attrs={'class': 'input', 'type':'date'}),
@@ -31,7 +31,7 @@ class DiaAbertoForm(ModelForm):
             'datadiaabertofim': DateInput(attrs={'class': 'input', 'type':'date'}),
             'datapropostaatividadeinicio': DateInput(attrs={'class': 'input', 'type':'date'}),
             'datapropostaatividadesfim': DateInput(attrs={'class': 'input', 'type':'date'}),
-            'preco_almoco_estudante': NumberInput(attrs={'class': 'input', 'value': '2.80', 'step': '0.01','min':0}, ),
+            'preco_almoco_estudante': NumberInput(attrs={'class': 'input', 'value': '2.80', 'step': '0.01','min':0},),
             'preco_almoco_professor': NumberInput(attrs={'class': 'input', 'value': '4.20', 'step': '0.01','min':0}),
         }
 
