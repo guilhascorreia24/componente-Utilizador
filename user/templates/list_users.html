@@ -362,6 +362,7 @@
                                 <input disabled="" class="form-control col-sm-4 bg-light" type="text" value="{{user.cargo}}">
                             </div>
                             <br>
+                            {% if user.UO != '-' %}
                             <div class="input-group col-sm-12">
                                 <div class="input-group-prepend labelForm">
                                     <span class="input-group-text w-100">Unidade Organica</span>
@@ -369,6 +370,7 @@
                                 <input disabled="" class="form-control col-sm-4 bg-light" type="text" value="{{user.UO}}">
                             </div>
                             <br>
+                            {% endif %}
                             {% for colab in colaboradores %}
                             {% if colab.utilizador_idutilizador.pk == user.no_enc %}
                             <div class="input-group col-sm-12">
