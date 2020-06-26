@@ -235,7 +235,6 @@ def transporte_create_view(request):
     if request.method == "POST":
         if form.is_valid():
             form.save()
-            messages.success(request, f'Transporte Criada com Sucesso!')
             return redirect("menu:horario-list")
     context = {
         'form': form,'o':True,
@@ -258,7 +257,7 @@ def horario_create_view(request):
             new_horario.destino = dest
             new_horario.horario_has_dia_id_dia_hora = hor
             new_horario.save()
-            messages.success(request, f'Horario Criado com Sucesso!')
+            messages.success(request, f'Transporte Criado com Sucesso!')
             return redirect("menu:transporte-list")
     context = {
         'form': form,
@@ -275,7 +274,6 @@ def transporte_update_view(request, id):
     print("uuuuuuuuuuuuuuuuuuuuu")
     if form.is_valid():
         form.save()
-        messages.success(request, f'Transporte Editado com Sucesso!')
         return redirect('menu:transporte-update2', id=id)
     context = {
         'form': form,
@@ -330,7 +328,7 @@ def transporte_delete_view(request,id):
     transporte = Transporte.objects.get(idtransporte=id)
     if Transporte.objects.filter(pk=id).exists():
         transporte.delete()
-        messages.success(request, f'Transporte Elimiado com Sucesso!')
+        messages.success(request, f'Transporte Eliminado com Sucesso!')
     return redirect("menu:transporte-list")
 
 def transportehora_create_view(request):
@@ -366,8 +364,8 @@ def transporte_grupo_view(request, id):
         if form.is_valid():
             form.save(id)
             print("aaaaaaaaaaaaaaaaaaa")
-            messages.success(request, f'Transporte grupo criado com Sucesso!')
-            noti_views.new_noti(request,request.session['user_id'],'Submissao do Transporte','  Transporte criado com Sucesso!')
+            messages.success(request, f'Transporte associado com Sucesso!')
+            noti_views.new_noti(request,request.session['user_id'],'Submissao do Transporte','  Transporte Associado com Sucesso!')
             return redirect("menu:transporte-list")
             
     context = {
