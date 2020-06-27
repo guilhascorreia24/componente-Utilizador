@@ -25,6 +25,7 @@ def preencher_hora(hora_incio, hora_fim):
     while time_start < time_end:
         time_start += datetime.timedelta(minutes=30)
         Horario.objects.get_or_create(pk=time_start)
+    return Horario.objects.all()
 
 
 def diaaberto_create(request):
@@ -39,13 +40,14 @@ def diaaberto_create(request):
             final = form.cleaned_data['datadiaabertofim']
             hora_inicio=request.POST['h_incio']
             hora_fim=request.POST['h_fim']
-            preencher_hora(hora_inicio,hora_fim)
-            Horario(hora="12:00:00").save()
-            hora1 = Horario.objects.filter(hora="12:00:00")
+            hora_list = preencher_hora(hora_inicio,hora_fim)
+            #Horario(hora="12:00:00").save()
+            #hora1 = Horario.objects.filter(hora="12:00:00")
             for x in range(inicio.day, final.day+1):
                 Dia(dia=inicio+datetime.timedelta(days=x-inicio.day)).save()
                 dia1 = Dia.objects.filter(dia = inicio+datetime.timedelta(days=x-inicio.day))
-                HorarioHasDia(horario_hora=hora1[0], dia_dia=dia1[0]).save()
+                for hora in hora_list:
+                    HorarioHasDia(horario_hora=hora, dia_dia=dia1[0]).save()
             update_ano_user_null()
             messages.success(request, f'Dia Aberto Criado com Sucesso!')
             return redirect("menu:diaaberto_list")
@@ -68,13 +70,12 @@ def diaaberto_update(request, id):
         print(request.POST)
         hora_inicio=request.POST['h_incio']
         hora_fim=request.POST['h_fim']
-        preencher_hora(hora_inicio,hora_fim)
-        Horario(hora="12:00:00").save()
-        hora1 = Horario.objects.filter(hora="12:00:00")
+        hora_list = preencher_hora(hora_inicio,hora_fim)
         for x in range(inicio.day, final.day+1):
-            Dia(dia=inicio+datetime.timedelta(days=x-inicio.day)).save()
-            dia1 = Dia.objects.filter(dia = inicio+datetime.timedelta(days=x-inicio.day))
-            HorarioHasDia(horario_hora=hora1[0], dia_dia=dia1[0]).save()
+                Dia(dia=inicio+datetime.timedelta(days=x-inicio.day)).save()
+                dia1 = Dia.objects.filter(dia = inicio+datetime.timedelta(days=x-inicio.day))
+                for hora in hora_list:
+                    HorarioHasDia(horario_hora=hora, dia_dia=dia1[0]).save()
         messages.success(request, f'Dia Aberto editado com Sucesso!')
         return redirect("menu:diaaberto_list")
     context = {
