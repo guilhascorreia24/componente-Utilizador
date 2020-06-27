@@ -160,6 +160,7 @@ def register(request):
         form = UserRegisterForm(request.POST)
         data=request.POST
         form.is_valid()
+        print(data)
         print(len(data['name'])>0)
         print(len(data['email'])>0)
         print(len(data['password1'])>0)
@@ -504,7 +505,7 @@ def reset(request):
             subject = 'Recuperação da Palavra-Passe'
             p=Utilizador.objects.get(email=recepient).idutilizador
             id = encrypt(p)
-            message = 'Para recuperar a sua palavra-passe re-introduza uma palavra-passe nova, no seguinte link: {% "reset" id %}'
+            message = str("Para recuperar a sua palavra-passe re-introduza uma palavra-passe nova, no seguinte link: "+request.build_absolute_uri(id))
             send_mail(subject, message, 'diabertoworking@gmail.com', [recepient])
             messages.success(request, f'Verifique o seu email')
             return render(request, 'reset.html', {'form': sub})
