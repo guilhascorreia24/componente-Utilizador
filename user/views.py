@@ -301,10 +301,10 @@ def modify_user(request,id):
         print(request.POST['name']!="")
         print(request.POST['email']!="")
         print(not Utilizador.objects.filter(email=request.POST['email']).exists() )
-        print(not Utilizador.objects.filter(telefone=request.POST['telefone']).exists() and Utilizador.objects.get(telefone=request.POST['telefone']).idutilizador!=id)
+        print(not Utilizador.objects.filter(telefone=request.POST['telefone']).exists())
         print(request.POST['telefone']!="")
         print(bool(validateEmail(request.POST['email'])))
-        if (request.POST['name']!="")  and (request.POST['email']!="") and not(Utilizador.objects.filter(email=request.POST['email']).exists() and Utilizador.objects.get(email=request.POST['email']).idutilizador!=id) and not( Utilizador.objects.filter(telefone=request.POST['telefone']).exists() and Utilizador.objects.get(telefone=request.POST['telefone']).idutilizador!=id) and (request.POST['telefone']!="") and (validateEmail(request.POST['email'])):
+        if (request.POST['name']!="")  and (request.POST['email']!="") and not(Utilizador.objects.filter(email=request.POST['email']).exists()) and not( Utilizador.objects.filter(telefone=request.POST['telefone']).exists()) and (request.POST['telefone']!="") and (validateEmail(request.POST['email'])):
             t=Utilizador.objects.get(pk=id)
             t.nome=request.POST['name']
             t.email=request.POST['email']

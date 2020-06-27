@@ -9,6 +9,7 @@ from user.views import update_ano_user_null
 from django.utils import timezone
 from django.contrib import messages
 from Notification import views as noti_views
+from django.db.models import CharField, Value, TimeField
 ###### Dia Aberto ##############
 def index(request):
     queryset = DiaAberto.objects.all() # list of objects
@@ -61,6 +62,17 @@ def diaaberto_update(request, id):
     obj = get_object_or_404(DiaAberto, ano=id)
     form = DiaAbertoForm(request.POST or None, instance=obj)
     pk_url_kwarg = 'ano'
+    hora_inicio=Horario.objects.all()[0].pk
+    hora_fim=Horario.objects.all().order_by('-pk')[0].pk
+    print(hora_inicio)
+    horarios=HorarioHasDia.objects.all()
+    for horario in horarios:
+        if horario.dia_dia.pk.year==id:
+            if horario.horario_hora.pk<hora_inicio:
+                hora_inicio=HorarioHasDia.objects.filter(dia_dia=horario.dia_dia)[0].horario_hora.pk
+            if horario.horario_hora.pk>hora_fim:
+                hora_fim=HorarioHasDia.objects.filter(dia_dia=horario.dia_dia).reverse()[0].horario_hora.pk
+
     if form.is_valid():
         form.save()
         #Horario.objects.all().delete()
@@ -78,8 +90,9 @@ def diaaberto_update(request, id):
                     HorarioHasDia(horario_hora=hora, dia_dia=dia1[0]).save()
         messages.success(request, f'Dia Aberto editado com Sucesso!')
         return redirect("menu:diaaberto_list")
+    print(type(hora_inicio))
     context = {
-        'form': form,
+        'form': form,'hora_inicio':hora_inicio,'hora_fim':hora_fim,
         'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)
     }
     return render(request, "DiaAberto/diaaberto_create.html", context)
@@ -87,11 +100,25 @@ def diaaberto_update(request, id):
 
 def diaaberto_list(request):
     d = DiaAberto.objects.all() # list of objects
-    dia = DiaAberto.objects.order_by('-ano')
+    dia = DiaAberto.objects.order_by('-ano').annotate(hora_inicio=Value(datetime.time(23,59),TimeField()),hora_fim=Value(datetime.time(23,59),TimeField()))
     myFilter = DiaAbertoFilter(request.GET, queryset=dia)
     dia = myFilter.qs
+    hora_inicio=Horario.objects.all()[0]
+    hora_fim=Horario.objects.all().order_by('-pk')[0]
+    horarios=HorarioHasDia.objects.all()
+    for de in dia:
+        de.hora_inicio=Horario.objects.all()[0].pk
+        de.hora_fim=Horario.objects.all().order_by('-pk')[0].pk
+        for horario in horarios:
+            if horario.dia_dia.pk.year==de.ano:
+                if horario.horario_hora.pk<de.hora_inicio:
+                    de.hora_inicio=HorarioHasDia.objects.filter(dia_dia=horario.dia_dia)[0].horario_hora.pk
+                if horario.horario_hora.pk>de.hora_fim:
+                    de.hora_fim=HorarioHasDia.objects.filter(dia_dia=horario.dia_dia).reverse()[0].horario_hora.pk
+    for o in dia:
+        print(o.hora_inicio)
     context = {
-        "diaaberto_list": dia,
+        "diaaberto_list": dia,'hora_inicio':hora_inicio,'hora_fim':hora_fim,
         'myFilter': myFilter,
         "d": d,
         'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)
