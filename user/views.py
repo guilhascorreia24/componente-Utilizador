@@ -3,7 +3,7 @@ from django.contrib import messages
 from .forms import UserRegisterForm, AuthenticationForm, ModifyForm, PasswordChangeForm, EmailSender, DeleteUser
 from django.core.mail import message, send_mail
 from django.core import signing
-from .models import UnidadeOrganica, DiaAberto,Departamento, Utilizador, Participante, ProfessorUniversitario, Administrador, Coordenador, Colaborador, DjangoSession, Curso, InscricaoColetiva, InscricaoIndividual, Atividade, Tarefa, Campus
+from .models import UnidadeOrganica, DiaAberto,Departamento, Utilizador, Participante, ProfessorUniversitario, Administrador, Coordenador, Colaborador, DjangoSession, Curso, InscricaoColetiva, InscricaoIndividual, Atividade, Tarefa, Campus, Disponibilidade
 from django.db.models import CharField, Value, IntegerField
 from Notification import views as noti_views
 import datetime
@@ -17,6 +17,7 @@ import json
 from django.conf import settings
 from Notification.views import *
 from django.views.decorators.csrf import csrf_exempt
+import hashlib
 
 def encrypt(txt):
         # convert integer etc to string first
@@ -278,7 +279,7 @@ def delete_user(request,id):
         u.delete()
         part.delete()
         messages.success(request, f'Utilizador eliminado com sucesso')
-    elif (coord.exists() or colab.exists()) and (not Tarefa.objects.filter(colaborador_utilizador_idutilizador=id).exists() or not Tarefa.objects.filter(coordenador_utilizador_idutilizador=id).exists()):
+    elif (coord.exists() or colab.exists()) and (not Disponibilidade.objects.filter(colaborador_utilizador_idutilizador=Colaborador.objects.filter(pk=Utilizador.objects.filter(pk=id))) and not Tarefa.objects.filter(colaborador_utilizador_idutilizador=id).exists() or not Tarefa.objects.filter(coordenador_utilizador_idutilizador=id).exists()):
         u.delete()
         coord.delete()
         colab.delete()
@@ -482,7 +483,7 @@ def change_password(request, id):
         passwd=request.POST['password']
         if form.is_valid and password_check(passwd) is True:
             t=Utilizador.objects.get(pk=id_deccryp)
-            t.password=encrypt(passwd)
+            t.password=hashlib.sha256(passwd.encode('utf-8')).hexdigest()
             t.save()
             messages.success(request, f'Password alterada com sucesso')
             return redirect('blog:blog-home')
