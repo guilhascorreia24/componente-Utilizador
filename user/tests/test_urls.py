@@ -32,10 +32,6 @@ class TestUrls(SimpleTestCase):
         url = reverse('profile_list')
         self.assertEquals(resolve(url).func, profile_list)
 
-    def test_profile_user(self):
-        url = reverse('profile_user',args=[52])
-        self.assertEquals(resolve(url).func, profile)
-
     def test_profile_edit(self):
         url = reverse('profile_edit',args=[52])
         self.assertEquals(resolve(url).func, modify_user)

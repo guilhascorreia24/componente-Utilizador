@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
     'blog.apps.BlogConfig',
     'crispy_forms',
     'cryptography',
@@ -55,6 +56,7 @@ INSTALLED_APPS = [
     'main.apps.MainConfig',
     'menu.apps.MenuConfig',
 ]
+SITE_ID=1
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -97,7 +99,11 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'les',
         'USER': 'root',
+<<<<<<< HEAD
         'PASSWORD': '12345abcd',
+=======
+        'PASSWORD': '82134',
+>>>>>>> 06e9f1775b3ed7437a6db93fc2631ef2ddf51d2d
         'HOST': '127.0.0.1',
         'PORT': '3306',
     }
@@ -134,7 +140,7 @@ USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)

@@ -174,7 +174,8 @@
                 </button>
             </div>
             <div class="modal-body">
-                <div>                   
+                <div>
+                    <form class="well form-horizontal ">                 
                         <div class="input-group col-sm-12">
                             <div class="input-group-prepend labelForm">
                                 <span class="input-group-text w-100">Ano</span>
@@ -223,7 +224,21 @@
                             </div>
                             <input disabled="" class="form-control col-sm-2 bg-light" type="text" value="{{ i.descricao }}">
                         </div>
-                </div>
+                        <br>
+                        <div class="input-group col-sm-12">
+                            <div class="input-group-prepend labelForm">
+                                <span class="input-group-text w-100">Hora de Abertura</span>
+                            </div>
+                            <input disabled="" class="form-control col-sm-2 bg-light" type="text" value="{{ i.hora_inicio | time:"H:i" }}">
+                        </div>
+                        <br>
+                        <div class="input-group col-sm-12">
+                            <div class="input-group-prepend labelForm">
+                                <span class="input-group-text w-100">Hora de Fecho</span>
+                            </div>
+                            <input disabled="" class="form-control col-sm-2 bg-light" type="text" value="{{ i.hora_fim  | time:"H:i" }}">
+                        </div>
+                </form></div>
             </div>
         </div>
     </div>
