@@ -81,7 +81,7 @@ def password_check(passwd):
           
     return val
 
-def type_user(data,user_id):
+def type_user(data,user_id,request):
     t=True
     #print(data['departamento']==0)
     #print(type(data['departamento']))
@@ -122,6 +122,7 @@ def type_user(data,user_id):
             part = Participante(pk=user_id)
             part.save()
             Utilizador.objects.filter(pk=user_id).update(validada=0)
+            noti_views.new_noti(request,user_id,'Bem-vindo','Seja bem-vindo ao site do dia aberto')
     return t
 
 
@@ -173,10 +174,10 @@ def register(request):
         #print(not Utilizador.objects.filter(email=request.POST['email']).exists())
         #print(not Utilizador.objects.filter(telefone=request.POST['telefone']).exists())
         #print(password_check(request.POST['password1']))
-        if len(data['name'])>0 and len(data['email'])>0 and len(data['password1'])>0 and validateEmail(data['email']) and (type_user(data,None) is True or type_user(data,None) == 4) and request.POST['password1']==request.POST['password2'] and not Utilizador.objects.filter(email=request.POST['email']).exists() and  not Utilizador.objects.filter(telefone=request.POST['telefone']).exists() and password_check(request.POST['password1']) is True:
+        if len(data['name'])>0 and len(data['email'])>0 and len(data['password1'])>0 and validateEmail(data['email']) and (type_user(data,None,request) is True or type_user(data,None,request) == 4) and request.POST['password1']==request.POST['password2'] and not Utilizador.objects.filter(email=request.POST['email']).exists() and  not Utilizador.objects.filter(telefone=request.POST['telefone']).exists() and password_check(request.POST['password1']) is True:
             form.save()
             user_id=Utilizador.objects.get(email=request.POST['email']).idutilizador
-            type_user(data,user_id)
+            type_user(data,user_id,request)
             if 'user_id' in request.session:
                 validacoes(request,1,user_id)
             messages.success(request, f'Registo efetuado com Sucesso!')
@@ -204,7 +205,7 @@ def register(request):
                 error2 = "Passwords nao coincidem"
             if password_check(request.POST['password1']) != True:
                 error1 = password_check(request.POST['password1']) 
-            return render(request, 'register.html', {'me':me,"func":user(request),'form': form,'cursos':cursos,'UOs':UOs,'deps':deps,'error1': error, 'error2': error1, 'error3': error2, 'error4': error3,'error5':type_user(data,None),'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
+            return render(request, 'register.html', {'me':me,"func":user(request),'form': form,'cursos':cursos,'UOs':UOs,'deps':deps,'error1': error, 'error2': error1, 'error3': error2, 'error4': error3,'error5':type_user(data,None,request),'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
     form = UserRegisterForm()
     return render(request, 'register.html', {'form': form,'UOs':UOs,'deps':deps,'cursos':cursos,"func":user(request),'me':me,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
 
@@ -272,7 +273,7 @@ def delete_user(request,id):
     colab=Colaborador.objects.filter(pk=id)
     if Utilizador.objects.get(pk=id).validada == 5:
         u.delete()
-    if admin.exists():
+    if admin.exists() and not(DiaAberto.objects.filter(administrador_utilizador_idutilizador=id).exists()):
         u.delete()
         admin.delete()
         messages.success(request, f'Utilizador eliminado com sucesso')
@@ -284,13 +285,16 @@ def delete_user(request,id):
         u.delete()
         part.delete()
         messages.success(request, f'Utilizador eliminado com sucesso')
-    elif (coord.exists() or colab.exists()) and (not Disponibilidade.objects.filter(colaborador_utilizador_idutilizador=Colaborador.objects.filter(pk=Utilizador.objects.filter(pk=id))) and not Tarefa.objects.filter(colaborador_utilizador_idutilizador=id).exists() or not Tarefa.objects.filter(coordenador_utilizador_idutilizador=id).exists()):
+    elif (coord.exists()  and not Tarefa.objects.filter(coordenador_utilizador_idutilizador=id).exists()):
         u.delete()
         coord.delete()
+        messages.success(request, f'Utilizador eliminado com sucesso')
+    elif colab.exists() and not Tarefa.objects.filter(colaborador_utilizador_idutilizador=id).exists():
+        u.delete()
         colab.delete()
         messages.success(request, f'Utilizador eliminado com sucesso')
     else:
-        messages.error(request, f'Impossivel de eliminar o utilizador')
+        messages.success(request, f'Impossivel de eliminar o utilizador')
     return redirect("profile_list")
 
 #--------------------------------------alterar user---------------------------------------------
@@ -356,33 +360,30 @@ def modify_user(request,id):
     ano=False
     curso=False
     funcao=False
+    atual=datetime.now().year
+    u=Utilizador.objects.get(pk=id)
     if Administrador.objects.filter(utilizador_idutilizador=id).exists():
         funcao = "Administardor"
-        if Utilizador.objects.get(pk=id).dia_aberto_ano!=None:
-            ano = Utilizador.objects.get(pk=id).dia_aberto_ano.ano
+        ano=year(u,atual)
     elif ProfessorUniversitario.objects.filter(utilizador_idutilizador=id).exists():
         funcao = "Docente Univesitario"
         depid = ProfessorUniversitario.objects.get(utilizador_idutilizador=id).departamento_iddepartamento
         dep= Departamento.objects.get(pk=depid.pk).nome
         UO=depid.unidade_organica_iduo.sigla
-        if Utilizador.objects.get(pk=id).dia_aberto_ano!=None:
-            ano = Utilizador.objects.get(pk=id).dia_aberto_ano.ano
+        ano=year(u,atual)
     elif Coordenador.objects.filter(utilizador_idutilizador=id).exists():
         funcao = "Coordenador"
         IDUO = Coordenador.objects.get(pk=id).unidade_organica_iduo
         UO=UnidadeOrganica.objects.get(pk=IDUO.pk).sigla
-        if Utilizador.objects.get(pk=id).dia_aberto_ano!=None:
-            ano = Utilizador.objects.get(pk=id).dia_aberto_ano.ano
+        ano=year(u,atual)
     elif Colaborador.objects.filter(utilizador_idutilizador=id).exists():
         funcao = "Colaborador"
         cursoid=Colaborador.objects.get(utilizador_idutilizador=id).curso_idcurso
         UO=Curso.objects.get(pk=cursoid.pk).unidade_organica_iduo.sigla
-        if Utilizador.objects.get(pk=id).dia_aberto_ano!=None:
-            ano = Utilizador.objects.get(pk=id).dia_aberto_ano.ano
+        ano=year(u,atual)
     elif Participante.objects.filter(utilizador_idutilizador=id).exists():
         funcao = "Participante"
-        if Utilizador.objects.get(pk=id).dia_aberto_ano!=None:
-            ano = Utilizador.objects.get(pk=id).dia_aberto_ano.ano
+        ano=year(u,atual)
     return render(request, 'profile_modify.html', {"form": form, 'nome': name,'UO':UO, 'email': email, "ano":ano,
                     'telefone': telefone, 'funcao': funcao, 'ano': ano, 'curso': curso,'dep':dep,"me":me,'id':id,'func':user(request),'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
 
@@ -433,15 +434,27 @@ def uo():
         uo.value=str(camp.pk)+"_"+str(uo.pk)
     return uos
 
+def year(u,atual):
+    n=Notificacao.objects.filter(idutilizadorenvia=u.pk)
+    if u.dia_aberto_ano!=None:
+        u.year=u.dia_aberto_ano.ano
+    elif u.dia_aberto_ano==None and n.exists():
+        u.year=n.order_by('-criadoem')[0].criadoem.year
+        n=Notificacao.objects.filter(utilizadorrecebe=u.pk)
+        if n.exists() and n.order_by('-criadoem')[0].criadoem.year<u.year:
+            u.year=n.order_by('-criadoem')[0].criadoem.year
+    else:
+        u.year=atual
+    return  u.year
 
 def profile_list(request):
     funcao=user(request)
     user_id=request.session['user_id']
     #print("can_enter:"+str(not(Coordenador.objects.filter(pk=request.session['user_id']).exists()) or not(Administrador.objects.filter(pk=request.session['user_id']).exists())))
-    if not(Coordenador.objects.filter(pk=request.session['user_id']).exists()) and not(Administrador.objects.filter(pk=request.session['user_id']).exists()):
+    if not(Coordenador.objects.filter(pk=request.session['user_id']).exists()) and not(Administrador.objects.filter(pk=request.session['user_id']).exists()) or not('user_id' in request.session):
         context={'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)}
         return render(request,"not_for-u.html",context)
-    users=Utilizador.objects.all().annotate(cargo=Value('Participante',CharField()),estado=Value('Pendente',CharField()),UO=Value('-',CharField()), no_enc=Value(0,IntegerField()))
+    users=Utilizador.objects.all().annotate(cargo=Value('Participante',CharField()),estado=Value('Pendente',CharField()),UO=Value('-',CharField()), no_enc=Value(0,IntegerField()),year=Value(0,IntegerField()))
     atual=datetime.now().year
     for u in users:
         if Coordenador.objects.filter(pk=u.idutilizador).exists():
@@ -449,24 +462,29 @@ def profile_list(request):
             u.UO=UnidadeOrganica.objects.get(pk=Coordenador.objects.get(pk=u.idutilizador).unidade_organica_iduo.pk).sigla
             if u.validada==2:
                 u.estado="Validado"
+            u.year=year(u,atual)
         elif Colaborador.objects.filter(pk=u.idutilizador).exists():
             u.cargo="Colaborador"
             curso_id=Colaborador.objects.get(pk=u.pk).curso_idcurso.pk
             u.UO=UnidadeOrganica.objects.get(pk=Curso.objects.get(pk=curso_id).unidade_organica_iduo.pk).sigla
             if u.validada==1:
                 u.estado="Validado"
+            u.year=year(u,atual)
         elif ProfessorUniversitario.objects.filter(pk=u.idutilizador).exists():
             u.cargo="Docente Universitario"
             dep=ProfessorUniversitario.objects.get(pk=u.idutilizador).departamento_iddepartamento
             u.UO=UnidadeOrganica.objects.get(pk=dep.unidade_organica_iduo.pk).sigla
             if u.validada==3:
                 u.estado="Validado"
+            u.year=year(u,atual)
         elif Administrador.objects.filter(pk=u.pk).exists():
             u.cargo="Administrador"
             if u.validada==4:
                 u.estado="Validado"
+            u.year=year(u,atual)
         elif Participante.objects.filter(pk=u.pk).exists():
             u.estado="Validado"
+            u.year=year(u,atual)
         #print(str(u.idutilizador)+" "+str(user_id))
         u.no_enc=u.pk
         u.idutilizador=u.idutilizador
