@@ -177,7 +177,7 @@
       {% if form.Descricao.errors %}
       <div class="field"><label class="">Descrição</label>
         <div class="control has-icons-right"><textarea maxlength="300" id="{{form.Descricao.id_for_label}}"
-            value="{{form.Descricao.value|default_if_none:''}}" name="Descricao" class="textarea"></textarea>
+            value="{{form.Descricao.value|default_if_none:''}}" name="Descricao" class="textarea">{{form.Descricao.value|default_if_none:''}}</textarea>
           <!---->
           <!----> <small class="help counter is-invisible">
             0 / 300
