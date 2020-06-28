@@ -43,14 +43,14 @@
                         {% if funcao == "administardor" %}
                         <div class="field">
                             <!---->
-                            <div class="control is-expanded has-icons-left"><span
+                            <div class="control is-expanded has-icons-left"><span id="faculadade"
                                     class="select is-fullwidth is-empty"><select id="myInput3">
-                                        <option hidden value="">
+                                        <option  value="">
                                             Faculdade do Utilizador
                                         </option>
                                         {% for uo in uos %}
                                         {{uo.value}}
-                                        <option value="{{uo.value}}@{{uo.sigla}}">{{uo.sigla}}</option>
+                                        <option value="{{uo.sigla}}">{{uo.sigla}}</option>
                                         {% endfor %}
                                     </select></span> <span class="icon is-left"><i
                                         class="mdi mdi-magnify mdi-24px"></i></span></div>
@@ -59,9 +59,9 @@
                         {% endif %}
                         <div class="field">
                             <!---->
-                            <div class="control is-expanded has-icons-left"><span
+                            <div class="control is-expanded has-icons-left"><span id="cargo"
                                     class="select is-fullwidth is-empty"><select id="myInput4">
-                                        <option hidden value=""> Cargo do Utilizador
+                                        <option  value=""> Cargo do Utilizador
                                         </option>
                                         <option value="Administrador">Administrador</option>
                                         <option value="Coordenador">Coordenador</option>
@@ -77,7 +77,7 @@
                         </div>
                         <div class="field">
                             <!---->
-                            <div class="control is-expanded has-icons-left"><span
+                            <div class="control is-expanded has-icons-left"><span id="estado"
                                     class="select is-fullwidth is-empty"><select id="myInput5">
                                         <option hidden value="">
                                             Estado
@@ -228,12 +228,12 @@
 </div>
 {% endblock content2 %}
 <script>
+    var table=0;
     $(document).ready(function () {
-        table=$('#myTable').DataTable({
+        var table=$('#myTable').DataTable({
             "paging": true,
-            "info": false,
-            "dom": 'tp', 
-            "searching": false,
+            "info": false, 
+            "dom": 'tp',
             "bLengthChange": false,
             "aLengthMenu": [[5, 10, 25, -1], [5, 10, 25, "All"]],
             "columnDefs": [
@@ -242,10 +242,39 @@
         });
     $('#myInput').on('keyup', function () {
         console.log($(this).val())
-        table.columns([0]).search($(this).val()).draw();
+        table.column(0).search($(this).val()).draw();
+        if($(this).val()=='')
+            $(this).css({"color":"hsla(0,0%,47.8%,.7)"});
+        else
+            $(this).css({"color":"black"});
     });
     $('#myInput2').on('keyup', function () {
         table.column(1).search($(this).val()).draw();
+        if($(this).val()=='')
+            $(this).css({"color":"hsla(0,0%,47.8%,.7)"});
+        else
+            $(this).css({"color":"black"});
+    });
+    $('#myInput3').on('change', function () {
+        table.column(2).search($(this).val()).draw();
+        if($(this).val()=='')
+            $(this).css({"color":"hsla(0,0%,47.8%,.7)"});
+        else
+            $(this).css({"color":"black"});
+    });
+    $('#myInput4').on('change', function () {
+        table.column(3).search($(this).val()).draw();
+        if($(this).val()=='')
+            $(this).css({"color":"hsla(0,0%,47.8%,.7)"});
+        else
+            $(this).css({"color":"black"});
+    });
+    $('#myInput5').on('change', function () {
+        table.column(4).search($(this).val()).draw();
+        if($(this).val()=='')
+            $(this).css({"color":"hsla(0,0%,47.8%,.7)"});
+        else
+            $(this).css({"color":"black"});
     });
 
     $('#clean').on('click', function () {
@@ -253,6 +282,12 @@
         $('#myInput').trigger('keyup');
         $('#myInpu2').val('');
         $('#myInput2').trigger('keyup');
+        $('#myInpu3').val('');
+        $('#myInput3').trigger('keyup');
+        $('#myInpu4').val('');
+        $('#myInput4').trigger('keyup');
+        $('#myInpu5').val('');
+        $('#myInput5').trigger('keyup');
     });
 });
 </script>
