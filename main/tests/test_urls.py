@@ -51,4 +51,3 @@ class TestUrls(SimpleTestCase):
     def test_ajax_load_grupo(self):
         url = reverse('tarefa_coordenador:ajax_load_grupo')
         self.assertEquals(resolve(url).func, load_grupo)
-
