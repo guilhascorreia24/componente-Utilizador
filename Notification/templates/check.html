@@ -19,7 +19,7 @@
                         <form>
                         <div data-v-1513178e="" class="autocomplete control">
                             <div class="control has-icons-left is-clearfix"><input type="text" id="myInput"
-                                    onkeyup="myFunction()" autocomplete="off" placeholder="Email do Utilizador"
+                                     autocomplete="off" placeholder="Email do Utilizador"
                                     class="input">
                                 <span class="icon is-left"><i class="mdi mdi-magnify mdi-24px"></i></span>
                                 <!---->
@@ -32,7 +32,7 @@
                         <!---->
                         <div data-v-1513178e="" class="autocomplete control">
                             <div class="control has-icons-left is-clearfix"><input type="text" id="myInput2"
-                                    onkeyup="myFunction()" autocomplete="off" placeholder="Titulo da notificação"
+                                     autocomplete="off" placeholder="Titulo da notificação"
                                     class="input">
                                 <span class="icon is-left"><i class="mdi mdi-magnify mdi-24px"></i></span>
                                 <!---->
@@ -259,44 +259,34 @@
 </script>
 
 <script>
+    var table=0;
     $(document).ready(function () {
-        $('#myTable').DataTable({
+       table= $('#myTable').DataTable({
             "paging": true,
             "info": false,
-            "searching": false,
+            "dom": 'tp',
             "bLengthChange": false,
             "aLengthMenu": [[5, 10, 25, -1], [5, 10, 25, "All"]],
             "columnDefs": [
                 { "orderable": false, "targets": [0, 3] }
             ]
         });
+        $('#myInput').on('keyup', function () {
+        console.log($(this).val())
+        table.column(0).search($(this).val()).draw();
+        if($(this).val()=='')
+            $(this).css({"color":"hsla(0,0%,47.8%,.7)"});
+        else
+            $(this).css({"color":"black"});
     });
-</script>
-
-<script>
-    function myFunction() {
-        var input,input2,input3,input4,filter,filter2,filter3,filter4,filter5, table, tr, td,td1,td2,td3,td4, i, txtValue,txtValue1,txtValue2,txtValue3,txtValue4;
-        input = document.getElementById("myInput");
-        input2 = document.getElementById("myInput2");
-        filter = input.value.toUpperCase();
-        filter2 = input2.value.toUpperCase();
-        console.log(filter+" "+filter2);
-        table = document.getElementById("myTable");
-        tr = table.getElementsByTagName("tr");
-        for (i = 0; i < tr.length; i++) {
-            td = tr[i].getElementsByTagName("td")[0];
-            td1= tr[i].getElementsByTagName("td")[1];
-            if (td && td1) {
-                txtValue = td.textContent || td.innerText;
-                txtValue1 = td1.textContent || td1.innerText;
-                if (txtValue.toUpperCase().indexOf(filter) > -1 && txtValue1.toUpperCase().indexOf(filter2) > -1 ) {
-                    tr[i].style.display = "";
-                } else {
-                    tr[i].style.display = "none";
-                }
-            }
-        }
-    }
+    $('#myInput2').on('keyup', function () {
+        table.column(1).search($(this).val()).draw();
+        if($(this).val()=='')
+            $(this).css({"color":"hsla(0,0%,47.8%,.7)"});
+        else
+            $(this).css({"color":"black"});
+    });
+    });
 </script>
 
     </section>

@@ -1,4 +1,3 @@
-
 {% extends 'base_template.html' %}
 
 {% load static %}
@@ -15,36 +14,39 @@
                 <div class="column">
                     <div class="field">
                         <div class="control is-expanded">
-                            <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Filtrar por Ano" autocomplete="off" class="input">
+                            <input type="text" id="myInput" placeholder="Filtrar por Ano" autocomplete="off"
+                                class="input">
                         </div>
                     </div>
                 </div>
                 <div class="column">
                     <div class="field">
                         <div class="control is-expanded">
-                                <span class="select is-fullwidth is-empty">
-                                <select id="myInput1"onchange="myFunction()">
+                            <span class="select is-fullwidth is-empty">
+                                <select id="myInput1">
                                     <option hidden value="">Filtrar por Data do Dia Aberto</option>
                                     {% for d in d %}
-                                    <option  value="{{d.datadiaabertoinicio | date:"d/m/Y"}}">{{d.datadiaabertoinicio | date:"d/m/Y"}}</option>
+                                    <option value="{{d.datadiaabertoinicio | date:"d/m/Y"}}">
+                                        {{d.datadiaabertoinicio | date:"d/m/Y"}}</option>
                                     {% endfor %}
                                 </select>
-                                </span>
-                            </div>
+                            </span>
                         </div>
+                    </div>
                 </div>
                 <div class="column">
                     <div class="field">
                         <div class="control">
                             <div class="select is-fullwidth">
                                 <span class="select is-fullwidth is-empty">
-                                    <select id="myInput2"onchange="myFunction()">
+                                    <select id="myInput2">
                                         <option hidden value="">Filtrar por Data de Inscrição</option>
                                         {% for d in d %}
-                                        <option  value="{{d.datainscricaonasatividadesinicio | date:"d/m/Y"}}">{{d.datainscricaonasatividadesinicio | date:"d/m/Y"}}</option>
+                                        <option value="{{d.datainscricaonasatividadesinicio | date:"d/m/Y"}}">
+                                            {{d.datainscricaonasatividadesinicio | date:"d/m/Y"}}</option>
                                         {% endfor %}
                                     </select>
-                                    </span>
+                                </span>
                             </div>
                         </div>
                     </div>
@@ -54,13 +56,14 @@
                         <div class="control">
                             <div class="select is-fullwidth">
                                 <span class="select is-fullwidth is-empty">
-                                    <select id="myInput3"onchange="myFunction()">
+                                    <select id="myInput3">
                                         <option hidden value="">Filtrar por Data Propostas de Atividade</option>
                                         {% for d in d %}
-                                        <option  value="{{d.datapropostaatividadeinicio | date:"d/m/Y"}}">{{d.datapropostaatividadeinicio | date:"d/m/Y"}}</option>
+                                        <option value="{{d.datapropostaatividadeinicio | date:"d/m/Y"}}">
+                                            {{d.datapropostaatividadeinicio | date:"d/m/Y"}}</option>
                                         {% endfor %}
                                     </select>
-                                    </span>
+                                </span>
                             </div>
                         </div>
                     </div>
@@ -71,71 +74,73 @@
                     <span>Limpar</span>
                     <span class="icon is-medium"><i class="mdi mdi-broom"></i></span>
                 </button>
-         </form>
+            </form>
+        </div>
     </div>
-</div>
-<div class="column">
+    <div class="column">
         <div class="table ">
-        <a href="{% url 'menu:diaaberto_create' %}" class="button is-success is-outlined" type="button" style="margin-bottom: 0.9rem; margin-right: 1rem;">
-           <span class="icon is-small">
-               <i class="mdi mdi-plus"></i></span> 
-                   <span> Adicionar Dia Aberto </span> <!----></a>
+            <a href="{% url 'menu:diaaberto_create' %}" class="button is-success is-outlined" type="button"
+                style="margin-bottom: 0.9rem; margin-right: 1rem;">
+                <span class="icon is-small">
+                    <i class="mdi mdi-plus"></i></span>
+                <span> Adicionar Dia Aberto </span>
+                <!----></a>
             <div class="table-wrapper">
-                <table id= "myTable" class="table has-mobile-cards is-hoverable is-fullwidth">
+                <table id="myTable" class="table has-mobile-cards is-hoverable is-fullwidth">
                     <thead>
-                            <th>
-                                Ano
-                            </th>
-                            <th>
-                                Data Do Dia Aberto
-                            </th>
-                            <th>
-                                Data De Inscrição
-                            </th>
-                            <th>
-                                Data de Proposta de Atividades
-                            </th>
-                            <th>
-                                Ações
-                            </th>
-                        </thead>
-                        <tbody>
-                            {% for instance in diaaberto_list %}
-                        
-                            <tr>
-                              
-                                <td>{{instance.ano}}</td>
-                                <td>{{instance.datadiaabertoinicio | date:"d/m/Y"}}</td>
-                                <td>{{instance.datainscricaonasatividadesinicio | date:"d/m/Y"}}</td>
-                                <td>{{instance.datapropostaatividadeinicio | date:"d/m/Y"}}</td>
-                                <td>
-                                   
-                                    <a data-toggle="modal"
-                                    data-target="#{{forloop.counter}}_">
-                                        <span class="icon is-small icon has-text-success">
-                                            <i class="mdi mdi-account-search mdi-24px"></i>
-                                        </span>
-                                    </a>
-                                    <a href="{% url 'menu:diaaberto_update' instance.ano %}">
-                                        <span class="icon is-small icon has-text-success">
-                                            <i class="mdi mdi-pencil mdi-24px"></i>
-                                        </span>
-                                    </a>
-                                        <a data-toggle="modal"
-                                        data-target="#{{forloop.counter}}">
-                                            <span class="icon is-small has-text-danger">
-                                                <i class="mdi mdi-close-box mdi-24px"></i>
-                                            </span>
-                                        </a>
-                                   
-                                </td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
+                        <tr>
+                        <th>
+                            Ano
+                        </th>
+                        <th>
+                            Data Do Dia Aberto
+                        </th>
+                        <th>
+                            Data De Inscrição
+                        </th>
+                        <th>
+                            Data de Proposta de Atividades
+                        </th>
+                        <th>
+                            Ações
+                        </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for instance in diaaberto_list %}
+
+                        <tr>
+
+                            <td>{{instance.ano}}</td>
+                            <td>{{instance.datadiaabertoinicio | date:"d/m/Y"}}</td>
+                            <td>{{instance.datainscricaonasatividadesinicio | date:"d/m/Y"}}</td>
+                            <td>{{instance.datapropostaatividadeinicio | date:"d/m/Y"}}</td>
+                            <td>
+
+                                <a data-toggle="modal" data-target="#{{forloop.counter}}_">
+                                    <span class="icon is-small icon has-text-success">
+                                        <i class="mdi mdi-account-search mdi-24px"></i>
+                                    </span>
+                                </a>
+                                <a href="{% url 'menu:diaaberto_update' instance.ano %}">
+                                    <span class="icon is-small icon has-text-success">
+                                        <i class="mdi mdi-pencil mdi-24px"></i>
+                                    </span>
+                                </a>
+                                <a data-toggle="modal" data-target="#{{forloop.counter}}">
+                                    <span class="icon is-small has-text-danger">
+                                        <i class="mdi mdi-close-box mdi-24px"></i>
+                                    </span>
+                                </a>
+
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
                 </table>
             </div>
         </div>
-</div>
+    </div>
 </div>
 {% for instance in diaaberto_list %}
 <div class="dialog modal" id="{{forloop.counter }}">
@@ -159,11 +164,12 @@
                     Confirmar
                 </button></a></footer>
     </div>
-</div> 
+</div>
 
 {% endfor %}
 {% for i in diaaberto_list %}
-<div tabindex="-1" class="modal fade" id="{{forloop.counter}}_" role="dialog" aria-hidden="true" aria-labelledby="exampleModalLabel">
+<div tabindex="-1" class="modal fade" id="{{forloop.counter}}_" role="dialog" aria-hidden="true"
+    aria-labelledby="exampleModalLabel">
     <div class="modal-background"></div>
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -175,7 +181,7 @@
             </div>
             <div class="modal-body">
                 <div>
-                    <form class="well form-horizontal ">                 
+                    <form class="well form-horizontal ">
                         <div class="input-group col-sm-12">
                             <div class="input-group-prepend labelForm">
                                 <span class="input-group-text w-100">Ano</span>
@@ -187,109 +193,128 @@
                             <div class="input-group-prepend labelForm">
                                 <span class="input-group-text w-100">Email do Dia Aberto</span>
                             </div>
-                            <input disabled="" class="form-control col-sm-2 bg-light" type="text" value="{{ i.emaildiaaberto }}">
+                            <input disabled="" class="form-control col-sm-2 bg-light" type="text"
+                                value="{{ i.emaildiaaberto }}">
                         </div>
                         <br>
                         <div class="input-group col-sm-12">
                             <div class="input-group-prepend labelForm">
                                 <span class="input-group-text w-100">Endereço da página Web</span>
                             </div>
-                            <input disabled="" class="form-control col-sm-2 bg-light" type="text" value="{{ i.enderecopaginaweb }}">
+                            <input disabled="" class="form-control col-sm-2 bg-light" type="text"
+                                value="{{ i.enderecopaginaweb }}">
                         </div>
                         <br>
                         <div class="input-group col-sm-12">
                             <div class="input-group-prepend labelForm">
                                 <span class="input-group-text w-100">A Proposta de Atividades acaba dia</span>
                             </div>
-                            <input disabled="" class="form-control col-sm-2 bg-light" type="text" value="{{ i.datapropostaatividadesfim  | date:"d/m/Y" }}">
+                            <input disabled="" class="form-control col-sm-2 bg-light" type="text"
+                                value="{{ i.datapropostaatividadesfim  | date:"d/m/Y" }}">
                         </div>
                         <br>
                         <div class="input-group col-sm-12">
                             <div class="input-group-prepend labelForm">
                                 <span class="input-group-text w-100">A inscrição acaba dia</span>
                             </div>
-                            <input disabled="" class="form-control col-sm-2 bg-light" type="text" value="{{ i.datainscricaonasatividadesfim  | date:"d/m/Y"}}">
+                            <input disabled="" class="form-control col-sm-2 bg-light" type="text"
+                                value="{{ i.datainscricaonasatividadesfim  | date:"d/m/Y"}}">
                         </div>
                         <br>
                         <div class="input-group col-sm-12">
                             <div class="input-group-prepend labelForm">
                                 <span class="input-group-text w-100">O Dia Aberto acaba dia</span>
                             </div>
-                            <input disabled="" class="form-control col-sm-2 bg-light" type="text" value="{{ i.datadiaabertofim | date:"d/m/Y" }}">
+                            <input disabled="" class="form-control col-sm-2 bg-light" type="text"
+                                value="{{ i.datadiaabertofim | date:"d/m/Y" }}">
                         </div>
                         <br>
                         <div class="input-group col-sm-12">
                             <div class="input-group-prepend labelForm">
                                 <span class="input-group-text w-100">Descrição</span>
                             </div>
-                            <input disabled="" class="form-control col-sm-2 bg-light" type="text" value="{{ i.descricao }}">
+                            <input disabled="" class="form-control col-sm-2 bg-light" type="text"
+                                value="{{ i.descricao }}">
                         </div>
                         <br>
                         <div class="input-group col-sm-12">
                             <div class="input-group-prepend labelForm">
                                 <span class="input-group-text w-100">Hora de Abertura</span>
                             </div>
-                            <input disabled="" class="form-control col-sm-2 bg-light" type="text" value="{{ i.hora_inicio | time:"H:i" }}">
+                            <input disabled="" class="form-control col-sm-2 bg-light" type="text"
+                                value="{{ i.hora_inicio | time:"H:i" }}">
                         </div>
                         <br>
                         <div class="input-group col-sm-12">
                             <div class="input-group-prepend labelForm">
                                 <span class="input-group-text w-100">Hora de Fecho</span>
                             </div>
-                            <input disabled="" class="form-control col-sm-2 bg-light" type="text" value="{{ i.hora_fim  | time:"H:i" }}">
+                            <input disabled="" class="form-control col-sm-2 bg-light" type="text"
+                                value="{{ i.hora_fim  | time:"H:i" }}">
                         </div>
-                </form></div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
 </div>
 {% endfor %}
 <script>
-    function myFunction() {
-        var input,input2,input3,filter,filter2,filter3,filter5, table, tr, td,td1,td2,td3,td4, i, txtValue,txtValue1,txtValue2,txtValue3,txtValue4;
-        input = document.getElementById("myInput");
-        input2 = document.getElementById("myInput1");
-        input3 = document.getElementById("myInput2");
-        filter = input.value.toUpperCase();
-        filter2 = input2.value.toUpperCase();
-        filter3 = input3.value.toUpperCase();
-        console.log(filter+" "+filter2);
-        table = document.getElementById("myTable");
-        tr = table.getElementsByTagName("tr");
-        for (i = 0; i < tr.length; i++) {
-            td = tr[i].getElementsByTagName("td")[0];
-            td1= tr[i].getElementsByTagName("td")[1];
-            td2= tr[i].getElementsByTagName("td")[2];
-            if (td && td1 && td2) {
-                txtValue = td.textContent || td.innerText;
-                txtValue1 = td1.textContent || td1.innerText;
-                txtValue2 = td2.textContent || td2.innerText;
-                if (txtValue.toUpperCase().indexOf(filter) > -1 && txtValue1.toUpperCase().indexOf(filter2) > -1 &&
-                     txtValue2.toUpperCase().indexOf(filter3) > -1) {
-                    tr[i].style.display = "";
-                } else {
-                    tr[i].style.display = "none";
-                }
-            }
-        }
-    }
-</script>
-<script>
+var table=0;
     $(document).ready(function () {
-        $('#myTable').DataTable({
+        table=$('#myTable').DataTable({
             "paging": true,
-            "info": false,
-            "searching": false,
+            "info": false, 
+            "dom": 'tp',
             "bLengthChange": false,
             "aLengthMenu": [[5, 10, 25, -1], [5, 10, 25, "All"]],
             "columnDefs": [
-    { "orderable": false, "targets": 4 }
-  ]
+                { "orderable": false, "targets": 5 }
+            ],
         });
+    $('#myInput').on('keyup', function () {
+        console.log($(this).val())
+        table.column(0).search($(this).val()).draw();
+        if($(this).val()=='')
+            $(this).css({"color":"hsla(0,0%,47.8%,.7)"});
+        else
+            $(this).css({"color":"black"});
     });
+    $('#myInput1').on('change', function () {
+        table.column(1).search($(this).val()).draw();
+        if($(this).val()=='')
+            $(this).css({"color":"hsla(0,0%,47.8%,.7)"});
+        else
+            $(this).css({"color":"black"});
+    });
+    $('#myInput2').on('change', function () {
+        table.column(2).search($(this).val()).draw();
+        if($(this).val()=='')
+            $(this).css({"color":"hsla(0,0%,47.8%,.7)"});
+        else
+            $(this).css({"color":"black"});
+    });
+    $('#myInput3').on('change', function () {
+        table.column(3).search($(this).val()).draw();
+        if($(this).val()=='')
+            $(this).css({"color":"hsla(0,0%,47.8%,.7)"});
+        else
+            $(this).css({"color":"black"});
+    });
+
+    $('#clean').on('click', function () {
+        $('#myInput').val('');
+        $('#myInput').trigger('keyup');
+        $('#myInpu1').val('');
+        $('#myInput1').trigger('keyup');
+        $('#myInpu2').val('');
+        $('#myInput2').trigger('keyup');
+        $('#myInpu3').val('');
+        $('#myInput3').trigger('keyup');
+    });
+});
 </script>
 
 
 
 {% endblock content %}
-

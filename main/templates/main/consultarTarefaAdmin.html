@@ -5,11 +5,6 @@
 {% endblock %}
 {% block content %}
 <head>
-    <style>
-    .select.is-empty select {
-     color:black;
-    }
-    </style>
 </head>
 
 <div class="columns">
@@ -20,7 +15,7 @@
                 <div class="column">
                     <div class="field">
                         <div class="control is-expanded">
-                            <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Filtrar por Nome Tarefa" autocomplete="off" class="input">
+                            <input type="text" id="myInput"  placeholder="Filtrar por Nome Tarefa" autocomplete="off" class="input">
                         </div>
                     </div>
                 </div>
@@ -28,7 +23,7 @@
                     <div class="field">
                         <div class="control is-expanded">
                                 <span class="select is-fullwidth is-empty">
-                                <select id="myInput1"onchange="myFunction()">
+                                <select id="myInput1">
                                     <option hidden value="">Filtrar por Colaborador</option>
                                     {% for c in colab %}
                                     <option  value="{{c.utilizador_idutilizador.nome}}">{{c.utilizador_idutilizador.nome}}</option>
@@ -43,7 +38,7 @@
                         <div class="control">
                             <div class="select is-fullwidth">
                                 <span class="select is-fullwidth is-empty">
-                                    <select id="myInput2"onchange="myFunction()">
+                                    <select id="myInput2">
                                         <option hidden value="">Filtrar Unidade Orgânica</option>
                                         {% for u in unidade %}
                                         <option value="{{u.sigla}}">{{u.sigla}}</option>
@@ -59,7 +54,7 @@
                         <div class="control">
                             <div class="select is-fullwidth">
                                 <span class="select is-fullwidth is-empty">
-                                    <select id="myInput3"onchange="myFunction()">
+                                    <select id="myInput3">
                                         <option hidden value="">Filtrar Atividade</option>
                                         {% for a in atividade %}
                                         <option value="{{a.titulo}}">{{a.titulo}}</option>
@@ -75,7 +70,7 @@
                         <div class="control">
                             <div class="select is-fullwidth">
                                 <span class="select is-fullwidth is-empty">
-                                    <select id="myInput4"onchange="myFunction()">
+                                    <select id="myInput4">
                                         <option hidden value="">Filtrar por Estado</option>
                                         <option value="Concluida">Concluida</option>
                                         <option value="Pendente">Pendente</option>
@@ -271,56 +266,67 @@
 {% endfor %}
                     
 <script>
+    var table=0;
     $(document).ready(function () {
-        $('#myTable').DataTable({
+        var table=$('#myTable').DataTable({
             "paging": true,
-            "info": false,
-            "searching": false,
+            "info": false, 
+            "dom": 'tp',
             "bLengthChange": false,
             "aLengthMenu": [[5, 10, 25, -1], [5, 10, 25, "All"]],
             "columnDefs": [
-    { "orderable": false, "targets": [6,7] }
-  ]
+                { "orderable": false, "targets": 5 }
+            ],
         });
+    $('#myInput').on('keyup', function () {
+        console.log($(this).val())
+        table.column(0).search($(this).val()).draw();
+        if($(this).val()=='')
+            $(this).css({"color":"hsla(0,0%,47.8%,.7)"});
+        else
+            $(this).css({"color":"black"});
     });
-</script>
-<script>
-    function myFunction() {
-        var input,input2,input3,input4,filter,filter2,filter3,filter4,filter5, table, tr, td,td1,td2,td3,td4, i, txtValue,txtValue1,txtValue2,txtValue3,txtValue4;
-        input = document.getElementById("myInput");
-        input2 = document.getElementById("myInput1");
-        input3 = document.getElementById("myInput2");
-        input4 = document.getElementById("myInput3");
-        input5 = document.getElementById("myInput4");
-        filter = input.value.toUpperCase();
-        filter2 = input2.value.toUpperCase();
-        filter3 = input3.value.toUpperCase();
-        filter4 = input4.value.toUpperCase();
-        filter5 = input5.value.toUpperCase();
-        console.log(filter+" "+filter2);
-        table = document.getElementById("myTable");
-        tr = table.getElementsByTagName("tr");
-        for (i = 0; i < tr.length; i++) {
-            td = tr[i].getElementsByTagName("td")[0];
-            td1= tr[i].getElementsByTagName("td")[1];
-            td2= tr[i].getElementsByTagName("td")[2];
-            td3 = tr[i].getElementsByTagName("td")[3];
-            td4 = tr[i].getElementsByTagName("td")[6];
-            if (td && td1 && td2 && td3 && td4) {
-                txtValue = td.textContent || td.innerText;
-                txtValue1 = td1.textContent || td1.innerText;
-                txtValue2 = td2.textContent || td2.innerText;
-                txtValue3 = td3.textContent || td3.innerText;
-                txtValue4 = td4.textContent || td4.innerText;
-                if (txtValue.toUpperCase().indexOf(filter) > -1 && txtValue1.toUpperCase().indexOf(filter2) > -1 &&
-                     txtValue2.toUpperCase().indexOf(filter3) > -1 && txtValue3.toUpperCase().indexOf(filter4) > -1 &&
-                        txtValue4.toUpperCase().indexOf(filter5) > -1) {
-                    tr[i].style.display = "";
-                } else {
-                    tr[i].style.display = "none";
-                }
-            }
-        }
-    }
+    $('#myInput1').on('change', function () {
+        table.column(1).search($(this).val()).draw();
+        if($(this).val()=='')
+            $(this).css({"color":"hsla(0,0%,47.8%,.7)"});
+        else
+            $(this).css({"color":"black"});
+    });
+    $('#myInput2').on('change', function () {
+        table.column(2).search($(this).val()).draw();
+        if($(this).val()=='')
+            $(this).css({"color":"hsla(0,0%,47.8%,.7)"});
+        else
+            $(this).css({"color":"black"});
+    });
+    $('#myInput3').on('change', function () {
+        table.column(3).search($(this).val()).draw();
+        if($(this).val()=='')
+            $(this).css({"color":"hsla(0,0%,47.8%,.7)"});
+        else
+            $(this).css({"color":"black"});
+    });
+    $('#myInput4').on('change', function () {
+        table.column(6).search($(this).val()).draw();
+        if($(this).val()=='')
+            $(this).css({"color":"hsla(0,0%,47.8%,.7)"});
+        else
+            $(this).css({"color":"black"});
+    });
+
+    $('#clean').on('click', function () {
+        $('#myInput').val('');
+        $('#myInput').trigger('keyup');
+        $('#myInpu2').val('');
+        $('#myInput2').trigger('keyup');
+        $('#myInpu3').val('');
+        $('#myInput3').trigger('keyup');
+        $('#myInpu4').val('');
+        $('#myInput4').trigger('keyup');
+        $('#myInpu5').val('');
+        $('#myInput5').trigger('keyup');
+    });
+});
 </script>
 {% endblock content %}
