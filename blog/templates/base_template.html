@@ -1,13 +1,14 @@
 {% load static %}
 {% load ins_form_tags %}
 <html lang="pt-pt">
+
 <head>
     <meta charset="utf-8">
     <meta content="IE=edge" http-equiv="X-UA-Compatible">
     <meta content="width=device-width,initial-scale=1" name="viewport">
     <link href="{% static "img/favicon.ico" %}" rel="icon">
     <!--<script type="text/javascript" src={% static "js/all.js" %}></script>!-->
-    <!--<link href="{% static "css/all.css" %}" rel="stylesheet">  Overrites next line and some icons disappear !--> 
+    <!--<link href="{% static "css/all.css" %}" rel="stylesheet">  Overrites next line and some icons disappear !-->
     <link href="{% static "css/solid.css" %}" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.15.0/jquery.validate.min.js"></script>
@@ -76,17 +77,23 @@
             display: none;
         }
 
-        .dropdown-menu{
+        .dropdown-menu {
             padding: 0px;
-            padding-top :0px;
+            padding-top: 0px;
         }
-        
+
         .modal-backdrop {
             z-index: -1;
-            opacity:0.5
+            opacity: 0.5
         }
+
         .modal-open {
             padding-right: 0px !important;
+        }
+
+        .modal-open .modal {
+            overflow-x: hidden;
+            overflow-y: hidden;
         }
     </style>
 </head>
@@ -94,34 +101,37 @@
 <body><noscript><strong>We're sorry but dia_aberto_frontend doesn't work properly without JavaScript enabled. Please
             enable it to continue.</strong></noscript>
     <div data-v-8716d23a="" id="app">
-        <nav data-v-a67fe1ba="" data-v-8716d23a="" role="navigation" aria-label="main navigation" class="navbar" style="margin:0%"> 
-            <div class="navbar-brand" style="padding:0%"><a data-v-a67fe1ba="" href="/" class="navbar-item logo router-link-active"><img
-                        data-v-a67fe1ba="" alt="Dia Aberto" src="{% static "img/logo-navbar.1a946f02.png" %}"></a><a
-                    role="button" aria-label="menu" class="navbar-burger burger"><span aria-hidden="true"></span> <span
-                        aria-hidden="true"></span> <span aria-hidden="true"></span></a></div>
+        <nav data-v-a67fe1ba="" data-v-8716d23a="" role="navigation" aria-label="main navigation" class="navbar"
+            style="margin:0%">
+            <div class="navbar-brand" style="padding:0%"><a data-v-a67fe1ba="" href="/"
+                    class="navbar-item logo router-link-active"><img data-v-a67fe1ba="" alt="Dia Aberto"
+                        src="{% static "img/logo-navbar.1a946f02.png" %}"></a><a role="button" aria-label="menu"
+                    class="navbar-burger burger"><span aria-hidden="true"></span> <span aria-hidden="true"></span> <span
+                        aria-hidden="true"></span></a></div>
             <div class="navbar-menu">
-                <div id="nav_0" class="navbar-start" style="display:none;">               
+                <div id="nav_0" class="navbar-start" style="display:none;">
                     {% include "navbar-part.html" %}
                 </div>
-                <div id="nav_4" class="navbar-start" style="display:none;">               
+                <div id="nav_4" class="navbar-start" style="display:none;">
                     {% include "navbar-admin.html" %}
                 </div>
-                <div id="nav_1" class="navbar-start" style="display:none;">               
+                <div id="nav_1" class="navbar-start" style="display:none;">
                     {% include "navbar-colab.html" %}
                 </div>
-                <div id="nav_3" class="navbar-start" style="display:none;">               
+                <div id="nav_3" class="navbar-start" style="display:none;">
                     {% include "navbar-dc.html" %}
                 </div>
                 <div id="nav_2" class="navbar-start" style="display:none;">
                     {% include "navbar-coord.html" %}
                 </div>
                 <div class="navbar-end">
-                {% if request.session.user_id %}
+                    {% if request.session.user_id %}
                     <div data-v-a67fe1ba="" class="navbar-item">
                         <div data-v-a67fe1ba="" class="is-bottom-left is-mobile-modal dropdown ">
                             <a class="dropdown-toggle" role="button" data-toggle="dropdown">
-                                <div role="button" aria-haspopup="true" class="dropdown-trigger"><span data-v-a67fe1ba=""
-                                        role="button"><button data-v-a67fe1ba="" type="button" data-badge="{{i}}"
+                                <div role="button" aria-haspopup="true" class="dropdown-trigger"><span
+                                        data-v-a67fe1ba="" role="button"><button data-v-a67fe1ba="" type="button"
+                                            data-badge="{{i}}"
                                             class="button has-badge-rounded has-badge-warning is-text"
                                             style="margin-right: 0.9rem;">
                                             <!----> <span><span data-v-a67fe1ba="" class="icon"><i
@@ -134,18 +144,20 @@
                                             data-v-a67fe1ba="">Notificações</strong></div>
                                     <hr data-v-a67fe1ba="" class="dropdown-divider">
                                     {% include "dropdow_noti.html" %}
-                                    <a data-v-a67fe1ba="" tabindex="0" class="dropdown-item" href="{% url "check_not" %}"><u data-v-a67fe1ba="">Ver todas
+                                    <a data-v-a67fe1ba="" tabindex="0" class="dropdown-item"
+                                        href="{% url "check_not" %}"><u data-v-a67fe1ba="">Ver todas
                                             as notificações</u></a>
                                 </div>
                             </div>
                         </div>
                         <div data-v-a67fe1ba="" class="dropdown is-bottom-left is-mobile-modal">
-                            <div role="button" aria-haspopup="true" class="dropdown-trigger"><a href="{% url "profile_edit" request.session.user_id %}"><button data-v-a67fe1ba=""
-                                    type="button" class="button is-text" style="margin-right: 0.9rem;">
-                                    <!----> <span><span data-v-a67fe1ba="" class="icon"><i
-                                                class="mdi mdi-account-circle mdi-24px"></i></span></span>
-                                    <!----></button></a></div>
-      
+                            <div role="button" aria-haspopup="true" class="dropdown-trigger"><a
+                                    href="{% url "profile_edit" request.session.user_id %}"><button data-v-a67fe1ba=""
+                                        type="button" class="button is-text" style="margin-right: 0.9rem;">
+                                        <!----> <span><span data-v-a67fe1ba="" class="icon"><i
+                                                    class="mdi mdi-account-circle mdi-24px"></i></span></span>
+                                        <!----></button></a></div>
+
                             <div class="dropdown-menu" style="display: none;" aria-hidden="true">
                                 <div role="list" class="dropdown-content"><a data-v-a67fe1ba="" role="listitem"
                                         tabindex="0" class="dropdown-item is-disabled">Participante Individual</a><a
@@ -157,27 +169,29 @@
                                         class="dropdown-item">Coordenador</a><a data-v-a67fe1ba="" role="listitem"
                                         tabindex="0" class="dropdown-item">Administrador</a></div>
                             </div>
-                        </div><a href="{% url "logout" %}"><button data-v-a67fe1ba="" type="button" class="button"><span class="icon is-small"><i
-                                    class="mdi mdi-logout-variant"></i></span> <span> Sair </span>
-                            <!----></button></a>
+                        </div><a href="{% url "logout" %}"><button data-v-a67fe1ba="" type="button" class="button"><span
+                                    class="icon is-small"><i class="mdi mdi-logout-variant"></i></span> <span> Sair
+                                </span>
+                                <!----></button></a>
                     </div>
-                {% else %}
-                <div data-v-a67fe1ba="" class="navbar-item">
-                    <div data-v-a67fe1ba="" class="dropdown is-bottom-left is-mobile-modal">
-                    </div><a href="{% url "register" %}"><button data-v-a67fe1ba="" type="button" class="button"><span
-                                class="icon is-small"><i class="mdi mdi-logout-variant"></i></span> <span> Registo
-                            </span>
-                            <!----></button></a>
+                    {% else %}
+                    <div data-v-a67fe1ba="" class="navbar-item">
+                        <div data-v-a67fe1ba="" class="dropdown is-bottom-left is-mobile-modal">
+                        </div><a href="{% url "register" %}"><button data-v-a67fe1ba="" type="button"
+                                class="button"><span class="icon is-small"><i class="mdi mdi-logout-variant"></i></span>
+                                <span> Registo
+                                </span>
+                                <!----></button></a>
+                    </div>
+                    <div data-v-a67fe1ba="" class="navbar-item">
+                        <div data-v-a67fe1ba="" class="dropdown is-bottom-left is-mobile-modal">
+                        </div><a href="{% url "login" %}"><button data-v-a67fe1ba="" type="button" class="button"><span
+                                    class="icon is-small"><i class="mdi mdi-logout-variant"></i></span> <span> Entrar
+                                </span>
+                                <!----></button></a>
+                    </div>
+                    {% endif %}
                 </div>
-                <div data-v-a67fe1ba="" class="navbar-item">
-                    <div data-v-a67fe1ba="" class="dropdown is-bottom-left is-mobile-modal">
-                    </div><a href="{% url "login" %}"><button data-v-a67fe1ba="" type="button" class="button"><span
-                                class="icon is-small"><i class="mdi mdi-logout-variant"></i></span> <span> Entrar
-                            </span>
-                            <!----></button></a>
-                </div>
-                {% endif %}
-            </div>
             </div>
         </nav>
         <div data-v-8716d23a="" id="top-hero" class="hero is-primary is-bold">
@@ -192,8 +206,8 @@
                                 {% block steps %}{% endblock %}
                             </ul>
                         </nav>
-                                {% block content %}{% endblock %}
-                     </div>
+                        {% block content %}{% endblock %}
+                    </div>
                 </div>
             </div>
         </div>
@@ -203,24 +217,24 @@
             <div data-v-8716d23a="" style="margin: auto; width: max-content;"> Dia Aberto </div>
         </footer>
     </div>
-    </body>
-    <script src="{% static "js/chunk-vendors.63f37e79.js" %}"></script>
-    <script type="text/javascript">
+</body>
+<script src="{% static "js/chunk-vendors.63f37e79.js" %}"></script>
+<script type="text/javascript">
 
 
-        var req = "{{request.path}}"
-    $(document).ready(function(){
+    var req = "{{request.path}}"
+    $(document).ready(function () {
         var els = $(".breadcrumb > ul")
         console.log(els.children().length)
-        if(els.children().length == 0){
+        if (els.children().length == 0) {
             els.hide();
         }
         var resp = $.ajax({
             async: false,
             type: "POST",
             url: "{% url 'user_type' %}",
-            data: 
-            { 
+            data:
+            {
                 id: "{{request.session.user_id}}",
             },
             success: function (data) {
@@ -233,31 +247,32 @@
         $(search).show();
 
     });
-    </script>
-    <script type="text/javascript" src="{% static 'js/myscripts.js' %}"></script>
-    <div class="notices is-top" style="padding-top: 3%;">
-        {% if messages %}
-        {% for message in messages %}
-        {% if message.tags == 'success' %}
-        <div role="alert" class="toast is-dark is-top" aria-hidden="true" style="" id="allert">
-            <div>{{message}}</div>
-        </div>
-        {% endif %}
-        {% endfor %}
-        {% endif %}
+</script>
+<script type="text/javascript" src="{% static 'js/myscripts.js' %}"></script>
+<div class="notices is-top" style="padding-top: 3%;">
+    {% if messages %}
+    {% for message in messages %}
+    {% if message.tags == 'success' %}
+    <div role="alert" class="toast is-dark is-top" aria-hidden="true" style="" id="allert">
+        <div>{{message}}</div>
     </div>
-    <div class="notices is-bottom"></div>
-    <script src="/js/chunk-vendors.63f37e79.js"></script>
-    </body>
-    <script>
-        $(document).ready(function () {
-    
-            window.setTimeout(function () {
-                $(".toast").fadeTo(500, 0).slideUp(500, function () {
-                    $(this).remove();
-                });
-            }, 2500);
-    
-        });
-    </script>
+    {% endif %}
+    {% endfor %}
+    {% endif %}
+</div>
+<div class="notices is-bottom"></div>
+<script src="/js/chunk-vendors.63f37e79.js"></script>
+</body>
+<script>
+    $(document).ready(function () {
+
+        window.setTimeout(function () {
+            $(".toast").fadeTo(500, 0).slideUp(500, function () {
+                $(this).remove();
+            });
+        }, 2500);
+
+    });
+</script>
+
 </html>

@@ -184,6 +184,7 @@ def consultar_tarefa_admin(request):
 def editar_tarefa(request, pk):
 	tarefa = Tarefa.objects.get(idtarefa = pk)
 	if tarefa.sessao_idsessao == None:
+		dispos=disponibilidades('Guiar Grupo')
 		template="main/editarTarefaAcompanhar.html"
 		form = TarefasFormGroup(instance = tarefa)
 		if request.method == "POST":
@@ -203,6 +204,7 @@ def editar_tarefa(request, pk):
 				messages.success(request, f'Tarefa Editada com Sucesso!')
 				return redirect("tarefa_coordenador:consultar_tarefa")
 	else:
+		dispos=disponibilidades('Ajudar Docente')
 		template="main/editarTarefaAtividade.html"
 		form = TarefasFormAtividade(instance = tarefa)
 		if request.method == "POST":
@@ -216,7 +218,7 @@ def editar_tarefa(request, pk):
 				return redirect("tarefa_coordenador:consultar_tarefa")
 	return render(request = request,
 				 template_name=template,
-				 context={'form':form,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
+				 context={'form':form,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request), 'dispo':dispos})
 
 def eliminar_tarefa(request, pk):
 	if request.session["type"] == 4:

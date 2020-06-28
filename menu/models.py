@@ -239,7 +239,7 @@ class DiaAberto(models.Model):
     datainscricaonasatividadesfim = models.DateField()
     datapropostaatividadeinicio = models.DateField(db_column='dataPropostaAtividadeInicio')  # Field name made lowercase.
     datapropostaatividadesfim = models.DateField(db_column='dataPropostaAtividadesFim')  # Field name made lowercase.
-    administrador_utilizador_idutilizador = models.ForeignKey(Administrador, models.CASCADE, db_column='Administrador_Utilizador_idutilizador')  # Field name made lowercase.
+    administrador_utilizador_idutilizador = models.ForeignKey(Administrador, models.DO_NOTHING, db_column='Administrador_Utilizador_idutilizador')  # Field name made lowercase.
     preco_almoco_estudante = models.FloatField()
     preco_almoco_professor = models.FloatField()
 
@@ -703,7 +703,7 @@ class Utilizador(models.Model):
     password = models.CharField(max_length=255)
     validada = models.IntegerField()
     remember_me = models.CharField(max_length=255, blank=True, null=True)
-    dia_aberto_ano = models.ForeignKey(DiaAberto, models.CASCADE, db_column='dia_aberto_ano', blank=True, null=True)
+    dia_aberto_ano = models.ForeignKey(DiaAberto, models.DO_NOTHING, db_column='dia_aberto_ano', blank=True, null=True)
 
     class Meta:
         managed = False
