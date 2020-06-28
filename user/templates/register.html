@@ -258,7 +258,7 @@
                                                         Curso</p>
                                                     <div class="control is-expanded"><span class="select "><select
                                                                 name="curso""
-                                                                                id=" {{form.curso.id_for_label}}"
+                                                                                id="{{form.curso.id_for_label}}"
                                                                 value={{form.curso.value}}>
                                                                 <!---->
                                                                 <option value=0>
@@ -393,7 +393,8 @@
             document.getElementById('hidden_div2').style.display = 'none';
             document.getElementById('hidden_div3').style.display = 'none';
         }
-    }    </script>
+    }    
+    </script>
 <script>
     $(function () {
 
@@ -404,12 +405,22 @@
         });
         $('#{{form.UO.id_for_label}}').on('change', function () {
             var val = this.value;
+            console.log(val)
             if (val != 0) {
                 $('#{{form.departamento.id_for_label}} option').hide().filter(function () {
+                    
                     return this.value.indexOf(val + '_') === 0;
                 })
                     .show();
+            }
+        })
+            .change();
+        $('#{{form.UO.id_for_label}}').on('change', function () {
+            var val = this.value;
+            console.log("cur"+val)
+            if (val != 0) {
                 $('#{{form.curso.id_for_label}} option').hide().filter(function () {
+                    console.log(this.value.indexOf(val + '_'))
                     return this.value.indexOf(val + '_') === 0;
                 })
                     .show();
