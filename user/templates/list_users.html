@@ -232,6 +232,7 @@
         table=$('#myTable').DataTable({
             "paging": true,
             "info": false,
+            "dom": 'tp', 
             "searching": false,
             "bLengthChange": false,
             "aLengthMenu": [[5, 10, 25, -1], [5, 10, 25, "All"]],
@@ -240,7 +241,8 @@
             ],
         });
     $('#myInput').on('keyup', function () {
-        table.column(0).search($(this).val()).draw();
+        console.log($(this).val())
+        table.columns([0]).search($(this).val()).draw();
     });
     $('#myInput2').on('keyup', function () {
         table.column(1).search($(this).val()).draw();
