@@ -4,9 +4,9 @@ from django.contrib import messages as message_info
 
 from django.core.mail import  send_mail
 
-NEW_INSCRICAO_TITLE = "Nova Inscrição na atividade __ATV__"
-CHANGE_INSCRICAO_TITLE = "Inscrição alterada na atividade __ATV__"
-DELETE_INSCRICAO_TITLE = "Inscrição apagada na atividade __ATV__"
+NEW_INSCRICAO_TITLE = "Nova Inscrição"
+CHANGE_INSCRICAO_TITLE = "Inscrição alterada"
+DELETE_INSCRICAO_TITLE = "Inscrição apagada"
 
 DELETE_INSCRICAO_CONTENT = "Inscrição de __NUM__ pessoa(s) apagada na atividade __ATV__ na sessão das __HORAS__.\nExistem agora __LUGARES__ lugares disponiveis."
 NEW_INSCRICAO_CONTENT = "Nova inscrição de __NUM__ pessoa(s) registada na atividade __ATV__ na sessão das __HORAS__.\nExistem ainda __LUGARES__ lugares disponiveis."
