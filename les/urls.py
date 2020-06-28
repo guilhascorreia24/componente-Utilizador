@@ -36,7 +36,7 @@ urlpatterns = [
     path('inscricao/',include('inscricao.urls', namespace='inscricao'), name='inscricao'),
     path('profile/<int:id>',user_views.profile,name="profile"),
     path('profiles_list/',user_views.profile_list,name='profile_list'),
-    path("profiles_list/<int:id>/",user_views.profile,name="profile_user"),
+   # path("profiles_list/<int:id>/",user_views.profile,name="profile_user"),
     path("profile_edit/<int:id>",user_views.modify_user,name="profile_edit"),
     path("profiles_list/delete/<int:id>/",user_views.delete_user,name="delete"),
     path('validacoes/<int:acao>/<int:id>',user_views.validacoes,name="validacoes"),

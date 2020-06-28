@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
     'blog.apps.BlogConfig',
     'crispy_forms',
     'cryptography',
@@ -55,6 +56,7 @@ INSTALLED_APPS = [
     'main.apps.MainConfig',
     'menu.apps.MenuConfig',
 ]
+SITE_ID=1
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -134,7 +136,7 @@ USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)
@@ -151,8 +153,8 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE=True
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'diabertoworking@gmail.com'
-EMAIL_HOST_PASSWORD = 'diaaberto1234'
+EMAIL_HOST_USER = 'emailles2020@gmail.com'
+EMAIL_HOST_PASSWORD = 'ez20ez20'
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
 

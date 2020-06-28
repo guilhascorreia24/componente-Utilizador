@@ -80,14 +80,19 @@
                                         </span>
                                         <span>Adicionar Curso</span>
                                     </button>
-        </form>
+
         </th>
         </tr>
         </thead>
         </table>
+                </div>
+            </div>
     </div>
 </div>
 </form>
+
+
+    
 <div align="center">
     <button data-v-5aa16ff8="" type="button" class="button is-success" style="margin-top:40px">
         <a href="{% url 'blog:blog-home' %}" style="color:white;">
@@ -98,6 +103,8 @@
         </a>
     </button>
 </div>
+
+
 {% for curso in cursos %}
 <div class="dialog modal" id="{{ forloop.counter }}">
     <div class="modal-background"></div>
@@ -121,8 +128,7 @@
                 </button></a></footer>
     </div>
 </div>
-</div>
-</div>
+
 
 {% endfor %}
 <script>

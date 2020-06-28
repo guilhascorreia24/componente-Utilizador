@@ -96,25 +96,25 @@
                 <table class="table has-mobile-cards is-hoverable is-fullwidth" id="myTable">
                     <thead>
                             <th>
-                                Titulo:
+                                Titulo
                             </th>
                             <th>
-                                Temática:
+                                Temática
                             </th>
                             <th>
-                                Publico Alvo:
+                                Publico Alvo
                             </th>
                             <th>
-                                Duração (em minutos):
+                                Duração (em minutos)
                             </th>
                             <th>
-                                Unidade Orgânica:
+                                Unidade Orgânica
                             </th>
                             <th>
-                                Departamento:
+                                Departamento
                             </th>
                             <th>
-                                Campus:
+                                Campus
                             </th>
                             <th></th>
                              </thead>
@@ -138,8 +138,8 @@
                                 <td>
                                     <form method="POST">
                                         <a data-toggle="modal" data-target="#{{ forloop.counter }}">
-                                            <span class="icon is-small">
-                                                <i class="mdi mdi-dots-horizontal-circle mdi-24px"></i>
+                                            <span class="icon is-small icon has-text-success">
+                                                <i class="mdi mdi-account-search mdi-24px"></i>
                                             </span>
                                         </a>
                                     </form>
@@ -153,6 +153,7 @@
 </div>
         {% for activity in list %}
 <div tabindex="-1" class="modal fade" id="{{forloop.counter}}" role="dialog" aria-hidden="true" aria-labelledby="exampleModalLabel">
+    <div class="modal-background"></div>
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
