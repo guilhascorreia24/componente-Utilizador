@@ -6,7 +6,7 @@ from django.core import signing
 from .models import UnidadeOrganica, DiaAberto,Departamento, Utilizador, Participante, ProfessorUniversitario, Administrador,Coordenador, Colaborador, DjangoSession, Curso, InscricaoColetiva, InscricaoIndividual, Atividade,Tarefa, Campus, Disponibilidade
 from django.db.models import CharField, Value, IntegerField
 from Notification import views as noti_views
-from Notification.views import noti_not_checked
+from Notification import views as noti_not_checked
 import datetime
 import re
 import hashlib
