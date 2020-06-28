@@ -140,12 +140,17 @@ def diaaberto_delete(request, id):
     if DiaAberto.objects.filter(ano=id).exists():
         user=request.session['user_id']
         if Utilizador.objects.filter(dia_aberto_ano=obj).exists():
-            Utilizador.objects.filter(dia_aberto_ano=obj).update(dia_aberto_ano=None)
-        obj.delete() 
+            users=Utilizador.objects.filter(dia_aberto_ano=obj).update(dia_aberto_ano=None)
         dias=Dia.objects.all()
         for dia in dias:
             if dia.pk.year==id:
-                dia.delete()   
+                horas=HorarioHasDia.objects.filter(dia_dia=dia)
+                for hora in horas:
+                    sessoes=Sessao.objects.filter(horario_has_dia_id_dia_hora=hora)
+                    for sessao in sessoes:
+                        Atividade.objects.filter(pk=sessao.atividade_idatividade.pk).delete()
+                dia.delete() 
+        obj.delete()   
         messages.success(request, f'Configurações do Dia Aberto eliminado com Sucesso!')
         noti_views.new_noti(request,request.session['user_id'],'Submissao das Configurações do Dia Aberto','Configurações do Dia Aberto eliminado com Sucesso!')
     return redirect('menu:diaaberto_list')

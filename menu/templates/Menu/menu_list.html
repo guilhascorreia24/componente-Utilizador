@@ -15,7 +15,7 @@
                     <div class="field">
                         <div class="control is-expanded">
                                 <span class="select is-fullwidth is-empty">
-                                <select id="myInput"onchange="myFunction()">
+                                <select id="myInput">
                                     <option hidden value="">Filtrar por Campus</option>
                                     {% for campus in campus %}
                                     <option  value="{{campus.nome}}">{{campus.nome}}</option>
@@ -30,7 +30,7 @@
                         <div class="control">
                             <div class="select is-fullwidth">
                                 <span class="select is-fullwidth is-empty">
-                                    <select id="myInput1"onchange="myFunction()">
+                                    <select id="myInput1">
                                         <option hidden value="">Filtrar por Data do Almoço</option>
                                         {% for menu in menu %}
                                         <option  value="{{menu.horario_has_dia_id_dia_hora.dia_dia.dia | date:"d/m/Y"}}">{{menu.horario_has_dia_id_dia_hora.dia_dia.dia | date:"d/m/Y"}}</option>
@@ -293,42 +293,33 @@
 </div>
 {% endfor %}
 <script>
-    function myFunction() {
-        var input,input2,input3,filter,filter2,filter3,filter5, table, tr, td,td1,td2,td3,td4, i, txtValue,txtValue1,txtValue2,txtValue3,txtValue4;
-        input = document.getElementById("myInput");
-        input2 = document.getElementById("myInput1");
-        filter = input.value.toUpperCase();
-        filter2 = input2.value.toUpperCase();
-        console.log(filter+" "+filter2);
-        table = document.getElementById("myTable");
-        tr = table.getElementsByTagName("tr");
-        for (i = 0; i < tr.length; i++) {
-            td = tr[i].getElementsByTagName("td")[1];
-            td1= tr[i].getElementsByTagName("td")[2];
-            if (td && td1) {
-                txtValue = td.textContent || td.innerText;
-                txtValue1 = td1.textContent || td1.innerText;
-                if (txtValue.toUpperCase().indexOf(filter) > -1 && txtValue1.toUpperCase().indexOf(filter2) > -1) {
-                    tr[i].style.display = "";
-                } else {
-                    tr[i].style.display = "none";
-                }
-            }
-        }
-    }
-</script>
-<script>
+    var table=0;
     $(document).ready(function () {
-        $('#myTable').DataTable({
+        table=$('#myTable').DataTable({
             "paging": true,
-            "info": false,
-            "searching": false,
+            "info": false, 
+            "dom": 'tp',
             "bLengthChange": false,
             "aLengthMenu": [[5, 10, 25, -1], [5, 10, 25, "All"]],
             "columnDefs": [
-    { "orderable": false, "targets": 5 }
-  ]
+                { "orderable": false, "targets": 5 }
+            ],
         });
+    $('#myInput').on('change', function () {
+        console.log($(this).val())
+        table.column(1).search($(this).val()).draw();
+        if($(this).val()=='')
+            $(this).css({"color":"hsla(0,0%,47.8%,.7)"});
+        else
+            $(this).css({"color":"black"});
+    });
+    $('#myInput1').on('change', function () {
+        table.column(2).search($(this).val()).draw();
+        if($(this).val()=='')
+            $(this).css({"color":"hsla(0,0%,47.8%,.7)"});
+        else
+            $(this).css({"color":"black"});
+    });
     });
 </script>
 
