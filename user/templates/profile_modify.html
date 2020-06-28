@@ -1,6 +1,9 @@
 {% extends "base_template.html" %}
 {% block steps %}
 <li><a href="{% url "blog:blog-home" %}" class="router-link-active">Início</a></li>
+{% if request.session.user_id != id %}
+<li><a href="{% url "profile_list" %}" class="router-link-active">Utilizadores</a></li>
+{% endif %}
 <li class="is-active"><a href="" class="router-link-exact-active router-link-active">Perfil</a></li>
 {% endblock %}
 

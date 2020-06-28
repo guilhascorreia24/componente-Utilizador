@@ -6,7 +6,7 @@ from django.core import signing
 from .models import UnidadeOrganica, DiaAberto,Departamento, Utilizador, Participante, ProfessorUniversitario, Administrador,Coordenador, Colaborador, DjangoSession, Curso, InscricaoColetiva, InscricaoIndividual, Atividade,Tarefa, Campus, Disponibilidade
 from django.db.models import CharField, Value, IntegerField
 from Notification import views as noti_views
-from Notification.views import noti_not_checked
+from Notification import views as noti_not_checked
 import datetime
 import re
 import hashlib
@@ -255,12 +255,13 @@ def login_request(request):
 
 def logout_request(request):
     r = redirect("blog:blog-home")
-    print(request.session['user_id'])
-    del request.session['user_id']
-    del request.session['type']
+    if 'user_id' in request.session:
+        print(request.session['user_id'])
+        del request.session['user_id']
+        del request.session['type']
     if 'cookie_id' in request.COOKIES:
         r.delete_cookie('cookie_id')
-    messages.info(request, "saiste com sucesso")
+    messages.success(request, "Até a proxima")
     return r
 
 #----------------------------------------------remover user-----------------------------------
