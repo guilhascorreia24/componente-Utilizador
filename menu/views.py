@@ -93,11 +93,8 @@ def diaaberto_update(request, id):
 def diaaberto_list(request):
     d = DiaAberto.objects.all() # list of objects
     dia = DiaAberto.objects.order_by('-ano')
-    myFilter = DiaAbertoFilter(request.GET, queryset=dia)
-    dia = myFilter.qs
     context = {
         "diaaberto_list": dia,
-        'myFilter': myFilter,
         "d": d,
         'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)
     }
