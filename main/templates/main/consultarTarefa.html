@@ -4,14 +4,6 @@
     <li class="is-active"><a aria-current="page">Consultar Tarefas</a></li>
 {% endblock %}
 {% block content %}
-<head>
-    <style>
-    .select.is-empty select {
-     color:black;
-    }
-    </style>
-</head>
-
 <div class="columns">
     <div class="column is-3">
         <div>
@@ -237,14 +229,32 @@
                                 <div class="input-group-prepend labelForm">
                                     <span class="input-group-text w-100">Local de Recolha do(s) Participante(s)</span>
                                 </div>
-                                <input disabled="" class="form-control bg-light" type="text" value=" {{ sala.edificio }} {{ i.buscar.nome }}">
+                                {% for s in sala %}
+                                    {% if s.espaco_idespaco == i.buscar %}
+                                        <input disabled="" class="form-control bg-light" type="text" value=" Edificio {{s.edificio}}, {{ i.buscar.nome }}">
+                                    {% endif %}
+                                {% endfor %}
+                                {% for a in anfiteatro %}
+                                    {% if a.espaco_idespaco == i.buscar %}
+                                    <input disabled="" class="form-control bg-light" type="text" value=" Anfiteatro {{a.edificio}}, Sala {{ i.buscar.nome }}">
+                                    {% endif %}
+                                {% endfor %}
                             </div>
                             <br>
                             <div class="input-group col-sm-12">
                                 <div class="input-group-prepend labelForm">
                                     <span class="input-group-text w-100">Local de Destino do(s) Participante(s)</span>
                                 </div>
-                                <input disabled="" class="form-control bg-light" type="text" value="{{ i.levar.nome }}">
+                                {% for s in sala %}
+                                    {% if s.espaco_idespaco == i.levar %}
+                                    <input disabled="" class="form-control bg-light" type="text" value=" Edificio {{s.edificio}}, {{ i.levar.nome }}">
+                                    {% endif %}
+                                {% endfor %}
+                                {% for a in anfi %}
+                                    {% if a.espaco_idespaco == i.levar %}
+                                        <input disabled="" class="form-control bg-light" type="text" value=" Anfiteatro {{a.edificio}}, Sala {{ i.levar.nome }}">
+                                    {% endif %}
+                                {% endfor %}
                             </div>
                             <br>
                         {% else %}

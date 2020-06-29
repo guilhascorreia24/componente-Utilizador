@@ -76,7 +76,7 @@ def criar_tarefa_atividade(request):
 	coord_user = Coordenador.objects.get(utilizador_idutilizador = user_coord)
 	new_form = Tarefa(concluida = 0, coordenador_utilizador_idutilizador = coord_user)
 	form = TarefasFormAtividade(request.POST, instance = new_form)
-	dispos=disponibilidades('Ajudar Docente')
+	dispo = Disponibilidade.objects.exclude(tipo_de_tarefa= 'Guiar Grupo')
 	if request.method == "POST":
 		if form.is_valid():
 			new_tarefa = form.save(commit = False)
@@ -107,7 +107,7 @@ def load_grupo(request):
 
 def load_espaco(request):
 	atividade = request.POST.get('campus')
-	espaco = Atividade.objects.filter(idatividade = atividade) 
+	espaco = Atividade.objects.filter(idatividade = atividade)
 	return render(request=request,
 				  template_name="main/sala_dropdown.html",
 				  context={'espaco':espaco,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
@@ -117,7 +117,7 @@ def criar_tarefa_grupo(request):
 	coord_user = Coordenador.objects.get(utilizador_idutilizador = user2)
 	new_form = Tarefa(concluida = 0, coordenador_utilizador_idutilizador = coord_user)
 	form = TarefasFormGroup(request.POST, instance = new_form)
-	dispos=disponibilidades('Guiar Grupo')
+	dispo = Disponibilidade.objects.exclude(tipo_de_tarefa= 'Ajudar Docente')
 	if request.method == "POST":
 		if form.is_valid():
 			new_tarefa = form.save(commit = False)
@@ -135,15 +135,12 @@ def criar_tarefa_grupo(request):
 			new_tarefa.save()
 			if request.POST['id_colaborador_utilizador_idutilizador'] != '':
 				noti_views.new_noti(request,colaborador_user.pk,'Tarefa','Foi atribuido uma Nova Tarefa')
-			print(new_tarefa.buscar)
-			print(new_tarefa.levar)
-			print(new_tarefa.inscricao_coletiva_inscricao_idinscricao)
 			messages.success(request, f'Tarefa Criada com Sucesso!')
 			return redirect("tarefa_coordenador:consultar_tarefa")
 	
 	return render(request=request,
 				  template_name="main/criarTarefaAcompanhar.html",
-				  context={'form':form,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request),'dispo':dispos})
+				  context={'form':form,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request),'dispo':dispo})
 
 def load_cities(request):
 	atividade = request.POST.get('atividade_idatividade')
