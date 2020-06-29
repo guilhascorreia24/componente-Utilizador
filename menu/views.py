@@ -40,8 +40,8 @@ def diaaberto_create(request):
             hora_inicio=request.POST['h_incio']
             hora_fim=request.POST['h_fim']
             hora_list = preencher_hora(hora_inicio,hora_fim)
-            #Horario(hora="12:00:00").save()
-            #hora1 = Horario.objects.filter(hora="12:00:00")
+            Horario(hora="09:00:00").save()
+            Horario(hora="08:30:00").save()
             for x in range(inicio.day, final.day+1):
                 Dia(dia=inicio+datetime.timedelta(days=x-inicio.day)).save()
                 dia1 = Dia.objects.filter(dia = inicio+datetime.timedelta(days=x-inicio.day))
@@ -72,6 +72,8 @@ def diaaberto_update(request, id):
         hora_inicio=request.POST['h_incio']
         hora_fim=request.POST['h_fim']
         hora_list = preencher_hora(hora_inicio,hora_fim)
+        Horario(hora="09:00:00").save()
+        Horario(hora="08:30:00").save()
         for x in range(inicio.day, final.day+1):
             Dia(dia=inicio+datetime.timedelta(days=x-inicio.day)).save()
             dia1 = Dia.objects.filter(dia = inicio+datetime.timedelta(days=x-inicio.day))
