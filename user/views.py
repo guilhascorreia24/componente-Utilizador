@@ -205,9 +205,9 @@ def register(request):
                 error2 = "Passwords nao coincidem"
             if password_check(request.POST['password1']) != True:
                 error1 = password_check(request.POST['password1']) 
-            return render(request, 'register.html', {'me':me,"func":user(request),'form': form,'cursos':cursos,'UOs':UOs,'deps':deps,'error1': error, 'error2': error1, 'error3': error2, 'error4': error3,'error5':type_user(data,None,request),'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
+            return render(request, 'register.html', {'me':me,"func":user(request),'form': form,'cursos':cursos,'UOs':UOs,'deps':deps,'error1': error, 'error2': error1, 'error3': error2, 'error4': error3,'error5':type_user(data,None,request),'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request),'p':1})
     form = UserRegisterForm()
-    return render(request, 'register.html', {'form': form,'UOs':UOs,'deps':deps,'cursos':cursos,"func":user(request),'me':me,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
+    return render(request, 'register.html', {'form': form,'UOs':UOs,'deps':deps,'cursos':cursos,"func":user(request),'me':me,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request),'p':1})
 
 #*----------------------------------------------------------login---------------------------------------
 def login_request(request):
@@ -250,7 +250,7 @@ def login_request(request):
         form = AuthenticationForm()
     if tentatives<0:
         tentatives=5
-    return render(request=request, template_name="login.html", context={"form": form,"tentatives":tentatives})
+    return render(request=request, template_name="login.html", context={"form": form,"tentatives":tentatives,'p':2})
 
 
 def logout_request(request):
@@ -260,7 +260,9 @@ def logout_request(request):
         del request.session['user_id']
         del request.session['type']
     if 'cookie_id' in request.COOKIES:
+        Utilizador.objects.filter(remember_me=request.COOKIES['cookie_id']).delete()
         r.delete_cookie('cookie_id')
+    print(request.session)
     messages.success(request, "Até a proxima")
     return r
 
