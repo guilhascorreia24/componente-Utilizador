@@ -1,5 +1,5 @@
 import unittest
-from main.models import *
+from blog.models import *
 
 class TestModels(unittest.TestCase):
 

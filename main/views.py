@@ -129,10 +129,10 @@ def load_cities(request):
 				  context={'sessao':sessao,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
 
 def consultar_tarefa(request):
-	tarefas = Tarefa.objects.filter(coordenador_utilizador_idutilizador = request.session["user_id"])
+	tarefas = Tarefa.objects.filter(coordenador_utilizador_idutilizador = request.session['user_id'])
+	print(request.session['user_id'])
 	sessao = Sessao.objects.all()
 	colab = Colaborador.objects.all()
-	iduo = Coordenador.objects.get(pk = Utilizador.objects.get(pk= request.session["user_id"])).unidade_organica_iduo
 	atividade = Atividade.objects.all()
 	sala = Sala.objects.all()
 	anfi = Anfiteatro.objects.all()
@@ -154,14 +154,11 @@ def consultar_tarefa_admin(request):
 	sessao = Sessao.objects.all()
 	colab = Colaborador.objects.all()
 	atividade = Atividade.objects.all()
-	myFilter = TarefaFilter(request.GET, queryset=tarefas)
-	tarefas = myFilter.qs
 
 	context={'atividade':atividade,
 			'unidade':unidade,
 			'tarefas': tarefas,
 			'sessao': sessao,
-			'myFilter': myFilter,
 			'colab': colab,
 			'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)}
 	return render(request=request,
