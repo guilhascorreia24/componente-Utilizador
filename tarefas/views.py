@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, HttpResponse
 from django.forms import ModelForm,modelformset_factory,Form,inlineformset_factory,ValidationError
 from tarefas import forms
 from django.db.models import F
-from .models import Disponibilidade, Utilizador, Colaborador
+from .models import Disponibilidade, Utilizador, Colaborador, Sala, Anfiteatro 
 from .models import Tarefa
 from django.views.decorators.csrf import csrf_exempt
 from Notification.views import noti_not_checked
@@ -52,14 +52,15 @@ def consultar_tarefas2(request):
     if utilizador.validada == 1 :
         tarefas = Tarefa.objects \
         .select_related('idtarefa','dia_dia','coordenador_utilizador_idutilizador__utilizador_idutilizador','sessao_idsessao','sessao_idsessao__horario_has_dia_id_dia_hora__horario_hora','sessao_idsessao__horario_has_dia_id_dia_hora__dia_dia','sessao_idsessao__atividade_idatividade','buscar','levar', 'levar__campus_idcampus','inscricao_coletiva_inscricao_idinscricao','inscricao_coletiva_inscricao_idinscricao__escola_idescola','colaborador_utilizador_idutilizador').all() \
-        .values(id_tarefa=F('idtarefa'),estado=F('concluida'),dia=F('dia_dia__dia'),nome_coordenador=F('coordenador_utilizador_idutilizador__utilizador_idutilizador__nome'),hora=F('hora_inicio'),sessao_hora=F('sessao_idsessao__horario_has_dia_id_dia_hora__horario_hora'),nome_tarefa=F('nome'),atividade=F('sessao_idsessao__atividade_idatividade__titulo'),espaco_antes=F('buscar__nome'),espaco_depois=F('levar__nome'),
-            campus=F('levar__campus_idcampus__nome'),n_alunos=F('sessao_idsessao__nrinscritos'),turma=F('inscricao_coletiva_inscricao_idinscricao__turma'),escola=F('inscricao_coletiva_inscricao_idinscricao__escola_idescola__nome'),atividade_espaco=F('sessao_idsessao__atividade_idatividade__espaco_idespaco__nome'),
+        .values(id_tarefa=F('idtarefa'),estado=F('concluida'),dia=F('dia_dia__dia'),nome_coordenador=F('coordenador_utilizador_idutilizador__utilizador_idutilizador__nome'),hora=F('hora_inicio'),sessao_hora=F('sessao_idsessao__horario_has_dia_id_dia_hora__horario_hora'),nome_tarefa=F('nome'),atividade=F('sessao_idsessao__atividade_idatividade__titulo'),espaco_antes=F('buscar__nome'),espaco_depois=F('levar__nome'),id_espaco_antes=F('buscar'),id_espaco_depois=F('levar'),
+            campus=F('levar__campus_idcampus__nome'),n_alunos=F('sessao_idsessao__nrinscritos'),turma=F('inscricao_coletiva_inscricao_idinscricao__turma'),escola=F('inscricao_coletiva_inscricao_idinscricao__escola_idescola__nome'),atividade_espaco=F('sessao_idsessao__atividade_idatividade__espaco_idespaco__nome'),id_atividade_espaco=F('sessao_idsessao__atividade_idatividade__espaco_idespaco'),
             atividade_campus=F('sessao_idsessao__atividade_idatividade__espaco_idespaco__campus_idcampus__nome'),colab=F('colaborador_utilizador_idutilizador'),sessao_dia=F('sessao_idsessao__horario_has_dia_id_dia_hora__dia_dia'))
-
-        return render(request, "consultar_tarefas2.html", { 'tarefas':tarefas,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request) })
+        sala=Sala.objects.all()
+        anfi=Anfiteatro.objects.all()
+        return render(request, "consultar_tarefas2.html", { 'sala':sala,'anfi':anfi,'tarefas':tarefas,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request) })
 
     else:
-        return HttpResponse("Não é colaborador")
+        return render(request, "not_for-u.html", { 'message' : 'Não é um colaborador','i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request) })
 
 @csrf_exempt
 def mudar_estado(request):
