@@ -16,7 +16,7 @@
                     <div class="field">
                         <div class="control is-expanded">
                                 <span class="select is-fullwidth is-empty">
-                                <select id="myInput"onchange="myFunction()">
+                                <select id="myInput">
                                     <option hidden value="">Filtrar por Data</option>
                                     {% for hora in hora %}
                                     <option  value="{{hora.horario_has_dia_id_dia_hora.dia_dia.dia | date:"d/m/Y"}}">{{hora.horario_has_dia_id_dia_hora.dia_dia.dia | date:"d/m/Y"}}</option>
@@ -31,10 +31,10 @@
                         <div class="control">
                             <div class="select is-fullwidth">
                                 <span class="select is-fullwidth is-empty">
-                                    <select id="myInput1"onchange="myFunction()">
+                                    <select id="myInput1">
                                         <option hidden value="">Filtrar por Hora</option>
                                         {% for hora in hora %}
-                                        <option  value="{{hora.horario_has_dia_id_dia_hora.horario_hora.hora}}">{{hora.horario_has_dia_id_dia_hora.horario_hora.hora}}</option>
+                                        <option  value="{{hora.horario_has_dia_id_dia_hora.horario_hora.hora | time:"H:i"}}">{{hora.horario_has_dia_id_dia_hora.horario_hora.hora | time:"H:i"}}</option>
                                         {% endfor %}
                                     </select>
                                     </span>
@@ -47,7 +47,7 @@
                         <div class="control">
                             <div class="select is-fullwidth">
                                 <span class="select is-fullwidth is-empty">
-                                    <select id="myInput2"onchange="myFunction()">
+                                    <select id="myInput2">
                                         <option hidden value="">Filtrar por Partida</option>
                                         {% for par in par %}
                                         <option  value="{{par.paragem}}">{{par.paragem}}</option>
@@ -63,7 +63,7 @@
                         <div class="control">
                             <div class="select is-fullwidth">
                                 <span class="select is-fullwidth is-empty">
-                                    <select id="myInput3"onchange="myFunction()">
+                                    <select id="myInput3">
                                         <option hidden value="">Filtrar por Chegada</option>
                                         {% for par in par %}
                                         <option  value="{{par.paragem}}">{{par.paragem}}</option>
@@ -257,53 +257,48 @@
     </div>
     </form>
     {% endfor %}
-
     <script>
-        function myFunction() {
-            var input,input2,input3,input4,filter,filter2,filter3,filter4, table, tr, td,td1,td2,td3,td4, i, txtValue,txtValue1,txtValue2,txtValue3,txtValue4;
-            input = document.getElementById("myInput");
-            input2 = document.getElementById("myInput1");
-            input3 = document.getElementById("myInput2");
-            input4 = document.getElementById("myInput3");
-            filter = input.value.toUpperCase();
-            filter2 = input2.value.toUpperCase();
-            filter3 = input3.value.toUpperCase();
-            filter4 = input4.value.toUpperCase();
-            console.log(filter+" "+filter2);
-            table = document.getElementById("myTable");
-            tr = table.getElementsByTagName("tr");
-            for (i = 0; i < tr.length; i++) {
-                td = tr[i].getElementsByTagName("td")[1];
-                td1= tr[i].getElementsByTagName("td")[2];
-                td2= tr[i].getElementsByTagName("td")[3];
-                td3= tr[i].getElementsByTagName("td")[4];
-                if (td && td1 && td2 && td3) {
-                    txtValue = td.textContent || td.innerText;
-                    txtValue1 = td1.textContent || td1.innerText;
-                    txtValue2 = td2.textContent || td2.innerText;
-                    txtValue3 = td3.textContent || td3.innerText;
-                    if (txtValue.toUpperCase().indexOf(filter) > -1 && txtValue1.toUpperCase().indexOf(filter2) > -1 &&
-                         txtValue2.toUpperCase().indexOf(filter3) > -1 && txtValue3.toUpperCase().indexOf(filter4) > -1) {
-                        tr[i].style.display = "";
-                    } else {
-                        tr[i].style.display = "none";
-                    }
-                }
-            }
-        }
-    </script>
-    <script>
+        var table=0;
         $(document).ready(function () {
-            $('#myTable').DataTable({
-                "paging": true,
-                "info": false,
-                "searching": false,
-                "bLengthChange": false,
-                "aLengthMenu": [[5, 10, 25, -1], [5, 10, 25, "All"]],
-                "columnDefs": [
-        { "orderable": false, "targets": 5 }
-      ]
-            });
+            var table=$('#myTable').DataTable({
+            "paging": true,
+            "info": false, 
+            "dom": 'tp',
+            "bLengthChange": false,
+            "aLengthMenu": [[5, 10, 25, -1], [5, 10, 25, "All"]],
+            "columnDefs": [
+                { "orderable": false, "targets": 5 }
+            ],
+        });
+    $('#myInput').on('change', function () {
+        console.log($(this).val())
+        table.column(1).search($(this).val()).draw();
+        if($(this).val()=='')
+            $(this).css({"color":"hsla(0,0%,47.8%,.7)"});
+        else
+            $(this).css({"color":"black"});
+    });
+    $('#myInput1').on('change', function () {
+        table.column(2).search($(this).val()).draw();
+        if($(this).val()=='')
+            $(this).css({"color":"hsla(0,0%,47.8%,.7)"});
+        else
+            $(this).css({"color":"black"});
+    });
+    $('#myInput2').on('change', function () {
+        table.column(3).search($(this).val()).draw();
+        if($(this).val()=='')
+            $(this).css({"color":"hsla(0,0%,47.8%,.7)"});
+        else
+            $(this).css({"color":"black"});
+    });
+    $('#myInput3').on('change', function () {
+        table.column(4).search($(this).val()).draw();
+        if($(this).val()=='')
+            $(this).css({"color":"hsla(0,0%,47.8%,.7)"});
+        else
+            $(this).css({"color":"black"});
+    });
         });
     </script>
 

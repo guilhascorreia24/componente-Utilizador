@@ -36,6 +36,7 @@ def inscricao_delete(request,inscricao):
                 return render(request,"not_for-u.html",{'context' : context , 'message' : "Não existe Inscrição"})
                 
         delete_inscricao(insc)
+        messages_info.success(request, f'Inscrição apagada com sucesso!')
         return redirect("inscricao:consulta")
     
     if user._type == userValidation.ADMINISTRADOR:
@@ -49,6 +50,7 @@ def inscricao_delete(request,inscricao):
                 return render(request,"not_for-u.html",{'context' : context , 'message' : "Não existe Inscrição"})
         
         delete_inscricao(insc)
+        messages_info.success(request, f'Inscrição apagada com sucesso!')
         return redirect("inscricao:consulta")
 
 

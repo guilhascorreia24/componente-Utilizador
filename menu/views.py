@@ -9,7 +9,6 @@ from user.views import update_ano_user_null
 from django.utils import timezone
 from django.contrib import messages
 from Notification import views as noti_views
-from django.db.models import CharField, Value, TimeField
 ###### Dia Aberto ##############
 def index(request):
     queryset = DiaAberto.objects.all() # list of objects
@@ -62,17 +61,6 @@ def diaaberto_update(request, id):
     obj = get_object_or_404(DiaAberto, ano=id)
     form = DiaAbertoForm(request.POST or None, instance=obj)
     pk_url_kwarg = 'ano'
-    hora_inicio=Horario.objects.all()[0].pk
-    hora_fim=Horario.objects.all().order_by('-pk')[0].pk
-    print(hora_inicio)
-    horarios=HorarioHasDia.objects.all()
-    for horario in horarios:
-        if horario.dia_dia.pk.year==id:
-            if horario.horario_hora.pk<hora_inicio:
-                hora_inicio=HorarioHasDia.objects.filter(dia_dia=horario.dia_dia)[0].horario_hora.pk
-            if horario.horario_hora.pk>hora_fim:
-                hora_fim=HorarioHasDia.objects.filter(dia_dia=horario.dia_dia).reverse()[0].horario_hora.pk
-
     if form.is_valid():
         form.save()
         #Horario.objects.all().delete()
@@ -84,15 +72,14 @@ def diaaberto_update(request, id):
         hora_fim=request.POST['h_fim']
         hora_list = preencher_hora(hora_inicio,hora_fim)
         for x in range(inicio.day, final.day+1):
-                Dia(dia=inicio+datetime.timedelta(days=x-inicio.day)).save()
-                dia1 = Dia.objects.filter(dia = inicio+datetime.timedelta(days=x-inicio.day))
-                for hora in hora_list:
-                    HorarioHasDia(horario_hora=hora, dia_dia=dia1[0]).save()
+            Dia(dia=inicio+datetime.timedelta(days=x-inicio.day)).save()
+            dia1 = Dia.objects.filter(dia = inicio+datetime.timedelta(days=x-inicio.day))
+            for hora in hora_list:
+                HorarioHasDia(horario_hora=hora, dia_dia=dia1[0]).save()
         messages.success(request, f'Dia Aberto editado com Sucesso!')
         return redirect("menu:diaaberto_list")
-    print(type(hora_inicio))
     context = {
-        'form': form,'hora_inicio':hora_inicio,'hora_fim':hora_fim,
+        'form': form,
         'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)
     }
     return render(request, "DiaAberto/diaaberto_create.html", context)
@@ -100,25 +87,11 @@ def diaaberto_update(request, id):
 
 def diaaberto_list(request):
     d = DiaAberto.objects.all() # list of objects
-    dia = DiaAberto.objects.order_by('-ano').annotate(hora_inicio=Value(datetime.time(23,59),TimeField()),hora_fim=Value(datetime.time(23,59),TimeField()))
+    dia = DiaAberto.objects.order_by('-ano')
     myFilter = DiaAbertoFilter(request.GET, queryset=dia)
     dia = myFilter.qs
-    hora_inicio=Horario.objects.all()[0]
-    hora_fim=Horario.objects.all().order_by('-pk')[0]
-    horarios=HorarioHasDia.objects.all()
-    for de in dia:
-        de.hora_inicio=Horario.objects.all()[0].pk
-        de.hora_fim=Horario.objects.all().order_by('-pk')[0].pk
-        for horario in horarios:
-            if horario.dia_dia.pk.year==de.ano:
-                if horario.horario_hora.pk<de.hora_inicio:
-                    de.hora_inicio=HorarioHasDia.objects.filter(dia_dia=horario.dia_dia)[0].horario_hora.pk
-                if horario.horario_hora.pk>de.hora_fim:
-                    de.hora_fim=HorarioHasDia.objects.filter(dia_dia=horario.dia_dia).reverse()[0].horario_hora.pk
-    for o in dia:
-        print(o.hora_inicio)
     context = {
-        "diaaberto_list": dia,'hora_inicio':hora_inicio,'hora_fim':hora_fim,
+        "diaaberto_list": dia,
         'myFilter': myFilter,
         "d": d,
         'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)
@@ -139,13 +112,20 @@ def diaaberto_delete(request, id):
     obj = get_object_or_404(DiaAberto, ano=id)
     if DiaAberto.objects.filter(ano=id).exists():
         user=request.session['user_id']
-        if Utilizador.objects.filter(dia_aberto_ano=obj).exists():
-            Utilizador.objects.filter(dia_aberto_ano=obj).update(dia_aberto_ano=None)
-        obj.delete() 
-        dias=Dia.objects.all()
-        for dia in dias:
-            if dia.pk.year==id:
-                dia.delete()   
+        if Utilizador.objects.filter(dia_aberto_ano=id,pk=request.session['user_id']).exists():
+            del request.session['user_id']
+            del request.session['type']
+        obj.delete()
+        if not(Utilizador.objects.filter(pk=user).exists()):
+            notis=Notificacao.objects.all()
+            dias=Dia.objects.all()
+            for noti in notis:
+                if noti.criadoem.year==id:
+                    noti.delete()
+            for dia in dias:
+                if dia.pk.year==id:
+                    dia.delete()
+            return redirect("blog:blog-home")
         messages.success(request, f'Configurações do Dia Aberto eliminado com Sucesso!')
         noti_views.new_noti(request,request.session['user_id'],'Submissao das Configurações do Dia Aberto','Configurações do Dia Aberto eliminado com Sucesso!')
     return redirect('menu:diaaberto_list')
