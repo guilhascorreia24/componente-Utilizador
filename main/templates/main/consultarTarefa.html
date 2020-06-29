@@ -182,17 +182,27 @@
                     <form class="well form-horizontal ">              
                         <div class="input-group col-sm-12">
                             <div class="input-group-prepend labelForm">
-                                <span class="input-group-text w-100">Coordenador Responsável:</span>
+                                <span class="input-group-text w-100">Coordenador Responsável</span>
                             </div>
-                            <input disabled="" class="form-control bg-light" type="text" value="{{ i.coordenador_utilizador_idutilizador.utilizador_idutilizador.nome }}">
+                            <input disabled="" class="form-control col-sm-2 bg-light" type="text" value="{{ i.coordenador_utilizador_idutilizador.utilizador_idutilizador.nome }}">
                         </div>
                         <br>
+                        {% if i.colaborador_utilizador_idutilizador.utilizador_idutilizador == NULL %}
                         <div class="input-group col-sm-12">
                             <div class="input-group-prepend labelForm">
-                                <span class="input-group-text w-100">Colaborador Atribuído:</span>
+                                <span class="input-group-text w-100">Colaborador Atribuído</span>
+                            </div>
+                            <input disabled="" class="form-control col-sm-2 bg-light" type="text" value="Nenhum Colaborador Atribuido">
+                        </div>
+                        {%else%}
+                        <div class="input-group col-sm-12">
+                            <div class="input-group-prepend labelForm">
+                                <span class="input-group-text w-100">Colaborador Atribuído</span>
                             </div>
                             <input disabled="" class="form-control col-sm-2 bg-light" type="text" value="{{ i.colaborador_utilizador_idutilizador.utilizador_idutilizador.nome }}">
                         </div>
+                        {%endif%}
+
                         {% if i.sessao_idsessao == NULL %}
                             <br>
                             {% if i.idtarefa.inscricao_coletiva_inscricao_idinscricao == NULL %}
@@ -298,7 +308,7 @@
                             <br>
                             <div class="input-group col-sm-12">
                                 <div class="input-group-prepend labelForm">
-                                    <span class="input-group-text w-100">Colaboradores Necessários:</span>
+                                    <span class="input-group-text w-100">Colaboradores Necessários para a Atividade:</span>
                                 </div>
                                 <input disabled="" class="form-control bg-light" type="text" value="{{ i.sessao_idsessao.atividade_idatividade.nrcolaborador}}">
                             </div>
