@@ -9,24 +9,10 @@ import datetime, time
 from django.db.models import F
 from Notification import views as noti_views
 
-def homepage(request):
-    return render(request=request,
-    			  template_name="main/inicio.html",
-    			  )
-
 def criar_tarefa(request):
     return render(request=request,
     			  template_name="main/criarTarefa.html",
     			  context={'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
-
-def mais_info(request, pk):
-	tarefa = Tarefa.objects.get(idtarefa = pk)
-	sala_buscar = Sala.Objects.get(espaco_idespaco= tarefa.buscar)
-	sala_levar= Sala.Objects.get(espaco_idespaco= tarefa.levar)
-	context={'tarefa':tarefa,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request), 'sala_buscar':sala_b, "sala_levar":sala_v}
-	return render(request=request,
-				template_name="main/info_atividade.html",
-				context=context)
 
 def same(object,list,string,string1,string2):
 	for n in list:
@@ -70,7 +56,7 @@ def criar_tarefa_atividade(request):
 	coord_user = Coordenador.objects.get(utilizador_idutilizador = user_coord)
 	new_form = Tarefa(concluida = 0, coordenador_utilizador_idutilizador = coord_user)
 	form = TarefasFormAtividade(request.POST, instance = new_form)
-	dispos=disponibilidades('Ajudar Docente')
+	dispos = Disponibilidade.objects.exclude(tipo_de_tarefa= 'Guiar Grupo')
 	if request.method == "POST":
 		if form.is_valid():
 			new_tarefa = form.save(commit = False)
@@ -83,6 +69,7 @@ def criar_tarefa_atividade(request):
 				noti_views.new_noti(request,colaborador_user.pk,'Tarefa','Foi atribuido uma Nova Tarefa')
 			else:
 				new_tarefa.save()
+			print(new_tarefa)
 			messages.success(request, f'Tarefa Criada com Sucesso!')
 			return redirect("tarefa_coordenador:consultar_tarefa")
 
@@ -100,7 +87,7 @@ def load_grupo(request):
 
 def load_espaco(request):
 	atividade = request.POST.get('campus')
-	espaco = Atividade.objects.filter(idatividade = atividade) 
+	espaco = Atividade.objects.filter(idatividade = atividade)
 	return render(request=request,
 				  template_name="main/sala_dropdown.html",
 				  context={'espaco':espaco,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
@@ -110,7 +97,7 @@ def criar_tarefa_grupo(request):
 	coord_user = Coordenador.objects.get(utilizador_idutilizador = user2)
 	new_form = Tarefa(concluida = 0, coordenador_utilizador_idutilizador = coord_user)
 	form = TarefasFormGroup(request.POST, instance = new_form)
-	dispos=disponibilidades('Guiar Grupo')
+	dispos = Disponibilidade.objects.exclude(tipo_de_tarefa= 'Ajudar Docente')
 	if request.method == "POST":
 		if form.is_valid():
 			new_tarefa = form.save(commit = False)
@@ -148,14 +135,15 @@ def consultar_tarefa(request):
 	colab = Colaborador.objects.all()
 	iduo = Coordenador.objects.get(pk = Utilizador.objects.get(pk= request.session["user_id"])).unidade_organica_iduo
 	atividade = Atividade.objects.all()
-	myFilter = TarefaFilter(request.GET, queryset=tarefas)
-	tarefas = myFilter.qs
+	sala = Sala.objects.all()
+	anfi = Anfiteatro.objects.all()
 
 	context={'atividade':atividade,
 			'tarefas': tarefas,
 			'sessao': sessao,
-			'myFilter': myFilter,
 			'colab': colab,
+			'anfi':anfi,
+			'sala':sala,
 			'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)}
 	return render(request=request,
 				  template_name="main/consultarTarefa.html",

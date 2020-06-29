@@ -18,13 +18,11 @@ from . import views
 
 app_name = "tarefa_coordenador"
 urlpatterns = [
-	path("", views.homepage, name="homepage"),
     path("criar_tarefa/", views.criar_tarefa, name="criar_tarefa"),
 	path("criar_tarefa_atividade/", views.criar_tarefa_atividade, name='criar_tarefa_atividade'),
     path("criar_tarefa_grupo/", views.criar_tarefa_grupo, name='criar_tarefa_grupo'),
 	path("consultar_tarefa/", views.consultar_tarefa, name='consultar_tarefa'),
     path("consultar_tarefa_admin/", views.consultar_tarefa_admin, name='consultar_tarefa_admin'),
-    path("mais_info/<str:pk>/", views.mais_info, name="mais_info"),
     path("eliminar_tarefa/<str:pk>/", views.eliminar_tarefa, name='eliminar_tarefa'),
     path("editar_tarefa/<str:pk>/", views.editar_tarefa, name='editar_tarefa'),
     path('ajax/load-cities/', views.load_cities, name='ajax_load_cities'),
