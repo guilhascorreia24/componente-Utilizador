@@ -261,7 +261,7 @@ def logout_request(request):
         del request.session['type']
     if 'cookie_id' in request.COOKIES:
         Utilizador.objects.filter(remember_me=request.COOKIES['cookie_id']).delete()
-        request.COOKIE['cookie_id']=0
+        r.delete_cookie('cookie_id')
     messages.success(request, "Até a proxima")
     return r
 
