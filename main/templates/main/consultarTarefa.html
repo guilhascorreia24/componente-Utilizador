@@ -302,7 +302,7 @@
             "bLengthChange": false,
             "aLengthMenu": [[5, 10, 25, -1], [5, 10, 25, "All"]],
             "columnDefs": [
-                { "orderable": false, "targets": [5,6] }
+                { "orderable": false, "targets": [6] }
             ],
         });
     $('#myInput').on('keyup', function () {
@@ -328,7 +328,7 @@
             $(this).css({"color":"black"});
     });
     $('#myInput3').on('change', function () {
-        table.column(3).search($(this).val()).draw();
+        table.column(5).search($(this).val()).draw();
         if($(this).val()=='')
             $(this).css({"color":"hsla(0,0%,47.8%,.7)"});
         else
@@ -342,10 +342,6 @@
         $('#myInput2').trigger('keyup');
         $('#myInpu3').val('');
         $('#myInput3').trigger('keyup');
-        $('#myInpu4').val('');
-        $('#myInput4').trigger('keyup');
-        $('#myInpu5').val('');
-        $('#myInput5').trigger('keyup');
     });
 });
 </script>
