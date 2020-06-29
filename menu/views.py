@@ -3,7 +3,6 @@ import datetime, time
 from django.contrib import messages
 from .forms import *
 from .models import *
-from .filters import *
 from Notification.views import noti_not_checked
 from user.views import update_ano_user_null
 from django.utils import timezone
@@ -47,6 +46,8 @@ def diaaberto_create(request):
                 Dia(dia=inicio+datetime.timedelta(days=x-inicio.day)).save()
                 dia1 = Dia.objects.filter(dia = inicio+datetime.timedelta(days=x-inicio.day))
                 for hora in hora_list:
+                    if HorarioHasDia.objects.filter(horario_hora=hora, dia_dia=dia1[0]).exists():
+                        continue
                     HorarioHasDia(horario_hora=hora, dia_dia=dia1[0]).save()
             update_ano_user_null()
             messages.success(request, f'Dia Aberto Criado com Sucesso!')
@@ -75,6 +76,8 @@ def diaaberto_update(request, id):
             Dia(dia=inicio+datetime.timedelta(days=x-inicio.day)).save()
             dia1 = Dia.objects.filter(dia = inicio+datetime.timedelta(days=x-inicio.day))
             for hora in hora_list:
+                if HorarioHasDia.objects.filter(horario_hora=hora, dia_dia=dia1[0]).exists():
+                    continue
                 HorarioHasDia(horario_hora=hora, dia_dia=dia1[0]).save()
         messages.success(request, f'Dia Aberto editado com Sucesso!')
         return redirect("menu:diaaberto_list")
