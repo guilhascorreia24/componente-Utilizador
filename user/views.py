@@ -314,7 +314,7 @@ def modify_user(request,id):
         print(not Utilizador.objects.filter(telefone=request.POST['telefone']).exists())
         print(request.POST['telefone']!="")
         print(bool(validateEmail(request.POST['email'])))
-        if (request.POST['name']!="")  and (request.POST['email']!="") and not(Utilizador.objects.filter(email=request.POST['email']).exists()) and not( Utilizador.objects.filter(telefone=request.POST['telefone']).exists()) and (request.POST['telefone']!="") and (validateEmail(request.POST['email'])):
+        if (request.POST['name']!="")  and (request.POST['email']!="") and (not(Utilizador.objects.filter(email=request.POST['email']).exists()) or Utilizador.objects.get(pk=id).email==request.POST['email']) and (not( Utilizador.objects.filter(telefone=request.POST['telefone']).exists()) or Utilizador.objects.get(pk=id).telefone==request.POST['telefone']) and (request.POST['telefone']!="") and (validateEmail(request.POST['email'])):
             t=Utilizador.objects.get(pk=id)
             t.nome=request.POST['name']
             t.email=request.POST['email']
@@ -322,8 +322,8 @@ def modify_user(request,id):
             if t.validada==5:
                 t.validada=0
             t.save()
-            if Administrador.objects.filter(pk=request.session['user_id']).exists():
-                noti_views.new_noti(request,t.pk,'Aletração de dados no perfil','Foram feitas alterações nos dados do seu perfil. Por favor consulte as alterações.')
+            print("1")
+            noti_views.new_noti(request,t.pk,'Alteração de dados no perfil','Foram feitas alterações nos dados do seu perfil. Por favor consulte as alterações.')
             messages.success(request, f"Utilizador alterado com sucesso")
             return redirect('profile_list')
         else:
