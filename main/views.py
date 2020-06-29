@@ -153,12 +153,16 @@ def consultar_tarefa_admin(request):
 	sessao = Sessao.objects.all()
 	colab = Colaborador.objects.all()
 	atividade = Atividade.objects.all()
+	sala = Sala.objects.all()
+	anfi = Anfiteatro.objects.all()
 
 	context={'atividade':atividade,
 			'unidade':unidade,
 			'tarefas': tarefas,
 			'sessao': sessao,
 			'colab': colab,
+			'anfi':anfi,
+			'sala':sala,
 			'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)}
 	return render(request=request,
 				  template_name="main/consultarTarefaAdmin.html",
