@@ -103,7 +103,6 @@ def diaaberto_update(request, id):
 
 def diaaberto_list(request):
     d = DiaAberto.objects.all() # list of objects
-<<<<<<< HEAD
     dia = DiaAberto.objects.order_by('-ano').annotate(hora_inicio=Value(datetime.time(23,59),TimeField()),hora_fim=Value(datetime.time(23,59),TimeField()))
     hora_inicio=Horario.objects.all()[0]
     hora_fim=Horario.objects.all().order_by('-pk')[0]
@@ -117,9 +116,6 @@ def diaaberto_list(request):
                     de.hora_inicio=HorarioHasDia.objects.filter(dia_dia=horario.dia_dia)[0].horario_hora.pk
                 if horario.horario_hora.pk>de.hora_fim:
                     de.hora_fim=HorarioHasDia.objects.filter(dia_dia=horario.dia_dia).reverse()[0].horario_hora.pk
-=======
-    dia = DiaAberto.objects.order_by('-ano')
->>>>>>> 679c9464379d7b84108a6c1417307e111c851bf9
     context = {
         "diaaberto_list": dia,
         "d": d,
