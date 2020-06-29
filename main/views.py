@@ -158,6 +158,7 @@ def consultar_tarefa_admin(request):
 	atividade = Atividade.objects.all()
 	sala = Sala.objects.all()
 	anfi = Anfiteatro.objects.all()
+	ar = Arlivre.object.all()
 
 	context={'atividade':atividade,
 			'unidade':unidade,
@@ -166,6 +167,7 @@ def consultar_tarefa_admin(request):
 			'colab': colab,
 			'anfi':anfi,
 			'sala':sala,
+			'ar':ar,
 			'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)}
 	return render(request=request,
 				  template_name="main/consultarTarefaAdmin.html",

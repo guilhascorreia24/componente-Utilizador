@@ -208,6 +208,11 @@
                                 <div class="input-group-prepend labelForm">
                                     <span class="input-group-text w-100">Local de Recolha do(s) Participante(s)</span>
                                 </div>
+                                {% for ar in ar %}
+                                    {% if ar.espaco_idespaco == i.buscar %}
+                                        <input disabled="" class="form-control bg-light" type="text" value="{{ i.buscar.nome }} ({{ar.descricao}})">
+                                    {% endif %}
+                                {% endfor %}
                                 {% for s in sala %}
                                     {% if s.espaco_idespaco == i.buscar %}
                                         <input disabled="" class="form-control bg-light" type="text" value=" Edificio {{s.edificio}}, {{ i.buscar.nome }}">
@@ -224,6 +229,11 @@
                                 <div class="input-group-prepend labelForm">
                                     <span class="input-group-text w-100">Local de Destino do(s) Participante(s)</span>
                                 </div>
+                                {% for ar in ar %}
+                                    {% if ar.espaco_idespaco == i.levar %}
+                                        <input disabled="" class="form-control bg-light" type="text" value="{{ i.levar.nome }} ({{ar.descricao}})">
+                                    {% endif %}
+                                {% endfor %}
                                 {% for s in sala %}
                                     {% if s.espaco_idespaco == i.levar %}
                                     <input disabled="" class="form-control bg-light" type="text" value=" Edificio {{s.edificio}}, {{ i.levar.nome }}">
@@ -256,6 +266,11 @@
                                 <div class="input-group-prepend labelForm">
                                     <span class="input-group-text w-100">Local da Atividade:</span>
                                 </div>
+                                {% for ar in ar %}
+                                    {% if ar.espaco_idespaco == i.sessao_idsessao.atividade_idatividade.espaco_idespaco %}
+                                        <input disabled="" class="form-control bg-light" type="text" value=" {{i.sessao_idsessao.atividade_idatividade.espaco_idespaco.nome}} ({{ar.descricao}})">
+                                    {% endif %}
+                                {% endfor %}
                                 {% for s in sala %}
                                     {% if s.espaco_idespaco == i.sessao_idsessao.atividade_idatividade.espaco_idespaco %}
                                         <input disabled="" class="form-control bg-light" type="text" value=" Edificio {{s.edificio}}, {{i.sessao_idsessao.atividade_idatividade.espaco_idespaco.nome}}">
