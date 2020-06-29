@@ -1,6 +1,15 @@
 
   <option hidden value="">Selecione Local</option>
   {% for espaco in espaco %}
-        <option value="{{espaco.espaco_idespaco.idespaco}}">{{espaco.espaco_idespaco.nome}} ({{espaco.espaco_idespaco.campus_idcampus.nome}})</option>
+      {% for s in sala %}
+            {% if s.espaco_idespaco == espaco.espaco_idespaco %}
+                  <option value="{{espaco.espaco_idespaco.idespaco}}">Edificio {{s.edificio}}, {{espaco.espaco_idespaco.nome}} ({{espaco.espaco_idespaco.campus_idcampus.nome}})</option>
+            {% endif %}
+      {% endfor %}
+      {% for a in anfi %}
+            {% if a.espaco_idespaco == espaco.espaco_idespaco %}
+                  <option value="{{espaco.espaco_idespaco.idespaco}}">Anfiteatro {{a.edificio}}, Sala {{espaco.espaco_idespaco.nome}} ({{espaco.espaco_idespaco.campus_idcampus.nome}})</option>
+            {% endif %}
+      {% endfor %}
   {% endfor %}
   

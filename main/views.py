@@ -87,9 +87,12 @@ def load_grupo(request):
 def load_espaco(request):
 	atividade = request.POST.get('campus')
 	espaco = Atividade.objects.filter(idatividade = atividade)
+	sala = Sala.objects.all()
+	anfi = Anfiteatro.objects.all()
+	
 	return render(request=request,
 				  template_name="main/sala_dropdown.html",
-				  context={'espaco':espaco,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
+				  context={'espaco':espaco,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request),'anfi':anfi,'sala':sala,})
 
 def criar_tarefa_grupo(request):
 	user2 = Utilizador.objects.get(idutilizador = request.session["user_id"])
