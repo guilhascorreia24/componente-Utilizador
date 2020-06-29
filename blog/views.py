@@ -37,7 +37,7 @@ def home(request):
         return render(request, 'homepage.html', context={'id':id,'funcao':funcao,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
     else:
         id=None
-    return render(request, 'homepage.html', context={'id':id})
+    return render(request, 'homepage.html', context={'id':id,'p':3})
 # Create your views here.
 
 def encrypt(txt):
