@@ -20,6 +20,8 @@ class Form_InscricaoIndividual(ModelForm):
         fields = ['nracompanhantes','telefone']
         model = models.InscricaoIndividual
 
+    telefone = forms.CharField(max_length=9)
+
 class Form_Responsaveis(ModelForm):
 
     def set_inscricao(self,inscricao):

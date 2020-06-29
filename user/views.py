@@ -255,12 +255,13 @@ def login_request(request):
 
 def logout_request(request):
     r = redirect("blog:blog-home")
-    print(request.session['user_id'])
-    del request.session['user_id']
-    del request.session['type']
+    if 'user_id' in request.session:
+        print(request.session['user_id'])
+        del request.session['user_id']
+        del request.session['type']
     if 'cookie_id' in request.COOKIES:
         r.delete_cookie('cookie_id')
-    messages.info(request, "saiste com sucesso")
+    messages.success(request, "Até a proxima")
     return r
 
 #----------------------------------------------remover user-----------------------------------

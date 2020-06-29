@@ -49,8 +49,22 @@ def createnot(request):
                         UtilizadorHasNotificacao.objects.create(utilizador_idutilizador=Utilizador.objects.get(pk=request.session['user_id']),notificacao=noti,estado=1)
             messages.success(request, 'Notificação enviada com sucesso')
             return redirect('check_not')
+        else:
+            for email in emails:
+                email=email.strip()
+                form.cleaned_data['idutilizadorenvia'] = request.session['user_id']
+                if user_views.validateEmail(email) is True and (Utilizador.objects.filter(email=email).exists()):
+                    if Utilizador.objects.filter(email=email).exists():
+                        user_email = Utilizador.objects.get(email=email)
+                elif email in list:
+                    None
+                else:
+                    form.add_error('Destinatario','email invalido ou não existe')
+                    messages.error(request,"Email Invalido")
     else:
         form = NotificationForm()
+    for f in form:
+        print(type(f.errors))
     return render(request, 'compor_not.html', {'form': form,'me_id':me_id,'funcao':funcao,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request),'contacts':contacts})
 
 def send_to_org(email,request):
