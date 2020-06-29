@@ -180,9 +180,7 @@ def coordinator_activities_view(request):
             validada = int(request.POST.get("estado"))
             if validada == 0:
                 options = [0, 2]
-                print(atividades.filter(validada__in=options))
                 atividades = atividades.filter(validada__in=options)
-                print(atividades)
             else:
                 atividades = atividades.filter(validada=validada)
             estado_filter = request.POST.get("estado")
@@ -241,7 +239,6 @@ def activity_session_view(request, idActivity):
     querysetSession = Sessao.objects.all().filter(atividade_idatividade=idActivity)
     atividade = get_object_or_404(Atividade, idatividade=idActivity)
     if request.method == "POST":
-        print(request.POST.get("motivo"))
         id_prof = atividade.professor_universitario_utilizador_idutilizador.utilizador_idutilizador.idutilizador
         noti_views.new_noti(request, id_prof, "Motivo de rejeição", request.POST.get("motivo"))
         atividade.validada = -1
@@ -353,6 +350,9 @@ def editar_local_view(request, idActivity):
         elif request.POST.get('semSala') and account == 'coordinator':
             return redirect("atividades:consultar_atividades_coodernador")
         elif request.POST.get('semSala') and account == 'professor':
+            uo = get_object_or_404(ProfessorUniversitario, utilizador_idutilizador=request.session["user_id"]).departamento_iddepartamento.unidade_organica_iduo
+            for x in get_list_or_404(Coordenador, unidade_organica_iduo=uo):
+                noti_views.new_noti(request, x.utilizador_idutilizador.idutilizador, "Especificações de sala e material", request.POST.get("infoSala"))
             return redirect("../../editar_sessao/" + str(idActivity))
         elif request.POST.get('tipoSala') == '1':
             fields = 1
