@@ -6,7 +6,7 @@ class TestModels(unittest.TestCase):
     def test_diaaberto(self):
         u = Utilizador.objects.create(nome='Admin1', email='admin1@admin.com', telefone='978989829', password='0afb00138d8e73348ec1fe41fd3d3a8fcbd90156b263bfa5791ba0e095f42cfc', validada=4)
         a = Administrador.objects.create(pk=u.pk)
-        d = DiaAberto.objects.create(ano=2021, descricao='Dia Aberto 2021!!!!!!!!!!', emaildiaaberto='dia@aberto.com', enderecopaginaweb='http://www.diaaberto.com', datadiaabertoinicio='2021-07-20', datadiaabertofim='2021-07-24', datainscricaonasatividadesinicio='2021-06-25', datainscricaonasatividadesfim='2021-07-04', datapropostaatividadeinicio='2021-06-25', datapropostaatividadesfim='2020-07-04', administrador_utilizador_idutilizador=a, preco_almoco_estudante = 2.8, preco_almoco_professor = 4.2)
+        d = DiaAberto.objects.create(ano=2022, descricao='Dia Aberto 2022!!!!!!!!!!', emaildiaaberto='dia@aberto.com', enderecopaginaweb='http://www.diaaberto.com', datadiaabertoinicio='2021-07-20', datadiaabertofim='2021-07-24', datainscricaonasatividadesinicio='2021-06-25', datainscricaonasatividadesfim='2021-06-30', datapropostaatividadeinicio='2021-06-25', datapropostaatividadesfim='2020-06-30', administrador_utilizador_idutilizador=a, preco_almoco_estudante = 2.8, preco_almoco_professor = 4.2)
         self.assertEquals(DiaAberto.objects.filter(pk=d.pk).exists(),True)
         d.delete()
         a.delete()

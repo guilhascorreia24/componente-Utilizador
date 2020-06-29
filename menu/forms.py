@@ -50,6 +50,7 @@ class TransportForm(ModelForm):
         }
 
 class TransporteHorarioForm(ModelForm):
+    horario_has_dia_id_dia_hora = forms.ModelChoiceField(queryset=HorarioHasDia.objects.all().order_by('horario_hora'))
 
     class Meta:
         model = TransporteHasHorario
@@ -78,6 +79,7 @@ class MenuModelForm(forms.ModelForm):
                                 }
                             )
                         )
+    horario_has_dia_id_dia_hora = forms.ModelChoiceField(queryset=HorarioHasDia.objects.filter(horario_hora ='12:00:00'))
     class Meta:
         model = Menu
         fields = [
@@ -91,6 +93,7 @@ class MenuModelForm(forms.ModelForm):
         widgets = {
             'menu': TextInput(attrs={'class': 'input', 'value': 'Menu do dia'}),
             'nralmocosdisponiveis': NumberInput(attrs={'class': 'input','min':0}),
+
         }
 
 class MenuPrecoForm(forms.ModelForm):
