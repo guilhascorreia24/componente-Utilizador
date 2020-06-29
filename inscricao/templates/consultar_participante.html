@@ -417,7 +417,7 @@
                                             {{ atividade.dia }}
                                         </td>
                                         <td data-label="Sessão" class="">
-                                            {{ atividade.hora }}
+                                            {{ atividade.hora | time:"H:i"}}
                                         </td>
                                         <td data-label="Nº Inscritos" class="">
                                             {{ atividade.nr_inscritos }}
@@ -718,7 +718,7 @@
                                             {{ atividade.dia }}
                                         </td>
                                         <td data-label="Sessão" class="">
-                                            {{ atividade.hora }}
+                                            {{ atividade.hora | time:"H:i" }}
                                         </td>
                                         <td data-label="Nº Inscritos" class="">
                                             {{ atividade.nr_inscritos }}
