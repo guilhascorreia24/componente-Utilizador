@@ -234,7 +234,7 @@
                                         <input disabled="" class="form-control bg-light" type="text" value=" Edificio {{s.edificio}}, {{ i.buscar.nome }}">
                                     {% endif %}
                                 {% endfor %}
-                                {% for a in anfiteatro %}
+                                {% for a in anfi %}
                                     {% if a.espaco_idespaco == i.buscar %}
                                     <input disabled="" class="form-control bg-light" type="text" value=" Anfiteatro {{a.edificio}}, Sala {{ i.buscar.nome }}">
                                     {% endif %}
@@ -277,7 +277,16 @@
                                 <div class="input-group-prepend labelForm">
                                     <span class="input-group-text w-100">Local da Atividade:</span>
                                 </div>
-                                <input disabled="" class="form-control bg-light" type="text" value="{{ i.sessao_idsessao.atividade_idatividade.espaco_idespaco.nome}}">
+                                {% for s in sala %}
+                                    {% if s.espaco_idespaco == i.sessao_idsessao.atividade_idatividade.espaco_idespaco %}
+                                        <input disabled="" class="form-control bg-light" type="text" value=" Edificio {{s.edificio}}, {{i.sessao_idsessao.atividade_idatividade.espaco_idespaco.nome}}">
+                                    {% endif %}
+                                {% endfor %}
+                                {% for a in anfi %}
+                                    {% if a.espaco_idespaco == i.sessao_idsessao.atividade_idatividade.espaco_idespaco %}
+                                        <input disabled="" class="form-control bg-light" type="text" value=" Anfiteatro {{a.edificio}}, Sala {{i.sessao_idsessao.atividade_idatividade.espaco_idespaco.nome}}">
+                                    {% endif %}
+                                {% endfor %}
                             </div>
                             <br>
                             <div class="input-group col-sm-12">
