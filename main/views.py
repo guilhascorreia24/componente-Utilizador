@@ -83,6 +83,7 @@ def criar_tarefa_atividade(request):
 				noti_views.new_noti(request,colaborador_user.pk,'Tarefa','Foi atribuido uma Nova Tarefa')
 			else:
 				new_tarefa.save()
+			print(new_tarefa)
 			messages.success(request, f'Tarefa Criada com Sucesso!')
 			return redirect("tarefa_coordenador:consultar_tarefa")
 
@@ -128,6 +129,9 @@ def criar_tarefa_grupo(request):
 			new_tarefa.save()
 			if request.POST['id_colaborador_utilizador_idutilizador'] != '':
 				noti_views.new_noti(request,colaborador_user.pk,'Tarefa','Foi atribuido uma Nova Tarefa')
+			print(new_tarefa.buscar)
+			print(new_tarefa.levar)
+			print(new_tarefa.inscricao_coletiva_inscricao_idinscricao)
 			messages.success(request, f'Tarefa Criada com Sucesso!')
 			return redirect("tarefa_coordenador:consultar_tarefa")
 	
