@@ -130,7 +130,6 @@ def load_cities(request):
 
 def consultar_tarefa(request):
 	tarefas = Tarefa.objects.filter(coordenador_utilizador_idutilizador = request.session['user_id'])
-	print(request.session['user_id'])
 	sessao = Sessao.objects.all()
 	colab = Colaborador.objects.all()
 	atividade = Atividade.objects.all()
