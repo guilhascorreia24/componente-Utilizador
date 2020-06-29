@@ -3,7 +3,6 @@ from django.contrib import messages
 from django.http import HttpResponse
 from .models import *
 from .forms import *
-from .filters import TarefaFilter
 from Notification.views import noti_not_checked
 import datetime, time
 from django.db.models import F
@@ -88,9 +87,13 @@ def load_grupo(request):
 def load_espaco(request):
 	atividade = request.POST.get('campus')
 	espaco = Atividade.objects.filter(idatividade = atividade)
+	sala = Sala.objects.all()
+	anfi = Anfiteatro.objects.all()
+	ar = Arlivre.objects.all()
+	
 	return render(request=request,
 				  template_name="main/sala_dropdown.html",
-				  context={'espaco':espaco,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
+				  context={'espaco':espaco,'ar':ar,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request),'anfi':anfi,'sala':sala,})
 
 def criar_tarefa_grupo(request):
 	user2 = Utilizador.objects.get(idutilizador = request.session["user_id"])
@@ -130,13 +133,13 @@ def load_cities(request):
 				  context={'sessao':sessao,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
 
 def consultar_tarefa(request):
-	tarefas = Tarefa.objects.filter(coordenador_utilizador_idutilizador = request.session["user_id"])
+	tarefas = Tarefa.objects.filter(coordenador_utilizador_idutilizador = request.session['user_id'])
 	sessao = Sessao.objects.all()
 	colab = Colaborador.objects.all()
-	iduo = Coordenador.objects.get(pk = Utilizador.objects.get(pk= request.session["user_id"])).unidade_organica_iduo
 	atividade = Atividade.objects.all()
 	sala = Sala.objects.all()
 	anfi = Anfiteatro.objects.all()
+	ar = Arlivre.objects.all()
 
 	context={'atividade':atividade,
 			'tarefas': tarefas,
@@ -144,6 +147,7 @@ def consultar_tarefa(request):
 			'colab': colab,
 			'anfi':anfi,
 			'sala':sala,
+			'ar':ar,
 			'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)}
 	return render(request=request,
 				  template_name="main/consultarTarefa.html",
@@ -155,15 +159,18 @@ def consultar_tarefa_admin(request):
 	sessao = Sessao.objects.all()
 	colab = Colaborador.objects.all()
 	atividade = Atividade.objects.all()
-	myFilter = TarefaFilter(request.GET, queryset=tarefas)
-	tarefas = myFilter.qs
+	sala = Sala.objects.all()
+	anfi = Anfiteatro.objects.all()
+	ar = Arlivre.objects.all()
 
 	context={'atividade':atividade,
 			'unidade':unidade,
 			'tarefas': tarefas,
 			'sessao': sessao,
-			'myFilter': myFilter,
 			'colab': colab,
+			'anfi':anfi,
+			'sala':sala,
+			'ar':ar,
 			'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)}
 	return render(request=request,
 				  template_name="main/consultarTarefaAdmin.html",

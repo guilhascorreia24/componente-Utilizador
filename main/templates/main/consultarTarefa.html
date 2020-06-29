@@ -182,17 +182,26 @@
                     <form class="well form-horizontal ">              
                         <div class="input-group col-sm-12">
                             <div class="input-group-prepend labelForm">
-                                <span class="input-group-text w-100">Coordenador Responsável:</span>
+                                <span class="input-group-text w-100">Coordenador Responsável</span>
                             </div>
-                            <input disabled="" class="form-control bg-light" type="text" value="{{ i.coordenador_utilizador_idutilizador.utilizador_idutilizador.nome }}">
+                            <input disabled="" class="form-control col-sm-2 bg-light" type="text" value="{{ i.coordenador_utilizador_idutilizador.utilizador_idutilizador.nome }}">
                         </div>
                         <br>
+                        {% if i.colaborador_utilizador_idutilizador.utilizador_idutilizador == NULL %}
                         <div class="input-group col-sm-12">
                             <div class="input-group-prepend labelForm">
-                                <span class="input-group-text w-100">Colaborador Atribuído:</span>
+                                <span class="input-group-text w-100">Colaborador Atribuído</span>
+                            </div>
+                            <input disabled="" class="form-control col-sm-2 bg-light" type="text" value="Nenhum Colaborador Atribuido">
+                        </div>
+                        {%else%}
+                        <div class="input-group col-sm-12">
+                            <div class="input-group-prepend labelForm">
+                                <span class="input-group-text w-100">Colaborador Atribuído</span>
                             </div>
                             <input disabled="" class="form-control col-sm-2 bg-light" type="text" value="{{ i.colaborador_utilizador_idutilizador.utilizador_idutilizador.nome }}">
                         </div>
+                        {%endif%}
                         {% if i.sessao_idsessao == NULL %}
                             <br>
                             {% if i.idtarefa.inscricao_coletiva_inscricao_idinscricao == NULL %}
@@ -229,14 +238,19 @@
                                 <div class="input-group-prepend labelForm">
                                     <span class="input-group-text w-100">Local de Recolha do(s) Participante(s)</span>
                                 </div>
+                                {% for ar in ar %}
+                                    {% if ar.espaco_idespaco == i.buscar %}
+                                        <input disabled="" class="form-control bg-light" type="text" value="{{ i.buscar.nome }} ({{ar.descricao}})">
+                                    {% endif %}
+                                {% endfor %}
                                 {% for s in sala %}
                                     {% if s.espaco_idespaco == i.buscar %}
                                         <input disabled="" class="form-control bg-light" type="text" value=" Edificio {{s.edificio}}, {{ i.buscar.nome }}">
                                     {% endif %}
                                 {% endfor %}
-                                {% for a in anfiteatro %}
+                                {% for a in anfi %}
                                     {% if a.espaco_idespaco == i.buscar %}
-                                    <input disabled="" class="form-control bg-light" type="text" value=" Anfiteatro {{a.edificio}}, Sala {{ i.buscar.nome }}">
+                                    <input disabled="" class="form-control bg-light" type="text" value=" Edificio {{a.edificio}}, Anfiteatro {{ i.buscar.nome }}">
                                     {% endif %}
                                 {% endfor %}
                             </div>
@@ -245,6 +259,11 @@
                                 <div class="input-group-prepend labelForm">
                                     <span class="input-group-text w-100">Local de Destino do(s) Participante(s)</span>
                                 </div>
+                                {% for ar in ar %}
+                                    {% if ar.espaco_idespaco == i.levar %}
+                                        <input disabled="" class="form-control bg-light" type="text" value="{{ i.levar.nome }} ({{ar.descricao}})">
+                                    {% endif %}
+                                {% endfor %}
                                 {% for s in sala %}
                                     {% if s.espaco_idespaco == i.levar %}
                                     <input disabled="" class="form-control bg-light" type="text" value=" Edificio {{s.edificio}}, {{ i.levar.nome }}">
@@ -252,7 +271,7 @@
                                 {% endfor %}
                                 {% for a in anfi %}
                                     {% if a.espaco_idespaco == i.levar %}
-                                        <input disabled="" class="form-control bg-light" type="text" value=" Anfiteatro {{a.edificio}}, Sala {{ i.levar.nome }}">
+                                        <input disabled="" class="form-control bg-light" type="text" value=" Edificio {{a.edificio}}, Anfiteatro {{ i.levar.nome }}">
                                     {% endif %}
                                 {% endfor %}
                             </div>
@@ -277,7 +296,21 @@
                                 <div class="input-group-prepend labelForm">
                                     <span class="input-group-text w-100">Local da Atividade:</span>
                                 </div>
-                                <input disabled="" class="form-control bg-light" type="text" value="{{ i.sessao_idsessao.atividade_idatividade.espaco_idespaco.nome}}">
+                                {% for ar in ar %}
+                                    {% if ar.espaco_idespaco == i.sessao_idsessao.atividade_idatividade.espaco_idespaco %}
+                                        <input disabled="" class="form-control bg-light" type="text" value=" {{i.sessao_idsessao.atividade_idatividade.espaco_idespaco.nome}} ({{ar.descricao}})">
+                                    {% endif %}
+                                {% endfor %}
+                                {% for s in sala %}
+                                    {% if s.espaco_idespaco == i.sessao_idsessao.atividade_idatividade.espaco_idespaco %}
+                                        <input disabled="" class="form-control bg-light" type="text" value=" Edificio {{s.edificio}}, {{i.sessao_idsessao.atividade_idatividade.espaco_idespaco.nome}}">
+                                    {% endif %}
+                                {% endfor %}
+                                {% for a in anfi %}
+                                    {% if a.espaco_idespaco == i.sessao_idsessao.atividade_idatividade.espaco_idespaco %}
+                                        <input disabled="" class="form-control bg-light" type="text" value=" Edificio {{a.edificio}}, Anfiteatro {{i.sessao_idsessao.atividade_idatividade.espaco_idespaco.nome}}">
+                                    {% endif %}
+                                {% endfor %}
                             </div>
                             <br>
                             <div class="input-group col-sm-12">

@@ -3,7 +3,7 @@ from main.views import *
 from django.urls import reverse,resolve
 
 class TestUrls(SimpleTestCase):
-    
+
     def test_ciar_tarefa(self):
         url = reverse('tarefa_coordenador:criar_tarefa')
         self.assertEquals(resolve(url).func, criar_tarefa)
@@ -22,7 +22,7 @@ class TestUrls(SimpleTestCase):
     
     def test_consultar_tarefa_admin(self):
         url = reverse('tarefa_coordenador:consultar_tarefa_admin')
-        self.assertEquals(resolve(url).func, consultar_tarefa_admin)SW
+        self.assertEquals(resolve(url).func, consultar_tarefa_admin)
     
     def test_eliminar_tarefa(self):
         url = reverse('tarefa_coordenador:eliminar_tarefa', args=[23])
