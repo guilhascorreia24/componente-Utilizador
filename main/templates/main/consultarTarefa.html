@@ -237,14 +237,14 @@
                                 <div class="input-group-prepend labelForm">
                                     <span class="input-group-text w-100">Local de Recolha do(s) Participante(s)</span>
                                 </div>
-                                <input disabled="" class="form-control bg-light" type="text" value="{{  i.buscar.nome }}">
+                                <input disabled="" class="form-control bg-light" type="text" value=" {{ sala.edificio }} {{ i.buscar.nome }}">
                             </div>
                             <br>
                             <div class="input-group col-sm-12">
                                 <div class="input-group-prepend labelForm">
                                     <span class="input-group-text w-100">Local de Destino do(s) Participante(s)</span>
                                 </div>
-                                <input disabled="" class="form-control bg-light" type="text" value="{{  i.levar.nome }}">
+                                <input disabled="" class="form-control bg-light" type="text" value="{{ i.levar.nome }}">
                             </div>
                             <br>
                         {% else %}
