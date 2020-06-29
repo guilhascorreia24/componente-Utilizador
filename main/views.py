@@ -21,8 +21,14 @@ def criar_tarefa(request):
 
 def mais_info(request, pk):
 	tarefa = Tarefa.objects.get(idtarefa = pk)
-	sala_buscar = Sala.Objects.get(espaco_idespaco= tarefa.buscar)
-	sala_levar= Sala.Objects.get(espaco_idespaco= tarefa.levar)
+	if Sala.Objects.get(espaco_idespaco= tarefa.buscar) != '':
+		sala_buscar = Sala.Objects.get(espaco_idespaco= tarefa.buscar)
+	else:
+		sala_buscar = Anfiteatro.Objects.get(espaco_idespaco= tarefa.buscar)
+	if Sala.Objects.get(espaco_idespaco= tarefa.levar) != '':
+		sala_levar= Sala.Objects.get(espaco_idespaco= tarefa.levar)
+	else:
+		sala_levar= Anfiteatro.Objects.get(espaco_idespaco= tarefa.levar)
 	context={'tarefa':tarefa,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request), 'sala_buscar':sala_b, "sala_levar":sala_v}
 	return render(request=request,
 				template_name="main/info_atividade.html",
@@ -83,6 +89,7 @@ def criar_tarefa_atividade(request):
 				noti_views.new_noti(request,colaborador_user.pk,'Tarefa','Foi atribuido uma Nova Tarefa')
 			else:
 				new_tarefa.save()
+			print(new_tarefa)
 			messages.success(request, f'Tarefa Criada com Sucesso!')
 			return redirect("tarefa_coordenador:consultar_tarefa")
 
@@ -128,6 +135,9 @@ def criar_tarefa_grupo(request):
 			new_tarefa.save()
 			if request.POST['id_colaborador_utilizador_idutilizador'] != '':
 				noti_views.new_noti(request,colaborador_user.pk,'Tarefa','Foi atribuido uma Nova Tarefa')
+			print(new_tarefa.buscar)
+			print(new_tarefa.levar)
+			print(new_tarefa.inscricao_coletiva_inscricao_idinscricao)
 			messages.success(request, f'Tarefa Criada com Sucesso!')
 			return redirect("tarefa_coordenador:consultar_tarefa")
 	
@@ -148,14 +158,15 @@ def consultar_tarefa(request):
 	colab = Colaborador.objects.all()
 	iduo = Coordenador.objects.get(pk = Utilizador.objects.get(pk= request.session["user_id"])).unidade_organica_iduo
 	atividade = Atividade.objects.all()
-	myFilter = TarefaFilter(request.GET, queryset=tarefas)
-	tarefas = myFilter.qs
+	sala = Sala.objects.all()
+	anfi = Anfiteatro.objects.all()
 
 	context={'atividade':atividade,
 			'tarefas': tarefas,
 			'sessao': sessao,
-			'myFilter': myFilter,
 			'colab': colab,
+			'anfi':anfi,
+			'sala':sala,
 			'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)}
 	return render(request=request,
 				  template_name="main/consultarTarefa.html",
