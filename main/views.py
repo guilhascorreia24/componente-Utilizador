@@ -89,10 +89,11 @@ def load_espaco(request):
 	espaco = Atividade.objects.filter(idatividade = atividade)
 	sala = Sala.objects.all()
 	anfi = Anfiteatro.objects.all()
+	ar = Arlivre.objects.all()
 	
 	return render(request=request,
 				  template_name="main/sala_dropdown.html",
-				  context={'espaco':espaco,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request),'anfi':anfi,'sala':sala,})
+				  context={'espaco':espaco,'ar':ar,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request),'anfi':anfi,'sala':sala,})
 
 def criar_tarefa_grupo(request):
 	user2 = Utilizador.objects.get(idutilizador = request.session["user_id"])
@@ -138,6 +139,7 @@ def consultar_tarefa(request):
 	atividade = Atividade.objects.all()
 	sala = Sala.objects.all()
 	anfi = Anfiteatro.objects.all()
+	ar = Arlivre.object.all()
 
 	context={'atividade':atividade,
 			'tarefas': tarefas,
@@ -145,6 +147,7 @@ def consultar_tarefa(request):
 			'colab': colab,
 			'anfi':anfi,
 			'sala':sala,
+			'ar':ar,
 			'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)}
 	return render(request=request,
 				  template_name="main/consultarTarefa.html",
