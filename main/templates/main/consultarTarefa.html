@@ -250,7 +250,7 @@
                                 {% endfor %}
                                 {% for a in anfi %}
                                     {% if a.espaco_idespaco == i.buscar %}
-                                    <input disabled="" class="form-control bg-light" type="text" value=" Anfiteatro {{a.edificio}}, Sala {{ i.buscar.nome }}">
+                                    <input disabled="" class="form-control bg-light" type="text" value=" Edificio {{a.edificio}}, Anfiteatro {{ i.buscar.nome }}">
                                     {% endif %}
                                 {% endfor %}
                             </div>
@@ -271,7 +271,7 @@
                                 {% endfor %}
                                 {% for a in anfi %}
                                     {% if a.espaco_idespaco == i.levar %}
-                                        <input disabled="" class="form-control bg-light" type="text" value=" Anfiteatro {{a.edificio}}, Sala {{ i.levar.nome }}">
+                                        <input disabled="" class="form-control bg-light" type="text" value=" Edificio {{a.edificio}}, Anfiteatro {{ i.levar.nome }}">
                                     {% endif %}
                                 {% endfor %}
                             </div>
@@ -308,7 +308,7 @@
                                 {% endfor %}
                                 {% for a in anfi %}
                                     {% if a.espaco_idespaco == i.sessao_idsessao.atividade_idatividade.espaco_idespaco %}
-                                        <input disabled="" class="form-control bg-light" type="text" value=" Anfiteatro {{a.edificio}}, Sala {{i.sessao_idsessao.atividade_idatividade.espaco_idespaco.nome}}">
+                                        <input disabled="" class="form-control bg-light" type="text" value=" Edificio {{a.edificio}}, Anfiteatro {{i.sessao_idsessao.atividade_idatividade.espaco_idespaco.nome}}">
                                     {% endif %}
                                 {% endfor %}
                             </div>

@@ -139,7 +139,7 @@ def consultar_tarefa(request):
 	atividade = Atividade.objects.all()
 	sala = Sala.objects.all()
 	anfi = Anfiteatro.objects.all()
-	ar = Arlivre.object.all()
+	ar = Arlivre.objects.all()
 
 	context={'atividade':atividade,
 			'tarefas': tarefas,
@@ -161,7 +161,7 @@ def consultar_tarefa_admin(request):
 	atividade = Atividade.objects.all()
 	sala = Sala.objects.all()
 	anfi = Anfiteatro.objects.all()
-	ar = Arlivre.object.all()
+	ar = Arlivre.objects.all()
 
 	context={'atividade':atividade,
 			'unidade':unidade,

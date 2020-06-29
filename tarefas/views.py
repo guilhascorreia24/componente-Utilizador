@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, HttpResponse
 from django.forms import ModelForm,modelformset_factory,Form,inlineformset_factory,ValidationError
 from tarefas import forms
 from django.db.models import F
-from .models import Disponibilidade, Utilizador, Colaborador, Sala, Anfiteatro 
+from .models import Disponibilidade, Utilizador, Colaborador, Sala, Anfiteatro , Arlivre
 from .models import Tarefa
 from django.views.decorators.csrf import csrf_exempt
 from Notification.views import noti_not_checked
@@ -57,7 +57,8 @@ def consultar_tarefas2(request):
             atividade_campus=F('sessao_idsessao__atividade_idatividade__espaco_idespaco__campus_idcampus__nome'),colab=F('colaborador_utilizador_idutilizador'),sessao_dia=F('sessao_idsessao__horario_has_dia_id_dia_hora__dia_dia'))
         sala=Sala.objects.all()
         anfi=Anfiteatro.objects.all()
-        return render(request, "consultar_tarefas2.html", { 'sala':sala,'anfi':anfi,'tarefas':tarefas,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request) })
+        ar=Arlivre.objects.all()
+        return render(request, "consultar_tarefas2.html", { 'ar':ar,'sala':sala,'anfi':anfi,'tarefas':tarefas,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request) })
 
     else:
         return render(request, "not_for-u.html", { 'message' : 'Não é um colaborador','i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request) })
