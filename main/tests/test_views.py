@@ -8,4 +8,4 @@ class TestViews(TestCase):
         client = Client()
         response = client.get(reverse('criar_tarefa'))
         self.assertEquals(response.status_code, 200)
-        self.assertTemplateUsed(response, 'main/criarTarefa.htmls' )
+        self.assertTemplateUsed(response, 'main/criarTarefa.htmls')

@@ -3,7 +3,6 @@ from django.contrib import messages
 from django.http import HttpResponse
 from .models import *
 from .forms import *
-from .filters import TarefaFilter
 from Notification.views import noti_not_checked
 import datetime, time
 from django.db.models import F
