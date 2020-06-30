@@ -31,32 +31,32 @@ def has(list,o):
 			return True
 	return False
 
-# def disponibilidades(string):
-# 	tarefas= Tarefa.objects \
-# 		.select_related('colaborador_utilizador_idutilizador','hora_inicio','dia_dia','sessao_idsessao','sessao_idsessao__horario_has_dia_id_dia_hora__horario_hora','sessao_idsessao__atividade_idatividade__duracao','sessao_idsessao__horario_has_dia_id_dia_hora__dia_dia').all()\
-# 		.values(colab=F('colaborador_utilizador_idutilizador'),hora_i_a=F('hora_inicio'),dia_a=F('dia_dia'),hora_i_b=F('sessao_idsessao__horario_has_dia_id_dia_hora__horario_hora'),
-# 			    				dia_b=F('sessao_idsessao__horario_has_dia_id_dia_hora__dia_dia'),hora_f_b=F('sessao_idsessao__atividade_idatividade__duracao'))
-# 	disponibilidades=Disponibilidade.objects.all()
-# 	for tare in tarefas:
-# 		if isinstance(tare['hora_f_b'],float):
-# 			min=int(tare['hora_f_b']+tare['hora_i_b'].minute)%60
-# 			num=int(((tare['hora_f_b']+tare['hora_i_b'].minute)/60)+int(tare['hora_i_b'].hour))%24
-# 			tare['hora_f_b']=datetime.time(num,min)
-# 	dispos=[]
-# 	#print(disponibilidades)
-# 	for dispo in disponibilidades:
-# 		#print(str(same(dispo,tarefas,'colab','dia_a','hora_i_a') or same2(dispo,tarefas,'colab','dia_b','hora_i_b','hora_f_b')))
-# 		if not(same(dispo,tarefas,'colab','dia_a','hora_i_a')) and (dispo.tipo_de_tarefa==string or dispo.tipo_de_tarefa=='Sem preferência'):
-# 			dispos.append(dispo)
-# 	return dispos
+def disponibilidades(string):
+	tarefas= Tarefa.objects \
+		.select_related('colaborador_utilizador_idutilizador','hora_inicio','dia_dia','sessao_idsessao','sessao_idsessao__horario_has_dia_id_dia_hora__horario_hora','sessao_idsessao__atividade_idatividade__duracao','sessao_idsessao__horario_has_dia_id_dia_hora__dia_dia').all()\
+		.values(colab=F('colaborador_utilizador_idutilizador'),hora_i_a=F('hora_inicio'),dia_a=F('dia_dia'),hora_i_b=F('sessao_idsessao__horario_has_dia_id_dia_hora__horario_hora'),
+			    				dia_b=F('sessao_idsessao__horario_has_dia_id_dia_hora__dia_dia'),hora_f_b=F('sessao_idsessao__atividade_idatividade__duracao'))
+	disponibilidades=Disponibilidade.objects.all()
+	for tare in tarefas:
+		if isinstance(tare['hora_f_b'],float):
+			min=int(tare['hora_f_b']+tare['hora_i_b'].minute)%60
+			num=int(((tare['hora_f_b']+tare['hora_i_b'].minute)/60)+int(tare['hora_i_b'].hour))%24
+			tare['hora_f_b']=datetime.time(num,min)
+	dispos=[]
+	#print(disponibilidades)
+	for dispo in disponibilidades:
+		#print(str(same(dispo,tarefas,'colab','dia_a','hora_i_a') or same2(dispo,tarefas,'colab','dia_b','hora_i_b','hora_f_b')))
+		if not(same(dispo,tarefas,'colab','dia_a','hora_i_a')) and (dispo.tipo_de_tarefa==string or dispo.tipo_de_tarefa=='Sem preferência'):
+			dispos.append(dispo)
+	return dispos
 
 def criar_tarefa_atividade(request):
 	user_coord = Utilizador.objects.get(idutilizador = request.session["user_id"])
 	coord_user = Coordenador.objects.get(utilizador_idutilizador = user_coord)
 	new_form = Tarefa(concluida = 0, coordenador_utilizador_idutilizador = coord_user)
 	form = TarefasFormAtividade(request.POST, instance = new_form)
-	# dispos = disponibilidades('Ajudar Docente')
-	dispos = Disponibilidade.objects.exclude(tipo_de_tarefa='Guiar Grupo')
+	dispos = disponibilidades('Ajudar Docente')
+	# dispos = Disponibilidade.objects.exclude(tipo_de_tarefa='Guiar Grupo')
 	if request.method == "POST":
 		if form.is_valid():
 			new_tarefa = form.save(commit = False)
@@ -101,8 +101,8 @@ def criar_tarefa_grupo(request):
 	coord_user = Coordenador.objects.get(utilizador_idutilizador = user2)
 	new_form = Tarefa(concluida = 0, coordenador_utilizador_idutilizador = coord_user)
 	form = TarefasFormGroup(request.POST, instance = new_form)
-	# dispos = disponibilidades('Guiar Grupo')
-	dispos = Disponibilidade.objects.exclude(tipo_de_tarefa='Ajudar Docente')
+	dispos = disponibilidades('Guiar Grupo')
+	# dispos = Disponibilidade.objects.exclude(tipo_de_tarefa='Ajudar Docente')
 	if request.method == "POST":
 		if form.is_valid():
 			new_tarefa = form.save(commit = False)
@@ -185,8 +185,8 @@ def consultar_tarefa_admin(request):
 def editar_tarefa(request, pk):
 	tarefa = Tarefa.objects.get(idtarefa = pk)
 	if tarefa.sessao_idsessao == None:
-		# dispos=disponibilidades('Guiar Grupo')
-		dispos = Disponibilidade.objects.exclude(tipo_de_tarefa='Ajudar Docente')
+		dispos=disponibilidades('Guiar Grupo')
+		# dispos = Disponibilidade.objects.exclude(tipo_de_tarefa='Ajudar Docente')
 		template="main/editarTarefaAcompanhar.html"
 		form = TarefasFormGroup(instance = tarefa)
 		if request.method == "POST":
@@ -210,8 +210,8 @@ def editar_tarefa(request, pk):
 				messages.success(request, f'Tarefa Editada com Sucesso!')
 				return redirect("tarefa_coordenador:consultar_tarefa")
 	else:
-		dispos = Disponibilidade.objects.exclude(tipo_de_tarefa='Guiar Grupo')
-		# dispos=disponibilidades('Ajudar Docente')
+		# dispos = Disponibilidade.objects.exclude(tipo_de_tarefa='Guiar Grupo')
+		dispos=disponibilidades('Ajudar Docente')
 		template="main/editarTarefaAtividade.html"
 		form = TarefasFormAtividade(instance = tarefa)
 		if request.method == "POST":
