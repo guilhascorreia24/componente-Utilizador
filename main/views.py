@@ -55,7 +55,7 @@ def criar_tarefa_atividade(request):
 	coord_user = Coordenador.objects.get(utilizador_idutilizador = user_coord)
 	new_form = Tarefa(concluida = 0, coordenador_utilizador_idutilizador = coord_user)
 	form = TarefasFormAtividade(request.POST, instance = new_form)
-	dispos = disponibilidades('Ajudar Docente')
+	dispos = disponibilidades("Ajudar Docente")
 	# dispos = Disponibilidade.objects.exclude(tipo_de_tarefa='Guiar Grupo')
 	if request.method == "POST":
 		if form.is_valid():
@@ -101,7 +101,7 @@ def criar_tarefa_grupo(request):
 	coord_user = Coordenador.objects.get(utilizador_idutilizador = user2)
 	new_form = Tarefa(concluida = 0, coordenador_utilizador_idutilizador = coord_user)
 	form = TarefasFormGroup(request.POST, instance = new_form)
-	dispos = disponibilidades('Guiar Grupo')
+	dispos = disponibilidades("Guiar Grupo")
 	# dispos = Disponibilidade.objects.exclude(tipo_de_tarefa='Ajudar Docente')
 	if request.method == "POST":
 		if form.is_valid():
