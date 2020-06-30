@@ -189,7 +189,7 @@ def editar_tarefa(request, pk):
 				tarefa.dia_dia = Dia.objects.get(dia = request.POST["dia_dia"])
 				tarefa.hora_inicio = request.POST["hora_inicio"]
 				if request.POST['colaborador_utilizador_idutilizador'] != '':
-					tarefa.colaborador_utilizador_idutilizador = Colaborador.objects.get(utilizador_idutilizador = Utilizador.objects.get(idutilizador= request.POST["colaborador_utilizador_idutilizador"]))
+					tarefa.colaborador_utilizador_idutilizador = Colaborador.objects.get(utilizador_idutilizador = Utilizador.objects.get(idutilizador= request.POST["id_colaborador_utilizador_idutilizador"]))
 				ativid = Atividade.objects.get(idatividade = request.POST['atividade_idatividade'])
 				tarefa.buscar = Espaco.objects.get(idespaco = ativid.espaco_idespaco.idespaco)
 				tarefa.levar = Espaco.objects.get(idespaco = request.POST['levar'])
@@ -207,7 +207,7 @@ def editar_tarefa(request, pk):
 			if form.is_valid():
 				tarefa.nome= request.POST["nome"]
 				tarefa.sessao_idsessao = Sessao.objects.get(idsessao = request.POST["idsession"])
-				tarefa.colaborador_utilizador_idutilizador = Colaborador.objects.get(utilizador_idutilizador = Utilizador.objects.get(idutilizador= request.POST["colaborador_utilizador_idutilizador"]))
+				tarefa.colaborador_utilizador_idutilizador = Colaborador.objects.get(utilizador_idutilizador = Utilizador.objects.get(idutilizador= request.POST["id_colaborador_utilizador_idutilizador"]))
 				tarefa.save()
 				messages.success(request, f'Tarefa Editada com Sucesso!')
 				return redirect("tarefa_coordenador:consultar_tarefa")
