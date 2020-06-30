@@ -203,6 +203,19 @@ def get_my_lists(request,list):
         list.append(str('Docentes'+"."+uos.sigla+""))
         list.append(str('Coordenadores'+"."+uos.sigla+""))
         list.append(str('Colaboradores'+"."+uos.sigla+""))
+    if me.validada==3:
+        me=ProfessorUniversitario.objects.get(utilizador_idutilizador=me)
+        uos=me.departamento_iddepartamento.unidade_organica_iduo
+        coords=Coordenador.objects.all()
+        colabs=Colaborador.objects.all()
+        list.append(str('Coordenadores'+"."+uos.sigla+""))
+    if me.validada==1:
+        me=Colaborador.objects.get(utilizador_idutilizador=me)
+        uos=me.curso_idcurso.unidade_organica_iduo
+        coords=Coordenador.objects.all()
+        dus=ProfessorUniversitario.objects.all()
+        list.append(str('Coordenadores'+"."+uos.sigla+""))
+
     return list
 
 def new_noti(request,destinatario_pk,assunto,texto):
