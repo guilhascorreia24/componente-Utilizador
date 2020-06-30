@@ -103,7 +103,6 @@ def criar_tarefa_grupo(request):
 	form = TarefasFormGroup(request.POST, instance = new_form)
 	# dispos = disponibilidades("Guiar Grupo")
 	dispos = Disponibilidade.objects.exclude(tipo_de_tarefa='Ajudar Docente')
-	dispo = list(dict.fromkeys(dispos))
 	if request.method == "POST":
 		if form.is_valid():
 			new_tarefa = form.save(commit = False)
@@ -130,7 +129,7 @@ def criar_tarefa_grupo(request):
 	
 	return render(request=request,
 				  template_name="main/criarTarefaAcompanhar.html",
-				  context={'form':form,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request),'dispo':dispo})
+				  context={'form':form,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request),'dispo':dispos})
 
 def load_cities(request):
 	atividade = request.POST.get('atividade_idatividade')
