@@ -199,8 +199,6 @@ def register(request):
                 error = "Email ja existe"
             elif not validateEmail(data['email']):
                 error="Formato do email errado."
-            if Utilizador.objects.filter(telefone=request.POST['telefone']).exists():
-                error3 = "telefone ja existe"
             if request.POST['password1'] != request.POST['password2']:
                 error2 = "Passwords nao coincidem"
             if password_check(request.POST['password1']) != True:
@@ -361,8 +359,6 @@ def modify_user(request,id):
                 error3 = 'Preencha este campo.'
             if Utilizador.objects.filter(email=request.POST['email']).exists() and Utilizador.objects.get(email=request.POST['email']).idutilizador!=id:
                 error = "Email ja existe"
-            if Utilizador.objects.filter(telefone=request.POST['telefone']).exists() and Utilizador.objects.get(telefone=request.POST['telefone']).idutilizador!=id:
-                error3 = "telefone ja existe"
             return render(request, 'profile_modify.html', {'email':email,'UO':UO,'telefone':telefone,'funcao':funcao,'curso':curso,'dep':dep,"form": form,'error4':error3,"error1":error,'me':me,'id':id,'nome':name,'ano':ano,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
     else:
         form = ModifyForm()
