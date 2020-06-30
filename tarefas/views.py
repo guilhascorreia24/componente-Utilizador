@@ -2,8 +2,7 @@ from django.shortcuts import render, redirect, HttpResponse
 from django.forms import ModelForm,modelformset_factory,Form,inlineformset_factory,ValidationError
 from tarefas import forms
 from django.db.models import F
-from .models import Disponibilidade, Utilizador, Colaborador, Sala, Anfiteatro , Arlivre
-from .models import Tarefa
+from .models import Disponibilidade, Utilizador, Colaborador, Sala, Anfiteatro , Arlivre, Tarefa
 from django.views.decorators.csrf import csrf_exempt
 from Notification.views import noti_not_checked
 
