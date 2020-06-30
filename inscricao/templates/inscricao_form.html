@@ -932,11 +932,10 @@
                         <h2 data-v-dac68d9e="" class="title has-text-grey is-uppercase" style="font-size: 0.9rem;">
                             Sessões Escolhidas </h2>
                         <div data-v-dac68d9e="" class="b-table">
-                            {% if form.sessao.errors|length > 0 %}
+                            {% if form.sessao.min_sessao %}
                             <div class="alert alert-danger">
-                                {{form.sessao.errors.0}}
+                                {{form.sessao.min_sessao}}
                             </div>
-                            <p> </p>
                             {% endif %}
                             <!---->
                             <!---->

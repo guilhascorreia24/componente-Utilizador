@@ -174,7 +174,7 @@ def register(request):
         #print(not Utilizador.objects.filter(email=request.POST['email']).exists())
         #print(not Utilizador.objects.filter(telefone=request.POST['telefone']).exists())
         #print(password_check(request.POST['password1']))
-        if len(data['name'])>0 and len(data['email'])>0 and len(data['password1'])>0 and validateEmail(data['email']) and (type_user(data,None,request) is True or type_user(data,None,request) == 4) and request.POST['password1']==request.POST['password2'] and not Utilizador.objects.filter(email=request.POST['email']).exists() and  not Utilizador.objects.filter(telefone=request.POST['telefone']).exists() and password_check(request.POST['password1']) is True:
+        if (len(data['name'])>0 and len(data['name'])<255) and (len(data['email'])>0 and len(data['email'])<255) and (len(data['password1'])>0 and len(data['password1'])<255) and validateEmail(data['email']) and (type_user(data,None,request) is True or type_user(data,None,request) == 4) and request.POST['password1']==request.POST['password2'] and not Utilizador.objects.filter(email=request.POST['email']).exists() and  not Utilizador.objects.filter(telefone=request.POST['telefone']).exists() and password_check(request.POST['password1']) is True:
             form.save()
             user_id=Utilizador.objects.get(email=request.POST['email']).idutilizador
             type_user(data,user_id,request)
@@ -205,9 +205,9 @@ def register(request):
                 error2 = "Passwords nao coincidem"
             if password_check(request.POST['password1']) != True:
                 error1 = password_check(request.POST['password1']) 
-            return render(request, 'register.html', {'me':me,"func":user(request),'form': form,'cursos':cursos,'UOs':UOs,'deps':deps,'error1': error, 'error2': error1, 'error3': error2, 'error4': error3,'error5':type_user(data,None,request),'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
+            return render(request, 'register.html', {'me':me,"func":user(request),'form': form,'cursos':cursos,'UOs':UOs,'deps':deps,'error1': error, 'error2': error1, 'error3': error2, 'error4': error3,'error5':type_user(data,None,request),'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request),'p':1})
     form = UserRegisterForm()
-    return render(request, 'register.html', {'form': form,'UOs':UOs,'deps':deps,'cursos':cursos,"func":user(request),'me':me,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
+    return render(request, 'register.html', {'form': form,'UOs':UOs,'deps':deps,'cursos':cursos,"func":user(request),'me':me,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request),'p':1})
 
 #*----------------------------------------------------------login---------------------------------------
 def login_request(request):
@@ -250,7 +250,7 @@ def login_request(request):
         form = AuthenticationForm()
     if tentatives<0:
         tentatives=5
-    return render(request=request, template_name="login.html", context={"form": form,"tentatives":tentatives})
+    return render(request=request, template_name="login.html", context={"form": form,"tentatives":tentatives,'p':2})
 
 
 def logout_request(request):
@@ -260,7 +260,9 @@ def logout_request(request):
         del request.session['user_id']
         del request.session['type']
     if 'cookie_id' in request.COOKIES:
+        Utilizador.objects.filter(remember_me=request.COOKIES['cookie_id']).delete()
         r.delete_cookie('cookie_id')
+    print(request.session)
     messages.success(request, "Até a proxima")
     return r
 
