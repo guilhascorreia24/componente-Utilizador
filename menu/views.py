@@ -29,10 +29,7 @@ def preencher_hora(hora_incio, hora_fim):
 
 
 def diaaberto_create(request):
-    user = Utilizador.objects.get(idutilizador=request.session['user_id'])
-    admin = Administrador.objects.get(utilizador_idutilizador=user)
-    new_form = DiaAberto(administrador_utilizador_idutilizador=admin)
-    form = DiaAbertoForm(request.POST or None, instance=new_form)
+    form = DiaAbertoForm(request.POST or None)
     if request.method == "POST":
         if form.is_valid():
             form.save()

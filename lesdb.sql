@@ -31,16 +31,9 @@ CREATE TABLE IF NOT EXISTS `les`.`dia_aberto` (
   `datainscricaonasatividadesfim` DATE NOT NULL,
   `dataPropostaAtividadeInicio` DATE NOT NULL,
   `dataPropostaAtividadesFim` DATE NOT NULL,
-  `Administrador_Utilizador_idutilizador` INT NOT NULL,
   `preco_almoco_estudante` FLOAT NOT NULL DEFAULT '0',
   `preco_almoco_professor` FLOAT NOT NULL,
-  PRIMARY KEY (`ano`),
-  INDEX `fk_dia_aberto_Administrador_id` (`Administrador_Utilizador_idutilizador` ASC) VISIBLE,
-  CONSTRAINT `fk_dia_aberto_Administrador`
-    FOREIGN KEY (`Administrador_Utilizador_idutilizador`)
-    REFERENCES `les`.`administrador` (`Utilizador_idutilizador`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE)
+  PRIMARY KEY (`ano`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
@@ -60,6 +53,7 @@ CREATE TABLE IF NOT EXISTS `les`.`utilizador` (
   `dia_aberto_ano` YEAR NULL DEFAULT NULL,
   PRIMARY KEY (`idutilizador`),
   UNIQUE INDEX `email_UNIQUE` (`email` ASC) VISIBLE,
+  UNIQUE INDEX `telefone_UNIQUE` (`telefone` ASC) VISIBLE,
   INDEX `fk_utilizador_dia_aberto1_idx` (`dia_aberto_ano` ASC) VISIBLE,
   CONSTRAINT `fk_utilizador_dia_aberto1`
     FOREIGN KEY (`dia_aberto_ano`)
