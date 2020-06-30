@@ -88,23 +88,11 @@
             <div class="table-wrapper">
                 <table id="myTable" class="table has-mobile-cards is-hoverable is-fullwidth">
                     <thead>
-                        <tr>
-                        <th>
-                            Ano
-                        </th>
-                        <th>
-                            Data Do Dia Aberto
-                        </th>
-                        <th>
-                            Data De Inscrição
-                        </th>
-                        <th>
-                            Data de Proposta de Atividades
-                        </th>
-                        <th>
-                            Ações
-                        </th>
-                        </tr>
+                            <th>Ano</th>
+                            <th>Data Do Dia Aberto</th>
+                            <th>Data De Inscrição</th>
+                            <th>Data de Proposta de Atividades</th>
+                            <th>Ações</th>
                     </thead>
                     <tbody>
                         {% for instance in diaaberto_list %}
@@ -260,59 +248,59 @@
 </div>
 {% endfor %}
 <script>
-var table=0;
+    var table = 0;
     $(document).ready(function () {
-        table=$('#myTable').DataTable({
+        table = $('#myTable').DataTable({
             "paging": true,
-            "info": false, 
+            "info": false,
             "dom": 'tp',
             "bLengthChange": false,
             "aLengthMenu": [[5, 10, 25, -1], [5, 10, 25, "All"]],
             "columnDefs": [
-                { "orderable": false, "targets": 5 }
-            ],
+                { "orderable": false, "targets": 4 }
+            ]
         });
-    $('#myInput').on('keyup', function () {
-        console.log($(this).val())
-        table.column(0).search($(this).val()).draw();
-        if($(this).val()=='')
-            $(this).css({"color":"hsla(0,0%,47.8%,.7)"});
-        else
-            $(this).css({"color":"black"});
-    });
-    $('#myInput1').on('change', function () {
-        table.column(1).search($(this).val()).draw();
-        if($(this).val()=='')
-            $(this).css({"color":"hsla(0,0%,47.8%,.7)"});
-        else
-            $(this).css({"color":"black"});
-    });
-    $('#myInput2').on('change', function () {
-        table.column(2).search($(this).val()).draw();
-        if($(this).val()=='')
-            $(this).css({"color":"hsla(0,0%,47.8%,.7)"});
-        else
-            $(this).css({"color":"black"});
-    });
-    $('#myInput3').on('change', function () {
-        table.column(3).search($(this).val()).draw();
-        if($(this).val()=='')
-            $(this).css({"color":"hsla(0,0%,47.8%,.7)"});
-        else
-            $(this).css({"color":"black"});
-    });
+        $('#myInput').on('keyup', function () {
+            console.log($(this).val())
+            table.column(0).search($(this).val()).draw();
+            if ($(this).val() == '')
+                $(this).css({ "color": "hsla(0,0%,47.8%,.7)" });
+            else
+                $(this).css({ "color": "black" });
+        });
+        $('#myInput1').on('change', function () {
+            table.column(1).search($(this).val()).draw();
+            if ($(this).val() == '')
+                $(this).css({ "color": "hsla(0,0%,47.8%,.7)" });
+            else
+                $(this).css({ "color": "black" });
+        });
+        $('#myInput2').on('change', function () {
+            table.column(2).search($(this).val()).draw();
+            if ($(this).val() == '')
+                $(this).css({ "color": "hsla(0,0%,47.8%,.7)" });
+            else
+                $(this).css({ "color": "black" });
+        });
+        $('#myInput3').on('change', function () {
+            table.column(3).search($(this).val()).draw();
+            if ($(this).val() == '')
+                $(this).css({ "color": "hsla(0,0%,47.8%,.7)" });
+            else
+                $(this).css({ "color": "black" });
+        });
 
-    $('#clean').on('click', function () {
-        $('#myInput').val('');
-        $('#myInput').trigger('keyup');
-        $('#myInpu1').val('');
-        $('#myInput1').trigger('keyup');
-        $('#myInpu2').val('');
-        $('#myInput2').trigger('keyup');
-        $('#myInpu3').val('');
-        $('#myInput3').trigger('keyup');
+        $('#clean').on('click', function () {
+            $('#myInput').val('');
+            $('#myInput').trigger('keyup');
+            $('#myInpu1').val('');
+            $('#myInput1').trigger('keyup');
+            $('#myInpu2').val('');
+            $('#myInput2').trigger('keyup');
+            $('#myInpu3').val('');
+            $('#myInput3').trigger('keyup');
+        });
     });
-});
 </script>
 
 

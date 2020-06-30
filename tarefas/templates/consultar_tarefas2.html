@@ -204,17 +204,43 @@
                                                     {{  tarefa.sessao_hora | time:"H:i" }}
                                                 </td>    
                                                 <td data-label="Local" class=""> 
-                                                    {% if tarefa.espaco_depois != None %}
-                                                    {{  tarefa.espaco_depois  }} , {{  tarefa.campus }}
-                                                    {% else %}
-                                                    {{  tarefa.atividade_espaco  }} , {{  tarefa.atividade_campus }}
+                                                {% for s in sala %}
+                                                    {% if tarefa.id_espaco_depois == s.espaco_idespaco.pk or tarefa.id_atividade_espaco == s.espaco_idespaco.pk %}
+                                                        {% if tarefa.espaco_depois != None %}
+                                                            Edificio {{s.edificio}}, {{  tarefa.espaco_depois  }}
+                                                        {% else %}
+                                                            Edificio {{s.edificio}}, {{  tarefa.atividade_espaco  }}
+                                                        {% endif %}
                                                     {% endif %}
+                                                {% endfor %}
+                
+                
+                                                {% for f in anfi %}
+                                                    {% if tarefa.id_espaco_depois == f.espaco_idespaco.pk or tarefa.id_atividade_espaco == f.espaco_idespaco.pk %}
+                                                        {% if tarefa.espaco_depois != None %}
+                                                            Edificio {{f.edificio}}, Anfiteatro {{  tarefa.espaco_depois  }} 
+                                                        {% else %}
+                                                            Edificio {{f.edificio}}, Anfiteatro {{  tarefa.atividade_espaco  }} 
+                                                        {% endif %}
+                                                    {% endif %}
+                                                {% endfor %}
+                
+                
+                                                {% for a in ar %}
+                                                    {% if tarefa.id_espaco_depois == a.espaco_idespaco.pk or tarefa.id_atividade_espaco == a.espaco_idespaco.pk %}
+                                                        {% if tarefa.espaco_depois != None %}
+                                                            {{  tarefa.espaco_depois  }} 
+                                                        {% else %}
+                                                            {{  tarefa.atividade_espaco  }}
+                                                        {% endif %}
+                                                    {% endif %}
+                                                {% endfor %}
                                                 </td>                                          
                                                 <td data-label="Estado" class=""> 
                                                     <input style="display:none" value="{{ tarefa.id_tarefa }}" id="666"></input>
                                                     {% if tarefa.estado == 1 %}
                                                     <input type="checkbox" style="display:none" id="777" name={{ tarefa.estado }}>
-                                                    <span class="tag next is-success" style="width: 7 rem;font-size: small;">Concluída</span>
+                                                    <span class="tag next is-success" style="width: 7 rem;font-size: small;">Concluido</span>
                                                     {% elif tarefa.estado == 0%}
                                                     <input type="checkbox" style="display:none" id="777" name={{ tarefa.estado }}>
                                                     <span class="tag next is-warning" style="width: 7 rem;font-size: small;">Pendente</span>
@@ -292,25 +318,67 @@
                                 </div>
                                 <input disabled="" class="form-control bg-light" type="text" value="{{  tarefa.hora | time:"H:i" }}{{  tarefa.sessao_hora | time:"H:i" }}">
                             </div>
-                            {% if tarefa.espaco_antes != none %} 
+                            {% if tarefa.espaco_antes != None %} 
                             <br>
                             <div class="input-group col-sm-12">
                                 <div class="input-group-prepend labelForm">
                                     <span class="input-group-text w-100">Local de Recolha</span>
                                 </div>
-                                <input disabled="" class="form-control bg-light" type="text" value="{{  tarefa.espaco_antes }} {{  tarefa.campus }}">
+                                {% for s in sala %}
+                                    {% if tarefa.id_antes_depois == s.espaco_idespaco.pk %}
+                                        <input disabled="" class="form-control bg-light" type="text" value="Edificio {{s.edificio}}, {{  tarefa.espaco_antes }} {{  tarefa.campus }}">
+                                    {% endif %} 
+                                {% endfor %}
+
+                                {% for f in anfi %}
+                                    {% if tarefa.id_antes_depois == f.espaco_idespaco.pk %}
+                                        <input disabled="" class="form-control bg-light" type="text" value="Edificio {{f.edificio}}, Anfiteatro {{  tarefa.espaco_antes }} {{  tarefa.campus }}">
+                                    {% endif %} 
+                                {% endfor %}
+
+                                {% for a in ar %}
+                                    {% if tarefa.id_antes_depois == a.espaco_idespaco.pk %}
+                                        <input disabled="" class="form-control bg-light" type="text" value="{{  tarefa.espaco_antes }} {{  tarefa.campus }}">
+                                    {% endif %} 
+                                {% endfor %}
                             </div>
-                            {% endif %} 
+                            {% endif %}
                             <br>
                             <div class="input-group col-sm-12">
                                 <div class="input-group-prepend labelForm">
                                     <span class="input-group-text w-100">Local de Destino</span>
                                 </div>
-                                {% if tarefa.espaco_depois != None %}
-                                <input disabled="" class="form-control bg-light" type="text" value="{{  tarefa.espaco_depois  }} , {{  tarefa.campus }}">
-                                {% else %}
-                                <input disabled="" class="form-control bg-light" type="text" value="{{  tarefa.atividade_espaco  }} , {{  tarefa.atividade_campus }}">
-                                {% endif %}
+                                {% for s in sala %}
+                                    {% if tarefa.id_espaco_depois == s.espaco_idespaco.pk or tarefa.id_atividade_espaco == s.espaco_idespaco.pk %}
+                                        {% if tarefa.espaco_depois != None %}
+                                            <input disabled="" class="form-control bg-light" type="text" value="Edificio {{s.edificio}}, {{  tarefa.espaco_depois  }} , {{  tarefa.campus }}">
+                                        {% else %}
+                                            <input disabled="" class="form-control bg-light" type="text" value="Edificio {{s.edificio}}, {{  tarefa.atividade_espaco  }} , {{  tarefa.atividade_campus }}">
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+
+
+                                {% for f in anfi %}
+                                    {% if tarefa.id_espaco_depois == f.espaco_idespaco.pk or tarefa.id_atividade_espaco == f.espaco_idespaco.pk %}
+                                        {% if tarefa.espaco_depois != None %}
+                                            <input disabled="" class="form-control bg-light" type="text" value="Edificio {{f.edificio}}, Anfiteatro {{  tarefa.espaco_depois  }} , {{  tarefa.campus }}">
+                                        {% else %}
+                                            <input disabled="" class="form-control bg-light" type="text" value="Edificio {{f.edificio}}, Anfiteatro {{  tarefa.atividade_espaco  }} , {{  tarefa.atividade_campus }}">
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+
+
+                                {% for a in ar %}
+                                    {% if tarefa.id_espaco_depois == a.espaco_idespaco.pk or tarefa.id_atividade_espaco == a.espaco_idespaco.pk %}
+                                        {% if tarefa.espaco_depois != None %}
+                                            <input disabled="" class="form-control bg-light" type="text" value="{{  tarefa.espaco_depois  }} , {{  tarefa.campus }}">
+                                        {% else %}
+                                            <input disabled="" class="form-control bg-light" type="text" value="{  tarefa.atividade_espaco  }} , {{  tarefa.atividade_campus }}">
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
                             </div>
                             <br>
                             <div class="form-group col-lg-8" style="text-align:center">
@@ -323,7 +391,8 @@
     </div>
     {% endfor %}
 
-    <!----->
+    <!--FILTRAR-->
+
     <script>
         var table=0;
         $(document).ready(function () {
@@ -389,69 +458,6 @@
         });
     });
     </script>
-
-<!--FILTRAR-->
-
-<script>
-    function myFunction() 
-    {
-        var input,input2,input3,input4,filter,filter2,filter3,filter4, table, tr, td,td2,td3,td4, i, txtValue,txtValue2,txtValue3,txtValue4;
-        input = document.getElementById("myInput");
-        input2 = document.getElementById("myInput2");
-        input3 = document.getElementById("myInput3");
-        input4 = document.getElementById("myInput4");
-        filter = input.value.toUpperCase();
-        filter2 = input2.value.toUpperCase();
-        filter3 = input3.value.toUpperCase();
-        filter4 = input4.value.toUpperCase();
-        console.log(filter+" "+filter2+" "+filter3+" "+filter4);
-        table = document.getElementById("myTable");
-        tr = table.getElementsByTagName("tr");
-        for (i = 0; i < tr.length; i++) {
-            td = tr[i].getElementsByTagName("td")[0];
-            td2= tr[i].getElementsByTagName("td")[1];
-            td3= tr[i].getElementsByTagName("td")[2];
-            td4= tr[i].getElementsByTagName("td")[3];
-            if (td && td2 && td3 && td4) {
-                txtValue = td.textContent || td.innerText;
-                txtValue2 = td2.textContent || td2.innerText;
-                txtValue3 = td3.textContent || td3.innerText;
-                txtValue4 = td4.textContent || td4.innerText;
-                if (txtValue.toUpperCase().indexOf(filter) > -1 && txtValue2.toUpperCase().indexOf(filter2) > -1 && txtValue3.toUpperCase().indexOf(filter3) > -1 && txtValue4.toUpperCase().indexOf(filter4) > -1) 
-                {
-                    tr[i].style.display = "";
-                } else {
-                    tr[i].style.display = "none";
-                }
-            }
-        }
-    }
-
-    function myFunction2() {
-        var input, filter, table, tr, td, i, txtValue;
-        input = document.getElementById("myInput5");
-        filter = input.value.toUpperCase();
-        table = document.getElementById("myTable");
-        tr = table.getElementsByTagName("tr");
-        for (i = 0; i < tr.length; i++) 
-        {
-            td = tr[i].getElementsByTagName("td")[5];
-            if (td) 
-            {
-                txtValue = td.textContent || td.innerText;
-                if (txtValue.toUpperCase().indexOf(filter) > -1) 
-                {
-                    tr[i].style.display = "";
-                } 
-                else 
-                {
-                    tr[i].style.display = "none";
-                }
-            }
-        }
-    }
-
-</script>
 
 <script>
     $(document).ready(function() 

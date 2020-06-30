@@ -1,15 +1,18 @@
-from django.test import TestCase
-from Notification.models import Notificacao
+import unittest
+from Notification.models import *
 
-'''class NotificacaoTestCase(TestCase):
+class NotificacaoTestCase(unittest.TestCase):
     
-    def setUp1(self):
-        return Notificacao.objects.get_or_create(Notificacao.objects.create(descricao="hello django", criadoem="2020-06-19 22:05:48.547718",idutilizadorenvia="54",utilizadorrecebe="55",assunto="teste1"))[0] 
-
-    def setUp2(self):
-        Notificacao.objects.create(descricao="django hello", criadoem="2019-05-23 21:03:22.537718",idutilizadorenvia="10",utilizadorrecebe="11",assunto="teste2")[0]
-        return Notificacao.objects.get_or_create(Notificacao.objects.create(descricao="django hello", criadoem="2019-05-23 21:03:22.537718",idutilizadorenvia="10",utilizadorrecebe="11",assunto="teste2"))[0]
+    '''def test_Notificacao(self):
+        n = Notificacao.objects.create(descricao='Ola boa tarde', criadoem='2019-06-29 11:28:18.131219', idutilizadorenvia='32',utilizadorrecebe='20',assunto='Teste')
+        self.assertEquals(Notificacao.objects.filter(pk=n.pk).exists(),True)
+        n.delete()
     
-    def test(self):
-       Nots=[setUp1(),setUp2(),]
-       self.assertEquals(str(Nots[0]),"django hello")'''
+    def test_Utilizador_Has_Notificacao(self):
+        u = Utilizador.objects.create(idutilizador='1032',nome='ze',email='miguel@gmail.com',telefone='964876216',password='0cfb00138d8e73348ec1fe41fd3d3a8fcbd90156b263bfa5791ba0e095f42cfc',validada=0)
+        n = Notificacao.objects.create(descricao='Ola boa tarde', criadoem='2019-06-29 11:28:18.131219', idutilizadorenvia='32',utilizadorrecebe='20',assunto='Teste')
+        uai = UtilizadorHasNotificacao.objects.create(utilizador_idutilizador=u,notificacao_id=int(n.pk),estado=1)
+        self.assertEquals(Notificacao.objects.filter(pk=uai.pk).exists(),True)
+        n.delete()
+        u.delete()
+        uai.delete()'''

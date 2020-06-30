@@ -175,6 +175,7 @@
                                 <!----></button></a>
                     </div>
                     {% else %}
+                    {% if p == 2 or p == 3 %}
                     <div data-v-a67fe1ba="" class="navbar-item">
                         <div data-v-a67fe1ba="" class="dropdown is-bottom-left is-mobile-modal">
                         </div><a href="{% url "register" %}"><button data-v-a67fe1ba="" type="button"
@@ -183,6 +184,8 @@
                                 </span>
                                 <!----></button></a>
                     </div>
+                    {% endif %}
+                    {% if p == 1 or p == 3 %}
                     <div data-v-a67fe1ba="" class="navbar-item">
                         <div data-v-a67fe1ba="" class="dropdown is-bottom-left is-mobile-modal">
                         </div><a href="{% url "login" %}"><button data-v-a67fe1ba="" type="button" class="button"><span
@@ -190,6 +193,7 @@
                                 </span>
                                 <!----></button></a>
                     </div>
+                    {% endif %}
                     {% endif %}
                 </div>
             </div>
