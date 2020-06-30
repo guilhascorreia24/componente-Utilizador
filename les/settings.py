@@ -99,11 +99,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'les',
         'USER': 'root',
-<<<<<<< HEAD
-        'PASSWORD': '1234',
-=======
         'PASSWORD': '12345abcd',
->>>>>>> 7594169f17d74eb023595b56df59393beb73f7f0
         'HOST': '127.0.0.1',
         'PORT': '3306',
     }
