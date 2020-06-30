@@ -130,7 +130,7 @@ def deletenot(request):
         print(request.POST.getlist('noti'))
         pressed = request.POST.getlist('noti')
         for press in pressed:
-            #print("eliminadas:"+str(signing.loads(press)))
+            #print("eliminadas:"+str(signing.loads(press))) 
             UtilizadorHasNotificacao.objects.filter(pk=press).delete()
         messages.success(request, 'Notificação/Notificações eliminada(s)')
          
