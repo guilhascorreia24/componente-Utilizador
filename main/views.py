@@ -56,7 +56,7 @@ def criar_tarefa_atividade(request):
 	new_form = Tarefa(concluida = 0, coordenador_utilizador_idutilizador = coord_user)
 	form = TarefasFormAtividade(request.POST, instance = new_form)
 	# dispos = disponibilidades("Ajudar Docente")
-	dispos = Disponibilidade.objects.exclude(tipo_de_tarefa='Guiar Grupo')
+	dispos = Disponibilidade.objects.exclude(tipo_de_tarefa='Guiar Grupo').distinct()
 	if request.method == "POST":
 		if form.is_valid():
 			new_tarefa = form.save(commit = False)
@@ -102,7 +102,7 @@ def criar_tarefa_grupo(request):
 	new_form = Tarefa(concluida = 0, coordenador_utilizador_idutilizador = coord_user)
 	form = TarefasFormGroup(request.POST, instance = new_form)
 	# dispos = disponibilidades("Guiar Grupo")
-	dispos = Disponibilidade.objects.exclude(tipo_de_tarefa='Ajudar Docente')
+	dispos = Disponibilidade.objects.exclude(tipo_de_tarefa='Ajudar Docente').distinct()
 	if request.method == "POST":
 		if form.is_valid():
 			new_tarefa = form.save(commit = False)
@@ -186,7 +186,7 @@ def editar_tarefa(request, pk):
 	tarefa = Tarefa.objects.get(idtarefa = pk)
 	if tarefa.sessao_idsessao == None:
 		# dispos=disponibilidades('Guiar Grupo')
-		dispos = Disponibilidade.objects.exclude(tipo_de_tarefa='Ajudar Docente')
+		dispos = Disponibilidade.objects.exclude(tipo_de_tarefa='Ajudar Docente').distinct()
 		template="main/editarTarefaAcompanhar.html"
 		form = TarefasFormGroup(instance = tarefa)
 		if request.method == "POST":
