@@ -322,13 +322,7 @@ def delete_user(request,id):
         messages.success(request, f'Utilizador eliminado com sucesso')
     else:
         stri="Impossivel de eliminar o utilizador"
-        if admin.exists() and (DiaAberto.objects.filter(administrador_utilizador_idutilizador=id).exists()):
-            anos=''
-            for n in DiaAberto.objects.filter(administrador_utilizador_idutilizador=id):
-                anos+=str(n.ano)+'/'
-            anos=anos[:-1]
-            messages.success(request,f'{stri}, esta responsavel por Dia(s) Aberto(s) {anos}')
-        elif prof.exists() and (Atividade.objects.filter(professor_universitario_utilizador_idutilizador=id).exists()):
+        if prof.exists() and (Atividade.objects.filter(professor_universitario_utilizador_idutilizador=id).exists()):
             messages.success(request,f'{stri}, tem Atividades associadas')
         elif part.exists() and ( InscricaoColetiva.objects.filter(participante_utilizador_idutilizador=id).exists() or  InscricaoIndividual.objects.filter(participante_utilizador_idutilizador=id).exists()):
             messages.success(request,f'{stri}, tem inscrição associadas')
@@ -541,6 +535,8 @@ def profile_list(request):
 #--------------------------------------------recuperaçao de password---------------------------------
 def change_password(request, id):
     id_deccryp=decrypt(id)
+    error1=True
+    error=False
     if request.method=='POST':
         form=PasswordChangeForm(request.POST)
         passwd=request.POST['password']
@@ -559,14 +555,16 @@ def change_password(request, id):
                 error="Preencha este campo"
             if  passwd=='':
                 error1="Preencha este campo"
-            return render(request,"reset_password.html",{"form":form,"error":error,'error1':error1})
+            return render(request,"reset_password.html",{"form":form,"error":error,'error1':error1,'a':True,'p':3})
     else:
         form=PasswordChangeForm()
-    return render(request,"reset_password.html",{"form":form})
+    return render(request,"reset_password.html",{"form":form,'error':error,'error1':error1,'a':True,'p':3})
 
 
 def reset(request):
     message=None
+    if not('user_id' in request.session):
+        redirect("blog:blog-home")
     sub = EmailSender()
     if request.method == 'POST':
         sub = EmailSender(request.POST)
