@@ -249,8 +249,8 @@ class DiaAberto(models.Model):
 class Disponibilidade(models.Model):
     colaborador_utilizador_idutilizador = models.ForeignKey(Colaborador, models.DO_NOTHING, db_column='colaborador_Utilizador_idutilizador')  # Field name made lowercase.
     dia_dia = models.ForeignKey(Dia, models.DO_NOTHING, db_column='dia_dia')
-    horario_hora = models.ForeignKey('Horario', models.DO_NOTHING, db_column='horario_hora')
-    horario_hora1 = models.ForeignKey('Horario', models.DO_NOTHING, db_column='horario_hora1')
+    horario_hora = models.ForeignKey('Horario', models.DO_NOTHING, db_column='horario_hora',related_name="disponibilidade_hora_inicio")
+    horario_hora1 = models.ForeignKey('Horario', models.DO_NOTHING, db_column='horario_hora1',related_name="disponibilidade_hora_fim")
     tipo_de_tarefa = models.CharField(max_length=45)
     disponibilidade_id = models.AutoField(primary_key=True)
 
@@ -580,8 +580,8 @@ class Tarefa(models.Model):
     hora_inicio = models.TimeField(blank=True, null=True)
     dia_dia = models.ForeignKey(Dia, models.DO_NOTHING, db_column='dia_dia', blank=True, null=True)
     sessao_idsessao = models.ForeignKey(Sessao, models.DO_NOTHING, db_column='sessao_idsessao', blank=True, null=True)
-    buscar = models.ForeignKey(Espaco, models.DO_NOTHING, db_column='buscar', blank=True, null=True)
-    levar = models.ForeignKey(Espaco, models.DO_NOTHING, db_column='levar', blank=True, null=True)
+    buscar = models.ForeignKey(Espaco, models.DO_NOTHING, db_column='buscar', blank=True, null=True,related_name="Tarefa_buscar")
+    levar = models.ForeignKey(Espaco, models.DO_NOTHING, db_column='levar', blank=True, null=True,related_name="Tarefa_levar")
     inscricao_coletiva_inscricao_idinscricao = models.ForeignKey(InscricaoColetiva, models.DO_NOTHING, db_column='inscricao_coletiva_inscricao_idinscricao', blank=True, null=True)
 
     class Meta:
@@ -602,8 +602,8 @@ class Transporte(models.Model):
 class TransporteHasHorario(models.Model):
     transporte_idtransporte = models.ForeignKey(Transporte, models.DO_NOTHING, db_column='transporte_idtransporte')
     id_transporte_has_horario = models.AutoField(primary_key=True)
-    origem = models.ForeignKey(Paragem, models.DO_NOTHING, db_column='origem')
-    destino = models.ForeignKey(Paragem, models.DO_NOTHING, db_column='destino')
+    origem = models.ForeignKey(Paragem, models.DO_NOTHING, db_column='origem',related_name="origem")
+    destino = models.ForeignKey(Paragem, models.DO_NOTHING, db_column='destino',related_name="destino")
     horario_has_dia_id_dia_hora = models.ForeignKey(HorarioHasDia, models.DO_NOTHING, db_column='horario_has_dia_id_dia_hora')
     n_passageiros = models.IntegerField(blank=True, null=True)
 
