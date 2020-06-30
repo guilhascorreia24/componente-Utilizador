@@ -283,7 +283,7 @@
                                             <p id="de"></p>
                                             <div id="hidden_div3" {% if form.funcao.value == '3' %}
                                                 style="display:block;" {% endif %}>
-                                                {% if error7 == True %}
+                                                {% if error7 != True %}
                                                 <div class="field">
                                                     <p class="" for="{{form.departamento.id_for_label}}">
                                                         Departamento</p>

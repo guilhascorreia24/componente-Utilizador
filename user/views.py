@@ -146,12 +146,15 @@ def curso():
     return deps
 
 def vefy(data):
-    if data['curso']=='0' and data['departamento']:
+    if data['curso']=='0' and data['departamento']=='0':
+        print("nada")
         return True
     if len(data['curso'].split('_'))>1:
+        print("curso")
         if Curso.objects.filter(pk=data['curso'].split('_')[1],unidade_organica_iduo=data['UO']).exists():
             return True
     elif len(data['departamento'].split('_'))>1:
+        print("dep")
         if Departamento.objects.filter(pk=data['departamento'].split("_")[1],unidade_organica_iduo=data['UO']):
             return True
     return False
@@ -317,21 +320,21 @@ def delete_user(request,id):
         colab.delete()
         messages.success(request, f'Utilizador eliminado com sucesso')
     else:
-        messages.success(request, f'Impossivel de eliminar o utilizador')
+        stri="Impossivel de eliminar o utilizador"
         if admin.exists() and (DiaAberto.objects.filter(administrador_utilizador_idutilizador=id).exists()):
             anos=''
             for n in DiaAberto.objects.filter(administrador_utilizador_idutilizador=id):
                 anos+=str(n.ano)+'/'
             anos=anos[:-1]
-            messages.success(request,f'Utilizador esta responsavel por Dia(s) Aberto(s) {anos}')
+            messages.success(request,f'{stri},esta responsavel por Dia(s) Aberto(s) {anos}')
         elif prof.exists() and (Atividade.objects.filter(professor_universitario_utilizador_idutilizador=id).exists()):
-            messages.success(request,f'Utilizador tem Atividades associadas')
+            messages.success(request,f'{stri}, tem Atividades associadas')
         elif part.exists() and ( InscricaoColetiva.objects.filter(participante_utilizador_idutilizador=id).exists() or  InscricaoIndividual.objects.filter(participante_utilizador_idutilizador=id).exists()):
-            messages.success(request,f'Utilizador tem inscrição associadas')
+            messages.success(request,f'{stri}, tem inscrição associadas')
         elif (coord.exists()  and  Tarefa.objects.filter(coordenador_utilizador_idutilizador=id).exists()):
-            messages.success(request,f'Utilizador tem Tarefa associadas')
+            messages.success(request,f'{stri}, tem Tarefa associadas')
         elif colab.exists() and  Tarefa.objects.filter(colaborador_utilizador_idutilizador=id).exists():
-            messages.success(request,f'Utilizador tem Tarefa associadas')
+            messages.success(request,f'{stri}, tem Tarefa associadas')
     return redirect("profile_list")
 
 #--------------------------------------alterar user---------------------------------------------
