@@ -55,7 +55,8 @@ def criar_tarefa_atividade(request):
 	coord_user = Coordenador.objects.get(utilizador_idutilizador = user_coord)
 	new_form = Tarefa(concluida = 0, coordenador_utilizador_idutilizador = coord_user)
 	form = TarefasFormAtividade(request.POST, instance = new_form)
-	dispos = Disponibilidade.objects.exclude(tipo_de_tarefa= 'Guiar Grupo')
+	dispos = disponibilidades("Ajudar Docente")
+	# dispos = Disponibilidade.objects.exclude(tipo_de_tarefa='Guiar Grupo')
 	if request.method == "POST":
 		if form.is_valid():
 			new_tarefa = form.save(commit = False)
@@ -100,12 +101,11 @@ def criar_tarefa_grupo(request):
 	coord_user = Coordenador.objects.get(utilizador_idutilizador = user2)
 	new_form = Tarefa(concluida = 0, coordenador_utilizador_idutilizador = coord_user)
 	form = TarefasFormGroup(request.POST, instance = new_form)
-	dispos = Disponibilidade.objects.exclude(tipo_de_tarefa= 'Ajudar Docente')
+	dispos = disponibilidades("Guiar Grupo")
+	# dispos = Disponibilidade.objects.exclude(tipo_de_tarefa='Ajudar Docente')
 	if request.method == "POST":
 		if form.is_valid():
 			new_tarefa = form.save(commit = False)
-			new_tarefa.hora_inicio = request.POST['hora_inicio']
-			new_tarefa.dia_dia = Dia.objects.get(dia=request.POST['dia_dia'])
 			if request.POST['id_colaborador_utilizador_idutilizador'] != '':
 				user = Utilizador.objects.get(idutilizador = request.POST['id_colaborador_utilizador_idutilizador']) #Vamos Buscar o Utilizador com o ID especificado no formulario
 				colaborador_user = Colaborador.objects.get(utilizador_idutilizador = user)	#Vamos buscar o colaborador associado aquele objeto utilizador
@@ -115,6 +115,12 @@ def criar_tarefa_grupo(request):
 			new_tarefa.levar = Espaco.objects.get(idespaco = request.POST['levar'])
 			grupo = Inscricao.objects.get(idinscricao = request.POST['grupos'])
 			new_tarefa.inscricao_coletiva_inscricao_idinscricao = InscricaoColetiva.objects.get(inscricao_idinscricao = grupo)
+			inicio = Sessao.objects.get(idsessao=request.POST['idsession']).horario_has_dia_id_dia_hora.horario_hora.hora
+			duracao = ativid.duracao*60
+			inicio_s = inicio.hour * 3600 + inicio.minute * 60 + inicio.second
+			total = inicio_s + duracao
+			new_tarefa.hora_inicio = time.strftime('%H:%M:%S', time.gmtime(total))
+			new_tarefa.dia_dia = Dia.objects.get(dia= Sessao.objects.get(idsessao=request.POST['idsession']).horario_has_dia_id_dia_hora.dia_dia.dia)
 			new_tarefa.save()
 			if request.POST['id_colaborador_utilizador_idutilizador'] != '':
 				noti_views.new_noti(request,colaborador_user.pk,'Tarefa','Foi atribuido uma Nova Tarefa')
@@ -180,25 +186,31 @@ def editar_tarefa(request, pk):
 	tarefa = Tarefa.objects.get(idtarefa = pk)
 	if tarefa.sessao_idsessao == None:
 		dispos=disponibilidades('Guiar Grupo')
+		# dispos = Disponibilidade.objects.exclude(tipo_de_tarefa='Ajudar Docente')
 		template="main/editarTarefaAcompanhar.html"
 		form = TarefasFormGroup(instance = tarefa)
 		if request.method == "POST":
 			form = TarefasFormGroup(request.POST, instance = tarefa)
 			if form.is_valid():
 				tarefa.nome= request.POST["nome"]
-				tarefa.dia_dia = Dia.objects.get(dia = request.POST["dia_dia"])
-				tarefa.hora_inicio = request.POST["hora_inicio"]
-				if request.POST['colaborador_utilizador_idutilizador'] != '':
+				if request.POST['id_colaborador_utilizador_idutilizador'] != '':
 					tarefa.colaborador_utilizador_idutilizador = Colaborador.objects.get(utilizador_idutilizador = Utilizador.objects.get(idutilizador= request.POST["id_colaborador_utilizador_idutilizador"]))
 				ativid = Atividade.objects.get(idatividade = request.POST['atividade_idatividade'])
 				tarefa.buscar = Espaco.objects.get(idespaco = ativid.espaco_idespaco.idespaco)
 				tarefa.levar = Espaco.objects.get(idespaco = request.POST['levar'])
 				grupo = Inscricao.objects.get(idinscricao = request.POST['grupos'])
 				tarefa.inscricao_coletiva_inscricao_idinscricao = InscricaoColetiva.objects.get(inscricao_idinscricao = grupo)
+				inicio = Sessao.objects.get(idsessao=request.POST['idsession']).horario_has_dia_id_dia_hora.horario_hora.hora
+				duracao = ativid.duracao*60
+				inicio_s = inicio.hour * 3600 + inicio.minute * 60 + inicio.second
+				total = inicio_s + duracao
+				tarefa.hora_inicio = time.strftime('%H:%M:%S', time.gmtime(total))
+				tarefa.dia_dia = Dia.objects.get(dia= Sessao.objects.get(idsessao=request.POST['idsession']).horario_has_dia_id_dia_hora.dia_dia.dia)
 				tarefa.save()
 				messages.success(request, f'Tarefa Editada com Sucesso!')
 				return redirect("tarefa_coordenador:consultar_tarefa")
 	else:
+		# dispos = Disponibilidade.objects.exclude(tipo_de_tarefa='Guiar Grupo')
 		dispos=disponibilidades('Ajudar Docente')
 		template="main/editarTarefaAtividade.html"
 		form = TarefasFormAtividade(instance = tarefa)
@@ -207,7 +219,8 @@ def editar_tarefa(request, pk):
 			if form.is_valid():
 				tarefa.nome= request.POST["nome"]
 				tarefa.sessao_idsessao = Sessao.objects.get(idsessao = request.POST["idsession"])
-				tarefa.colaborador_utilizador_idutilizador = Colaborador.objects.get(utilizador_idutilizador = Utilizador.objects.get(idutilizador= request.POST["id_colaborador_utilizador_idutilizador"]))
+				if request.POST['id_colaborador_utilizador_idutilizador'] != '':
+					tarefa.colaborador_utilizador_idutilizador = Colaborador.objects.get(utilizador_idutilizador = Utilizador.objects.get(idutilizador= request.POST["id_colaborador_utilizador_idutilizador"]))
 				tarefa.save()
 				messages.success(request, f'Tarefa Editada com Sucesso!')
 				return redirect("tarefa_coordenador:consultar_tarefa")
