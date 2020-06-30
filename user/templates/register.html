@@ -1,6 +1,9 @@
 {% extends "base_template.html" %}
 {% block steps %}
 <li><a href="{% url "blog:blog-home" %}" class="router-link-active">Início</a></li>
+{% if request.session.user_id %}
+<li><a href="{% url "profile_list" %}" class="router-link-active">Utilizadores</a></li>
+{% endif %}
 <li class="is-active"><a href="" class="router-link-exact-active router-link-active">Registar</a></li>
 {% endblock %}
 {% block content %}
@@ -177,7 +180,7 @@
                                             <div id="hidden_div2"
                                                 {% if form.funcao.value == '1' or form.funcao.value == '2' or form.funcao.value == '3' %}
                                                 style="display:block;" {% endif %}>
-                                                {% if error5 == 2 %}
+                                                {% if error5 != True %}
                                                 <div class="field">
                                                     <p class="" for="{{form.UO.id_for_label}}">
                                                         Unidade Organica</p>
@@ -227,7 +230,7 @@
                                             </div>
                                             <div id="hidden_div" {% if form.funcao.value == '1' %}
                                                 style="display:block;" {% endif %}>
-                                                {% if error5 == 1 %}
+                                                {% if error6 != True %}
                                                 <div class="field">
                                                     <p class="" for="{{form.curso.id_for_label}}">
                                                         Curso</p>
@@ -248,7 +251,7 @@
                                                             </select></span>
                                                         <!---->
                                                     </div>
-                                                    <p class="help is-danger">Preencha este campo.
+                                                    <p class="help is-danger">{{error6}}
                                                     </p>
                                                     <!---->
                                                 </div>
@@ -280,7 +283,7 @@
                                             <p id="de"></p>
                                             <div id="hidden_div3" {% if form.funcao.value == '3' %}
                                                 style="display:block;" {% endif %}>
-                                                {% if error5 == 3 %}
+                                                {% if error7 == True %}
                                                 <div class="field">
                                                     <p class="" for="{{form.departamento.id_for_label}}">
                                                         Departamento</p>
@@ -304,7 +307,7 @@
                                                             </select></span>
                                                         <!---->
                                                     </div>
-                                                    <p class="help is-danger">Preencha este campo.
+                                                    <p class="help is-danger">{{error7}}
                                                     </p>
                                                     <!---->
                                                 </div>

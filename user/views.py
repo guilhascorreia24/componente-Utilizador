@@ -145,6 +145,17 @@ def curso():
         #print(dep.value)
     return deps
 
+def vefy(data):
+    if data['curso']=='0' and data['departamento']:
+        return True
+    if len(data['curso'].split('_'))>1:
+        if Curso.objects.filter(pk=data['curso'].split('_')[1],unidade_organica_iduo=data['UO']).exists():
+            return True
+    elif len(data['departamento'].split('_'))>1:
+        if Departamento.objects.filter(pk=data['departamento'].split("_")[1],unidade_organica_iduo=data['UO']):
+            return True
+    return False
+
 def register(request):
     me=None
     #print("enter"+str(not('user_id' in request.session) and not('type' in request.session)))
@@ -174,7 +185,9 @@ def register(request):
         #print(not Utilizador.objects.filter(email=request.POST['email']).exists())
         #print(not Utilizador.objects.filter(telefone=request.POST['telefone']).exists())
         #print(password_check(request.POST['password1']))
-        if (len(data['name'])>0 and len(data['name'])<255) and (len(data['email'])>0 and len(data['email'])<255) and (len(data['password1'])>0 and len(data['password1'])<255) and validateEmail(data['email']) and (type_user(data,None,request) is True or type_user(data,None,request) == 4) and request.POST['password1']==request.POST['password2'] and not Utilizador.objects.filter(email=request.POST['email']).exists() and password_check(request.POST['password1']) is True:
+        print(request.POST)
+        print(vefy(data))
+        if vefy(data) and (len(data['name'])>0 and len(data['name'])<255) and (len(data['email'])>0 and len(data['email'])<255) and (len(data['password1'])>0 and len(data['password1'])<255) and validateEmail(data['email']) and (type_user(data,None,request) is True or type_user(data,None,request) == 4) and request.POST['password1']==request.POST['password2'] and not Utilizador.objects.filter(email=request.POST['email']).exists() and password_check(request.POST['password1']) is True:
             form.save()
             user_id=Utilizador.objects.get(email=request.POST['email']).idutilizador
             type_user(data,user_id,request)
@@ -187,6 +200,9 @@ def register(request):
             error3=False
             error2=False
             error1=False
+            error5=True
+            error6=True
+            error7=True
             if request.POST['email']=="":
                 error = 'Preencha este campo.'
             if request.POST['telefone']=="":    
@@ -203,9 +219,15 @@ def register(request):
                 error2 = "Passwords nao coincidem"
             if password_check(request.POST['password1']) != True:
                 error1 = password_check(request.POST['password1']) 
-            return render(request, 'register.html', {'me':me,"func":user(request),'form': form,'cursos':cursos,'UOs':UOs,'deps':deps,'error1': error, 'error2': error1, 'error3': error2, 'error4': error3,'error5':type_user(data,None,request),'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request),'p':1})
+            if data['UO']=='0':
+                error5='Preencha este campo'
+            if data['curso']=='0' or not(vefy(data)):
+                error6='Campo mal preenchido/ Não preenchido'
+            if data['departamento']=='0' or not(vefy(data)):
+                error7='Campo mal preenchido/ Não preenchido'
+            return render(request, 'register.html', {'me':me,"func":user(request),'form': form,'cursos':cursos,'UOs':UOs,'deps':deps,'error1': error, 'error2': error1, 'error3': error2, 'error4': error3,'error5':type_user(data,None,request),'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request),'p':1,'error5':error5,'error6':error6,'error7':error7})
     form = UserRegisterForm()
-    return render(request, 'register.html', {'form': form,'UOs':UOs,'deps':deps,'cursos':cursos,"func":user(request),'me':me,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request),'p':1})
+    return render(request, 'register.html', {'form': form,'UOs':UOs,'deps':deps,'cursos':cursos,"func":user(request),'me':me,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request),'p':1,'error5':True,'error6':True,'error7':True})
 
 #*----------------------------------------------------------login---------------------------------------
 def login_request(request):
@@ -297,7 +319,11 @@ def delete_user(request,id):
     else:
         messages.success(request, f'Impossivel de eliminar o utilizador')
         if admin.exists() and (DiaAberto.objects.filter(administrador_utilizador_idutilizador=id).exists()):
-            messages.success(request,f'Utilizador esta responsavel por Dia(s) Aberto(s)')
+            anos=''
+            for n in DiaAberto.objects.filter(administrador_utilizador_idutilizador=id):
+                anos+=str(n.ano)+'/'
+            anos=anos[:-1]
+            messages.success(request,f'Utilizador esta responsavel por Dia(s) Aberto(s) {anos}')
         elif prof.exists() and (Atividade.objects.filter(professor_universitario_utilizador_idutilizador=id).exists()):
             messages.success(request,f'Utilizador tem Atividades associadas')
         elif part.exists() and ( InscricaoColetiva.objects.filter(participante_utilizador_idutilizador=id).exists() or  InscricaoIndividual.objects.filter(participante_utilizador_idutilizador=id).exists()):
@@ -339,6 +365,10 @@ def modify_user(request,id):
         else:
             error=False
             error3=False
+            error5=False
+            error5=True
+            error6=True
+            error7=True
             data=request.POST
             telefone=data['telefone']
             funcao=data['funcao']
@@ -359,7 +389,13 @@ def modify_user(request,id):
                 error3 = 'Preencha este campo.'
             if Utilizador.objects.filter(email=request.POST['email']).exists() and Utilizador.objects.get(email=request.POST['email']).idutilizador!=id:
                 error = "Email ja existe"
-            return render(request, 'profile_modify.html', {'email':email,'UO':UO,'telefone':telefone,'funcao':funcao,'curso':curso,'dep':dep,"form": form,'error4':error3,"error1":error,'me':me,'id':id,'nome':name,'ano':ano,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
+            if data['UO']=='0':
+                error5='Preencha este campo'
+            if data['curso']=='0':
+                error6='Preencha este campo'
+            if data['departamento']=='0':
+                error7='Preencha este campo'
+            return render(request, 'profile_modify.html', {'email':email,'UO':UO,'telefone':telefone,'funcao':funcao,'curso':curso,'dep':dep,"form": form,'error4':error3,"error1":error,'me':me,'id':id,'nome':name,'ano':ano,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request),'error5':error5})
     else:
         form = ModifyForm()
         email = Utilizador.objects.get(idutilizador=id).email
