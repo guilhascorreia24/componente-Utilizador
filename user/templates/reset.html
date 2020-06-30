@@ -26,7 +26,7 @@
                     <form method="POST">
                         {% csrf_token %}
                         <div class="column is-offset-3 is-6">
-                            {% if form.email.errors %}
+                            {% if message != None %}
                             <div class="field"><label class="" for={{form.email.id_for_label}}>Email</label>
                                 <div class="control has-icons-right"><input type="email" name="email"
                                         id={{form.email.id_for_label}} autocomplete="on" class="input is-danger">
@@ -34,11 +34,9 @@
                                             class="mdi mdi-alert-circle mdi-24px"></i></span>
                                     <!---->
                                 </div>
-                                {% for message in messages %}
-                                {% if message.tags == "error" %}
+                                {% if message != None %}
                                 <p class="help is-danger">{{message}}</p>
                                 {% endif %}
-                                {% endfor %}
                                 {% else %}
                                 <div class="field"><label class="" for={{form.email.id_for_label}}>Email</label>
                                     <div class="control is-clearfix"><input type="email" name="email"
