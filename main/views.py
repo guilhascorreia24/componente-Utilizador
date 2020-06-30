@@ -102,7 +102,7 @@ def criar_tarefa_grupo(request):
 	new_form = Tarefa(concluida = 0, coordenador_utilizador_idutilizador = coord_user)
 	form = TarefasFormGroup(request.POST, instance = new_form)
 	# dispos = disponibilidades("Guiar Grupo")
-	dispos = Disponibilidade.objects.exclude(tipo_de_tarefa='Ajudar Docente').distinct()
+	dispos = Disponibilidade.objects.exclude(tipo_de_tarefa='Ajudar Docente')
 	if request.method == "POST":
 		if form.is_valid():
 			new_tarefa = form.save(commit = False)
