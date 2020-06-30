@@ -320,7 +320,7 @@ class CustomForm:
     def is_valid(self):
         value = all([self.escola.is_valid(), self.inscricao.is_valid(), self.responsaveis.is_valid(), self.almoco.is_valid(),self.sessao.is_valid(),self.transportes.is_valid(),self.inscricao_coletiva.is_valid()])
         if len(self.sessao)<1:
-            self.sessao.errors.append(SESSAO_MIN_ERROR)
+            self.sessao.min_sessao = SESSAO_MIN_ERROR
             return False
         return value
 
@@ -412,8 +412,8 @@ class FormIndividual:
     def is_valid(self):
         value = all([self.inscricao.is_valid(), self.almoco.is_valid(),self.sessao.is_valid(),self.transportes.is_valid(),self.inscricao_individual.is_valid()])
         if len(self.sessao)<1:
-            self.sessao.errors.append(SESSAO_MIN_ERROR)
-            return False
+            self.sessao.min_sessao = SESSAO_MIN_ERROR
+            value = False
         return value
 
     def save(self,part):
@@ -432,8 +432,3 @@ class FormIndividual:
         self.sessao.save()
 
         return self
-
-def introspect(something):
-    methods = inspect.getmembers(something, inspect.ismethod)
-    others = inspect.getmembers(something, lambda x: not inspect.ismethod(x))
-    print(methods)

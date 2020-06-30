@@ -174,7 +174,7 @@ def register(request):
         #print(not Utilizador.objects.filter(email=request.POST['email']).exists())
         #print(not Utilizador.objects.filter(telefone=request.POST['telefone']).exists())
         #print(password_check(request.POST['password1']))
-        if len(data['name'])>0 and len(data['email'])>0 and len(data['password1'])>0 and validateEmail(data['email']) and (type_user(data,None,request) is True or type_user(data,None,request) == 4) and request.POST['password1']==request.POST['password2'] and not Utilizador.objects.filter(email=request.POST['email']).exists() and  not Utilizador.objects.filter(telefone=request.POST['telefone']).exists() and password_check(request.POST['password1']) is True:
+        if (len(data['name'])>0 and len(data['name'])<255) and (len(data['email'])>0 and len(data['email'])<255) and (len(data['password1'])>0 and len(data['password1'])<255) and validateEmail(data['email']) and (type_user(data,None,request) is True or type_user(data,None,request) == 4) and request.POST['password1']==request.POST['password2'] and not Utilizador.objects.filter(email=request.POST['email']).exists() and password_check(request.POST['password1']) is True:
             form.save()
             user_id=Utilizador.objects.get(email=request.POST['email']).idutilizador
             type_user(data,user_id,request)
@@ -199,8 +199,6 @@ def register(request):
                 error = "Email ja existe"
             elif not validateEmail(data['email']):
                 error="Formato do email errado."
-            if Utilizador.objects.filter(telefone=request.POST['telefone']).exists():
-                error3 = "telefone ja existe"
             if request.POST['password1'] != request.POST['password2']:
                 error2 = "Passwords nao coincidem"
             if password_check(request.POST['password1']) != True:
@@ -261,7 +259,8 @@ def logout_request(request):
         del request.session['type']
     if 'cookie_id' in request.COOKIES:
         Utilizador.objects.filter(remember_me=request.COOKIES['cookie_id']).delete()
-        request.COOKIE['cookie_id']=0
+        r.delete_cookie('cookie_id')
+    print(request.session)
     messages.success(request, "Até a proxima")
     return r
 
@@ -297,6 +296,16 @@ def delete_user(request,id):
         messages.success(request, f'Utilizador eliminado com sucesso')
     else:
         messages.success(request, f'Impossivel de eliminar o utilizador')
+        if admin.exists() and (DiaAberto.objects.filter(administrador_utilizador_idutilizador=id).exists()):
+            messages.success(request,f'Utilizador esta responsavel por Dia(s) Aberto(s)')
+        elif prof.exists() and (Atividade.objects.filter(professor_universitario_utilizador_idutilizador=id).exists()):
+            messages.success(request,f'Utilizador tem Atividades associadas')
+        elif part.exists() and ( InscricaoColetiva.objects.filter(participante_utilizador_idutilizador=id).exists() or  InscricaoIndividual.objects.filter(participante_utilizador_idutilizador=id).exists()):
+            messages.success(request,f'Utilizador tem inscrição associadas')
+        elif (coord.exists()  and  Tarefa.objects.filter(coordenador_utilizador_idutilizador=id).exists()):
+            messages.success(request,f'Utilizador tem Tarefa associadas')
+        elif colab.exists() and  Tarefa.objects.filter(colaborador_utilizador_idutilizador=id).exists():
+            messages.success(request,f'Utilizador tem Tarefa associadas')
     return redirect("profile_list")
 
 #--------------------------------------alterar user---------------------------------------------
@@ -315,7 +324,7 @@ def modify_user(request,id):
         print(not Utilizador.objects.filter(telefone=request.POST['telefone']).exists())
         print(request.POST['telefone']!="")
         print(bool(validateEmail(request.POST['email'])))
-        if (request.POST['name']!="")  and (request.POST['email']!="") and (not(Utilizador.objects.filter(email=request.POST['email']).exists()) or Utilizador.objects.get(pk=id).email==request.POST['email']) and (not( Utilizador.objects.filter(telefone=request.POST['telefone']).exists()) or Utilizador.objects.get(pk=id).telefone==request.POST['telefone']) and (request.POST['telefone']!="") and (validateEmail(request.POST['email'])):
+        if (request.POST['name']!="")  and (request.POST['email']!="") and (not(Utilizador.objects.filter(email=request.POST['email']).exists()) or Utilizador.objects.get(pk=id).email==request.POST['email']) and (request.POST['telefone']!="") and (validateEmail(request.POST['email'])):
             t=Utilizador.objects.get(pk=id)
             t.nome=request.POST['name']
             t.email=request.POST['email']
@@ -350,8 +359,6 @@ def modify_user(request,id):
                 error3 = 'Preencha este campo.'
             if Utilizador.objects.filter(email=request.POST['email']).exists() and Utilizador.objects.get(email=request.POST['email']).idutilizador!=id:
                 error = "Email ja existe"
-            if Utilizador.objects.filter(telefone=request.POST['telefone']).exists() and Utilizador.objects.get(telefone=request.POST['telefone']).idutilizador!=id:
-                error3 = "telefone ja existe"
             return render(request, 'profile_modify.html', {'email':email,'UO':UO,'telefone':telefone,'funcao':funcao,'curso':curso,'dep':dep,"form": form,'error4':error3,"error1":error,'me':me,'id':id,'nome':name,'ano':ano,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
     else:
         form = ModifyForm()
@@ -523,10 +530,12 @@ def change_password(request, id):
 
 
 def reset(request):
+    message=None
     sub = EmailSender()
     if request.method == 'POST':
         sub = EmailSender(request.POST)
         recepient = request.POST['email']
+        sub.is_valid()
         if Utilizador.objects.filter(email=recepient).exists():
             subject = 'Recuperação da Palavra-Passe'
             p=Utilizador.objects.get(email=recepient).idutilizador
@@ -536,8 +545,9 @@ def reset(request):
             messages.success(request, f'Verifique o seu email')
             return render(request, 'reset.html', {'form': sub})
         else:
-            messages.error(request, f'Email incorreto')
-    return render(request, 'reset.html', {'form': sub})
+            message='Email incorreto'
+            return render(request, 'reset.html', {'form': sub,'message':message,'p':2})
+    return render(request, 'reset.html', {'form': sub,'p':2})
 #-------------------------------------------------validacoes---------------------------------------------------------------
 def validacoes(request,acao,id):
     if not (Administrador.objects.filter(pk=request.session['user_id']).exists() or Coordenador.objects.filter(pk=request.session['user_id']).exists()):
