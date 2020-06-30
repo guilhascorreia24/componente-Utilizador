@@ -5,6 +5,7 @@ from django.db.models import F
 from .models import Disponibilidade, Utilizador, Colaborador, Sala, Anfiteatro , Arlivre, Tarefa
 from django.views.decorators.csrf import csrf_exempt
 from Notification.views import noti_not_checked
+from django.contrib import messages
 
 
 
@@ -34,10 +35,10 @@ def consultar_tarefas(request):
                 form.save()
 
                 form = disp(queryset=Disponibilidade.objects.filter(colaborador_utilizador_idutilizador = colaborador), prefix="tarefa")
+                messages.success(request, f'Disponibilidade alterada!')
                 return render(request, "consultar_tarefas.html", {'form': form,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
   
         form = disp(queryset=Disponibilidade.objects.filter(colaborador_utilizador_idutilizador = colaborador), prefix="tarefa")
-
         return render(request, "consultar_tarefas.html", {'form': form,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
 
 # Consultar Tarefas

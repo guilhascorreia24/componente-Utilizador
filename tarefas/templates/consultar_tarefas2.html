@@ -325,24 +325,24 @@
                                     <span class="input-group-text w-100">Local de Recolha</span>
                                 </div>
                                 {% for s in sala %}
-                                    {% if tarefa.id_antes_depois == s.espaco_idespaco.pk %}
+                                    {% if tarefa.id_espaco_depois == s.espaco_idespaco.pk %}
                                         <input disabled="" class="form-control bg-light" type="text" value="Edificio {{s.edificio}}, {{  tarefa.espaco_antes }} {{  tarefa.campus }}">
                                     {% endif %} 
                                 {% endfor %}
 
                                 {% for f in anfi %}
-                                    {% if tarefa.id_antes_depois == f.espaco_idespaco.pk %}
+                                    {% if tarefa.id_espaco_depois == f.espaco_idespaco.pk %}
                                         <input disabled="" class="form-control bg-light" type="text" value="Edificio {{f.edificio}}, Anfiteatro {{  tarefa.espaco_antes }} {{  tarefa.campus }}">
                                     {% endif %} 
                                 {% endfor %}
 
                                 {% for a in ar %}
-                                    {% if tarefa.id_antes_depois == a.espaco_idespaco.pk %}
+                                    {% if tarefa.id_espaco_depois == a.espaco_idespaco.pk %}
                                         <input disabled="" class="form-control bg-light" type="text" value="{{  tarefa.espaco_antes }} {{  tarefa.campus }}">
                                     {% endif %} 
                                 {% endfor %}
                             </div>
-                            {% endif %}
+                            {% endif %} 
                             <br>
                             <div class="input-group col-sm-12">
                                 <div class="input-group-prepend labelForm">
