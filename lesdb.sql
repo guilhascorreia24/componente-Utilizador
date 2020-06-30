@@ -60,7 +60,6 @@ CREATE TABLE IF NOT EXISTS `les`.`utilizador` (
   `dia_aberto_ano` YEAR NULL DEFAULT NULL,
   PRIMARY KEY (`idutilizador`),
   UNIQUE INDEX `email_UNIQUE` (`email` ASC) VISIBLE,
-  UNIQUE INDEX `telefone_UNIQUE` (`telefone` ASC) VISIBLE,
   INDEX `fk_utilizador_dia_aberto1_idx` (`dia_aberto_ano` ASC) VISIBLE,
   CONSTRAINT `fk_utilizador_dia_aberto1`
     FOREIGN KEY (`dia_aberto_ano`)
