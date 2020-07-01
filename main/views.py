@@ -16,6 +16,8 @@ def criar_tarefa(request):
 def criar_tarefa_atividade(request):
 	user_coord = Utilizador.objects.get(idutilizador = request.session["user_id"])
 	coord_user = Coordenador.objects.get(utilizador_idutilizador = user_coord)
+	print(coord_user.unidade_organica_iduo)
+	atividade = Atividade.objects.filter(unidade_organica_iduo= coord_user.unidade_organica_iduo)
 	form = TarefasFormAtividade(request.POST)
 	if request.method == "POST":
 		if form.is_valid():
@@ -36,12 +38,17 @@ def criar_tarefa_atividade(request):
 
 	return render(request=request,
 				  template_name="main/criarTarefaAtividade.html",
-				  context={'form':form,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
+				  context={'atividade':atividade,'form':form,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
 
 def load_grupo(request):
-	sessao = request.POST.get('sessao')
-	inscricao = Inscricao.objects.filter(idinscricao__in = InscricaoHasSessao.objects.filter(sessao_idsessao=sessao))
+	ses = request.POST.get('sessao')
+	print(ses)
+	hassessao =  InscricaoHasSessao.objects.filter(sessao_idsessao=ses )
+	print(hassessao)
+	inscricao = Inscricao.objects.filter(idinscricao__in = hassessao)
+	print(inscricao)
 	grupos = InscricaoColetiva.objects.filter(inscricao_idinscricao__in = inscricao)
+	print(grupos)
 	return render(request=request,
 				  template_name="main/grupo_dropdown.html",
 				  context={'grupos':grupos,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
@@ -80,6 +87,8 @@ def criar_tarefa_grupo(request):
 	user2 = Utilizador.objects.get(idutilizador = request.session["user_id"])
 	coord_user = Coordenador.objects.get(utilizador_idutilizador = user2)
 	new_form = Tarefa(concluida = 0, coordenador_utilizador_idutilizador = coord_user)
+	print(coord_user.unidade_organica_iduo)
+	atividade = Atividade.objects.filter(unidade_organica_iduo = coord_user.unidade_organica_iduo)
 	form = TarefasFormGroup(request.POST, instance = new_form)
 	# dispos = disponibilidades("Guiar Grupo")
 	if request.method == "POST":
@@ -109,7 +118,7 @@ def criar_tarefa_grupo(request):
 	
 	return render(request=request,
 				  template_name="main/criarTarefaAcompanhar.html",
-				  context={'form':form,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
+				  context={'atividade':atividade,'form':form,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
 
 def load_cities(request):
 	atividade = request.POST.get('atividade_idatividade')
@@ -119,10 +128,12 @@ def load_cities(request):
 				  context={'sessao':sessao,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
 
 def consultar_tarefa(request):
-	tarefas = Tarefa.objects.filter(coordenador_utilizador_idutilizador = request.session['user_id'])
+	user2 = Utilizador.objects.get(idutilizador = request.session["user_id"])
+	coord_user = Coordenador.objects.get(utilizador_idutilizador = user2)
+	tarefas = Tarefa.objects.filter(coordenador_utilizador_idutilizador = coord_user)
 	sessao = Sessao.objects.all()
 	colab = Colaborador.objects.all()
-	atividade = Atividade.objects.all()
+	atividade = Atividade.objects.filter(unidade_organica_iduo = coord_user.unidade_organica_iduo)
 	sala = Sala.objects.all()
 	anfi = Anfiteatro.objects.all()
 	ar = Arlivre.objects.all()
@@ -168,7 +179,7 @@ def editar_tarefa(request, pk):
 	sala = Sala.objects.all()
 	anfi = Anfiteatro.objects.all()
 	ar = Arlivre.objects.all()
-	ati =  Atividade.objects.exclude(idatividade = tarefa.sessao_idsessao.atividade_idatividade.idatividade)
+	ati = Atividade.objects.filter(unidade_organica_iduo = tarefa.coordenador_utilizador_idutilizador.unidade_organica_iduo).exclude(idatividade = tarefa.sessao_idsessao.atividade_idatividade.idatividade)
 	if tarefa.inscricao_coletiva_inscricao_idinscricao != None:
 		# dispos=disponibilidades('Guiar Grupo')
 		dispos = Disponibilidade.objects.exclude(tipo_de_tarefa='Ajudar Docente')

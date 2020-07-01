@@ -78,7 +78,12 @@
                   <label class="">Próxima Atividade do(s) Participante(s):</label>
                   <div style="width: 105%;" class="control">
                     <div class="select is-fullwidth">
-                      {{form.campus_levar}}
+                      <select id="id_campus_levar" name="campus_levar">
+                        <option hidden value="">Selecione Atividade para mudar o destino</option>
+                        {% for a in ati %}
+                        <option value="{{a.pk}}">{{a.titulo}}</option>
+                        {% endfor %}
+                        </select>
                     </div>
                   </div>
                 </div>
