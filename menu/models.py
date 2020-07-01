@@ -222,6 +222,9 @@ class Dia(models.Model):
 
     def __str__(self):
         return str(self.dia)
+    
+    def year(self):
+        return self.dia.year
 
     class Meta:
         managed = False
@@ -239,7 +242,6 @@ class DiaAberto(models.Model):
     datainscricaonasatividadesfim = models.DateField()
     datapropostaatividadeinicio = models.DateField(db_column='dataPropostaAtividadeInicio')  # Field name made lowercase.
     datapropostaatividadesfim = models.DateField(db_column='dataPropostaAtividadesFim')  # Field name made lowercase.
-    administrador_utilizador_idutilizador = models.ForeignKey(Administrador, models.DO_NOTHING, db_column='Administrador_Utilizador_idutilizador')  # Field name made lowercase.
     preco_almoco_estudante = models.FloatField()
     preco_almoco_professor = models.FloatField()
 
@@ -251,6 +253,9 @@ class DiaAberto(models.Model):
         
         if self.datapropostaatividadeinicio > self.datapropostaatividadesfim:
             errors['datapropostaatividadeinicio'] = 'Data de inicio não pode ser maior que a de fim'
+
+        if self.datadiaabertoinicio > self.datadiaabertofim:
+            errors['datadiaabertoinicio'] = 'Data de inicio não pode ser maior que a de fim'
 
         if len(errors) > 0:
             raise ValidationError(errors)

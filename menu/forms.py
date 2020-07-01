@@ -18,19 +18,20 @@ class DiaAbertoForm(ModelForm):
                                 }
                             )
                         )
+    ano = forms.CharField(widget=NumberInput(attrs={'class': 'input','min':2000}))
+    datapropostaatividadeinicio=forms.DateField(widget= DateInput(attrs={'class': 'input', 'type':'date'}))
+    datapropostaatividadesfim=forms.DateField(widget= DateInput(attrs={'class': 'input', 'type':'date'}))
+    datainscricaonasatividadesinicio=forms.DateField(widget= DateInput(attrs={'class': 'input', 'type':'date'}))
+    datainscricaonasatividadesfim=forms.DateField(widget= DateInput(attrs={'class': 'input', 'type':'date'}))
+    datadiaabertoinicio=forms.DateField(widget= DateInput(attrs={'class': 'input', 'type':'date'}))
+    datadiaabertofim=forms.DateField(widget= DateInput(attrs={'class': 'input', 'type':'date'}))
+
     class Meta:
         model = DiaAberto
         exclude = ['administrador_utilizador_idutilizador']
         widgets = {
-            'ano': NumberInput(attrs={'class': 'input','min':2000}),
             'emaildiaaberto' : EmailInput(attrs={'class': 'input'}),
-            'enderecopaginaweb': URLInput(attrs={'class': 'input'}),
-            'datainscricaonasatividadesinicio': DateInput(attrs={'class': 'input', 'type':'date'}),
-            'datainscricaonasatividadesfim': DateInput(attrs={'class': 'input', 'type':'date'}),
-            'datadiaabertoinicio': DateInput(attrs={'class': 'input', 'type':'date'}),
-            'datadiaabertofim': DateInput(attrs={'class': 'input', 'type':'date'}),
-            'datapropostaatividadeinicio': DateInput(attrs={'class': 'input', 'type':'date'}),
-            'datapropostaatividadesfim': DateInput(attrs={'class': 'input', 'type':'date'}),
+            'enderecopaginaweb': URLInput(attrs={'class': 'input',  'value': 'http://'}),
             'preco_almoco_estudante': NumberInput(attrs={'class': 'input', 'value': '2.80', 'step': '0.01','min':0},),
             'preco_almoco_professor': NumberInput(attrs={'class': 'input', 'value': '4.20', 'step': '0.01','min':0}),
         }
