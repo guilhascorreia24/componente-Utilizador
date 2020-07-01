@@ -100,17 +100,37 @@
                                                   <span>Cancelar</span>
                                             </a>
                                             </div>
-                                            <div class="level-right">
-                                             <input href="{% url "menu:menu_list" %}" 
-                                             class="button is-large is-success is-outlined is-link" type='submit'
-                                                 value='Submeter'>
-                                             </button>
-                                         </div>
-                                     </div>
-                                 </div>
-                             </div>
-      </form>
-    </div>
+                                            <div style="margin-left: 50%;" class="column"> 
+                                              <button type="button" class="button is-large is-success is-outlined" data-toggle="modal" data-target="#exampleModal" data-backdrop="false">
+                                                <span>Submeter</span>
+                                              </button>
+                                              </div>
+                                              <div class="dialog modal" id="exampleModal">
+                                                  <div class="modal-background"></div>
+                                                  <br><br><br><br><br><br><br><br><br><br><br><br>
+                                                  <div class="modal-card animation" style="max-width:20%">
+                                                      <!---->
+                                                      <section class="modal-card-body is-titleless">
+                                                          <div class="media">
+                                                              <!---->
+                                                              <div class="media-content">
+                                                                  <p>Tem a certeza que quer prosseguir?</p>
+                                                                  <!---->
+                                                              </div>
+                                                          </div>
+                                                      </section>
+                                                      <footer class="modal-card-foot"><button class="button" data-dismiss="modal">
+                                                              Cancelar
+                                                          </button> <button class="button is-success" type="submit">
+                                                              Confirmar
+                                                          </button></footer>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                          </form>
+                      </div>
+                  </div>
 <style>
 .label {
   font-weight: normal;
