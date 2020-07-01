@@ -30,22 +30,6 @@
               </div>
             </div>
 
-        <div class="column">
-          <div class="field">
-            <label aria-label="breadcrumbs"  class="">Atribuir Colaborador:</label>
-            <div class="control is-expanded">
-              <div class="select is-fullwidth">
-                <select name="{{form.colaborador_utilizador_idutilizador.id_for_label}}" id="{{form.colaborador_utilizador_idutilizador.id_for_label}}">
-                  <option value="" selected="">Nenhum Colaborador Atribuido</option>
-                  {% for colab in dispo %}
-                    <option value="{{colab.colaborador_utilizador_idutilizador.pk}}">{{colab.colaborador_utilizador_idutilizador.utilizador_idutilizador.nome}} (disponível dia {{colab.dia_dia}} das {{colab.horario_hora}} às {{colab.horario_hora1}})</option>
-                  {% endfor %}
-                </select>
-              </div>
-            </div>
-          </div>
-        </div>
-
         <hr>
         
         <div style="width: 70%; margin-left: -40%;" class=" columns">
@@ -96,6 +80,22 @@
               <div class="select is-fullwidth">
                 <select id="levar" name="levar">
                   <option hidden value="">Selecione Atividade</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr>
+        <div class="column">
+          <div class="field">
+            <label aria-label="breadcrumbs"  class="">Atribuir Colaborador:</label>
+            <div class="control is-expanded">
+              <div class="select is-fullwidth">
+                <select name="{{form.colaborador_utilizador_idutilizador.id_for_label}}" id="{{form.colaborador_utilizador_idutilizador.id_for_label}}">
+                  <option value="" selected="">Nenhum Colaborador Atribuido</option>
+                  {% for colab in dispo %}
+                    <option value="{{colab.colaborador_utilizador_idutilizador.pk}}">{{colab.colaborador_utilizador_idutilizador.utilizador_idutilizador.nome}} (disponível dia {{colab.dia_dia}} das {{colab.horario_hora}} às {{colab.horario_hora1}})</option>
+                  {% endfor %}
                 </select>
               </div>
             </div>
