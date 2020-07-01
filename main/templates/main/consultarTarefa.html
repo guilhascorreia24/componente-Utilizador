@@ -96,7 +96,7 @@
                                 {% else %}
                                     <td class="">{{i.colaborador_utilizador_idutilizador.utilizador_idutilizador.nome}}</td>
                                 {% endif %}
-                                {% if i.sessao_idsessao == NULL %}
+                                {% if i.inscricao_coletiva_inscricao_idinscricao != NULL %}
                                     <td class=""> --------------- </td>
                                     <td class="">{{i.dia_dia.dia | date:"d/m/Y"}}</td>
                                     {% if i.hora_inicio == NULL %}
@@ -202,23 +202,14 @@
                             <input disabled="" class="form-control col-sm-2 bg-light" type="text" value="{{ i.colaborador_utilizador_idutilizador.utilizador_idutilizador.nome }}">
                         </div>
                         {%endif%}
-                        {% if i.sessao_idsessao == NULL %}
+                        {% if i.inscricao_coletiva_inscricao_idinscricao != NULL %}
                             <br>
-                            {% if i.idtarefa.inscricao_coletiva_inscricao_idinscricao == NULL %}
                                 <div class="input-group col-sm-12">
                                     <div class="input-group-prepend labelForm">
                                         <span class="input-group-text w-100">Informações do(s) Participante(s)</span>
                                     </div>
-                                    <input disabled="" class="form-control col-sm-2 bg-light" type="text" value="Nenhum Grupo Selecionado">
+                                    <input disabled="" class="form-control col-sm-2 bg-light" type="text" value="Grupo {{i.inscricao_coletiva_inscricao_idinscricao.inscricao_idinscricao.pk}} ({{i.inscricao_coletiva_inscricao_idinscricao.nparticipantes}} alunos)">
                                 </div>
-                            {%else%}
-                                <div class="input-group col-sm-12">
-                                    <div class="input-group-prepend labelForm">
-                                        <span class="input-group-text w-100">Informações do(s) Participante(s)</span>
-                                    </div>
-                                    <input disabled="" class="form-control col-sm-2 bg-light" type="text" value="{{i.inscricao_coletiva_inscricao_idinscricao.escola_idescola.nome}}, Turma {{i.idtarefa.inscricao_coletiva_inscricao_idinscricao.turma}} ({{i.idtarefa.inscricao_coletiva_inscricao_idinscricao.nparticipantes}} alunos)">
-                                </div>
-                            {%endif%}
                             <br>
                             <div class="input-group col-sm-12">
                                 <div class="input-group-prepend labelForm">

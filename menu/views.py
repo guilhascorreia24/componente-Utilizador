@@ -29,10 +29,7 @@ def preencher_hora(hora_incio, hora_fim):
 
 
 def diaaberto_create(request):
-    user = Utilizador.objects.get(idutilizador=request.session['user_id'])
-    admin = Administrador.objects.get(utilizador_idutilizador=user)
-    new_form = DiaAberto(administrador_utilizador_idutilizador=admin)
-    form = DiaAbertoForm(request.POST or None, instance=new_form)
+    form = DiaAbertoForm(request.POST or None)
     if request.method == "POST":
         if form.is_valid():
             form.save()
@@ -136,24 +133,15 @@ def diaaberto_details(request, id):
 def diaaberto_delete(request, id):
     obj = get_object_or_404(DiaAberto, ano=id)
     if DiaAberto.objects.filter(ano=id).exists():
-        user=request.session['user_id']
-        if Utilizador.objects.filter(dia_aberto_ano=id,pk=request.session['user_id']).exists():
-            del request.session['user_id']
-            del request.session['type']
+        notis=Notificacao.objects.all()
+        dias=Dia.objects.all()
+        for dia in dias:
+            if dia.pk.year==id:
+                dia.delete()
         obj.delete()
-        if not(Utilizador.objects.filter(pk=user).exists()):
-            notis=Notificacao.objects.all()
-            dias=Dia.objects.all()
-            for noti in notis:
-                if noti.criadoem.year==id:
-                    noti.delete()
-            for dia in dias:
-                if dia.pk.year==id:
-                    dia.delete()
-            return redirect("blog:blog-home")
         messages.success(request, f'Configurações do Dia Aberto eliminado com Sucesso!')
         noti_views.new_noti(request,request.session['user_id'],'Submissao das Configurações do Dia Aberto','Configurações do Dia Aberto eliminado com Sucesso!')
-    return redirect('menu:diaaberto_list')
+        return redirect('menu:diaaberto_list')
 
 ### Menuuuu ###########
 def menu_create_view(request):
@@ -272,6 +260,7 @@ def horario_create_view(request):
     hora = HorarioHasDia.objects.all()
     utl = Transporte.objects.latest('idtransporte')
     new_form = TransporteHasHorario(transporte_idtransporte = utl, n_passageiros= 0)
+    h = TransporteHasHorario.objects.all()
     form = TransporteHorarioForm(request.POST, instance = new_form)
     if request.method == "POST":
         if form.is_valid():

@@ -149,15 +149,16 @@ def vefy(data):
     if data['curso']=='0' and data['departamento']=='0':
         print("nada")
         return True
-    if len(data['curso'].split('_'))>1:
+    if len(data['curso'].split('_'))>1 and data['funcao']=='1':
         print("curso")
         if Curso.objects.filter(pk=data['curso'].split('_')[1],unidade_organica_iduo=data['UO']).exists():
             return True
-    elif len(data['departamento'].split('_'))>1:
+    elif len(data['departamento'].split('_'))>1 and data['funcao']=='3':
         print("dep")
         if Departamento.objects.filter(pk=data['departamento'].split("_")[1],unidade_organica_iduo=data['UO']):
             return True
     return False
+
 
 def register(request):
     me=None
@@ -190,6 +191,12 @@ def register(request):
         #print(password_check(request.POST['password1']))
         print(request.POST)
         print(vefy(data))
+        if data['funcao']!='3' and data['funcao']!='1':
+            mutable=data._mutable
+            data._mutable=True
+            data['curso']='0'
+            data['departamento']='0'
+            data._mutable=mutable
         if vefy(data) and (len(data['name'])>0 and len(data['name'])<255) and (len(data['email'])>0 and len(data['email'])<255) and (len(data['password1'])>0 and len(data['password1'])<255) and validateEmail(data['email']) and (type_user(data,None,request) is True or type_user(data,None,request) == 4) and request.POST['password1']==request.POST['password2'] and not Utilizador.objects.filter(email=request.POST['email']).exists() and password_check(request.POST['password1']) is True:
             form.save()
             user_id=Utilizador.objects.get(email=request.POST['email']).idutilizador
@@ -264,10 +271,10 @@ def login_request(request):
                     messages.error(request, f"Sua conta ainda não está validada")
             else:
                 tentatives-=1
-                messages.error(request, f"Username e/ou palavra-passe. Tem mais {tentatives} tentativas")
+                messages.error(request, f"Username e/ou palavra-passe incorreto(s). Tem mais {tentatives} tentativas")
         else:
             tentatives-=1
-            messages.error(request, f"Username e/ou palavra-passe. Tem mais {tentatives} tentativas")
+            messages.error(request, f"Username e/ou palavra-passe incorreto(s). Tem mais {tentatives} tentativas")
     else:
         tentatives=5
         form = AuthenticationForm()
@@ -321,13 +328,7 @@ def delete_user(request,id):
         messages.success(request, f'Utilizador eliminado com sucesso')
     else:
         stri="Impossivel de eliminar o utilizador"
-        if admin.exists() and (DiaAberto.objects.filter(administrador_utilizador_idutilizador=id).exists()):
-            anos=''
-            for n in DiaAberto.objects.filter(administrador_utilizador_idutilizador=id):
-                anos+=str(n.ano)+'/'
-            anos=anos[:-1]
-            messages.success(request,f'{stri},esta responsavel por Dia(s) Aberto(s) {anos}')
-        elif prof.exists() and (Atividade.objects.filter(professor_universitario_utilizador_idutilizador=id).exists()):
+        if prof.exists() and (Atividade.objects.filter(professor_universitario_utilizador_idutilizador=id).exists()):
             messages.success(request,f'{stri}, tem Atividades associadas')
         elif part.exists() and ( InscricaoColetiva.objects.filter(participante_utilizador_idutilizador=id).exists() or  InscricaoIndividual.objects.filter(participante_utilizador_idutilizador=id).exists()):
             messages.success(request,f'{stri}, tem inscrição associadas')
@@ -369,9 +370,6 @@ def modify_user(request,id):
             error=False
             error3=False
             error5=False
-            error5=True
-            error6=True
-            error7=True
             data=request.POST
             telefone=data['telefone']
             funcao=data['funcao']
@@ -392,12 +390,6 @@ def modify_user(request,id):
                 error3 = 'Preencha este campo.'
             if Utilizador.objects.filter(email=request.POST['email']).exists() and Utilizador.objects.get(email=request.POST['email']).idutilizador!=id:
                 error = "Email ja existe"
-            if data['UO']=='0':
-                error5='Preencha este campo'
-            if data['curso']=='0':
-                error6='Preencha este campo'
-            if data['departamento']=='0':
-                error7='Preencha este campo'
             return render(request, 'profile_modify.html', {'email':email,'UO':UO,'telefone':telefone,'funcao':funcao,'curso':curso,'dep':dep,"form": form,'error4':error3,"error1":error,'me':me,'id':id,'nome':name,'ano':ano,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request),'error5':error5})
     else:
         form = ModifyForm()
@@ -549,27 +541,36 @@ def profile_list(request):
 #--------------------------------------------recuperaçao de password---------------------------------
 def change_password(request, id):
     id_deccryp=decrypt(id)
+    error1=True
+    error=False
     if request.method=='POST':
         form=PasswordChangeForm(request.POST)
         passwd=request.POST['password']
-        if form.is_valid and password_check(passwd) is True:
+        if form.is_valid and password_check(passwd) is True and passwd==request.POST['confirm_password']:
             t=Utilizador.objects.get(pk=id_deccryp)
             t.password=hashlib.sha256(passwd.encode('utf-8')).hexdigest()
             t.save()
             messages.success(request, f'Password alterada com sucesso')
             return redirect('blog:blog-home')
         else:
-            messages.error(request,password_check(passwd))
+            error1=password_check(passwd)
+            error=False
             if request.POST['confirm_password']!=passwd:
-                error=True
-                return render(request,"reset_password.html",{"form":form,"error":error})
+                error='Palavras-passe nao coincidem'
+            if request.POST['confirm_password']=='':
+                error="Preencha este campo"
+            if  passwd=='':
+                error1="Preencha este campo"
+            return render(request,"reset_password.html",{"form":form,"error":error,'error1':error1,'a':True,'p':3})
     else:
         form=PasswordChangeForm()
-    return render(request,"reset_password.html",{"form":form})
+    return render(request,"reset_password.html",{"form":form,'error':error,'error1':error1,'a':True,'p':3})
 
 
 def reset(request):
     message=None
+    if not('user_id' in request.session):
+        redirect("blog:blog-home")
     sub = EmailSender()
     if request.method == 'POST':
         sub = EmailSender(request.POST)
@@ -584,7 +585,7 @@ def reset(request):
             messages.success(request, f'Verifique o seu email')
             return render(request, 'reset.html', {'form': sub})
         else:
-            message='Email incorreto'
+            message='Email incorreto/ Não esta registado'
             return render(request, 'reset.html', {'form': sub,'message':message,'p':2})
     return render(request, 'reset.html', {'form': sub,'p':2})
 #-------------------------------------------------validacoes---------------------------------------------------------------
