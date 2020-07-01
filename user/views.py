@@ -149,11 +149,11 @@ def vefy(data):
     if data['curso']=='0' and data['departamento']=='0':
         print("nada")
         return True
-    if len(data['curso'].split('_'))>1:
+    if len(data['curso'].split('_'))>1 and data['funcao']=='1':
         print("curso")
         if Curso.objects.filter(pk=data['curso'].split('_')[1],unidade_organica_iduo=data['UO']).exists():
             return True
-    elif len(data['departamento'].split('_'))>1:
+    elif len(data['departamento'].split('_'))>1 and data['funcao']=='3':
         print("dep")
         if Departamento.objects.filter(pk=data['departamento'].split("_")[1],unidade_organica_iduo=data['UO']):
             return True
@@ -191,6 +191,12 @@ def register(request):
         #print(password_check(request.POST['password1']))
         print(request.POST)
         print(vefy(data))
+        if data['funcao']!='3' and data['funcao']!='1':
+            mutable=data._mutable
+            data._mutable=True
+            data['curso']='0'
+            data['departamento']='0'
+            data._mutable=mutable
         if vefy(data) and (len(data['name'])>0 and len(data['name'])<255) and (len(data['email'])>0 and len(data['email'])<255) and (len(data['password1'])>0 and len(data['password1'])<255) and validateEmail(data['email']) and (type_user(data,None,request) is True or type_user(data,None,request) == 4) and request.POST['password1']==request.POST['password2'] and not Utilizador.objects.filter(email=request.POST['email']).exists() and password_check(request.POST['password1']) is True:
             form.save()
             user_id=Utilizador.objects.get(email=request.POST['email']).idutilizador

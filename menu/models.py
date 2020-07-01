@@ -222,6 +222,9 @@ class Dia(models.Model):
 
     def __str__(self):
         return str(self.dia)
+    
+    def year(self):
+        return self.dia.year
 
     class Meta:
         managed = False
@@ -251,6 +254,9 @@ class DiaAberto(models.Model):
         
         if self.datapropostaatividadeinicio > self.datapropostaatividadesfim:
             errors['datapropostaatividadeinicio'] = 'Data de inicio não pode ser maior que a de fim'
+
+        if self.datadiaabertoinicio > self.datadiaabertofim:
+            errors['datadiaabertoinicio'] = 'Data de inicio não pode ser maior que a de fim'
 
         if len(errors) > 0:
             raise ValidationError(errors)

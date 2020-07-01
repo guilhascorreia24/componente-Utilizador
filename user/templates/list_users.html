@@ -67,8 +67,7 @@
                                         <option value="Coordenador">Coordenador</option>
                                         <option value="Participante">Participante</option>
                                         <option value="Colaborador">Colaborador</option>
-                                        <option value="Docente Univesitario">Docente Univesitario
-                                        </option>
+                                        <option value="Docente Universitario">Docente Universitario</option>
                                     </select></span><span class="icon is-left"><i
                                         class="mdi mdi-magnify mdi-24px"></i></span>
                                 <!---->
@@ -104,7 +103,7 @@
         {% if funcao == "administardor" %}
         <a href="{% url "register" %}" class="button is-success is-outlined" type="button"
             style="margin-bottom: 0.9rem; margin-right: 1rem;text-decoration:none;"><span class="icon is-small"><i
-                    class="mdi mdi-plus"></i></span> <span> Novo Utilizador </span>
+                    class="mdi mdi-account-plus"></i></span> <span> Novo Utilizador </span>
             <!----></a>{% endif %}
         <div class="b-table">
             <div class="field table-mobile-sort">
@@ -148,7 +147,7 @@
                                 </div>
                             </th>
                             <th class="is-sortable th-sm">
-                                <div class="th-wrap th-sm">Faculdade <span class="icon is-small"
+                                <div class="th-wrap th-sm">Unidade Orgânica <span class="icon is-small"
                                         style="display: none;"><i class="mdi mdi-menu-up"></i></span>
                                 </div>
                             </th>
@@ -263,6 +262,7 @@
             $(this).css({"color":"black"});
     });
     $('#myInput4').on('change', function () {
+        console.log($(this).val())
         table.column(3).search($(this).val()).draw();
         if($(this).val()=='')
             $(this).css({"color":"hsla(0,0%,47.8%,.7)"});
