@@ -20,15 +20,14 @@ class TarefasFormGroup(ModelForm):
 	campus_levar = ChoiceField(choices = [("", "Nenhuma Atividade Selecionada")] +
 	[(actv.__id__(), actv.titulo) for actv in Atividade.objects.all()])
 	
-	atividade_idatividade = ChoiceField(choices = [("", "Nenhuma Atividade Selecionada")] +
+	atividade_idatividade = ChoiceField(choices = [("", "Nenhuma Atividade Selecionada")] + 
 	[(actv.__id__(), actv.titulo) for actv in Atividade.objects.all()])
 
 	class Meta:
 		model = Tarefa
-		exclude = ['inscricao_coletiva_inscricao_idinscricao','sessao_idsessao','buscar','levar', 'dia_dia','concluida', 'coordenador_utilizador_idutilizador', 'colaborador_utilizador_idutilizador']
+		exclude = ['inscricao_coletiva_inscricao_idinscricao','sessao_idsessao','buscar','levar', 'dia_dia','concluida', 'coordenador_utilizador_idutilizador', 'colaborador_utilizador_idutilizador', 'hora_inicio']
 		widgets = {
 				  'nome' : TextInput(attrs={'class': 'input'}),
-				  'hora_inicio' : DateInput(attrs={'class': 'input'}),
 				}	
 
 class TarefasFormAtividade(ModelForm):

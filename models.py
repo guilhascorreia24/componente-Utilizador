@@ -140,7 +140,7 @@ class AuthUserUserPermissions(models.Model):
 class Campus(models.Model):
     idcampus = models.AutoField(db_column='idCampus', primary_key=True)  # Field name made lowercase.
     nome = models.CharField(max_length=255)
-
+    
     def __str__(self):
         return str(self.nome)
 
@@ -238,7 +238,6 @@ class DiaAberto(models.Model):
     datainscricaonasatividadesfim = models.DateField()
     datapropostaatividadeinicio = models.DateField(db_column='dataPropostaAtividadeInicio')  # Field name made lowercase.
     datapropostaatividadesfim = models.DateField(db_column='dataPropostaAtividadesFim')  # Field name made lowercase.
-    administrador_utilizador_idutilizador = models.ForeignKey(Administrador, models.DO_NOTHING, db_column='Administrador_Utilizador_idutilizador')  # Field name made lowercase.
     preco_almoco_estudante = models.FloatField()
     preco_almoco_professor = models.FloatField()
 
@@ -250,14 +249,14 @@ class DiaAberto(models.Model):
 class Disponibilidade(models.Model):
     colaborador_utilizador_idutilizador = models.ForeignKey(Colaborador, models.DO_NOTHING, db_column='colaborador_Utilizador_idutilizador')  # Field name made lowercase.
     dia_dia = models.ForeignKey(Dia, models.DO_NOTHING, db_column='dia_dia')
-    horario_hora = models.ForeignKey('Horario', models.DO_NOTHING, db_column='horario_hora',related_name="disponibilidade_hora_inicio")
-    horario_hora1 = models.ForeignKey('Horario', models.DO_NOTHING, db_column='horario_hora1',related_name="disponibilidade_hora_fim")
-    tipo_de_tarefa = models.CharField(max_length=45, blank=True, null=True)
+    horario_hora = models.ForeignKey('Horario', models.DO_NOTHING, db_column='horario_hora')
+    horario_hora1 = models.ForeignKey('Horario', models.DO_NOTHING, db_column='horario_hora1')
+    tipo_de_tarefa = models.CharField(max_length=45)
+    disponibilidade_id = models.AutoField(primary_key=True)
 
     class Meta:
         managed = False
         db_table = 'disponibilidade'
-        unique_together = (('colaborador_utilizador_idutilizador', 'dia_dia', 'horario_hora', 'horario_hora1', 'tipo_de_tarefa'),)
 
 
 class DjangoAdminLog(models.Model):
@@ -308,8 +307,8 @@ class Escola(models.Model):
     idescola = models.AutoField(primary_key=True)
     nome = models.CharField(max_length=255)
     local = models.CharField(max_length=45)
-    telefone = models.CharField(max_length=45,validators=[telefone_validator])
-    email = models.CharField(max_length=255, blank=True, null=True,validators=[email_validator])
+    telefone = models.CharField(max_length=45)
+    email = models.CharField(max_length=255, blank=True, null=True)
 
     class Meta:
         managed = False
@@ -363,7 +362,7 @@ class Idioma(models.Model):
 
 class Inscricao(models.Model):
     idinscricao = models.AutoField(primary_key=True)
-    ano = models.IntegerField(validators=[escola_ano_validator])
+    ano = models.IntegerField()
     local = models.CharField(max_length=255)
     areacientifica = models.CharField(max_length=255)
     transporte = models.IntegerField()
@@ -378,7 +377,7 @@ class InscricaoColetiva(models.Model):
     turma = models.CharField(max_length=1)
     participante_utilizador_idutilizador = models.ForeignKey('Participante', models.DO_NOTHING, db_column='Participante_Utilizador_idutilizador')  # Field name made lowercase.
     escola_idescola = models.ForeignKey(Escola, models.DO_NOTHING, db_column='escola_idescola')
-    nparticipantes = models.IntegerField(validators=[not_zero_validator,smaller_zero_validator])
+    nparticipantes = models.IntegerField()
     inscricao_idinscricao = models.OneToOneField(Inscricao, models.DO_NOTHING, db_column='inscricao_idinscricao', primary_key=True)
 
     class Meta:
@@ -405,7 +404,7 @@ class InscricaoHasSessao(models.Model):
     inscricao_idinscricao = models.ForeignKey(Inscricao, models.DO_NOTHING, db_column='inscricao_idinscricao')
     sessao_idsessao = models.ForeignKey('Sessao', models.DO_NOTHING, db_column='sessao_idsessao')
     inscricao_has_sessao_id = models.AutoField(primary_key=True)
-    nr_inscritos = models.IntegerField(validators=[smaller_zero_validator,not_zero_validator])
+    nr_inscritos = models.IntegerField()
 
     def save(self, *args, **kwargs):
         Sessao.objects.filter(idsessao=self.sessao_idsessao.pk).update(nrinscritos=F('nrinscritos')+self.nr_inscritos)
@@ -427,11 +426,12 @@ def delete_sessao_inscricao(sender, instance, using, **kwargs):
     Sessao.objects.filter(idsessao=instance.sessao_idsessao.pk).update(nrinscritos=F('nrinscritos')-instance.nr_inscritos)
 
 
+
 class InscricaoIndividual(models.Model):
     nracompanhantes = models.IntegerField()
     participante_utilizador_idutilizador = models.ForeignKey('Participante', models.DO_NOTHING, db_column='Participante_Utilizador_idutilizador')  # Field name made lowercase.
     inscricao_idinscricao = models.OneToOneField(Inscricao, models.DO_NOTHING, db_column='inscricao_idinscricao', primary_key=True)
-    telefone = models.IntegerField(validators=[telefone_validator])
+    telefone = models.IntegerField()
 
     class Meta:
         managed = False
@@ -494,8 +494,8 @@ class Prato(models.Model):
     descricao = models.CharField(max_length=125)
     nralmocos = models.IntegerField(blank=True, null=True)
     menu_idmenu = models.ForeignKey(Menu, models.DO_NOTHING, db_column='menu_idMenu')  # Field name made lowercase.
-
-
+        
+        
     def save(self, *args, **kwargs):
         obj = Menu.objects.get(idmenu=self.menu_idmenu.pk)
         Menu.objects.filter(idmenu=self.menu_idmenu.pk).update(nralmocosdisponiveis=F('nralmocosdisponiveis')-self.nralmocos)
@@ -506,6 +506,7 @@ class Prato(models.Model):
         delta = self.nralmocos-insc
         Menu.objects.filter(idmenu=self.menu_idmenu.pk).update(nralmocosdisponiveis=F('nralmocosdisponiveis')-delta)
         super(Prato,self).update(*args, **kwargs)
+
 
     class Meta:
         managed = False
@@ -528,8 +529,8 @@ class ProfessorUniversitario(models.Model):
 class Responsaveis(models.Model):
     idresponsavel = models.AutoField(primary_key=True)
     nome = models.CharField(max_length=255)
-    email = models.CharField(max_length=255,validators=[email_validator])
-    telefone = models.CharField(max_length=45,validators=[telefone_validator])
+    email = models.CharField(max_length=255)
+    telefone = models.CharField(max_length=45)
     idinscricao = models.ForeignKey(Inscricao, models.DO_NOTHING, db_column='idInscricao')  # Field name made lowercase.
 
     class Meta:
@@ -579,8 +580,8 @@ class Tarefa(models.Model):
     hora_inicio = models.TimeField(blank=True, null=True)
     dia_dia = models.ForeignKey(Dia, models.DO_NOTHING, db_column='dia_dia', blank=True, null=True)
     sessao_idsessao = models.ForeignKey(Sessao, models.DO_NOTHING, db_column='sessao_idsessao', blank=True, null=True)
-    buscar = models.ForeignKey(Espaco, models.DO_NOTHING, db_column='buscar', blank=True, null=True,related_name="Tarefa_buscar")
-    levar = models.ForeignKey(Espaco, models.DO_NOTHING, db_column='levar', blank=True, null=True,related_name="Tarefa_levar")
+    buscar = models.ForeignKey(Espaco, models.DO_NOTHING, db_column='buscar', blank=True, null=True)
+    levar = models.ForeignKey(Espaco, models.DO_NOTHING, db_column='levar', blank=True, null=True)
     inscricao_coletiva_inscricao_idinscricao = models.ForeignKey(InscricaoColetiva, models.DO_NOTHING, db_column='inscricao_coletiva_inscricao_idinscricao', blank=True, null=True)
 
     class Meta:
@@ -600,27 +601,27 @@ class Transporte(models.Model):
 
 class TransporteHasHorario(models.Model):
     transporte_idtransporte = models.ForeignKey(Transporte, models.DO_NOTHING, db_column='transporte_idtransporte')
-    id_transporte_has_horario = models.IntegerField(primary_key=True)
-    origem = models.ForeignKey(Paragem, models.DO_NOTHING, db_column='origem',related_name="origem")
-    destino = models.ForeignKey(Paragem, models.DO_NOTHING, db_column='destino',related_name="destino")
+    id_transporte_has_horario = models.AutoField(primary_key=True)
+    origem = models.ForeignKey(Paragem, models.DO_NOTHING, db_column='origem')
+    destino = models.ForeignKey(Paragem, models.DO_NOTHING, db_column='destino')
     horario_has_dia_id_dia_hora = models.ForeignKey(HorarioHasDia, models.DO_NOTHING, db_column='horario_has_dia_id_dia_hora')
-    n_passageiros = models.IntegerField(blank=True, null=True,validators=[not_zero_validator,smaller_zero_validator])
+    n_passageiros = models.IntegerField(blank=True, null=True)
 
+    
     def __str__(self):
         return self.origem.paragem + " -> " + self.destino.paragem + " | " + self.horario_has_dia_id_dia_hora.__str__() + " | Lugares restantes: " + str(self.transporte_idtransporte.capacidade - self.n_passageiros)
 
     class Meta:
         managed = False
         db_table = 'transporte_has_horario'
-        
 
-#Validation is checked
+
 class TransporteHasInscricao(models.Model):
     inscricao_idinscricao = models.ForeignKey(Inscricao, models.DO_NOTHING, db_column='inscricao_idinscricao')
     transporte_has_inscricao_id = models.AutoField(primary_key=True)
-    horario = models.ForeignKey(TransporteHasHorario, models.DO_NOTHING, db_column='transporte_has_horario_id_transporte_has_horario')
-    n_passageiros = models.IntegerField(validators=[smaller_zero_validator])
-
+    transporte_has_horario_id_transporte_has_horario = models.ForeignKey(TransporteHasHorario, models.DO_NOTHING, db_column='transporte_has_horario_id_transporte_has_horario')
+    n_passageiros = models.IntegerField(blank=True, null=True)
+    
     def save(self, *args, **kwargs):
         TransporteHasHorario.objects.filter(id_transporte_has_horario=self.horario.pk).update(n_passageiros=F('n_passageiros')+self.n_passageiros)
         return super(TransporteHasInscricao, self).save(*args, **kwargs)
@@ -692,8 +693,8 @@ class UnidadeOrganica(models.Model):
 class Utilizador(models.Model):
     idutilizador = models.AutoField(primary_key=True)
     nome = models.CharField(max_length=255)
-    email = models.CharField(unique=True, max_length=255,validators=[email_validator])
-    telefone = models.CharField(unique=True, max_length=45,validators=[telefone_validator])
+    email = models.CharField(unique=True, max_length=255)
+    telefone = models.CharField(unique=True, max_length=45)
     password = models.CharField(max_length=255)
     validada = models.IntegerField()
     remember_me = models.CharField(max_length=255, blank=True, null=True)

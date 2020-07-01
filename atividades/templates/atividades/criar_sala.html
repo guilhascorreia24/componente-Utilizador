@@ -36,7 +36,29 @@
                                 <td>{{local.campus_idcampus.nome}}</td>
                                 <td>
                                     {% if local.img %}
-                                    <a href="{% url 'atividades:display_image' local.idespaco %}" target="_blank">{{local.nome}}</a>
+                                    <a type="button"
+                                data-toggle="modal" data-target="#imageModal" data-backdrop="false">{{local.nome}}</a>
+                                    <!-- POP UP imagem-->
+                                <div class="dialog modal" id="imageModal">
+                                <div class="modal-background"></div>
+                                <br><br><br><br><br><br><br><br><br><br><br><br>
+                                <div class="modal-card animation" style="max-width:360px">
+                                    <!---->
+                                    <section class="modal-card-body is-titleless">
+                                        <div class="media">
+                                            <!---->
+                                            <div class="media-content">
+                                                <img src="{{local.img.url}}">
+                                                <!---->
+                                            </div>
+                                        </div>
+                                    </section>
+                                    <footer class="modal-card-foot"><button class="button" data-dismiss="modal">
+                                            Cancelar
+                                        </button>
+                                        </footer>
+                                </div>
+                                </div>
                                     {% else %}
                                     {{local.nome}}
                                     {% endif %}
@@ -70,7 +92,7 @@
                                             Confirmar
                                         </button></a></footer>
                                 </div>
-                            </div>
+                                </div>
                                 </td>
                             </tr>
                             {% endfor %}

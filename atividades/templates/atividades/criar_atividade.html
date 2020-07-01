@@ -4,30 +4,41 @@
     <li class="is-active"><a href="" aria-current="page">Criar Atividade</a></li>
 {% endblock %}
 {% block content %}
-<h1 style="font-size:large;"><b>Informações sobre atividade</b></h1>
-{% for errorMsg in erros %}
-<p style="color:red;">{{errorMsg}}</p>
-{% endfor %}
-<div style="padding: 3rem 2vw 1rem">
-  <form method="POST" action="" id="atividade"> {% csrf_token %}
-  <div class="b-steps">
 
-    <section class="step-content">
+
+
+<div style="padding: 3rem 2vw 1rem">
+
+  <div class="b-steps">
+        <nav class="steps is-success">
+          <ul class="step-items">
+              <li class="step-item is-success is-active"><a class="step-link">
+                    <div class="step-marker"><span class="icon"><i class="mdi mdi-book mdi-24px"></i></span></div>
+                      <div class="step-details"><span class="step-title">Informação atividade</span>
+                      </div>
+
+                  </a></li>
+          </ul>
+      </nav>
+  </div>
+<form method="post">{% csrf_token %}
+          <section class="step-content" >
         <div class="step-item">
             <div style="padding: 1rem 2vw 0px">
               <div class="columns">
                 <div class="column">
                   <div class="field">
+                      <p style="color:red;">{{erros.0}}</p>
                     <label class="">Titulo da atividade:</label>
                     <div class="control">
                         <input type="text" class="input" name="titulo" value="{{activity.titulo}}" >
-
                     </div>
                   </div>
                 </div>
                 <div class="column">
                   <div class="field">
                     <label class="">Descrição:</label>
+                      <p style="color:red;">{{erros.1}}</p>
                     <div class="control is-expanded">
                        <div class="control is-clearfix">
                            <textarea maxlength="300" class="textarea" name="descricao">{{activity.descricao}}</textarea>
@@ -35,9 +46,12 @@
                     </div>
                   </div>
                 </div>
+              </div>
+            <div class="columns">
                 <div class="column">
                   <div class="field">
                     <label class="">Publico alvo:</label>
+                      <p style="color:red;">{{erros.2}}</p>
                     <div class="control is-expanded">
                        <div class="control is-clearfix">
                            <input type="text"  name="publico_alvo" class="input" value="{{activity.publico_alvo}}">
@@ -48,6 +62,7 @@
                 <div class="column">
                   <div class="field">
                     <label class="">Tematica:</label>
+                      <p style="color:red;">{{erros.3}}</p>
                     <div class="control is-expanded">
                        <div class="control is-clearfix">
                            <input type="text" name="tema" class="input" value="{{activity.tematica}}">
@@ -55,48 +70,49 @@
                     </div>
                   </div>
                 </div>
-                <div class="column">
+            <hr/>
+          </div>
+        </div>
+      </div>
+  </section>
+          <section class="step-content" >
+        <div class="step-item">
+            <div style="padding: 1rem 2vw 0px">
+              <div class="columns">
+                <div class="column" style="padding-left:28px;">
+                  <div class="field">
+                    <label class="">Duração da atividade (minutos):</label>
+                      <p style="color:red;">{{erros.4}}</p>
+                        <div class="control is-clearfix">
+
+                           <input type="number" name="duracao" class="input" style="width:200px; " min="0"  value="{{activity.duracao|floatformat:0}}">
+                        </div>
+                  </div>
+                </div>
+                <div class="column" style="padding-left:28px;">
+                  <div class="field">
+                    <label class="">Número de colaboradores desejados:</label>
+                      <p style="color:red;">{{erros.5}}</p>
+                       <div class="control is-clearfix">
+                           <input type="number" name="nrcolaboradores" class="input" style="width:200px;" min="0" value="{{activity.nrcolaborador}}">
+                        </div>
+                  </div>
+                </div>
+                <div class="column" style="padding-left:28px;">
                     <div class="field">
                       <label class="">Número de Participantes:</label>
+                        <p style="color:red;">{{erros.6}}</p>
                         <div class="control is-clearfix">
-                           <input type="number"  name="capacidade" class="input" min="0"  value="{{activity.capacidade}}">
+                           <input type="number"  name="capacidade" class="input" style="width:200px;" min="0"  value="{{activity.capacidade}}">
                         </div>
                     </div>
                   </div>
               </div>
-            <hr/>
-          </div>
-        </div>  
-        </div>     
-      </section>
-      <section class="step-content">
-        <div class="step-item">
-            <div style="padding: 1rem 2vw 0px">
-              <div class="columns">
-                <div class="column">
-                  <div class="field">
-                    <label class="">Duração da atividade (minutos):</label><br>
-                        <div class="control is-clearfix">
-                            <br>
-                           <input type="number" name="duracao" class="input" min="0"  value="{{activity.duracao|floatformat:0}}">
-                        </div>
-                  </div>
-                </div>
-                <div class="column">
-                  <div class="field">
-                    <label class="">Número de colaboradores desejados:</label>
-                    <div class="control is-expanded">
-                       <div class="control is-clearfix">
-                           <input type="number" name="nrcolaboradores" class="input" min="0" value="{{activity.nrcolaborador}}">
-                        </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="column">
-                  <div class="field">
+                <div class="columns">
+                  <div class="field" style="padding-left:28px;">
                     <label class="">Campus:</label>
-                    <div class="control is-expanded" style="padding-top:25px">
-                       <div class="select is-fullwidth">
+                    <div class="control " style="padding-top:25px">
+                       <div class="select">
                             <select id="campus" name="campus">
                                 <option value="" disabled selected>Selecione campus</option>
                                 {% for camp in campus %}
@@ -110,12 +126,10 @@
                         </div>
                     </div>
                   </div>
-                </div>
-                  <div class="column">
-                    <div class="field">
+                    <div class="field" style="padding-left:275px;">
                       <label class="">Unidade Orgânica:</label>
                       <div class="control" style="padding-top:25px">
-                        <div class="select is-fullwidth">
+                        <div class="select">
                             <select id="unidade_organica" name="unidade_organica">
                                 <option value="" disabled selected>Selecione Unidade organica</option>
                                 {% for unidade in unidade_organica %}
@@ -129,12 +143,10 @@
                         </div>
                       </div>
                     </div>
-                  </div>
-                  <div class="column">
-                    <div class="field">
+                    <div class="field" style="padding-left:205px;">
                       <label class="">Departamento:</label>
                       <div class="control" style="padding-top:25px">
-                        <div class="select is-fullwidth">
+                        <div class="select">
                             <select id="iddepartamento" name="iddepartamento">
                                 <option value="" disabled selected>Selecione Departamento</option>
                                 {% for departamento in departamentos %}
@@ -152,9 +164,8 @@
               </div>
             <hr/>
           </div>
-        </div>
-        </div>
-    </section>
+       </section>
+
     <div class="column is-8 is-offset-2">
       <div class="level">
         <div class="level-left">
@@ -163,8 +174,8 @@
           </a>
         </div>
         <div class="level-right">
-          <button class="button is-large is-success is-outlined is-link" type="submit" form="atividade">
-            <span>Definir local</span>
+          <button class="button is-large is-success is-outlined is-link" type="submit" >
+            <span>Definir Local</span>
             <span class="icon is-medium">
               <i class="mdi mdi-forward mdi-36px"></i>
             </span>
@@ -172,10 +183,19 @@
         </div>
       </div>
     </div>
-
-
-
 </form>
+</div>
+
+
+
+
+
+
+
+
+    <script>
+
+    </script>
 
 <style>
   .label {
@@ -185,4 +205,8 @@
   font-size: 1rem;
 }
 </style>
+
+
+
+
 {% endblock content%}
