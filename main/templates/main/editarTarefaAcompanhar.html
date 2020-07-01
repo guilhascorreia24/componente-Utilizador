@@ -28,23 +28,7 @@
                     </div>
                     </div>
                   </div>
-      
-              <div class="column">
-                <div class="field">
-                  <label aria-label="breadcrumbs"  class="">Atribuir Colaborador:</label>
-                  <div class="control is-expanded">
-                    <div class="select is-fullwidth">
-                      <select name="{{form.colaborador_utilizador_idutilizador.id_for_label}}" id="{{form.colaborador_utilizador_idutilizador.id_for_label}}">
-                        <option value="" selected="">Nenhum Colaborador Atribuido</option>
-                        {% for colab in dispo %}
-                          <option value="{{colab.colaborador_utilizador_idutilizador.pk}}">{{colab.colaborador_utilizador_idutilizador.utilizador_idutilizador.nome}} (disponível dia {{colab.dia_dia}} das {{colab.horario_hora}} às {{colab.horario_hora1}})</option>
-                        {% endfor %}
-                      </select>
-                    </div>
-                  </div>
-                </div>
-              </div>
-      
+
               <hr>
               
               <div style="width: 70%; margin-left: -40%;" class=" columns">
@@ -52,7 +36,12 @@
                   <label>Atual Atividade do(s) Participante(s):</label>
                   <div style="width: 102%;" class="control">
                     <div class="select is-fullwidth">
-                      {{form.atividade_idatividade}}
+                      <select name="atividade_idatividade" id="id_atividade_idatividade">
+                        <option value="{{tarefa.sessao_idsessao.atividade_idatividade.pk}}" selected="">{{tarefa.sessao_idsessao.atividade_idatividade.titulo}}</option>
+                        {% for t in ati %}
+                          <option value="{{t.idatividade}}">{{t.titulo}}</option>
+                        {% endfor %}
+                        </select>
                     </div>
                   </div>
                 </div>
@@ -62,7 +51,7 @@
                     <label>Selecionar Sessão:</label>
                     <div class="select is-fullwidth">
                       <select id="idsessao" name="idsession">
-                        <option hidden value="">Selecione Atividade</option>
+                        <option value="{{tarefa.sessao_idsessao.idsessao}}" selected="">{{tarefa.sessao_idsessao.horario_has_dia_id_dia_hora.dia_dia.dia | date:"d/m/Y"}} às {{tarefa.sessao_idsessao.horario_has_dia_id_dia_hora.horario_hora.hora |  time:"H:i"}}</option>
                       </select>
                     </div>
                   </div>
@@ -72,7 +61,12 @@
                     <label class="">Selecionar Grupo:</label>
                     <div class="select is-fullwidth">
                       <select id="grupos" name="grupos">
-                        <option hidden value="">Selecione Sessão</option>
+                        {% if tarefa.inscricao_coletiva_inscricao_idinscricao != NULL %}
+                          <option value="{{tarefa.inscricao_coletiva_inscricao_idinscricao.pk}}" selected="">Grupo {{tarefa.inscricao_coletiva_inscricao_idinscricao.inscricao_idinscricao.idinscricao}} ({{tarefa.inscricao_coletiva_inscricao_idinscricao.nparticipantes}} alunos)</option>
+                          <option value="">Nenhum Colaborador Atribuido</option>
+                        {% else %}
+                          <option value="" selected="">Nenhum Colaborador Atribuido</option>
+                        {% endif %}
                       </select>
                     </div>
                   </div>
@@ -82,24 +76,60 @@
               <div style="width: 100%; margin-left: -20%;" class="columns">
                 <div style="width: 80%;"class="column is-3">
                   <label class="">Próxima Atividade do(s) Participante(s):</label>
-                  <div style="width: 95%;" class="control">
+                  <div style="width: 105%;" class="control">
                     <div class="select is-fullwidth">
                       {{form.campus_levar}}
                     </div>
                   </div>
                 </div>
                 <div class="column">
-                  <div style=" width: 250%;" class="control">
+                  <div style=" width: 250%; margin-left: 20%;" class="control">
                     <label style="width: 200%;" class="">Local Destino do(s) Participante(s):</label>
                     <div class="select is-fullwidth">
                       <select id="levar" name="levar">
-                        <option hidden value="">Selecione Atividade</option>
+                        {% for ar in ar %}
+                              {% if ar.espaco_idespaco == tarefa.levar %}
+                                    <option value="{{tarefa.levar.pk}}" selected="">{{tarefa.levar.nome}} ({{ar.descricao}})</option>
+                              {% endif %}
+                        {% endfor %}
+                        {% for s in sala %}
+                              {% if s.espaco_idespaco == tarefa.levar %}
+                                    <option value="{{tarefa.levar.pk}}" selected="">Edificio {{s.edificio}}, {{tarefa.levar.nome}} ({{tarefa.levar.campus_idcampus.nome}})</option>
+                              {% endif %}
+                        {% endfor %}
+                        {% for a in anfi %}
+                              {% if a.espaco_idespaco == tarefa.levar %}
+                                    <option value="{{tarefa.levar.pk}}" selected="">Edificio {{a.edificio}}, Anfiteatro {{tarefa.levar.nome}} ({{tarefa.levar.campus_idcampus.nome}})</option>
+                              {% endif %}
+                        {% endfor %}
+                  
                       </select>
                     </div>
                   </div>
                 </div>
               </div>
-      
+                 <hr>
+              <div class="column">
+                <div class="field">
+                  <label aria-label="breadcrumbs"  class="">Atribuir Colaborador:</label>
+                  <div class="control is-expanded">
+                    <div class="select is-fullwidth">
+                      <select name="{{form.colaborador_utilizador_idutilizador.id_for_label}}" id="{{form.colaborador_utilizador_idutilizador.id_for_label}}">
+                        {% if tarefa.colaborador_utilizador_idutilizador != NULL %}
+                          <option value="{{tarefa.colaborador_utilizador_idutilizador.pk}}" selected="">{{tarefa.colaborador_utilizador_idutilizador.utilizador_idutilizador.nome}}</option>
+                          <option value="">Nenhum Colaborador Atribuido</option>
+                        {% else %}
+                          <option value="" selected="">Nenhum Colaborador Atribuido</option>
+                        {% endif %}
+                        {% for colab in dispo %}
+                          <option value="{{colab.colaborador_utilizador_idutilizador.pk}}">{{colab.colaborador_utilizador_idutilizador.utilizador_idutilizador.nome}} (disponível dia {{colab.dia_dia}} das {{colab.horario_hora}} às {{colab.horario_hora1}})</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+      <br>
                 <hr>
       
                 <div class="columns">

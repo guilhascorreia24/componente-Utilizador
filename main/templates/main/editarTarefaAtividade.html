@@ -20,6 +20,7 @@
       <div class="ctr" style="margin-left: 35%;">
         <div style="padding: 2vw">
             <form method="POST" id="personForm"> {% csrf_token %}
+              {{form.errors}}
                 <div class="column">
                     <div class="field">
                          <label class="">Nome Tarefa:</label>
@@ -34,7 +35,12 @@
                       <label class="">Selecionar Atividade:</label>
                       <div class="control">
                         <div class="select is-fullwidth">
-                          {{form.atividade_idatividade}}
+                          <select name="atividade_idatividade" id="id_atividade_idatividade">
+                          <option value="{{tarefa.sessao_idsessao.atividade_idatividade.pk}}" selected="">{{tarefa.sessao_idsessao.atividade_idatividade.titulo}}</option>
+                          {% for t in ati %}
+                            <option value="{{t.idatividade}}">{{t.titulo}}</option>
+                          {% endfor %}
+                          </select>
                         </div>
                       </div>
                     </div>
@@ -46,7 +52,7 @@
                   <div class="control">
                     <div class="select is-fullwidth">
                       <select id="idsessao" name="idsession">
-                        <option hidden value="">Selecione Atividade</option>
+                        <option value="{{tarefa.sessao_idsessao.idsessao}}" selected="">{{tarefa.sessao_idsessao.horario_has_dia_id_dia_hora.dia_dia.dia | date:"d/m/Y"}} às {{tarefa.sessao_idsessao.horario_has_dia_id_dia_hora.horario_hora.hora |  time:"H:i"}}</option>
                       </select>
                     </div>
                   </div>
@@ -58,9 +64,13 @@
                   <label class="">Atribuir Colaborador:</label>
                   <div class="control is-expanded">
                     <div class="select is-fullwidth">
-                      
                       <select name="{{form.colaborador_utilizador_idutilizador.id_for_label}}" id="{{form.colaborador_utilizador_idutilizador.id_for_label}}">
-                        <option value="" selected="">Nenhum Colaborador Atribuido</option>
+                        {% if tarefa.inscricao_coletiva_inscricao_idinscricao  != NULL %}
+                          <option value="{{tarefa.colaborador_utilizador_idutilizador.pk}}" selected="">{{tarefa.colaborador_utilizador_idutilizador.utilizador_idutilizador.nome}}</option>
+                          <option value="">Nenhum Colaborador Atribuido</option>
+                        {% else %}
+                          <option value="" selected="">Nenhum Grupo Selecionado</option>
+                        {% endif %}
                         {% for colab in dispo %}
                           <option value="{{colab.colaborador_utilizador_idutilizador.pk}}">{{colab.colaborador_utilizador_idutilizador.utilizador_idutilizador.nome}} (disponível dia {{colab.dia_dia}} das {{colab.horario_hora}} às {{colab.horario_hora1}})</option>
                         {% endfor %}
