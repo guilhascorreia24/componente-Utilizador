@@ -1,0 +1,6 @@
+
+  <option value="">Selecione Colaborador</option>
+  {% for c in colab %}
+  <option value="{{c.colaborador_utilizador_idutilizador.pk}}">{{c.colaborador_utilizador_idutilizador.utilizador_idutilizador.nome}} (disponível das {{c.horario_hora}} às {{c.horario_hora1}})</option>
+  {% endfor %}
+  

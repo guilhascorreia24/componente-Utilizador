@@ -84,6 +84,25 @@ def load_grupo(request):
 				  template_name="main/grupo_dropdown.html",
 				  context={'grupos':grupos,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
 
+def load_colab_guiar(request):
+	sessao = Sessao.objects.get(idsessao = request.POST.get('sessao'))
+	horario = HorarioHasDia.objects.get(id_dia_hora = sessao.horario_has_dia_id_dia_hora.pk)
+	dia = Dia.objects.get(dia = horario.dia_dia.pk)
+	colab = Disponibilidade.objects.filter(dia_dia = dia).exclude(tipo_de_tarefa="Ajudar Docente")
+	return render(request=request,
+				  template_name="main/colab_dropdown.html",
+				  context={'colab':colab,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
+
+def load_colab_ajudar(request):
+	sessao = Sessao.objects.get(idsessao = request.POST.get('sessao'))
+	horario = HorarioHasDia.objects.get(id_dia_hora = sessao.horario_has_dia_id_dia_hora.pk)
+	dia = Dia.objects.get(dia = horario.dia_dia.pk)
+	colab = Disponibilidade.objects.filter(dia_dia = dia).exclude(tipo_de_tarefa="Guiar Grupo")
+	return render(request=request,
+				  template_name="main/colab_dropdown.html",
+				  context={'colab':colab,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
+
+
 def load_espaco(request):
 	atividade = request.POST.get('campus')
 	espaco = Atividade.objects.filter(idatividade = atividade)
