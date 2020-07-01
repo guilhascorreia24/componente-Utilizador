@@ -26,6 +26,8 @@ urlpatterns = [
     path("eliminar_tarefa/<str:pk>/", views.eliminar_tarefa, name='eliminar_tarefa'),
     path("editar_tarefa/<str:pk>/", views.editar_tarefa, name='editar_tarefa'),
     path('ajax/load-cities/', views.load_cities, name='ajax_load_cities'),
+    path('ajax/load-colab-guiar/', views.load_colab_guiar, name='ajax_load_colab_guiar'),
+    path('ajax/load-colab-ajudar/', views.load_colab_ajudar, name='ajax_load_colab_ajudar'),
     path('ajax/load-espaco/', views.load_espaco, name='ajax_load_espaco'),
     path('ajax/load-grupo/', views.load_grupo, name='ajax_load_grupo'),
 ]

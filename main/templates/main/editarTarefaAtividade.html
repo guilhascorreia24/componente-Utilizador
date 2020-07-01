@@ -65,15 +65,12 @@
                   <div class="control is-expanded">
                     <div class="select is-fullwidth">
                       <select name="{{form.colaborador_utilizador_idutilizador.id_for_label}}" id="{{form.colaborador_utilizador_idutilizador.id_for_label}}">
-                        {% if tarefa.inscricao_coletiva_inscricao_idinscricao  != NULL %}
+                        {% if tarefa.colaborador_utilizador_idutilizador != NULL %}
                           <option value="{{tarefa.colaborador_utilizador_idutilizador.pk}}" selected="">{{tarefa.colaborador_utilizador_idutilizador.utilizador_idutilizador.nome}}</option>
                           <option value="">Nenhum Colaborador Atribuido</option>
                         {% else %}
-                          <option value="" selected="">Nenhum Grupo Selecionado</option>
+                          <option value="" selected="">Nenhum Colaborador Atribuido</option>
                         {% endif %}
-                        {% for colab in dispo %}
-                          <option value="{{colab.colaborador_utilizador_idutilizador.pk}}">{{colab.colaborador_utilizador_idutilizador.utilizador_idutilizador.nome}} (disponível dia {{colab.dia_dia}} das {{colab.horario_hora}} às {{colab.horario_hora1}})</option>
-                        {% endfor %}
                       </select>
                     </div>
                   </div>
@@ -156,5 +153,21 @@
 
   });
 </script>
+<script>
+  $("#idsessao").change(function () {
+    var atividadeID = $(this).val();  // get the selected country ID from the HTML input
+    $.ajax({                       // initialize an AJAX request
+      url: "{% url 'tarefa_coordenador:ajax_load_colab_ajudar' %}",
+      method: 'POST',                  // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+      data: {
+        csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+        'sessao': atividadeID       // add the country id to the GET parameters
+      },
+      success: function (data) {   // `data` is the return of the `load_cities` view function
+        $("#id_colaborador_utilizador_idutilizador").html(data);  // replace the contents of the city input with the data that came from the server
+      }
+    });
+  });
+</script> 
  
 {% endblock content%}
