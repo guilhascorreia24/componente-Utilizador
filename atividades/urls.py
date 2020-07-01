@@ -18,13 +18,12 @@ urlpatterns = [
     # sessões:
     path('session/<int:idActivity>/', atividades.activity_session_view, name='ver_sessoes'),
     path('editar_sessao/<int:idActivity>/', atividades.create_edit_session_view, name='criar_editar_sessao'),
+    path('editar_sesao/<int:idActivity>/', atividades.create_edit_session_formulario_view, name='criar_editar_sesao'),
     path('deletar_sessao/<int:idSession>/', atividades.delete_session, name='apagar_sessao'),
     # local:
     path('criar_sala', atividades.criar_sala_view, name='criar_sala'),
     path('editar_local/<int:idActivity>/', atividades.editar_local_view, name='editar_local'),
     path('apagar_espaco/<int:idEspaco>/', atividades.deletar_espaco_view, name='apagar_local'),
-    # imagens:
-    path('show_image/<int:image>/', atividades.show_image, name='display_image'),
     # campus:
     path('criar_campus', atividades.criar_campus_view, name='criar_campus'),
     path('apagar_campus/<int:idCampus>/', atividades.apagar_campus_view, name='apagar_campus'),
@@ -34,9 +33,6 @@ urlpatterns = [
     # Departamento:
     path('criar_departamento', atividades.criar_departamento_view, name='criar_departamento'),
     path('apagar_departamento/<int:idDepartamento>/', atividades.apagar_departamento_view, name='apagar_departamento'),
-    # extras:
-    path('logout', atividades.logout_view, name='logout'),
-    path('login', atividades.login_view, name="login"),
     #Paragem:
     path('criar_paragem', atividades.criar_paragem_view, name='criar_paragem'),
     path('apagar_paragem/<str:paragem>/', atividades.apagar_paragem_view, name='apagar_paragem'),
