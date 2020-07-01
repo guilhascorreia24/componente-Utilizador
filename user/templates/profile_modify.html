@@ -8,6 +8,7 @@
 {% endblock %}
 
 {% block content %}
+
 <div style="padding: 3rem 2vw 1rem;">
     <div class="b-steps">
         <nav class="steps is-success">
@@ -19,8 +20,8 @@
                     </a></li>
             </ul>
         </nav>
-        <section class="step-content">
-            <div class="step-item">
+        <section class="step-content" style="padding-top: 0;">
+            <div class="step-item" style="padding-top: 0;">
                 <div style="padding: 1rem 2vw 0px;">
                     <hr>
                     {% block content2 %}
@@ -29,7 +30,7 @@
                         <div class="column is-offset-3 is-6">
                             <br>
                             {% if form.name.errors %}
-                            <div class="field"><label class="" for={{form.name.id_for_label}}>Nome</label>
+                            <div class="field"><p class="" for={{form.name.id_for_label}}>Nome</p>
                                 <div class="control has-icons-right"><input type="text" name="name"
                                         id={{form.name.id_for_label}} autocomplete="on" class="input is-danger">
                                     <!----> <span class="icon is-right has-text-danger"><i
@@ -38,8 +39,8 @@
                                 </div>
                                 <p class="help is-danger">Preencha este campo.</p>
                                 {% else %}
-                                <div class="field"><label class="" for={{form.name.id_for_label}}
-                                        aria-label="breadcrumbs">Nome</label>
+                                <div class="field"><p class="" for={{form.name.id_for_label}}
+                                        aria-label="breadcrumbs">Nome</p>
                                     <div class="control is-clearfix"><input type="text" name="name"
                                             value="{{form.name.value|default_if_none:nome}}"
                                             id={{form.name.id_for_label}} class="input" style="border-color: #dbdbdb;">
@@ -47,7 +48,7 @@
                                 </div>
                                 {% endif %}
                                 {% if form.email.errors or error1 %}
-                                <div class="field"><label class="" for={{form.email.id_for_label}}>Email</label>
+                                <div class="field"><p class="" for={{form.email.id_for_label}}>Email</label>
                                     <div class="control has-icons-right"><input type="email" name="email"
                                             id={{form.email.id_for_label}}
                                             value="{{email|default_if_none:form.email.value}}" autocomplete="on"
@@ -58,7 +59,7 @@
                                     </div>
                                     <p class="help is-danger">{{error1}}</p>
                                     {% else %}
-                                    <div class="field"><label class="" for={{form.email.id_for_label}}>Email</label>
+                                    <div class="field"><p class="" for={{form.email.id_for_label}}>Email</label>
                                         <div class="control is-clearfix"><input type="email" name="email"
                                                 id={{form.email.id_for_label}}
                                                 value="{{form.email.value|default_if_none:email}}" class="input" style="border-color: #dbdbdb;">
@@ -66,7 +67,7 @@
                                     </div>
                                     {% endif %}
                                     {% if form.telefone.errors  or error4 %}
-                                    <div class="field"><label class=""
+                                    <div class="field"><p class=""
                                             for={{form.telefone.id_for_label}}>Telefone/Telemovel</label>
                                         <div class="control has-icons-right"><input type="text" name="telefone"
                                                 id={{form.telefone.id_for_label}} autocomplete="on"
@@ -77,7 +78,7 @@
                                         </div>
                                         <p class="help is-danger">{{error4}}</p>
                                         {% else %}
-                                        <div class="field"><label class=""
+                                        <div class="field"><p class=""
                                                 for={{form.telefone.id_for_label}}>Telefone/Telemovel</label>
                                             <div class="control is-clearfix"><input type="tel"
                                                     id={{form.telefone.id_for_label}} name="telefone" class="input"
@@ -87,7 +88,7 @@
                                         </div>
                                         {% endif %}
                                         {% if form.funcao.value or funcao %}
-                                        <div class="field"><label class=""
+                                        <div class="field"><p class=""
                                                 for={{form.funcao.id_for_label}}>Função</label>
                                             <div class=" control is-clearfix"><input type="text"
                                                     id={{form.funcao.id_for_label}} name="funcao" class="input"
@@ -98,7 +99,7 @@
                                         </div>
                                         {% endif %}
                                         {% if form.UO.value or UO %}
-                                        <div class="field"><label class="" for={{form.UO.id_for_label}}>Unidade
+                                        <div class="field"><p class="" for={{form.UO.id_for_label}}>Unidade
                                                 Organica</label>
                                             <div class=" control is-clearfix"><input type="text"
                                                     id={{form.UO.id_for_label}} name="UO" class="input"
@@ -107,7 +108,7 @@
                                         </div>
                                         {% endif %}
                                         {% if form.dep.value or dep %}
-                                        <div class="field"><label class=""
+                                        <div class="field"><p class=""
                                                 for={{form.dep.id_for_label}}>Departamento</label>
                                             <div class=" control is-clearfix"><input type="text"
                                                     id={{form.dep.id_for_label}} name="dep" class="input"
@@ -116,7 +117,7 @@
                                         </div>
                                         {% endif %}
                                         {% if form.curso.value or curso %}
-                                        <div class="field"><label class="" for={{form.curso.id_for_label}}>Curso</label>
+                                        <div class="field"><p class="" for={{form.curso.id_for_label}}>Curso</label>
                                             <div class=" control is-clearfix"><input type="text"
                                                     id={{form.curso.id_for_label}} name="curso" class="input"
                                                     value="{{form.curso.value|default_if_none:curso}}" disabled style="border-color: #dbdbdb;">
@@ -124,7 +125,7 @@
                                         </div>
                                         {% endif %}
                                         {% if form.ano.value or ano %}
-                                        <div class="field"><label class="" for={{form.ano.id_for_label}}>Ano</label>
+                                        <div class="field"><p class="" for={{form.ano.id_for_label}}>Ano</label>
                                             <div class=" control is-clearfix"><input type="text"
                                                     id={{form.ano.id_for_label}} name="ano" class="input"
                                                     value="{{form.ano.value|default_if_none:ano}}" disabled style="border-color: #dbdbdb;">

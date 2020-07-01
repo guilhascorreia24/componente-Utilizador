@@ -17,8 +17,8 @@ class TarefasFormGroup(ModelForm):
 
 	dia_dia = ChoiceField(choices = [("", "Nenhuma Dia Selecionado")] + [(di.__id__(), di.dia) for di in Dia.objects.all()], required=False)
 
-	campus_levar = ChoiceField(choices = [("", "Nenhuma Atividade Selecionada")] +
-	[(actv.__id__(), actv.titulo) for actv in Atividade.objects.all()])
+	campus_levar = ChoiceField(choices = [("", "Selecione atividade para mudar destino")] +
+	[(actv.__id__(), actv.titulo) for actv in Atividade.objects.all()], required=False)
 	
 	atividade_idatividade = ChoiceField(choices = [("", "Nenhuma Atividade Selecionada")] + 
 	[(actv.__id__(), actv.titulo) for actv in Atividade.objects.all()])

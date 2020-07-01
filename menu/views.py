@@ -62,6 +62,7 @@ def diaaberto_update(request, id):
     hora_inicio=Horario.objects.all()[0].pk
     hora_fim=Horario.objects.all().order_by('-pk')[0].pk
     print(hora_inicio)
+    print(form)
     horarios=HorarioHasDia.objects.all()
     for horario in horarios:
         if horario.dia_dia.pk.year==id:
@@ -71,6 +72,7 @@ def diaaberto_update(request, id):
                 hora_fim=HorarioHasDia.objects.filter(dia_dia=horario.dia_dia).reverse()[0].horario_hora.pk
     if form.is_valid():
         form.save()
+        print(form.cleaned_data)
         #Horario.objects.all().delete()
         inicio = form.cleaned_data['datadiaabertoinicio']
         final = form.cleaned_data['datadiaabertofim']
