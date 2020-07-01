@@ -532,7 +532,6 @@ class Prato(models.Model):
     nralmocos = models.IntegerField(blank=True, null=True)
     menu_idmenu = models.ForeignKey(Menu, models.CASCADE, db_column='menu_idMenu')  # Field name made lowercase.
         
-        
     def save(self, *args, **kwargs):
         ins = self.menu_idmenu
         try:

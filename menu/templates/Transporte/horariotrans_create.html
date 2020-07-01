@@ -15,6 +15,7 @@
 <div style="padding: 3rem 2vw 1rem">
     <form action='.' method='POST'>{% csrf_token %}
     <div class="b-steps">
+      {{ form.non_field_errors }}
       <nav class="steps is-success">
         <ul class="step-items">
             <li class="step-item is-success is-active"><a class="step-link">
@@ -35,20 +36,22 @@
         <div class="columns">
         <div class="column">
           <div class="field">
-              <label class="label">Dia</label>
+              <label for="{{form.menu.id_for_label}}">Dia</label>
               <div class="control is-expanded">
                 <div class="select is-fullwidth">
                    {{form.dia_dia}}
+                   <span class="help is-danger">{{form.errors.dia_dia}}</span>
                   </span> <!----></div> <!---->
                   </div>
               </div>
             </div>
                <div class="column">
                    <div class="field">
-                       <label class="label">Hora</label>
+                       <label for="{{form.menu.id_for_label}}">Hora</label>
                        <div class="control is-expanded">
                         <div class="select is-fullwidth">
                            {{form.horario_hora}}
+                           <span class="help is-danger">{{form.errors.horario_hora}}</span>
                           </div>
                         </div>
                       </div>
@@ -64,9 +67,31 @@
                   <span>Cancelar</span>
             </a>          
             </div>
-              <div class="level-right">
-                  <input class="button is-large is-success is-outlined is-link" type='submit' value='Submeter'>
-                 </button>
+            <div style="margin-left: 50%;" class="column"> 
+              <button type="button" class="button is-large is-success is-outlined" data-toggle="modal" data-target="#exampleModal" data-backdrop="false">
+                <span>Submeter</span>
+              </button>
+              </div>
+              <div class="dialog modal" id="exampleModal">
+                  <div class="modal-background"></div>
+                  <br><br><br><br><br><br><br><br><br><br><br><br>
+                  <div class="modal-card animation" style="max-width:20%">
+                      <!---->
+                      <section class="modal-card-body is-titleless">
+                          <div class="media">
+                              <!---->
+                              <div class="media-content">
+                                  <p>Tem a certeza que quer prosseguir?</p>
+                                  <!---->
+                              </div>
+                          </div>
+                      </section>
+                      <footer class="modal-card-foot"><button class="button" data-dismiss="modal">
+                              Cancelar
+                          </button> <button class="button is-success" type="submit">
+                              Confirmar
+                          </button></footer>
+            </div>
                  </div>
                  </div>
                  </div>
