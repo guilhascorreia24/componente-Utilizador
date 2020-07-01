@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from Notification import templates
-from .models import Notificacao, Departamento, Utilizador, DjangoSession, Participante, ProfessorUniversitario, Administrador, Coordenador, Colaborador, UtilizadorHasNotificacao, UnidadeOrganica
+from .models import *
 from .forms import *
 from django.http import HttpResponse
 from django.contrib.auth.models import User
@@ -224,3 +224,23 @@ def joins(uos,x,list):
         print(str(x+uo.sigla+""))
         if not str(x+uo.sigla+"") in list:
             list.append(str(x+"."+uo.sigla+""))
+
+def vagas(request,atividade_id,assunto,texto):
+    sessoes=Sessoes.objects.filter(atividade_idatividade=atividade_id)
+    users=[]
+    for sessao in sessoes:
+        inscricoes_sess=InscricaoHasSessao.objects.filter(sessao_idsessao=sessao.pk)
+        for insc in inscricoes_sess:
+            if InscricaoIndividual.objects.filter(pk=insc.pk).exists():
+                parts=InscricaoIndividual.objects.filter(pk=insc.pk)
+                for part in parts:
+                    if not(part.participante_utilizador_idutilizador in users):
+                        users.append(part.participante_utilizador_idutilizador)
+            if InscricaoColetiva.objects.filter(pk=insc.pk).exists():
+                parts=InscricaoColetiva.objects.filter(pk=insc.pk)
+                for part in parts:
+                    if not(part.participante_utilizador in users):
+                        users.append(part.participante_utilizador_idutilizador)
+    for user in users:
+        new_noti(request,user.pk,assunto,texto)
+

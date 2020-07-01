@@ -26,6 +26,7 @@
       <div style="padding: 1rem 2vw 1rem">
         <form method="POST" class="post-form"> {% csrf_token %}
             <div class="b-steps">
+              {{ form.non_field_errors }}
                 <section class="step-content">
                     <div class="step-item">
                         <div style="padding: 1rem 2vw 0px;">
@@ -34,10 +35,10 @@
                            <div  class="columns">
                                <div class="column">
                                <div class="field">
-                               <label >Menu</label> 
+                               <label for="{{ form.menu.id_for_label }}">Menu</label> 
                                <div  class="control is-clearfix">
                                    {{form.menu}}
-                                   {{form.errors.menu}} <!----> <!----> <!----></div>
+                                   <span class="help is-danger">{{form.errors.menu}}</span></div>
                                     <!----></div>
                                    </div>
                                         </div>
@@ -59,31 +60,31 @@
                                                 <div  class="columns">
                                                  <div class="column">
                                                    <div class="field">
-                                                     <label>Campus:</label>
+                                                     <label for="{{ form.campus_idcampus.id_for_label }}">Campus:</label>
                                                      <div class="control is-expanded">
                                                        <div class="select is-fullwidth">
                                                          {{form.campus_idcampus}}
-                                                         {{form.errors.campus_idcampus}}
+                                                         <span class="help is-danger">{{form.errors.campus_idcampus}}</span>
                                                        </div>
                                                      </div>
                                                    </div>
                                                  </div>    
                                                     <div class="column">
                                                     <div class="field">
-                                                     <label >Horário</label>
+                                                     <label for="{{ form.horario_has_dia_id_dia_hora.id_for_label }}">Dia e Hora de Abertura da Cantina</label>
                                                      <div class="control is-clearfix">
                                                        <div class="select is-fullwidth">
                                                          {{form.horario_has_dia_id_dia_hora}} 
-                                                         {{form.errors.horario_has_dia_id_dia_hora}}<!----> <!----> <!----></div>
+                                                         <span class="help is-danger">{{form.errors.horario_has_dia_id_dia_hora}}</span><!----> <!----> <!----></div>
                                                          <!----></div>
                                                         </div>     
                                                        </div>                                        
                                               <div class="column">
                                             <div class="field">
-                                             <label>Número de Almoços Disponiveis</label> 
+                                             <label for="{{ form.nralmocosdisponiveis.id_for_label }}">Número de Almoços Disponiveis</label> 
                                              <div class="control is-clearfix">
                                                  {{form.nralmocosdisponiveis}}
-                                                 {{form.errors.nralmocosdisponiveis}}
+                                                 <span class="help is-danger">{{form.errors.nralmocosdisponiveis}}</span>
                                               </div>
                                             </div>
                                           </div>   

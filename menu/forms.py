@@ -114,8 +114,8 @@ class PratoForm(forms.ModelForm):
                                     "placeholder": "Descrição",
                                     "class": "new-class-name two",
                                     "id": "my-id-for-textarea",
-                                    "rows": 10,
-                                    'cols': 40,
+                                    "rows": 3,
+                                    'cols': 20,
                                 }
                             )
                         )
@@ -126,14 +126,13 @@ class PratoForm(forms.ModelForm):
         fields = [
             'idprato', 
             'tipo', 
-            'descricao',
-            'nralmocos', 
+            'descricao', 
             'menu_idmenu', 
         ]
+        exclude = [
+            'nralmocos'
+        ]
 
-        widgets = {
-            'nralmocos': NumberInput(attrs={'class': 'input','min':0}),
-        }
 
 
 
