@@ -13,10 +13,10 @@ import datetime
 
 # Main Views.
 
-def list_sessao():
+def list_sessao(dia):
     test = models.Sessao.objects \
     .select_related('atividade_idatividade','atividade_idatividade__departamento_iddepartamento','atividade_idatividade__campus','atividade_idatividade__unidade_organica_iduo__campus_idcampus','atividade_idatividade__unidade_organica_iduo','horario_has_dia_id_dia_hora__horario_hora','atividade_idatividade__professor_universitario_utilizador_idutilizador__utilizador_idutilizador','atividade_idatividade__espaco_idespaco')\
-    .filter(atividade_idatividade__validada=1)\
+    .filter(atividade_idatividade__validada=1,horario_has_dia_id_dia_hora__dia_dia=dia.pk)\
     .order_by('atividade_idatividade__titulo','horario_has_dia_id_dia_hora__horario_hora__hora')\
     .values('idsessao','capacidade',vagas=F('capacidade')-F('nrinscritos'),hora=F('horario_has_dia_id_dia_hora__horario_hora__hora'),idatividade=F('atividade_idatividade__idatividade'),titulo=F('atividade_idatividade__titulo'),duracao=F('atividade_idatividade__duracao'),descricao=F('atividade_idatividade__descricao'),unidade_organica=F('atividade_idatividade__unidade_organica_iduo__sigla'),campus=F('atividade_idatividade__unidade_organica_iduo__campus_idcampus__nome'),departamento=F('atividade_idatividade__departamento_iddepartamento__nome'),tematica=F('atividade_idatividade__tematica'),docente = F('atividade_idatividade__professor_universitario_utilizador_idutilizador__utilizador_idutilizador__nome'),espaco = F('atividade_idatividade__espaco_idespaco__nome'))
     return test
@@ -58,6 +58,12 @@ def inscricao_delete(request,inscricao):
     return render(request,"not_for-u.html",{'context' : context , 'message' : "Não têm permissao para apagar a inscrição"})
 
 def inscricao_alterar(request,inscricao):
+
+    store = models.InscricaoHasSessao.objects.select_related('sessao_idsessao','sessao_idsessao__horario_has_dia_id_dia_hora').filter(inscricao_idinscricao=inscricao)
+    if(len(store)<1):
+        return render(request,"not_for-u.html",{'context' : context , 'message' : "Inscrição não existe"})
+
+    ano = str(store[0].sessao_idsessao.horario_has_dia_id_dia_hora.dia_dia)
     try:
         insc = models.InscricaoColetiva.objects.get(inscricao_idinscricao=inscricao)
     except:
@@ -67,9 +73,9 @@ def inscricao_alterar(request,inscricao):
             context={'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)}
             return render(request,"not_for-u.html",{'context' : context , 'message' : "Não existe Inscrição"})
         
-        return inscricao_individual_form(request,insc)
+        return inscricao_individual_form(request,ano.insc)
 
-    return inscricao_form(request,insc)
+    return inscricao_form(request,ano,insc)
 
 #Precisa de ser inscricao individual ou coletiva
 def delete_inscricao(inscricao):
@@ -83,7 +89,9 @@ def delete_inscricao(inscricao):
 
 #type 1 individual
 #type 0 coletivo
-def form(request,_type,inscricao=None,user=None):
+def form(request,_type,ano,inscricao=None,user=None):
+    dia = datetime.datetime.strptime(ano, '%Y-%m-%d')
+    dia = models.Dia.objects.get(pk=dia)
     user = userValidation.getLoggedUser(request)
     context={'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)}
 
@@ -111,7 +119,7 @@ def form(request,_type,inscricao=None,user=None):
 
     if(_type == 0):
         if request.method == 'POST':
-            form = forms.CustomForm(request,inscricao=inscricao)
+            form = forms.CustomForm(dia,request,inscricao=inscricao)
             if form.is_valid():
                 form.save(user)
                 messages.send_notification(request,form)
@@ -122,18 +130,18 @@ def form(request,_type,inscricao=None,user=None):
                 return redirect('inscricao:consulta')
             else:
                 campus = models.Campus.objects.all()
-                sessoes = list_sessao()
-                return render(request,'inscricao_form.html',{'form': form, 'atividades_sessao' : sessoes, 'campus':campus, 'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
+                sessoes = list_sessao(dia)
+                return render(request,'inscricao_form.html',{'form': form, 'atividades_sessao' : sessoes, "ano":ano, 'campus':campus, 'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
         
         else:
             campus = models.Campus.objects.all()
-            form = forms.CustomForm(inscricao=inscricao)
-            sessoes = list_sessao()
-            return render(request,'inscricao_form.html',{'form': form, 'atividades_sessao' : sessoes,'campus':campus, 'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
+            form = forms.CustomForm(dia,inscricao=inscricao)
+            sessoes = list_sessao(dia)
+            return render(request,'inscricao_form.html',{'form': form, "ano":ano, 'atividades_sessao' : sessoes,'campus':campus, 'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
 
     elif(_type == 1):
         if request.method == 'POST':
-            form = forms.FormIndividual(request,inscricao=inscricao)
+            form = forms.FormIndividual(dia,request,inscricao=inscricao)
             if form.is_valid():
                 form.save(user)
                 messages.send_notification(request,form)
@@ -144,24 +152,24 @@ def form(request,_type,inscricao=None,user=None):
                 return redirect('inscricao:consulta')
             else:
                 campus = models.Campus.objects.all()
-                sessoes = list_sessao()
-                return render(request,'inscricao_individual_form.html',{'form': form, 'atividades_sessao' : sessoes, 'campus':campus,  'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
+                sessoes = list_sessao(dia)
+                return render(request,'inscricao_individual_form.html',{'form': form, "ano":ano, 'atividades_sessao' : sessoes, 'campus':campus,  'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
         
         else:
             campus = models.Campus.objects.all()
-            form = forms.FormIndividual(inscricao=inscricao)
-            sessoes = list_sessao()
-            return render(request,'inscricao_individual_form.html',{'form': form, 'atividades_sessao' : sessoes,'campus':campus,  'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
+            form = forms.FormIndividual(dia,inscricao=inscricao)
+            sessoes = list_sessao(dia)
+            return render(request,'inscricao_individual_form.html',{'form': form, "ano":ano, 'atividades_sessao' : sessoes,'campus':campus,  'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
     
     else:
         return render(request,"not_for-u.html",{'context' : context , 'message' : "Erro desconhecido"})
 
-def inscricao_form(request,inscricao=None):
-    var = form(request,0,inscricao=inscricao)
+def inscricao_form(request,ano,inscricao=None):
+    var = form(request,0,inscricao=inscricao,ano=ano)
     return var
 
-def inscricao_individual_form(request,inscricao=None):
-    return form(request,1,inscricao=inscricao)
+def inscricao_individual_form(request,ano,inscricao=None):
+    return form(request,1,inscricao=inscricao,ano=ano)
 
 def create_inscricao_allowed(user):
     date = datetime.date.today()
@@ -226,7 +234,7 @@ def get_inscricoes(**kwargs):
             .select_related('sessao_idsessao__atividade_idatividade','sessao_idsessao__atividade_idatividade__departamento_iddepartamento','sessao_idsessao__atividade_idatividade__campus','sessao_idsessao__atividade_idatividade__unidade_organica_iduo__campus_idcampus','sessao_idsessao__atividade_idatividade__unidade_organica_iduo','sessao_idsessao__horario_has_dia_id_dia_hora__horario_hora','sessao_idsessao__atividade_idatividade__professor_universitario_utilizador_idutilizador__utilizador_idutilizador','sessao_idsessao__atividade_idatividade__espaco_idespaco')\
             .filter(**sessao_kwargs)\
             .order_by('sessao_idsessao__atividade_idatividade__titulo','sessao_idsessao__horario_has_dia_id_dia_hora__horario_hora__hora')\
-            .values('nr_inscritos',idsessao=F('sessao_idsessao__idsessao'),vagas=F('sessao_idsessao__capacidade'),hora=F('sessao_idsessao__horario_has_dia_id_dia_hora__horario_hora__hora'),idatividade=F('sessao_idsessao__atividade_idatividade__idatividade'),titulo=F('sessao_idsessao__atividade_idatividade__titulo'),duracao=F('sessao_idsessao__atividade_idatividade__duracao'),descricao=F('sessao_idsessao__atividade_idatividade__descricao'),unidade_organica=F('sessao_idsessao__atividade_idatividade__unidade_organica_iduo__sigla'),campus=F('sessao_idsessao__atividade_idatividade__unidade_organica_iduo__campus_idcampus__nome'),departamento=F('sessao_idsessao__atividade_idatividade__departamento_iddepartamento__nome'),tematica=F('sessao_idsessao__atividade_idatividade__tematica'),docente = F('sessao_idsessao__atividade_idatividade__professor_universitario_utilizador_idutilizador__utilizador_idutilizador__nome'),espaco = F('sessao_idsessao__atividade_idatividade__espaco_idespaco__nome'))
+            .values('nr_inscritos',dia=F('sessao_idsessao__horario_has_dia_id_dia_hora__dia_dia'),idsessao=F('sessao_idsessao__idsessao'),vagas=F('sessao_idsessao__capacidade'),hora=F('sessao_idsessao__horario_has_dia_id_dia_hora__horario_hora__hora'),idatividade=F('sessao_idsessao__atividade_idatividade__idatividade'),titulo=F('sessao_idsessao__atividade_idatividade__titulo'),duracao=F('sessao_idsessao__atividade_idatividade__duracao'),descricao=F('sessao_idsessao__atividade_idatividade__descricao'),unidade_organica=F('sessao_idsessao__atividade_idatividade__unidade_organica_iduo__sigla'),campus=F('sessao_idsessao__atividade_idatividade__unidade_organica_iduo__campus_idcampus__nome'),departamento=F('sessao_idsessao__atividade_idatividade__departamento_iddepartamento__nome'),tematica=F('sessao_idsessao__atividade_idatividade__tematica'),docente = F('sessao_idsessao__atividade_idatividade__professor_universitario_utilizador_idutilizador__utilizador_idutilizador__nome'),espaco = F('sessao_idsessao__atividade_idatividade__espaco_idespaco__nome'))
         i+=1
 
         if(len(row['atividade']) == 0):
@@ -256,7 +264,7 @@ def get_inscricoes(**kwargs):
             .select_related('sessao_idsessao__atividade_idatividade','sessao_idsessao__atividade_idatividade__departamento_iddepartamento','sessao_idsessao__atividade_idatividade__campus','sessao_idsessao__atividade_idatividade__unidade_organica_iduo__campus_idcampus','sessao_idsessao__atividade_idatividade__unidade_organica_iduo','sessao_idsessao__horario_has_dia_id_dia_hora__horario_hora','sessao_idsessao__atividade_idatividade__professor_universitario_utilizador_idutilizador__utilizador_idutilizador','sessao_idsessao__atividade_idatividade__espaco_idespaco')\
             .filter(**sessao_kwargs)\
             .order_by('sessao_idsessao__atividade_idatividade__titulo','sessao_idsessao__horario_has_dia_id_dia_hora__horario_hora__hora')\
-            .values('nr_inscritos',idsessao=F('sessao_idsessao__idsessao'),vagas=F('sessao_idsessao__capacidade'),hora=F('sessao_idsessao__horario_has_dia_id_dia_hora__horario_hora__hora'),idatividade=F('sessao_idsessao__atividade_idatividade__idatividade'),titulo=F('sessao_idsessao__atividade_idatividade__titulo'),duracao=F('sessao_idsessao__atividade_idatividade__duracao'),descricao=F('sessao_idsessao__atividade_idatividade__descricao'),unidade_organica=F('sessao_idsessao__atividade_idatividade__unidade_organica_iduo__sigla'),campus=F('sessao_idsessao__atividade_idatividade__unidade_organica_iduo__campus_idcampus__nome'),departamento=F('sessao_idsessao__atividade_idatividade__departamento_iddepartamento__nome'),tematica=F('sessao_idsessao__atividade_idatividade__tematica'),docente = F('sessao_idsessao__atividade_idatividade__professor_universitario_utilizador_idutilizador__utilizador_idutilizador__nome'),espaco = F('sessao_idsessao__atividade_idatividade__espaco_idespaco__nome'))
+            .values('nr_inscritos',dia=F('sessao_idsessao__horario_has_dia_id_dia_hora__dia_dia'),idsessao=F('sessao_idsessao__idsessao'),vagas=F('sessao_idsessao__capacidade'),hora=F('sessao_idsessao__horario_has_dia_id_dia_hora__horario_hora__hora'),idatividade=F('sessao_idsessao__atividade_idatividade__idatividade'),titulo=F('sessao_idsessao__atividade_idatividade__titulo'),duracao=F('sessao_idsessao__atividade_idatividade__duracao'),descricao=F('sessao_idsessao__atividade_idatividade__descricao'),unidade_organica=F('sessao_idsessao__atividade_idatividade__unidade_organica_iduo__sigla'),campus=F('sessao_idsessao__atividade_idatividade__unidade_organica_iduo__campus_idcampus__nome'),departamento=F('sessao_idsessao__atividade_idatividade__departamento_iddepartamento__nome'),tematica=F('sessao_idsessao__atividade_idatividade__tematica'),docente = F('sessao_idsessao__atividade_idatividade__professor_universitario_utilizador_idutilizador__utilizador_idutilizador__nome'),espaco = F('sessao_idsessao__atividade_idatividade__espaco_idespaco__nome'))
         j+=1
         if(len(row['atividade']) == 0):
             continue
@@ -284,7 +292,11 @@ def consultar_inscricao(request):
         args = {'inscricao':insc}
 
     (result_coletivo,result_individual) = get_inscricoes(**args)
+    dias = models.Dia.objects.all()
+    result_dias = list()
+    for dia in dias:
+        if dia.pk.year == datetime.date.today().year:
+            result_dias.append(dia)
 
-
-    return render(request,'consultar_participante.html',{'user_type':user._type,'inscricoes_coletivas':result_coletivo,'inscricoes_individuais':result_individual,  'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
+    return render(request,'consultar_participante.html',{'user_type':user._type,'dias':result_dias,'inscricoes_coletivas':result_coletivo,'inscricoes_individuais':result_individual,  'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
     
