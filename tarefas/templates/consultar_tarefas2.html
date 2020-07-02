@@ -196,45 +196,46 @@
                                                     {{ tarefa.nome_tarefa }}
                                                 </td>
                                                 <td data-label="Dia" class=""> 
-                                                    {{ tarefa.dia | date:"d/m/Y" }}
-                                                    {{ tarefa.sessao_dia | date:"d/m/Y" }}
+                                                    {% if tarefa.dia != None %}
+                                                        {{ tarefa.dia | date:"d/m/Y" }}
+                                                    {% else %}
+                                                        {{ tarefa.sessao_dia | date:"d/m/Y" }}
+                                                    {% endif %}
                                                 </td>
                                                 <td data-label="Hora" class=""> 
-                                                    {{  tarefa.hora | time:"H:i" }}
-                                                    {{  tarefa.sessao_hora | time:"H:i" }}
+                                                    {% if tarefa.hora != None %}
+                                                        {{  tarefa.hora | time:"H:i" }}
+                                                    {% else %}
+                                                        {{  tarefa.sessao_hora | time:"H:i" }}
+                                                    {% endif %}
                                                 </td>    
                                                 <td data-label="Local" class=""> 
-                                                {% for s in sala %}
-                                                    {% if tarefa.id_espaco_depois == s.espaco_idespaco.pk or tarefa.id_atividade_espaco == s.espaco_idespaco.pk %}
-                                                        {% if tarefa.espaco_depois != None %}
-                                                            Edificio {{s.edificio}}, {{  tarefa.espaco_depois  }}
-                                                        {% else %}
-                                                            Edificio {{s.edificio}}, {{  tarefa.atividade_espaco  }}
+                                                    {% for s in sala %}
+                                                        {% if tarefa.espaco_depois != None and tarefa.id_espaco_depois == s.espaco_idespaco.pk %}
+                                                            Edificio {{s.edificio}}, {{  tarefa.espaco_depois  }} 
                                                         {% endif %}
-                                                    {% endif %}
-                                                {% endfor %}
-                
-                
-                                                {% for f in anfi %}
-                                                    {% if tarefa.id_espaco_depois == f.espaco_idespaco.pk or tarefa.id_atividade_espaco == f.espaco_idespaco.pk %}
-                                                        {% if tarefa.espaco_depois != None %}
+                                                        {% if tarefa.espaco_depois == None and tarefa.id_atividade_espaco == s.espaco_idespaco.pk %}
+                                                            Edificio {{s.edificio}}, {{  tarefa.atividade_espaco  }} 
+                                                        {% endif %}
+                                                    {% endfor %}
+
+                                                    {% for f in anfi %}
+                                                        {% if tarefa.espaco_depois != None and tarefa.id_espaco_depois == f.espaco_idespaco.pk %}
                                                             Edificio {{f.edificio}}, Anfiteatro {{  tarefa.espaco_depois  }} 
-                                                        {% else %}
-                                                            Edificio {{f.edificio}}, Anfiteatro {{  tarefa.atividade_espaco  }} 
                                                         {% endif %}
-                                                    {% endif %}
-                                                {% endfor %}
-                
-                
-                                                {% for a in ar %}
-                                                    {% if tarefa.id_espaco_depois == a.espaco_idespaco.pk or tarefa.id_atividade_espaco == a.espaco_idespaco.pk %}
-                                                        {% if tarefa.espaco_depois != None %}
+                                                        {% if tarefa.espaco_depois == None and tarefa.id_atividade_espaco == f.espaco_idespaco.pk %}
+                                                            Edificio {{f.edificio}}, Anfiteatro {{  tarefa.atividade_espaco  }}
+                                                        {% endif %}
+                                                    {% endfor %}
+
+                                                    {% for a in ar %}
+                                                        {% if tarefa.espaco_depois != None and tarefa.id_espaco_depois == a.espaco_idespaco.pk %}
                                                             {{  tarefa.espaco_depois  }} 
-                                                        {% else %}
-                                                            {{  tarefa.atividade_espaco  }}
                                                         {% endif %}
-                                                    {% endif %}
-                                                {% endfor %}
+                                                        {% if tarefa.espaco_depois == None and tarefa.id_atividade_espaco == a.espaco_idespaco.pk %}
+                                                            {{  tarefa.atividade_espaco  }} 
+                                                        {% endif %}
+                                                    {% endfor %}
                                                 </td>                                          
                                                 <td data-label="Estado" class=""> 
                                                     <input style="display:none" value="{{ tarefa.id_tarefa }}" id="666"></input>
@@ -248,7 +249,7 @@
                                                 </td>
                                                 <td data-label="Ações" class="has-text-centered">
                                                     <a role="button" data-toggle="modal" data-target="#{{ forloop.counter }}">
-                                                        <span class="icon has-text-success"> <i class="mdi mdi-account-search mdi-24px"></i></button></span>
+                                                        <span class="icon has-text-success"> <i class="mdi mdi-magnify mdi-24px"></i></button></span>
                                                     </a>
                                                 </td>                           
                                             </td>
@@ -309,14 +310,22 @@
                                 <div class="input-group-prepend labelForm">
                                     <span class="input-group-text w-100">Dia</span>
                                 </div>
-                                <input disabled="" class="form-control col-sm-4 bg-light" type="text" value="{{ tarefa.dia | date:"d/m/Y" }}{{ tarefa.sessao_dia | date:"d/m/Y" }}">
+                                {% if tarefa.dia != None %}
+                                    <input disabled="" class="form-control col-sm-4 bg-light" type="text" value="{{ tarefa.dia | date:"d/m/Y" }}">
+                                {% else %}
+                                    <input disabled="" class="form-control col-sm-4 bg-light" type="text" value="{{ tarefa.sessao_dia | date:"d/m/Y" }}">
+                                {% endif %}
                             </div>
                             <br>
                             <div class="input-group col-sm-12">
                                 <div class="input-group-prepend labelForm">
                                     <span class="input-group-text w-100">Hora</span>
                                 </div>
-                                <input disabled="" class="form-control bg-light" type="text" value="{{  tarefa.hora | time:"H:i" }}{{  tarefa.sessao_hora | time:"H:i" }}">
+                                {% if tarefa.hora != None %}
+                                    <input disabled="" class="form-control bg-light" type="text" value="{{  tarefa.hora | time:"H:i" }}">
+                                {% else %}
+                                    <input disabled="" class="form-control bg-light" type="text" value="{{  tarefa.sessao_hora | time:"H:i" }}">
+                                {% endif %}
                             </div>
                             {% if tarefa.espaco_antes != None %} 
                             <br>
@@ -325,20 +334,20 @@
                                     <span class="input-group-text w-100">Local de Recolha</span>
                                 </div>
                                 {% for s in sala %}
-                                    {% if tarefa.id_espaco_depois == s.espaco_idespaco.pk %}
-                                        <input disabled="" class="form-control bg-light" type="text" value="Edificio {{s.edificio}}, {{  tarefa.espaco_antes }} {{  tarefa.campus }}">
+                                    {% if tarefa.id_espaco_antes == s.espaco_idespaco.pk %}
+                                        <input disabled="" class="form-control bg-light" type="text" value="Edificio {{s.edificio}}, {{  tarefa.espaco_antes }}, {{  tarefa.campus }}">
                                     {% endif %} 
                                 {% endfor %}
 
                                 {% for f in anfi %}
-                                    {% if tarefa.id_espaco_depois == f.espaco_idespaco.pk %}
-                                        <input disabled="" class="form-control bg-light" type="text" value="Edificio {{f.edificio}}, Anfiteatro {{  tarefa.espaco_antes }} {{  tarefa.campus }}">
+                                    {% if tarefa.id_espaco_antes == f.espaco_idespaco.pk %}
+                                        <input disabled="" class="form-control bg-light" type="text" value="Edificio {{f.edificio}}, Anfiteatro {{  tarefa.espaco_antes }}, {{  tarefa.campus }}">
                                     {% endif %} 
                                 {% endfor %}
 
                                 {% for a in ar %}
-                                    {% if tarefa.id_espaco_depois == a.espaco_idespaco.pk %}
-                                        <input disabled="" class="form-control bg-light" type="text" value="{{  tarefa.espaco_antes }} {{  tarefa.campus }}">
+                                    {% if tarefa.id_espaco_antes == a.espaco_idespaco.pk %}
+                                        <input disabled="" class="form-control bg-light" type="text" value="{{  tarefa.espaco_antes }}, {{  tarefa.campus }}">
                                     {% endif %} 
                                 {% endfor %}
                             </div>
@@ -349,34 +358,29 @@
                                     <span class="input-group-text w-100">Local de Destino</span>
                                 </div>
                                 {% for s in sala %}
-                                    {% if tarefa.id_espaco_depois == s.espaco_idespaco.pk or tarefa.id_atividade_espaco == s.espaco_idespaco.pk %}
-                                        {% if tarefa.espaco_depois != None %}
-                                            <input disabled="" class="form-control bg-light" type="text" value="Edificio {{s.edificio}}, {{  tarefa.espaco_depois  }} , {{  tarefa.campus }}">
-                                        {% else %}
-                                            <input disabled="" class="form-control bg-light" type="text" value="Edificio {{s.edificio}}, {{  tarefa.atividade_espaco  }} , {{  tarefa.atividade_campus }}">
-                                        {% endif %}
+                                    {% if tarefa.espaco_depois != None and tarefa.id_espaco_depois == s.espaco_idespaco.pk %}
+                                        <input disabled="" class="form-control bg-light" type="text" value="Edificio {{s.edificio}}, {{  tarefa.espaco_depois  }} , {{  tarefa.campus }}">
+                                    {% endif %}
+                                    {% if tarefa.espaco_depois == None and tarefa.id_atividade_espaco == s.espaco_idespaco.pk %}
+                                        <input disabled="" class="form-control bg-light" type="text" value="Edificio {{s.edificio}}, {{  tarefa.atividade_espaco  }} , {{  tarefa.atividade_campus }}">
                                     {% endif %}
                                 {% endfor %}
-
 
                                 {% for f in anfi %}
-                                    {% if tarefa.id_espaco_depois == f.espaco_idespaco.pk or tarefa.id_atividade_espaco == f.espaco_idespaco.pk %}
-                                        {% if tarefa.espaco_depois != None %}
-                                            <input disabled="" class="form-control bg-light" type="text" value="Edificio {{f.edificio}}, Anfiteatro {{  tarefa.espaco_depois  }} , {{  tarefa.campus }}">
-                                        {% else %}
-                                            <input disabled="" class="form-control bg-light" type="text" value="Edificio {{f.edificio}}, Anfiteatro {{  tarefa.atividade_espaco  }} , {{  tarefa.atividade_campus }}">
-                                        {% endif %}
+                                    {% if tarefa.espaco_depois != None and tarefa.id_espaco_depois == f.espaco_idespaco.pk %}
+                                        <input disabled="" class="form-control bg-light" type="text" value="Edificio {{f.edificio}}, Anfiteatro {{  tarefa.espaco_depois  }} , {{  tarefa.campus }}">
+                                    {% endif %}
+                                    {% if tarefa.espaco_depois == None and tarefa.id_atividade_espaco == f.espaco_idespaco.pk %}
+                                        <input disabled="" class="form-control bg-light" type="text" value="Edificio {{f.edificio}}, Anfiteatro {{  tarefa.atividade_espaco  }} , {{  tarefa.atividade_campus }}">
                                     {% endif %}
                                 {% endfor %}
 
-
                                 {% for a in ar %}
-                                    {% if tarefa.id_espaco_depois == a.espaco_idespaco.pk or tarefa.id_atividade_espaco == a.espaco_idespaco.pk %}
-                                        {% if tarefa.espaco_depois != None %}
-                                            <input disabled="" class="form-control bg-light" type="text" value="{{  tarefa.espaco_depois  }} , {{  tarefa.campus }}">
-                                        {% else %}
-                                            <input disabled="" class="form-control bg-light" type="text" value="{  tarefa.atividade_espaco  }} , {{  tarefa.atividade_campus }}">
-                                        {% endif %}
+                                    {% if tarefa.espaco_depois != None and tarefa.id_espaco_depois == a.espaco_idespaco.pk %}
+                                        <input disabled="" class="form-control bg-light" type="text" value="{{  tarefa.espaco_depois  }} , {{  tarefa.campus }}">
+                                    {% endif %}
+                                    {% if tarefa.espaco_depois == None and tarefa.id_atividade_espaco == a.espaco_idespaco.pk %}
+                                        <input disabled="" class="form-control bg-light" type="text" value="{  tarefa.atividade_espaco  }} , {{  tarefa.atividade_campus }}">
                                     {% endif %}
                                 {% endfor %}
                             </div>
