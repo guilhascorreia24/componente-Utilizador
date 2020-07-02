@@ -183,6 +183,7 @@ def editar_tarefa(request, pk):
 	anfi = Anfiteatro.objects.all()
 	ar = Arlivre.objects.all()
 	ati = Atividade.objects.filter(unidade_organica_iduo = tarefa.coordenador_utilizador_idutilizador.unidade_organica_iduo).exclude(idatividade = tarefa.sessao_idsessao.atividade_idatividade.idatividade)
+	ati_levar = Atividade.objects.filter(unidade_organica_iduo = tarefa.coordenador_utilizador_idutilizador.unidade_organica_iduo)
 	if tarefa.inscricao_coletiva_inscricao_idinscricao != None:
 		# dispos=disponibilidades('Guiar Grupo')
 		dispos = Disponibilidade.objects.exclude(tipo_de_tarefa='Ajudar Docente')
@@ -205,7 +206,8 @@ def editar_tarefa(request, pk):
 				tarefa.hora_inicio = time.strftime('%H:%M:%S', time.gmtime(total))
 				tarefa.dia_dia = Dia.objects.get(dia= Sessao.objects.get(idsessao=request.POST['idsession']).horario_has_dia_id_dia_hora.dia_dia.dia)
 				if request.POST['id_colaborador_utilizador_idutilizador'] != '':
-					tarefa.colaborador_utilizador_idutilizador = Colaborador.objects.get(utilizador_idutilizador = Utilizador.objects.get(idutilizador= request.POST["id_colaborador_utilizador_idutilizador"]))
+					c = Colaborador.objects.get(utilizador_idutilizador = Utilizador.objects.get(idutilizador= request.POST["id_colaborador_utilizador_idutilizador"]))
+					tarefa.colaborador_utilizador_idutilizador = c
 					noti_views.new_noti(request,c.pk,'Tarefa Editada ' + '"' + tarefa.nome + '"','Foi editado a Tarefa ' + '"' + tarefa.nome + '"')
 				else:
 					tarefa.colaborador_utilizador_idutilizador = None
@@ -235,7 +237,7 @@ def editar_tarefa(request, pk):
 				return redirect("tarefa_coordenador:consultar_tarefa")
 	return render(request = request,
 				 template_name=template,
-				 context={'sala':sala,'ar':ar,'anfi':anfi,'ati':ati,'tarefa': tarefa,'form':form,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request), 'dispo':dispos})
+				 context={'sala':sala,'ar':ar,'anfi':anfi,'ati':ati,'ati_levar':ati_levar,'tarefa': tarefa,'form':form,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request), 'dispo':dispos})
 
 def eliminar_tarefa(request, pk):
 	if request.session["type"] == 4:
