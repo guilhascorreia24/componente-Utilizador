@@ -20,8 +20,6 @@ class TarefasFormGroup(ModelForm):
 	campus_levar = ChoiceField(choices = [("", "Selecione atividade para mudar destino")] +
 	[(actv.__id__(), actv.titulo) for actv in Atividade.objects.all()], required=False)
 	
-	atividade_idatividade = ChoiceField(choices = [("", "Nenhuma Atividade Selecionada")] + 
-	[(actv.__id__(), actv.titulo) for actv in Atividade.objects.all()])
 
 	class Meta:
 		model = Tarefa
@@ -34,9 +32,6 @@ class TarefasFormAtividade(ModelForm):
 	
 	colaborador_utilizador_idutilizador = ChoiceField(choices = [("","Nenhum Colaborador Atribuido")] +
 	[(colab.__id__(), colab.utilizador_idutilizador.nome) for colab in Colaborador.objects.all()], required=False)
-
-	atividade_idatividade = ChoiceField(choices = [("", "Nenhuma Atividade Selecionada")] +
-	[(actv.__id__(), actv.titulo) for actv in Atividade.objects.all()])
 
 
 	class Meta:
