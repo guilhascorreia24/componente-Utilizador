@@ -427,14 +427,15 @@ class InscricaoHasSessao(models.Model):
     inscricao_idinscricao = models.ForeignKey(Inscricao, models.CASCADE, db_column='inscricao_idinscricao')
     sessao_idsessao = models.ForeignKey('Sessao', models.CASCADE, db_column='sessao_idsessao')
     inscricao_has_sessao_id = models.AutoField(primary_key=True)
-    nr_inscritos = models.IntegerField(validators=[smaller_zero_validator,not_zero_validator])
+    nr_inscritos = models.IntegerField(validators=[smaller_zero_validator])
 
     def save(self, *args, **kwargs):
         try:
-            insc = InscricaoHasSessao.objects.get(inscricao_idinscricao=self.inscricao_idinscricao).nr_inscritos
+            insc = InscricaoHasSessao.objects.get(inscricao_has_sessao_id=self.inscricao_has_sessao_id).nr_inscritos
             delta = self.nr_inscritos-insc
         except:
             delta = self.nr_inscritos
+        print(delta)
         Sessao.objects.filter(idsessao=self.sessao_idsessao.pk).update(nrinscritos=F('nrinscritos')+delta)
         return super(InscricaoHasSessao, self).save(*args, **kwargs)
 

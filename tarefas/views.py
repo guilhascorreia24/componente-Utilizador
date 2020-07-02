@@ -28,7 +28,6 @@ def consultar_tarefas(request):
             for disps in form:
                 disps.save_user(colaborador)
 
-            print(form.deleted_forms)
 
             if form.is_valid():
               

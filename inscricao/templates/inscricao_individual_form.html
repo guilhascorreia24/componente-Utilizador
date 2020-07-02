@@ -338,27 +338,18 @@
                                                                 <!---->
                                                                 <!---->
                                                             </div>
-                                                            <div class="dropdown-menu" style="display: none;">
-                                                                <div class="dropdown-content" style="display: none;">
-                                                                    <!----><a class="dropdown-item"><span>
-                                                                        Introdução a Python
-                                                                    </span></a><a class="dropdown-item"><span>
-                                                                        O primeiro Hello World
-                                                                    </span></a><a class="dropdown-item"><span>
-                                                                        Deixa-me rir
-                                                                    </span></a><a class="dropdown-item"><span>
-                                                                        Observação microscópica
-                                                                    </span></a><a class="dropdown-item"><span>
-                                                                        Fomos longe demais?
-                                                                    </span></a><a class="dropdown-item"><span>
-                                                                        Ciência no mundo
-                                                                    </span></a><a class="dropdown-item"><span>
-                                                                        Física no Dia a Dia
-                                                                    </span></a>
-                                                                    <!---->
-                                                                    <!---->
-                                                                </div>
-                                                            </div>
+                                                        </div>
+                                                        <!---->
+                                                    </div>
+                                                    <div class="field" style="display: none;">
+                                                        <!---->
+                                                        <div class="control is-expanded"><span
+                                                                class="select is-fullwidth is-empty">
+                                                                <select id="filter_sessoes_inscritas">
+                                                                    <option value="0">Mostrar todas as sessoes</option>
+                                                                    <option value="1">Mostrar apenas sessoes inscritas</option>
+                                                                </select></span>
+                                                            <!---->
                                                         </div>
                                                         <!---->
                                                     </div>
@@ -512,6 +503,9 @@
                                         </div>
                                     </div>
                                     <div data-v-1b91368a="" class="column">
+                                        <button class="button is-success is-outlined" type="button" style="margin-bottom: 0.9rem; margin-right: 1rem;">
+                                            <span id="button_sessoes"></span>
+                                        </button>
                                         <div data-v-1b91368a="">
                                             <div class="b-table">
                                                 <div class="table-wrapper">
@@ -743,7 +737,7 @@
                                                         <p class="help is-danger"></p>
                                                     </div>
                                                 </td>
-                                                <td data-label="Titulo"></td>
+                                                <td data-label="Titulo" class="atividade_sessao_name"></td>
                                                 <td data-label="Espaço"></td>
                                                 <td data-label="Campus"></td>
                                                 <td data-label="Ações" class="has-text-centered actions">
@@ -835,6 +829,23 @@
         $('#filter_time_end').change();
         $('#filter_time_start').change();
 
+        //sessoes existentes
+        $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
+            var tr = table.row(dataIndex).nodes().to$();
+            var name = tr.find("td[data-label='Nome']").text();
+            if($("#filter_sessoes_inscritas").val() == '0'){
+                return true;
+            }else{
+                var els = $('#sessao_submit_table tr > .atividade_sessao_name');
+                for(var i=0;i<els.length ; i++){
+                    if(els.eq(i).text().includes(name)){
+                        return true;
+                    }
+                }
+            }
+            return false;
+        });
+
         //Minmum vagas filter
         $.fn.dataTable.ext.search.push(function( settings, data, dataIndex ) {
             var tr = table.row(dataIndex).nodes().to$();
@@ -917,9 +928,23 @@
         $('#filter_time_end').on('change keyup',function(){
             table.draw();
         });
+        $('#filter_sessoes_inscritas').on('change', function () {
+            if($(this).val() == '0'){
+                $('#button_sessoes').text('Mostrar apenas atividades inscritas');
+            }else{
+                $('#button_sessoes').text('Mostrar todas as atividades');
+            }
+            table.draw();
+        });
 
+        $('#button_sessoes').on('click',function(){
+            if($('#filter_sessoes_inscritas').val() == '0'){
+                $('#filter_sessoes_inscritas').val('1').change();
+            }else{
+                $('#filter_sessoes_inscritas').val('0').change();
+            }
+        });
 
-        table.draw();
 
         //Start all number inputs at 0
         $(".b-numberinput").find(".input").each(function() {
@@ -979,6 +1004,7 @@
                 //hides entry if button clicked
                 table.find('.remove_button').on("click", function() {
                     $(this).closest('tr').find('.table_escolher_sessao').prop("checked",0).change();
+                    $(this).closest('tr').find('.table_escolher_sessao').val(0);
                 });
 
                 //On sessao table input change
@@ -1087,8 +1113,16 @@
             //window.alert($(this).html());
             var childs = $(this).children();
             var value = "input[value='" + childs.eq(1).text() + "']";
+            var delete_value = childs.eq(2).text();
+            if(delete_value == 'True'){
+                $('#id_sessao_set-INITIAL_FORMS').val($('#id_sessao_set-INITIAL_FORMS').val()-1);
+                return;
+            }
             var valueInt = parseInt(childs.eq(1).text());
             var inscritos = parseInt(childs.eq(0).text());
+            if(childs.eq(0).text() == 'None'){
+                $('#id_sessao_set-INITIAL_FORMS').val($('#id_sessao_set-INITIAL_FORMS').val()-1);
+            }
             var id = sessoes.children("td[data-label='id']").children(value);
             var inscritosBool = parseInt(inscritos);
             if(inscritosBool>0){
@@ -1135,7 +1169,7 @@
                     var str = "Value: " + value + " Html: "+ $(this).attr('name'); 
                     if(value == 'on'){
                         $(this).val(1);
-                    }else if(value == 'off'){
+                    }else{
                         $(this).val(0);
                     }
                 });
@@ -1149,6 +1183,13 @@
                 }
             }
         });
+        if($('#sessao_submit_table tr').length > 2){
+            $('#filter_sessoes_inscritas').val('1').change();
+        }else{
+            $('#filter_sessoes_inscritas').val('0').change();
+        }
+        table.draw();
+        focusElementInStep($('.help:not(:empty)').first());
 
     });
     //Aply the remove button to the tables
