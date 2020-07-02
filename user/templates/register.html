@@ -375,36 +375,52 @@
 </div>
 </form>
 <script>
+    var uo_doc=0,dep_doc=0;
+    var uo_coord=0;
+    var uo_colab=0, curso_colab=0;
     function yesnoCheck(that) {
-        if (that.value == 1) {
+        console.log(document.getElementById('hidden_div2').style.display+" "+
+            document.getElementById('hidden_div3').style.display+" "+
+            document.getElementById('hidden_div').style.display)
+        if (document.getElementById('hidden_div2').style.display=='block' && document.getElementById('hidden_div3').style.display == 'none' && document.getElementById('hidden_div').style.display == 'block'){
+            console.log("doc")
+            uo_colab=document.getElementById("{{form.UO.id_for_label}}").value;
+            curso_colab=document.getElementById("{{form.curso.id_for_label}}").value
+        }else if (document.getElementById('hidden_div').style.display == 'none' && document.getElementById('hidden_div3').style.display == 'none' && document.getElementById('hidden_div2').style.display == 'block'){
+            uo_coord=document.getElementById("{{form.UO.id_for_label}}").value;
+            console.log("coord")
+        }else if(document.getElementById('hidden_div').style.display == 'none' && document.getElementById('hidden_div2').style.display == 'block' && document.getElementById('hidden_div3').style.display == 'block'){
+            uo_doc=document.getElementById("{{form.UO.id_for_label}}").value;
+            dep_doc=document.getElementById("{{form.departamento.id_for_label}}").value;
+            console.log("colab")
+        }
+        console.log("mudar")
+        console.log(uo_doc+" "+dep_doc);
+        console.log(uo_coord);
+        console.log(uo_colab+" "+curso_colab);
+        console.log(that.value)
+        if (that.value == 1) { //colab
             document.getElementById('hidden_div2').style.display = 'block';
             document.getElementById('hidden_div3').style.display = 'none';
             document.getElementById('hidden_div').style.display = 'block';
-            document.getElementById("{{form.UO.id_for_label}}").value=0;
-            document.getElementById("{{form.curso.id_for_label}}").value=0;
-            document.getElementById("{{form.departamento.id_for_label}}").value=0;
-        } else if (that.value == 2) {
+            document.getElementById("{{form.UO.id_for_label}}").value=uo_colab;
+            document.getElementById("{{form.curso.id_for_label}}").value=curso_colab;
+        } else if (that.value == 2) {//coord
             document.getElementById('hidden_div').style.display = 'none';
             document.getElementById('hidden_div3').style.display = 'none';
             document.getElementById('hidden_div2').style.display = 'block';
-            document.getElementById("{{form.UO.id_for_label}}").value=0;
-            document.getElementById("{{form.curso.id_for_label}}").value=0;
-            document.getElementById("{{form.departamento.id_for_label}}").value=0;
-        } else if (that.value == 3) {
+            document.getElementById("{{form.UO.id_for_label}}").value=uo_coord;
+        } else if (that.value == 3) {//doc
             document.getElementById('hidden_div').style.display = 'none';
             document.getElementById('hidden_div2').style.display = 'block';
             document.getElementById('hidden_div3').style.display = 'block';
-            document.getElementById("{{form.UO.id_for_label}}").value=0;
-            document.getElementById("{{form.curso.id_for_label}}").value=0;
-            document.getElementById("{{form.departamento.id_for_label}}").value=0;
+            document.getElementById("{{form.UO.id_for_label}}").value=uo_doc;
+            document.getElementById("{{form.departamento.id_for_label}}").value=dep_doc;
         }
         else {
             document.getElementById('hidden_div').style.display = 'none';
             document.getElementById('hidden_div2').style.display = 'none';
             document.getElementById('hidden_div3').style.display = 'none';
-            document.getElementById("{{form.UO.id_for_label}}").value=0;
-            document.getElementById("{{form.curso.id_for_label}}").value=0;
-            document.getElementById("{{form.departamento.id_for_label}}").value=0;
         }
     }    
     </script>
