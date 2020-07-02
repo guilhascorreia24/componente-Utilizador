@@ -1,7 +1,7 @@
 {% extends 'base_template.html' %}
 {% block steps %}
 <li><a href="{% url 'blog:blog-home' %}">Início</a></li>
-<li><a href="{% url 'menu:transporte-list' %}">ConsultarTransporte</a></li>
+<li><a href="{% url 'menu:transporte-list' %}">Consultar Transporte</a></li>
 {% if o %}
 <li class="is-active"><a href="" aria-current="page">Criar Transporte</a></li>
 {% else %}
