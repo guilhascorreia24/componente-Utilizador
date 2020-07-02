@@ -86,9 +86,9 @@ class Form_Escola(ModelForm):
 class Form_Transportes(ModelForm):
 
     def __init__(self, **kwargs):
+        dia = kwargs.pop('dia')
         super(Form_Transportes, self).__init__(**kwargs)
-        #Ignore full transportes NEEDS CHECK
-        self.fields['horario'].queryset = models.TransporteHasHorario.objects.annotate(ratio=F('transporte_idtransporte__capacidade')-F('n_passageiros')).filter(ratio__gt=0)
+        self.fields['horario'].queryset = models.TransporteHasHorario.objects.annotate(ratio=F('transporte_idtransporte__capacidade')-F('n_passageiros')).filter(ratio__gt=0,horario_has_dia_id_dia_hora__dia_dia=dia)
 
     def set_inscricao(self,inscricao):
         self._idinscricao = inscricao
@@ -113,13 +113,13 @@ class Form_Transportes(ModelForm):
 
 
 class Form_Almoco:
-    def __init__(self, request=0,**kwargs):
+    def __init__(self,dia, request=0,**kwargs):
         if 'instance' in kwargs:
             self.curr_insc = kwargs['instance']
         else:
             self.curr_insc = None
 
-        menus = models.Prato.objects.select_related('menu_idmenu').all()
+        menus = models.Prato.objects.select_related('menu_idmenu').filter(menu_idmenu__horario_has_dia_id_dia_hora__dia_dia=dia)
         self.prato = list()
 
         if not(request != 0 and request.method == 'POST'):
@@ -270,7 +270,7 @@ class Form_Sessao(ModelForm):
 
 ###################################################END SESSOES#############################################
 class CustomForm:
-    def __init__(self,request = 0,**kwargs):
+    def __init__(self,dia,request = 0,**kwargs):
         self.curr_inscricao = None
         
         if 'inscricao' in kwargs and kwargs['inscricao'] != None:
@@ -287,16 +287,16 @@ class CustomForm:
                 self.inscricao = Form_Inscricao(request.POST,prefix="inscricao",instance=self.curr_inscricao)
                 self.responsaveis = Responsaveis(request.POST,prefix='responsaveis_set')
                 self.sessao = Sessao(request.POST,prefix='sessao_set')
-                self.transportes = Transportes(request.POST,prefix='transportes_set')
-                self.almoco = Form_Almoco(request,instance=self.curr_inscricao)
+                self.transportes = Transportes(request.POST,prefix='transportes_set',form_kwargs={'dia': dia})
+                self.almoco = Form_Almoco(dia,request,instance=self.curr_inscricao)
             else:
                 self.escola = Form_Escola(request.POST,prefix="escola")
                 self.inscricao_coletiva = Form_InscricaoColetiva(request.POST,prefix="inscricao_coletiva")
                 self.inscricao = Form_Inscricao(request.POST,prefix="inscricao")
                 self.responsaveis = Responsaveis(request.POST,prefix='responsaveis_set')
                 self.sessao = Sessao(request.POST,prefix='sessao_set')
-                self.transportes = Transportes(request.POST,prefix='transportes_set')
-                self.almoco = Form_Almoco(request)
+                self.transportes = Transportes(request.POST,prefix='transportes_set',form_kwargs={'dia': dia})
+                self.almoco = Form_Almoco(dia,request)
         else:
             if self.curr_inscricao != None:
                 insc = models.InscricaoColetiva.objects.get(inscricao_idinscricao=self.curr_inscricao)
@@ -305,16 +305,17 @@ class CustomForm:
                 self.inscricao = Form_Inscricao(prefix="inscricao",instance=self.curr_inscricao)
                 self.responsaveis = Responsaveis(prefix='responsaveis_set',queryset=models.Responsaveis.objects.filter(idinscricao = self.curr_inscricao))
                 self.sessao = Sessao(prefix='sessao_set',queryset=models.InscricaoHasSessao.objects.filter(inscricao_idinscricao = self.curr_inscricao))
-                self.transportes = Transportes(prefix='transportes_set',queryset=models.TransporteHasInscricao.objects.filter(inscricao_idinscricao = self.curr_inscricao))
-                self.almoco = Form_Almoco(instance=self.curr_inscricao)
+                self.transportes = Transportes(prefix='transportes_set',queryset=models.TransporteHasInscricao.objects.filter(inscricao_idinscricao = self.curr_inscricao),form_kwargs={'dia': dia})
+                self.almoco = Form_Almoco(dia,instance=self.curr_inscricao)
             else:
                 self.escola = Form_Escola(prefix="escola")
                 self.inscricao_coletiva = Form_InscricaoColetiva(prefix="inscricao_coletiva")
                 self.inscricao = Form_Inscricao(prefix="inscricao")
                 self.responsaveis = Responsaveis(prefix='responsaveis_set',queryset=models.Responsaveis.objects.none())
                 self.sessao = Sessao(prefix='sessao_set',queryset=models.InscricaoHasSessao.objects.none())
-                self.transportes = Transportes(prefix='transportes_set',queryset=models.TransporteHasInscricao.objects.none())
-                self.almoco = Form_Almoco()
+                self.transportes = Transportes(prefix='transportes_set',queryset=models.TransporteHasInscricao.objects.none(),form_kwargs={'dia': dia})
+                self.almoco = Form_Almoco(dia)
+        
         
     
     def is_valid(self):
@@ -420,7 +421,7 @@ class CustomForm:
 
 
 class FormIndividual:
-    def __init__(self,request = 0,**kwargs):
+    def __init__(self,dia,request = 0,**kwargs):
         self.curr_inscricao = None
         
         if 'inscricao' in kwargs and kwargs['inscricao'] != None:
@@ -434,29 +435,30 @@ class FormIndividual:
                 self.inscricao_individual = Form_InscricaoIndividual(request.POST,prefix="individual",instance=insc)
                 self.inscricao = Form_Inscricao(request.POST,prefix="inscricao",instance=self.curr_inscricao)
                 self.sessao = Sessao(request.POST,prefix='sessao_set')
-                self.transportes = Transportes(request.POST,prefix='transportes_set')
-                self.almoco = Form_Almoco(request,instance=self.curr_inscricao)
+                self.transportes = Transportes(request.POST,prefix='transportes_set',form_kwargs={'dia': dia})
+                self.almoco = Form_Almoco(dia,request,instance=self.curr_inscricao)
             else:
                 self.inscricao_individual = Form_InscricaoIndividual(request.POST,prefix="individual")
                 self.inscricao = Form_Inscricao(request.POST,prefix="inscricao")
                 self.sessao = Sessao(request.POST,prefix='sessao_set')
-                self.transportes = Transportes(request.POST,prefix='transportes_set')
-                self.almoco = Form_Almoco(request)
+                self.transportes = Transportes(request.POST,prefix='transportes_set',form_kwargs={'dia': dia})
+                self.almoco = Form_Almoco(dia,request)
         else:
             if self.curr_inscricao != None:
                 insc = models.InscricaoIndividual.objects.get(inscricao_idinscricao=self.curr_inscricao)
                 self.inscricao_individual = Form_InscricaoIndividual(prefix="individual",instance=insc)
                 self.inscricao = Form_Inscricao(prefix="inscricao",instance=self.curr_inscricao)
                 self.sessao = Sessao(prefix='sessao_set',queryset=models.InscricaoHasSessao.objects.filter(inscricao_idinscricao = self.curr_inscricao))
-                self.transportes = Transportes(prefix='transportes_set',queryset=models.TransporteHasInscricao.objects.filter(inscricao_idinscricao = self.curr_inscricao))
-                self.almoco = Form_Almoco(instance=self.curr_inscricao)
+                self.transportes = Transportes(prefix='transportes_set',queryset=models.TransporteHasInscricao.objects.filter(inscricao_idinscricao = self.curr_inscricao),form_kwargs={'dia': dia})
+                self.almoco = Form_Almoco(dia,instance=self.curr_inscricao)
             else:
                 #self.inscricao_coletiva = Form_InscricaoColetiva(prefix="inscricao_coletiva")
                 self.inscricao_individual = Form_InscricaoIndividual(prefix="individual")
                 self.inscricao = Form_Inscricao(prefix="inscricao")
                 self.sessao = Sessao(prefix='sessao_set',queryset=models.InscricaoHasSessao.objects.none())
-                self.transportes = Transportes(prefix='transportes_set',queryset=models.TransporteHasInscricao.objects.none())
-                self.almoco = Form_Almoco()
+                self.transportes = Transportes(prefix='transportes_set',queryset=models.TransporteHasInscricao.objects.none(),form_kwargs={'dia': dia})
+                self.almoco = Form_Almoco(dia)
+                
         
     
     def is_valid(self):
