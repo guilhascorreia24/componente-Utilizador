@@ -104,7 +104,7 @@ def editar_atividade_view(request, idActivity):
         if number_of(erros) == 0:
             atividade.titulo = request.POST.get('titulo')
             if atividade.capacidade != request.POST.get('capacidade'):
-                vagas(request,atividade.idatividade,"Mudança no numero de vagas atividade"+atividade.titulo,"Novo numero de vagas: "+request.POST.get('capacidade'))
+                vagas(request,atividade.idatividade,"numero de vagas na atividade "+atividade.titulo+" alterado","Novo numero de vagas: "+request.POST.get('capacidade'))
             atividade.capacidade = request.POST.get('capacidade')
             atividade.duracao = request.POST.get('duracao')
             atividade.validada = 2

@@ -226,7 +226,7 @@ def joins(uos,x,list):
             list.append(str(x+"."+uo.sigla+""))
 
 def vagas(request,atividade_id,assunto,texto):
-    sessoes=Sessoes.objects.filter(atividade_idatividade=atividade_id)
+    sessoes=Sessao.objects.filter(atividade_idatividade=atividade_id)
     users=[]
     for sessao in sessoes:
         inscricoes_sess=InscricaoHasSessao.objects.filter(sessao_idsessao=sessao.pk)
@@ -239,8 +239,9 @@ def vagas(request,atividade_id,assunto,texto):
             if InscricaoColetiva.objects.filter(pk=insc.pk).exists():
                 parts=InscricaoColetiva.objects.filter(pk=insc.pk)
                 for part in parts:
-                    if not(part.participante_utilizador in users):
+                    if not(part.participante_utilizador_idutilizador in users):
                         users.append(part.participante_utilizador_idutilizador)
     for user in users:
-        new_noti(request,user.pk,assunto,texto)
+        noti=Notificacao.objects.create(descricao=texto,utilizadorrecebe=user.pk,idutilizadorenvia=-1,criadoem=datetime.now(),assunto=assunto)
+        UtilizadorHasNotificacao.objects.create(utilizador_idutilizador=Utilizador.objects.get(pk=user.pk),notificacao=noti,estado=0)
 

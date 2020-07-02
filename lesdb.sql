@@ -970,7 +970,7 @@ CREATE TABLE IF NOT EXISTS `les`.`notificacao` (
   `criadoem` DATETIME(6) NOT NULL,
   `idutilizadorenvia` INT NOT NULL,
   `utilizadorrecebe` INT NOT NULL,
-  `assunto` VARCHAR(45) NOT NULL,
+  `assunto` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB
 AUTO_INCREMENT = 46
