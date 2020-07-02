@@ -298,6 +298,7 @@
                                 </div>
                                 <input disabled="" class="form-control col-sm-2 bg-light" type="text" value="{{ tarefa.nome_coordenador }}">
                             </div>
+                            {% if tarefa.espaco_antes != None %} 
                             <br>
                             <div class="input-group col-sm-12">
                                 <div class="input-group-prepend labelForm">
@@ -305,6 +306,7 @@
                                 </div>
                                 <input disabled="" class="form-control col-sm-2 bg-light" type="text" value="Escola: {{ tarefa.escola }}, Turma: {{ tarefa.turma }}, NºAlunos: {{ tarefa.n_alunos }}">
                             </div>
+                            {% endif %}
                             <br>
                             <div class="input-group col-sm-12">
                                 <div class="input-group-prepend labelForm">
