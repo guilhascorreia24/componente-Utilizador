@@ -642,10 +642,6 @@ class TransporteHasHorario(models.Model):
     horario_has_dia_id_dia_hora = models.ForeignKey(HorarioHasDia, models.CASCADE, db_column='horario_has_dia_id_dia_hora')
     n_passageiros = models.IntegerField(blank=True, null=True)
 
-    def save(self, *args, **kwargs):
-        Transporte.objects.filter(idtransporte=self.transporte_idtransporte.pk).update(capacidade=(self.transporte_idtransporte.capacidade - self.n_passageiros))
-        return super(TransporteHasHorario, self).save(*args, **kwargs)
-
     class Meta:
         managed = False
         db_table = 'transporte_has_horario'
