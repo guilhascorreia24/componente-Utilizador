@@ -225,6 +225,8 @@ class Form_InscricaoHasPrato(ModelForm):
 class Form_Sessao(ModelForm):
     #sessao_id = forms.IntegerField()
 
+    nr_inscritos = forms.IntegerField(required=False)
+
     def set_inscricao(self,inscricao):
         self._idinscricao = inscricao
 
@@ -248,11 +250,9 @@ class Form_Sessao(ModelForm):
         except models.Sessao.DoesNotExist:
             raise ValidationError("Sessão não existe")
 
-
         valid_nr = sessao.capacidade - sessao.nrinscritos
         if self.instance.pk != None:
             valid_nr += self.instance.nr_inscritos
-
 
         if 'nr_inscritos' not in cleaned_data:
             return
@@ -322,6 +322,40 @@ class CustomForm:
         if len(self.sessao)<1:
             self.sessao.min_sessao = SESSAO_MIN_ERROR
             return False
+
+        sorted_sessoes = sorted(self.sessao,key=lambda x: x.instance.sessao_idsessao.horario_has_dia_id_dia_hora.horario_hora.hora)
+        last_hora = 0
+        total = self.inscricao_coletiva.cleaned_data['nparticipantes']
+        counter = 0
+        sessoes_store = list()
+
+        for sessao in sorted_sessoes:
+            counter += sessao.instance.nr_inscritos
+            curr_hora = sessao.instance.sessao_idsessao.horario_has_dia_id_dia_hora.horario_hora.hora
+            #print(counter)
+            if last_hora == 0:
+                sessoes_store.append(sessao)
+                last_hora = curr_hora
+                continue
+            if last_hora != curr_hora:
+                last_hora = curr_hora
+                if counter > total:
+                    value = False
+                    for _sessao in sessoes_store:
+                        _sessao.errors['nr_inscritos'] = ["Existem demasiadas inscrições para a mesma hora"]
+                sessoes_store.clear()
+                counter = 0
+                continue
+            sessoes_store.append(sessao)
+            last_hora = curr_hora
+
+        if counter > total:
+            value = False
+            for _sessao in sessoes_store:
+                _sessao.errors['nr_inscritos'] = ["Existem demasiadas inscrições para a mesma hora"]
+
+
+            
         return value
 
     def save(self,part):
@@ -414,6 +448,22 @@ class FormIndividual:
         if len(self.sessao)<1:
             self.sessao.min_sessao = SESSAO_MIN_ERROR
             value = False
+
+        sorted_sessoes = sorted(self.sessao,key=lambda x: x.instance.sessao_idsessao.horario_has_dia_id_dia_hora.horario_hora.hora)
+        last_hora = 0
+
+        for sessao in sorted_sessoes:
+            if(sessao in self.sessao.deleted_forms):
+                continue
+            curr_hora = sessao.instance.sessao_idsessao.horario_has_dia_id_dia_hora.horario_hora.hora
+            if last_hora == 0:
+                last_hora = curr_hora
+                continue
+            if last_hora == curr_hora:
+                sessao.errors['nr_inscritos'] = ["Não é possivel inscrever em sessões á mesma hora"]
+                value = False
+        
+        
         return value
 
     def save(self,part):
