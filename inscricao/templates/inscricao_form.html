@@ -528,8 +528,7 @@
                 <div class="step-item" style="display:none;">
                     <div data-v-dac68d9e="" style="padding: 1rem 2vw 0px;">
                         <hr data-v-dac68d9e="">
-                        <h2 data-v-dac68d9e="" class="title has-text-grey is-uppercase" style="font-size: 0.9rem;">
-                            Sessões Disponíveis </h2>
+                        <h2 data-v-dac68d9e="" class="title has-text-grey is-uppercase" style="font-size: 0.9rem;">Sessões Disponíveis</h2>
                         <div data-v-1b91368a="" data-v-dac68d9e="">
                             <div data-v-1b91368a="" class="columns">
                                 <div data-v-1b91368a="" class="column is-3">
@@ -548,27 +547,18 @@
                                                             <!---->
                                                             <!---->
                                                         </div>
-                                                        <div class="dropdown-menu" style="display: none;">
-                                                            <div class="dropdown-content" style="display: none;">
-                                                                <!----><a class="dropdown-item"><span>
-                                                                        Introdução a Python
-                                                                    </span></a><a class="dropdown-item"><span>
-                                                                        O primeiro Hello World
-                                                                    </span></a><a class="dropdown-item"><span>
-                                                                        Deixa-me rir
-                                                                    </span></a><a class="dropdown-item"><span>
-                                                                        Observação microscópica
-                                                                    </span></a><a class="dropdown-item"><span>
-                                                                        Fomos longe demais?
-                                                                    </span></a><a class="dropdown-item"><span>
-                                                                        Ciência no mundo
-                                                                    </span></a><a class="dropdown-item"><span>
-                                                                        Física no Dia a Dia
-                                                                    </span></a>
-                                                                <!---->
-                                                                <!---->
-                                                            </div>
-                                                        </div>
+                                                    </div>
+                                                    <!---->
+                                                </div>
+                                                <div class="field" style="display: none;">
+                                                    <!---->
+                                                    <div class="control is-expanded"><span
+                                                            class="select is-fullwidth is-empty">
+                                                            <select id="filter_sessoes_inscritas">
+                                                                <option value="0">Mostrar todas as sessoes</option>
+                                                                <option value="1">Mostrar apenas sessoes inscritas</option>
+                                                            </select></span>
+                                                        <!---->
                                                     </div>
                                                     <!---->
                                                 </div>
@@ -742,6 +732,9 @@
                                     </div>
                                 </div>
                                 <div data-v-1b91368a="" class="column">
+                                    <button class="button is-success is-outlined" type="button" style="margin-bottom: 0.9rem; margin-right: 1rem;">
+                                        <span id="button_sessoes"></span>
+                                    </button>
                                     <div data-v-1b91368a="">
                                         <div class="b-table">
                                             <div class="table-wrapper">
@@ -1006,7 +999,7 @@
                                             <td data-label="id" class='template_sessao_id' style="display:none">
                                                 {{form.sessao.empty_form.sessao_idsessao}}
                                             </td>
-                                            <td data-label="Horário"></td>
+                                            <td data-label="Horário" class="horario"></td>
                                             <td data-label="Inscrever">
                                                 <div class="field has-numberinput has-numberinput-compact">
                                                     <div class="b-numberinput field has-addons" style="width: 7rem;">
@@ -1026,7 +1019,7 @@
                                                     <p class="help is-danger"></p>
                                                 </div>
                                             </td>
-                                            <td data-label="Titulo"></td>
+                                            <td data-label="Titulo" class="atividade_sessao_name"></td>
                                             <td data-label="Espaço"></td>
                                             <td data-label="Campus"></td>
                                             <td data-label="Ações" class="has-text-centered actions">
@@ -1120,6 +1113,24 @@
         $('#filter_time_start').val('00:00');
         $('#filter_time_end').change();
         $('#filter_time_start').change();
+        
+        //sessoes existentes
+        $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
+            var tr = table.row(dataIndex).nodes().to$();
+            var name = tr.find("td[data-label='Nome']").text();
+            if($("#filter_sessoes_inscritas").val() == '0'){
+                return true;
+            }else{
+                var els = $('#sessao_submit_table tr > .atividade_sessao_name');
+                for(var i=0;i<els.length ; i++){
+                    if(els.eq(i).text().includes(name)){
+                        return true;
+                    }
+                }
+            }
+            return false;
+        });
+
 
         //Minmum vagas filter
         $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
@@ -1203,9 +1214,23 @@
         $('#filter_time_end').on('change keyup', function () {
             table.draw();
         });
+        $('#filter_sessoes_inscritas').on('change', function () {
+            if($(this).val() == '0'){
+                $('#button_sessoes').text('Mostrar apenas atividades inscritas');
+            }else{
+                $('#button_sessoes').text('Mostrar todas as atividades');
+            }
+            table.draw();
+        });
 
-
-        table.draw();
+        $('#button_sessoes').on('click',function(){
+            if($('#filter_sessoes_inscritas').val() == '0'){
+                $('#filter_sessoes_inscritas').val('1').change();
+            }else{
+                $('#filter_sessoes_inscritas').val('0').change();
+            }
+        });
+        
 
         //Start all number inputs at 0
         $(".b-numberinput").find(".input").each(function () {
@@ -1300,13 +1325,14 @@
                 });
 
                 //Add new sessao
-                console.log("Sessao add");
+                //console.log("Sessao add");
                 var value = parseInt($('#id_sessao_set-TOTAL_FORMS').val());
                 $('#id_sessao_set-TOTAL_FORMS').val(value + 1);
                 //table.show();
                 $('#sessao_submit_table').append(table);
                 tInput.change();
             }
+            focusElementInStep($('.help:not(:empty)').first());
         });
 
         function minusButton() {
@@ -1409,9 +1435,10 @@
             var validator = $("#regForm").validate();
             var isCheck = $("#regForm")[0].checkValidity();
             var errors = $("#regForm").find(':invalid');
-            console.log(errors.length);
+            //console.log(errors.length);
+        
+
             if (errors.length == 0) {
-                console.log("Submiting");
                 $("#regForm").submit();
             }
             else {
@@ -1422,14 +1449,22 @@
                 }
             }
         });
+        if($('#sessao_submit_table tr').length > 2){
+            $('#filter_sessoes_inscritas').val('1').change();
+        }else{
+            $('#filter_sessoes_inscritas').val('0').change();
+        }
+        table.draw();
+        focusElementInStep($('.help:not(:empty)').first());
 
     });
+
     //Aply the remove button to the tables
     function applyClickRemoveRow(el) {
         el.on('click', function () {
             var row = $(this).closest('.row');
             if(row.hasClass('responsavel')){
-                console.log(row.siblings(':visible').length);
+                //console.log(row.siblings(':visible').length);
                 if(row.siblings(':visible').length == 0){
                     return;
                 }

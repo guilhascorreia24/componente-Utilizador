@@ -38,8 +38,6 @@ def diaaberto_create(request):
             hora_inicio=request.POST['h_incio']
             hora_fim=request.POST['h_fim']
             hora_list = preencher_hora(hora_inicio,hora_fim)
-            Horario(hora="09:00:00").save()
-            Horario(hora="08:30:00").save()
             for x in range(inicio.day, final.day+1):
                 Dia(dia=inicio+datetime.timedelta(days=x-inicio.day)).save()
                 dia1 = Dia.objects.filter(dia = inicio+datetime.timedelta(days=x-inicio.day))
@@ -81,8 +79,6 @@ def diaaberto_update(request, id):
         hora_inicio=request.POST['h_incio']
         hora_fim=request.POST['h_fim']
         hora_list = preencher_hora(hora_inicio,hora_fim)
-        Horario(hora="09:00:00").save()
-        Horario(hora="08:30:00").save()
         for x in range(inicio.day, final.day+1):
             Dia(dia=inicio+datetime.timedelta(days=x-inicio.day)).save()
             dia1 = Dia.objects.filter(dia = inicio+datetime.timedelta(days=x-inicio.day))
@@ -247,11 +243,20 @@ def prato_delete_view(request, id):
     return redirect('menu:menu_list')
 
 ######## TRANSPORTEEE ############################
+
+
 def transporte_create_view(request):
     form = TransportForm(request.POST or None)
     if request.method == "POST":
         if form.is_valid():
             form.save()
+            Horario(hora="08:00:00").save()
+            Horario(hora="08:15:00").save()
+            Horario(hora="08:30:00").save()
+            Horario(hora="08:45:00").save()
+            Horario(hora="09:00:00").save()
+            Horario(hora="09:15:00").save()
+            Horario(hora="09:45:00").save()
             return redirect("menu:horario-list")
     context = {
         'form': form,'o':True,
@@ -274,12 +279,21 @@ def horario_create_view(request):
             new_horario.origem = org
             new_horario.destino = dest
             new_horario.horario_has_dia_id_dia_hora = hor
+            trans =TransporteHasHorario.objects.filter(origem=org, destino=dest, horario_has_dia_id_dia_hora=hor)
+            if len(trans)>0:
+                form.trans= 'Este horario já está definido'
+                context = {
+                    'form': form,
+                    'utl' : utl,'o':True,
+                    'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)
+                }
+                return render(request, "Transporte/horario_create.html", context)
             new_horario.save()
             messages.success(request, f'Transporte Criado com Sucesso!')
             return redirect("menu:transporte-list")
     context = {
         'form': form,
-        'hora' : hora,'o':True,
+        'utl' : utl,'o':True,
         'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)
     }
     return render(request, "Transporte/horario_create.html", context)
@@ -321,10 +335,11 @@ def transporte_update2_view(request, id):
 def transporte_list_view(request):
     hora = TransporteHasHorario.objects.all()
     par = Paragem.objects.all()
-
+    inscricao = TransporteHasInscricao.objects.all()
     context = {
         "hora": hora,
         "par": par,
+        "inscricao": inscricao,
         'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)
     }
     return render(request, "Transporte/transporte_list.html", context)
@@ -332,7 +347,7 @@ def transporte_list_view(request):
 def transporte_detail_view(request, id):
     obj = get_object_or_404(Transporte,idtransporte =id)
     transporte = TransporteHasHorario.objects.get(transporte_idtransporte=id)
-    inscricao = TransporteHasInscricao.objects.get(inscricao_idinscricao=id)
+    inscricao = TransporteHasInscricao.objects.all()
     context = {
         "obj": obj,
         "transporte": transporte,
@@ -364,6 +379,8 @@ def transportehora_create_view(request):
 
 
 def horariotransporte_create_view(request):
+    hora = Horario.objects.all()
+    dia = Dia.objects.all()
     form = HorarioForm(request.POST or None)
     if form.is_valid():
         form.save()

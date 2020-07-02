@@ -642,6 +642,10 @@ class TransporteHasHorario(models.Model):
     horario_has_dia_id_dia_hora = models.ForeignKey(HorarioHasDia, models.CASCADE, db_column='horario_has_dia_id_dia_hora')
     n_passageiros = models.IntegerField(blank=True, null=True)
 
+    def save(self, *args, **kwargs):
+        Transporte.objects.filter(idtransporte=self.transporte_idtransporte.pk).update(capacidade=(self.transporte_idtransporte.capacidade - self.n_passageiros))
+        return super(TransporteHasHorario, self).save(*args, **kwargs)
+
     class Meta:
         managed = False
         db_table = 'transporte_has_horario'
@@ -653,6 +657,7 @@ class TransporteHasInscricao(models.Model):
     transporte_has_inscricao_id = models.AutoField(primary_key=True)
     horario = models.ForeignKey(TransporteHasHorario, models.CASCADE, db_column='transporte_has_horario_id_transporte_has_horario')
     n_passageiros = models.IntegerField(validators=[smaller_zero_validator])
+
 
     def save(self, *args, **kwargs):
         TransporteHasHorario.objects.filter(id_transporte_has_horario=self.horario.pk).update(n_passageiros=F('n_passageiros')+self.n_passageiros)

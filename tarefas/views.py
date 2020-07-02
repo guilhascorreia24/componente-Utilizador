@@ -28,8 +28,6 @@ def consultar_tarefas(request):
             for disps in form:
                 disps.save_user(colaborador)
 
-            print(form.deleted_forms)
-
             if form.is_valid():
               
                 form.save()
@@ -37,7 +35,10 @@ def consultar_tarefas(request):
                 form = disp(queryset=Disponibilidade.objects.filter(colaborador_utilizador_idutilizador = colaborador), prefix="tarefa")
                 messages.success(request, f'Disponibilidade alterada!')
                 return render(request, "consultar_tarefas.html", {'form': form,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
-  
+            else:
+                return render(request, "consultar_tarefas.html", {'form': form,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
+
+
         form = disp(queryset=Disponibilidade.objects.filter(colaborador_utilizador_idutilizador = colaborador), prefix="tarefa")
         return render(request, "consultar_tarefas.html", {'form': form,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
 

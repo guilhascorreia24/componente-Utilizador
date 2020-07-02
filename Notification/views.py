@@ -227,7 +227,7 @@ def joins(uos,x,list):
             list.append(str(x+"."+uo.sigla+""))
 
 def vagas(request,atividade_id,assunto,texto):
-    sessoes=Sessoes.objects.filter(atividade_idatividade=atividade_id)
+    sessoes=Sessao.objects.filter(atividade_idatividade=atividade_id)
     users=[]
     for sessao in sessoes:
         inscricoes_sess=InscricaoHasSessao.objects.filter(sessao_idsessao=sessao.pk)
@@ -240,8 +240,20 @@ def vagas(request,atividade_id,assunto,texto):
             if InscricaoColetiva.objects.filter(pk=insc.pk).exists():
                 parts=InscricaoColetiva.objects.filter(pk=insc.pk)
                 for part in parts:
-                    if not(part.participante_utilizador in users):
+                    if not(part.participante_utilizador_idutilizador in users):
                         users.append(part.participante_utilizador_idutilizador)
+        tarefas=Tarefa.objects.filter(sessao_idsessao=sessao.pk)
+        for tarefa in tarefas:
+            users.append(tarefa.colaborador_utilizador_idutilizador)
+        uo_id=ProfessorUniversitario.objects.get(pk=request.session['user_id']).departamento_iddepartamento.unidade_organica_iduo
+        coords=Coordenador.objects.filter(unidade_organica_iduo=uo_id)
+        for coord in coords:
+            if not(coord in users):
+                users.append(coord)
+    print(users)
     for user in users:
-        new_noti(request,user.pk,assunto,texto)
+        noti=Notificacao.objects.create(descricao=texto,utilizadorrecebe=user.pk,idutilizadorenvia=request.session['user_id'],criadoem=datetime.now(),assunto=assunto)
+        UtilizadorHasNotificacao.objects.create(utilizador_idutilizador=Utilizador.objects.get(pk=user.pk),notificacao=noti,estado=0)
+    
+    
 

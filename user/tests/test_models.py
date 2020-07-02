@@ -11,8 +11,8 @@ class TestModels(unittest.TestCase):
         u=Utilizador.objects.create(nome="Sabino",email="sabino@hotmail.com",telefone="123455789",password="0afb00138d8e73348ec1fe41fd3d3a8fcbd90156b263bfa5791ba0e095f42cfc",validada=0)
         a=Administrador.objects.create(pk=u.pk)
         self.assertEquals(Administrador.objects.filter(pk=u.pk).exists(),True)
-        u.delete()
         a.delete()
+        u.delete()
     
     def test_Colaborador(self):
         c=Campus.objects.create(nome="boliqueime")
