@@ -98,18 +98,19 @@ def diaaberto_update(request, id):
 def diaaberto_list(request):
     d = DiaAberto.objects.all() # list of objects
     dia = DiaAberto.objects.order_by('-ano').annotate(hora_inicio=Value(datetime.time(23,59),TimeField()),hora_fim=Value(datetime.time(23,59),TimeField()))
-    hora_inicio=Horario.objects.all()[0]
-    hora_fim=Horario.objects.all().order_by('-pk')[0]
-    horarios=HorarioHasDia.objects.all()
-    for de in dia:
-        de.hora_inicio=Horario.objects.all()[0].pk
-        de.hora_fim=Horario.objects.all().order_by('-pk')[0].pk
-        for horario in horarios:
-            if horario.dia_dia.pk.year==de.ano:
-                if horario.horario_hora.pk<de.hora_inicio:
-                    de.hora_inicio=HorarioHasDia.objects.filter(dia_dia=horario.dia_dia)[0].horario_hora.pk
-                if horario.horario_hora.pk>de.hora_fim:
-                    de.hora_fim=HorarioHasDia.objects.filter(dia_dia=horario.dia_dia).reverse()[0].horario_hora.pk
+    if len(Horario.objects.all())>0:
+        hora_inicio=Horario.objects.all()[0]
+        hora_fim=Horario.objects.all().order_by('-pk')[0]
+        horarios=HorarioHasDia.objects.all()
+        for de in dia:
+            de.hora_inicio=Horario.objects.all()[0].pk
+            de.hora_fim=Horario.objects.all().order_by('-pk')[0].pk
+            for horario in horarios:
+                if horario.dia_dia.pk.year==de.ano:
+                    if horario.horario_hora.pk<de.hora_inicio:
+                        de.hora_inicio=HorarioHasDia.objects.filter(dia_dia=horario.dia_dia)[0].horario_hora.pk
+                    if horario.horario_hora.pk>de.hora_fim:
+                        de.hora_fim=HorarioHasDia.objects.filter(dia_dia=horario.dia_dia).reverse()[0].horario_hora.pk
     context = {
         "diaaberto_list": dia,
         "d": d,

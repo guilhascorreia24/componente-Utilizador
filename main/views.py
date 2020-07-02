@@ -16,8 +16,7 @@ def criar_tarefa(request):
 def criar_tarefa_atividade(request):
 	user_coord = Utilizador.objects.get(idutilizador = request.session["user_id"])
 	coord_user = Coordenador.objects.get(utilizador_idutilizador = user_coord)
-	print(coord_user.unidade_organica_iduo)
-	atividade = Atividade.objects.filter(unidade_organica_iduo= coord_user.unidade_organica_iduo)
+	atividade = Atividade.objects.filter(unidade_organica_iduo = coord_user.unidade_organica_iduo)
 	form = TarefasFormAtividade(request.POST)
 	if request.method == "POST":
 		if form.is_valid():

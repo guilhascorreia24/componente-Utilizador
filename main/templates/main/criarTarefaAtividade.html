@@ -21,6 +21,7 @@
 <div class="ctr" style="margin-left: 35%;">
   <div style="padding: 2vw">
       <form method="POST" id="personForm"> {% csrf_token %}
+        {{form.errors}}
           <div class="column">
               <div class="field">
                    <label class="">Nome Tarefa:</label>
