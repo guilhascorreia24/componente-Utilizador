@@ -266,9 +266,6 @@ def login_request(request):
                         r.set_cookie('cookie_id', encrypt(request.session['user_id']), 7 * 24 * 60 * 60)
                     return r
                 else:
-                    tentatives-=1
-                    if tentatives<0:
-                        tentatives=5
                     messages.error(request, f"Sua conta ainda não está validada")
             else:
                 tentatives-=1
