@@ -25,6 +25,13 @@
                 </li>
                 <li class="step-item is-success">
                     <a class="step-link is-clickable">
+                        <div class="step-marker"><span class="icon"><i
+                                    class="mdi mdi-calendar-check mdi-24px"></i></span></div>
+                        <div class="step-details"><span class="step-title">Sessões</span></div>
+                    </a>
+                </li>
+                <li class="step-item is-success">
+                    <a class="step-link is-clickable">
                         <div class="step-marker"><span class="icon"><i class="mdi mdi-train-car mdi-24px"></i></span>
                         </div>
                         <div class="step-details"><span class="step-title">Transporte</span>
@@ -36,13 +43,6 @@
                         <div class="step-marker"><span class="icon"><i class="mdi mdi-food-apple mdi-24px"></i></span>
                         </div>
                         <div class="step-details"><span class="step-title">Almoço</span></div>
-                    </a>
-                </li>
-                <li class="step-item is-success">
-                    <a class="step-link is-clickable">
-                        <div class="step-marker"><span class="icon"><i
-                                    class="mdi mdi-calendar-check mdi-24px"></i></span></div>
-                        <div class="step-details"><span class="step-title">Sessões</span></div>
                     </a>
                 </li>
             </ul>
@@ -327,203 +327,6 @@
                         </div>
                     </div>
 
-                </div>
-                <div class="step-item" style="display:none;">
-                    <div style="padding: 1rem 2vw 0px;">
-                        <hr>
-                        <h2 class="title has-text-grey is-uppercase" style="font-size: 0.9rem;">
-                            Informação de transporte </h2>
-                        <div class="columns">
-                            <div class="column is-8">
-                                <div class="field"><label class="label">Transporte</label>
-                                    <div class="control is-expanded">
-                                    </div>
-                                    <!---->
-                                </div>
-                            </div>
-                            <div class="column is-2">
-                                <div class="field"><label class="label">Numero de Passageiros</label>
-                                    <div class="control is-expanded">
-                                    </div>
-                                    <!---->
-                                </div>
-                            </div>
-                        </div>
-                        <div id="table_transporte" style="padding-bottom:2%">
-                            {{ form.transportes.management_form }} {% for transporte in form.transportes %}
-                            {% for hidden in transporte.hidden_fields %}
-                            {{ hidden }}
-                            {% endfor %}
-                            <div class="columns row">
-                                <div class="column is-8">
-                                    <div class="field">
-                                        <div class="control is-expanded"><span
-                                                class="select is-fullwidth is-empty select-transporte">
-                                                {{transporte.horario}}
-                                            </span>
-                                            <p class="help is-danger">{{transportes.horario.errors.0}}</p>
-                                            <!---->
-                                        </div>
-                                        <!---->
-                                    </div>
-                                </div>
-                                <div class="column is-3">
-                                    <div class="field has-numberinput has-numberinput-compact">
-                                        <div class="b-numberinput field has-addons">
-                                            <p class="control">
-                                                <button type="button" class="button is-primary"><span class="icon"><i
-                                                            class="mdi mdi-minus mdi-24px"></i></span></button>
-                                            </p>
-                                            <div class="control is-clearfix">
-                                                {{transporte.n_passageiros|addcss:"input"}}
-                                            </div>
-                                            <p class="control">
-                                                <button type="button" class="button is-primary"><span class="icon"><i
-                                                            class="mdi mdi-plus mdi-24px"></i></span></button>
-                                            </p>
-                                        </div>
-                                        <p class="help is-danger">{{transporte.n_passageiros.errors.0}}</p>
-                                    </div>
-                                </div>
-                                <div class="column is-1">
-                                    <a class="table_remove_button"><span class="icon has-text-danger"><i
-                                                style="padding-top: 8px;"
-                                                class="mdi mdi-close-box mdi-24px"></i></span></a>
-                                    {{transporte.DELETE|addcss:"hide"}}
-                                </div>
-                            </div>
-                            {% endfor %}
-                        </div>
-
-                        <!--TEMPLATE-->
-                        <div id="template_transporte" style="display:none">
-                            <div class="columns row">
-                                <div class="column is-8">
-                                    <div class="field">
-                                        <div class="control is-expanded"><span
-                                                class="select is-fullwidth is-empty select-transporte">{{form.transportes.empty_form.horario}}</span>
-                                            <!---->
-                                        </div>
-                                        <!---->
-                                    </div>
-                                </div>
-                                <div class="column is-3">
-                                    <div class="field has-numberinput has-numberinput-compact">
-                                        <div class="b-numberinput field has-addons">
-                                            <p class="control"><button type="button" class="button is-primary"><span
-                                                        class="icon"><i
-                                                            class="mdi mdi-minus mdi-24px"></i></span></button>
-                                            </p>
-                                            <div class="control is-clearfix">
-                                                {{form.transportes.empty_form.n_passageiros|addcss:"input"}}
-                                            </div>
-                                            <p class="control"><button type="button" class="button is-primary"><span
-                                                        class="icon"><i
-                                                            class="mdi mdi-plus mdi-24px"></i></span></button>
-                                            </p>
-                                        </div>
-                                        <!---->
-                                    </div>
-                                </div>
-                                <div class="column is-1">
-                                    <a class="table_remove_button"><span class="icon has-text-danger"><i
-                                                style="padding-top: 8px;"
-                                                class="mdi mdi-close-box mdi-24px"></i></span></a>
-                                    {{form.transportes.empty_form.DELETE|addcss:"hide"}}
-                                </div>
-                            </div>
-                        </div>
-                        <!--END TEMPLATE-->
-
-
-                        <button type="button" class="button" onclick="add_transporte()">
-                            <span class="icon is-small"><i class="mdi mdi-plus"></i></span>
-                            <span>Adicionar transporte</span>
-                        </button>
-                        <hr>
-                        <p style="display: inline-block; padding-right: 2rem;"> Precisam de transporte para efectuar as
-                            visitas entre os 3 Campos? </p>
-                        {% for radio in form.inscricao.transporte %}
-                        <label for="{{ radio.id_for_label }}" class="b-radio radio">{{ radio.tag }}
-                            <span class="check"></span> <span class="control-label"> {{ radio.choice_label }}
-                            </span></label> {% endfor %}
-                        <hr>
-                    </div>
-                    <div class="column is-8 is-offset-2">
-                        <div class="level">
-                            <div class="level-left">
-                                <button href="" class="button router-link-active is-outlined prev-step" type="button"
-                                    id="prevBtn">
-                                    <!----> <span> Anterior </span>
-                                    <!----></button>
-                            </div>
-                            <div class="level-right">
-                                <button type="button" class="button is-large is-success is-outlined next-step">
-                                    <!----> <span> Seguinte </span> <span class="icon is-medium"><i
-                                            class="mdi mdi-forward mdi-36px"></i></span></button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="step-item" style="display:none;">
-                    <div data-v-f5fe8f88="" style="padding: 1rem 2vw 0px;">
-                        <hr data-v-f5fe8f88="">
-                        <h1 data-v-f5fe8f88="" class="title has-text-grey is-uppercase" style="font-size: 0.9rem;">
-                            Informação de Almoços</h1>
-                        <div>
-                            <p><b>Preço de Estudante: {{form.almoco.preco_estudante}}€</b></p>
-                            <p><b>Preço de Professor: {{form.almoco.preco_professor}}€</b></p>
-                        </div>
-                        <hr data-v-f5fe8f88="">
-                        <div class="columns">
-                            <hr data-v-f5fe8f88="">
-                            {% regroup form.almoco.prato by menu.campus_idcampus as campus_prato %}
-                            {% for camp in campus_prato %}
-                            <div class="column">
-                                <h2 data-v-f5fe8f88="" class="title has-text-grey is-uppercase"
-                                    style="font-size: 0.9rem;">Campus {{camp.grouper}} </h2>
-                                {% for prato in camp.list %}
-                                <div data-v-f5fe8f88="" class="field has-numberinput has-numberinput-compact">
-                                    <label>{{prato.prato.tipo}} - {{prato.prato.descricao}}</label>
-                                    <div data-v-f5fe8f88="" class="b-numberinput field has-addons">
-                                        <p class="control"><button type="button" class="button is-primary"><span
-                                                    class="icon"><i class="mdi mdi-minus mdi-24px"></i></span></button>
-                                        </p>
-                                        <div class="control is-clearfix">{{prato.nralmocos|addcss:"input"}}
-                                        </div>
-                                        <p class="control"><button type="button" class="button is-primary"><span
-                                                    class="icon"><i class="mdi mdi-plus mdi-24px"></i></span></button>
-                                        </p>
-                                    </div>
-                                    <p class="help is-danger">{{prato.nralmocos.errors.0}}</p>
-                                </div>
-                                {% endfor %}
-                                {% if camp.list.0 %}
-                                <div>
-                                    <p>Informação adicional:</p>
-                                    {{camp.list.0.menu.descricao}}
-                                </div>
-                                {% endif %}
-                            </div>
-                            {% endfor %}
-                        </div>
-                        <hr data-v-f5fe8f88="">
-                    </div>
-                    <div class="column is-8 is-offset-2">
-                        <div class="level">
-                            <div class="level-left">
-                                <button href="" class="button router-link-active is-outlined prev-step" type="button"
-                                    id="prevBtn">
-                                    <!----> <span> Anterior </span>
-                                    <!----></button>
-                            </div>
-                            <div class="level-right">
-                                <button type="button" class="button is-large is-success is-outlined next-step">
-                                    <!----> <span> Seguinte </span> <span class="icon is-medium"><i
-                                            class="mdi mdi-forward mdi-36px"></i></span></button>
-                            </div>
-                        </div>
-                    </div>
                 </div>
                 <div class="step-item" style="display:none;">
                     <div data-v-dac68d9e="" style="padding: 1rem 2vw 0px;">
@@ -1043,6 +846,203 @@
                             <!---->
                         </div>
                         <hr data-v-dac68d9e="">
+                    </div>
+                    <div class="column is-8 is-offset-2">
+                        <div class="level">
+                            <div class="level-left">
+                                <button href="" class="button router-link-active is-outlined prev-step" type="button"
+                                    id="prevBtn">
+                                    <!----> <span> Anterior </span>
+                                    <!----></button>
+                            </div>
+                            <div class="level-right">
+                                <button type="button" class="button is-large is-success is-outlined next-step">
+                                    <!----> <span> Seguinte </span> <span class="icon is-medium"><i
+                                            class="mdi mdi-forward mdi-36px"></i></span></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="step-item" style="display:none;">
+                    <div style="padding: 1rem 2vw 0px;">
+                        <hr>
+                        <h2 class="title has-text-grey is-uppercase" style="font-size: 0.9rem;">
+                            Informação de transporte </h2>
+                        <div class="columns">
+                            <div class="column is-8">
+                                <div class="field"><label class="label">Transporte</label>
+                                    <div class="control is-expanded">
+                                    </div>
+                                    <!---->
+                                </div>
+                            </div>
+                            <div class="column is-2">
+                                <div class="field"><label class="label">Numero de Passageiros</label>
+                                    <div class="control is-expanded">
+                                    </div>
+                                    <!---->
+                                </div>
+                            </div>
+                        </div>
+                        <div id="table_transporte" style="padding-bottom:2%">
+                            {{ form.transportes.management_form }} {% for transporte in form.transportes %}
+                            {% for hidden in transporte.hidden_fields %}
+                            {{ hidden }}
+                            {% endfor %}
+                            <div class="columns row">
+                                <div class="column is-8">
+                                    <div class="field">
+                                        <div class="control is-expanded"><span
+                                                class="select is-fullwidth select-transporte">
+                                                {{transporte.horario}}
+                                            </span>
+                                            <p class="help is-danger">{{transportes.horario.errors.0}}</p>
+                                            <!---->
+                                        </div>
+                                        <!---->
+                                    </div>
+                                </div>
+                                <div class="column is-3">
+                                    <div class="field has-numberinput has-numberinput-compact">
+                                        <div class="b-numberinput field has-addons">
+                                            <p class="control">
+                                                <button type="button" class="button is-primary"><span class="icon"><i
+                                                            class="mdi mdi-minus mdi-24px"></i></span></button>
+                                            </p>
+                                            <div class="control is-clearfix">
+                                                {{transporte.n_passageiros|addcss:"input"}}
+                                            </div>
+                                            <p class="control">
+                                                <button type="button" class="button is-primary"><span class="icon"><i
+                                                            class="mdi mdi-plus mdi-24px"></i></span></button>
+                                            </p>
+                                        </div>
+                                        <p class="help is-danger">{{transporte.n_passageiros.errors.0}}</p>
+                                    </div>
+                                </div>
+                                <div class="column is-1">
+                                    <a class="table_remove_button"><span class="icon has-text-danger"><i
+                                                style="padding-top: 8px;"
+                                                class="mdi mdi-close-box mdi-24px"></i></span></a>
+                                    {{transporte.DELETE|addcss:"hide"}}
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+
+                        <!--TEMPLATE-->
+                        <div id="template_transporte" style="display:none">
+                            <div class="columns row">
+                                <div class="column is-8">
+                                    <div class="field">
+                                        <div class="control is-expanded"><span
+                                                class="select is-fullwidth select-transporte">{{form.transportes.empty_form.horario}}</span>
+                                            <!---->
+                                        </div>
+                                        <!---->
+                                    </div>
+                                </div>
+                                <div class="column is-3">
+                                    <div class="field has-numberinput has-numberinput-compact">
+                                        <div class="b-numberinput field has-addons">
+                                            <p class="control"><button type="button" class="button is-primary"><span
+                                                        class="icon"><i
+                                                            class="mdi mdi-minus mdi-24px"></i></span></button>
+                                            </p>
+                                            <div class="control is-clearfix">
+                                                {{form.transportes.empty_form.n_passageiros|addcss:"input"}}
+                                            </div>
+                                            <p class="control"><button type="button" class="button is-primary"><span
+                                                        class="icon"><i
+                                                            class="mdi mdi-plus mdi-24px"></i></span></button>
+                                            </p>
+                                        </div>
+                                        <!---->
+                                    </div>
+                                </div>
+                                <div class="column is-1">
+                                    <a class="table_remove_button"><span class="icon has-text-danger"><i
+                                                style="padding-top: 8px;"
+                                                class="mdi mdi-close-box mdi-24px"></i></span></a>
+                                    {{form.transportes.empty_form.DELETE|addcss:"hide"}}
+                                </div>
+                            </div>
+                        </div>
+                        <!--END TEMPLATE-->
+
+
+                        <button type="button" class="button" onclick="add_transporte()">
+                            <span class="icon is-small"><i class="mdi mdi-plus"></i></span>
+                            <span>Adicionar transporte</span>
+                        </button>
+                        <hr>
+                        <p style="display: inline-block; padding-right: 2rem;"> Precisam de transporte para efectuar as
+                            visitas entre os 3 Campos? </p>
+                        {% for radio in form.inscricao.transporte %}
+                        <label for="{{ radio.id_for_label }}" class="b-radio radio">{{ radio.tag }}
+                            <span class="check"></span> <span class="control-label"> {{ radio.choice_label }}
+                            </span></label> {% endfor %}
+                        <hr>
+                    </div>
+                    <div class="column is-8 is-offset-2">
+                        <div class="level">
+                            <div class="level-left">
+                                <button href="" class="button router-link-active is-outlined prev-step" type="button"
+                                    id="prevBtn">
+                                    <!----> <span> Anterior </span>
+                                    <!----></button>
+                            </div>
+                            <div class="level-right">
+                                <button type="button" class="button is-large is-success is-outlined next-step">
+                                    <!----> <span> Seguinte </span> <span class="icon is-medium"><i
+                                            class="mdi mdi-forward mdi-36px"></i></span></button>
+                            </div>
+                        </div>
+                    </div> 
+                </div>
+                <div class="step-item" style="display:none;">
+                    <div data-v-f5fe8f88="" style="padding: 1rem 2vw 0px;">
+                        <hr data-v-f5fe8f88="">
+                        <h1 data-v-f5fe8f88="" class="title has-text-grey is-uppercase" style="font-size: 0.9rem;">
+                            Informação de Almoços</h1>
+                        <div>
+                            <p><b>Preço de Estudante: {{form.almoco.preco_estudante}}€</b></p>
+                            <p><b>Preço de Professor: {{form.almoco.preco_professor}}€</b></p>
+                        </div>
+                        <hr data-v-f5fe8f88="">
+                        <div class="columns">
+                            <hr data-v-f5fe8f88="">
+                            {% regroup form.almoco.prato by menu.campus_idcampus as campus_prato %}
+                            {% for camp in campus_prato %}
+                            <div class="column">
+                                <h2 data-v-f5fe8f88="" class="title has-text-grey is-uppercase"
+                                    style="font-size: 0.9rem;">Campus {{camp.grouper}} </h2>
+                                {% for prato in camp.list %}
+                                <div data-v-f5fe8f88="" class="field has-numberinput has-numberinput-compact">
+                                    <label>{{prato.prato.tipo}} - {{prato.prato.descricao}}</label>
+                                    <div data-v-f5fe8f88="" class="b-numberinput field has-addons">
+                                        <p class="control"><button type="button" class="button is-primary"><span
+                                                    class="icon"><i class="mdi mdi-minus mdi-24px"></i></span></button>
+                                        </p>
+                                        <div class="control is-clearfix">{{prato.nralmocos|addcss:"input"}}
+                                        </div>
+                                        <p class="control"><button type="button" class="button is-primary"><span
+                                                    class="icon"><i class="mdi mdi-plus mdi-24px"></i></span></button>
+                                        </p>
+                                    </div>
+                                    <p class="help is-danger">{{prato.nralmocos.errors.0}}</p>
+                                </div>
+                                {% endfor %}
+                                {% if camp.list.0 %}
+                                <div>
+                                    <p>Informação adicional:</p>
+                                    {{camp.list.0.menu.descricao}}
+                                </div>
+                                {% endif %}
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <hr data-v-f5fe8f88="">
                     </div>
                     <div class="column is-8 is-offset-2">
                         <div class="level">

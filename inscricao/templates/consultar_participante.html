@@ -223,24 +223,24 @@
                                     {{ inscricao.inscricao.escola }}
                                 </td>
                                 <td data-label="Ações">
-                                    {% if user_type == 0 or user_type == 4 %}
-                                    <a role="button" class="no_underline"
-                                    data-toggle="modal"
-                                    data-target="#{{ forloop.counter }}_0">
-                                        <span class="icon has-text-danger"> <i
-                                                class="mdi mdi-close-box mdi-24px"></i></button></span>
-                                    </a>
-                                    {% endif %}
                                     <a role="button" class="no_underline has-target" data-toggle="modal"
                                         data-target="#coletiva_{{ forloop.counter }}">
                                         <span class="icon has-text-success"> <i
-                                                class="mdi mdi-account-search mdi-24px"></i></button></span>
+                                                class="mdi mdi-magnify mdi-24px"></i></button></span>
                                     </a>
                                     {% if user_type == 0 or user_type == 4 %}
                                     <a role="button" class="no_underline"
                                         href={% url 'inscricao:alterar' inscricao=inscricao.inscricao.idinscricao  %}>
                                         <span class="icon has-text-success"> <i
                                                 class="mdi mdi-pencil mdi-24px"></i></button></span>
+                                    </a>
+                                    {% endif %}
+                                    {% if user_type == 0 or user_type == 4 %}
+                                    <a role="button" class="no_underline"
+                                    data-toggle="modal"
+                                    data-target="#{{ forloop.counter }}_0">
+                                        <span class="icon has-text-danger"> <i
+                                                class="mdi mdi-close-box mdi-24px"></i></button></span>
                                     </a>
                                     {% endif %}
                                 </td>
@@ -268,24 +268,24 @@
                                     {{ inscricao.inscricao.escola }}
                                 </td>
                                 <td data-label="Ações">
-                                    {% if user_type == 0 or user_type == 4 %}
-                                    <a role="button" class="no_underline"
-                                    data-toggle="modal"
-                                    data-target="#{{ forloop.counter }}_1">
-                                        <span class="icon has-text-danger"> <i
-                                                class="mdi mdi-close-box mdi-24px"></i></button></span>
-                                    </a>
-                                    {% endif %}
                                     <a role="button" class="no_underline has-target" data-toggle="modal"
                                         data-target="#individual_{{ forloop.counter }}">
                                         <span class="icon has-text-success"> <i
-                                                class="mdi mdi-account-search mdi-24px"></i></button></span>
+                                                class="mdi mdi-magnify mdi-24px"></i></button></span>
                                     </a>
                                     {% if user_type == 0 or user_type == 4 %}
                                     <a role="button" class="no_underline"
                                         href={% url 'inscricao:alterar' inscricao=inscricao.inscricao.idinscricao  %}>
                                         <span class="icon has-text-success"> <i
                                                 class="mdi mdi-pencil mdi-24px"></i></button></span>
+                                    </a>
+                                    {% endif %}
+                                    {% if user_type == 0 or user_type == 4 %}
+                                    <a role="button" class="no_underline"
+                                    data-toggle="modal"
+                                    data-target="#{{ forloop.counter }}_1">
+                                        <span class="icon has-text-danger"> <i
+                                                class="mdi mdi-close-box mdi-24px"></i></button></span>
                                     </a>
                                     {% endif %}
                                 </td>
@@ -416,7 +416,7 @@
                                             {{ atividade.unidade_organica }}
                                         </td>
                                         <td data-label="Dia" class="">
-                                            {{ atividade.dia }}
+                                            {{ atividade.dia | date:"d-m-Y" }}
                                         </td>
                                         <td data-label="Sessão" class="">
                                             {{ atividade.hora | time:"H:i"}}
@@ -739,7 +739,7 @@
                                             {{ atividade.unidade_organica }}
                                         </td>
                                         <td data-label="Dia" class="">
-                                            {{ atividade.dia }}
+                                            {{ atividade.dia | date:"d-m-Y" }}
                                         </td>
                                         <td data-label="Sessão" class="">
                                             {{ atividade.hora | time:"H:i" }}
