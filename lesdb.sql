@@ -1289,6 +1289,8 @@ INSERT INTO `utilizador_has_notificacao` VALUES (1004,47,85,0),(1005,48,86,0),(1
 INSERT INTO `espaco` VALUES (7,'Sala 1.21',5,'images/QspcR_ye_400x400.jpg'),(8,'A',4,'images/QspcR_ye_400x400_jzTYYPT.jpg');
 INSERT INTO `anfiteatro` VALUES ('1','1',8);
 INSERT INTO `sala` VALUES ('1','1',NULL,7);
+INSERT INTO `tarefa` VALUES (23,'gambelas',0,1004,1010,NULL,NULL,6,NULL,NULL,NULL),(24,'teste',1,1004,1011,NULL,NULL,6,NULL,NULL,NULL),(25,'teste',1,1004,1011,'10:30:00','2020-07-27',6,8,8,5);
+
 
 
 
