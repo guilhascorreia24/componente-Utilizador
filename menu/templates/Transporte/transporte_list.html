@@ -211,20 +211,50 @@
                                 </div>
                                 <input disabled="" class="form-control col-sm-2 bg-light" type="text" value="{{ instance.transporte_idtransporte.capacidade }}">
                             </div>
-                            {% for inscricao in inscricao %}
-                            <div class="input-group col-sm-12">
-                                <div class="input-group-prepend labelForm">
-                                    <span class="input-group-text w-100">Grupos</span>
-                                </div>
-                                <input disabled="" class="form-control col-sm-2 bg-light" type="text" value="{{ inscricao.inscricao_idinscricao }}">
-                            </div>
-                            <div class="input-group col-sm-12">
-                                <div class="input-group-prepend labelForm">
-                                    <span class="input-group-text w-100">Número de Passageiros</span>
-                                </div>
-                                <input disabled="" class="form-control col-sm-2 bg-light" type="text" value="{{ inscricao.n_passageiros }}">
-                            </div>
-                            {% endfor %}
+                            <br>
+
+                            <h1 class="mx-3"> Grupos associados ao Transporte </h1>
+                            <div class="panel panel-default panel-table">
+                            <div class="table-wrapper">
+                            <table id="myTable2" class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <!---->
+                                        <th class="is-sortable">
+                                            <div class="th-wrap"> Grupo <span class="icon is-small"
+                                                    style="display: none;"><i class="mdi mdi-menu-up"></i></span>
+                                            </div>
+                                        </th>
+                                        <th class="is-sortable">
+                                            <div class="th-wrap"> Número de Passageiros <span class="icon is-small"
+                                                    style="display: none;"><i class="mdi mdi-menu-up"></i></span>
+                                            </div>
+                                        </th>
+                                        <!---->
+                                    </tr>
+                                    <!---->
+                                    <!---->
+                                </thead>
+                                <tbody>
+                                    {% for inscricao in inscricao %}
+                                    {% if inscricao.horario.id_transporte_has_horario == instance.id_transporte_has_horario %}
+                                    <tr draggable="false" class="" scope="row">
+                                        <!---->
+                                        <td data-label="Grupo" class="">
+                                            {{inscricao.inscricao_idinscricao}}
+                                        </td>
+                                        <td data-label="Número de Passageiros" class="">
+                                            {{ inscricao.n_passageiros }}
+                                        </td>
+                                        {% endif %}
+                                        {% endfor %}
+                                    </tr>
+                                    <!---->
+                                </tbody>
+                                <!---->
+                            </table>
+                        </div>
+                    </div>
                     </form></div>
                 </div>
             </div>

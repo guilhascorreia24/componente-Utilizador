@@ -29,10 +29,7 @@ def preencher_hora(hora_incio, hora_fim):
 
 
 def diaaberto_create(request):
-    user = Utilizador.objects.get(idutilizador=request.session['user_id'])
-    admin = Administrador.objects.get(utilizador_idutilizador=user)
-    new_form = DiaAberto(administrador_utilizador_idutilizador=admin)
-    form = DiaAbertoForm(request.POST or None, instance=new_form)
+    form = DiaAbertoForm(request.POST or None)
     if request.method == "POST":
         if form.is_valid():
             form.save()
@@ -59,13 +56,13 @@ def diaaberto_create(request):
 
 
 def diaaberto_update(request, id):
-    
     obj = get_object_or_404(DiaAberto, ano=id)
     form = DiaAbertoForm(request.POST or None, instance=obj)
     pk_url_kwarg = 'ano'
     hora_inicio=Horario.objects.all()[0].pk
     hora_fim=Horario.objects.all().order_by('-pk')[0].pk
     print(hora_inicio)
+    print(form)
     horarios=HorarioHasDia.objects.all()
     for horario in horarios:
         if horario.dia_dia.pk.year==id:
@@ -75,6 +72,7 @@ def diaaberto_update(request, id):
                 hora_fim=HorarioHasDia.objects.filter(dia_dia=horario.dia_dia).reverse()[0].horario_hora.pk
     if form.is_valid():
         form.save()
+        print(form.cleaned_data)
         #Horario.objects.all().delete()
         inicio = form.cleaned_data['datadiaabertoinicio']
         final = form.cleaned_data['datadiaabertofim']
@@ -136,24 +134,16 @@ def diaaberto_details(request, id):
 def diaaberto_delete(request, id):
     obj = get_object_or_404(DiaAberto, ano=id)
     if DiaAberto.objects.filter(ano=id).exists():
-        user=request.session['user_id']
-        if Utilizador.objects.filter(dia_aberto_ano=id,pk=request.session['user_id']).exists():
-            del request.session['user_id']
-            del request.session['type']
+        Utilizador.objects.filter(dia_aberto_ano=id).update(dia_aberto_ano=None)
         obj.delete()
-        if not(Utilizador.objects.filter(pk=user).exists()):
-            notis=Notificacao.objects.all()
-            dias=Dia.objects.all()
-            for noti in notis:
-                if noti.criadoem.year==id:
-                    noti.delete()
-            for dia in dias:
-                if dia.pk.year==id:
-                    dia.delete()
-            return redirect("blog:blog-home")
+        notis=Notificacao.objects.all()
+        dias=Dia.objects.all()
+        for dia in dias:
+            if dia.pk.year==id:
+                dia.delete()
         messages.success(request, f'Configurações do Dia Aberto eliminado com Sucesso!')
         noti_views.new_noti(request,request.session['user_id'],'Submissao das Configurações do Dia Aberto','Configurações do Dia Aberto eliminado com Sucesso!')
-    return redirect('menu:diaaberto_list')
+        return redirect('menu:diaaberto_list')
 
 ### Menuuuu ###########
 def menu_create_view(request):
@@ -170,7 +160,8 @@ def menu_create_view(request):
 
 
 def prato_create_view(request):
-    form = PratoForm(request.POST or None)
+    new_form = Prato(nralmocos=0)
+    form = PratoForm(request.POST or None, instance=new_form)
     if form.is_valid():
         form.save()
         messages.success(request, f'Prato Criado com Sucesso!')
@@ -271,7 +262,9 @@ def transporte_create_view(request):
 def horario_create_view(request):
     hora = HorarioHasDia.objects.all()
     utl = Transporte.objects.latest('idtransporte')
+    #utl2 = Transporte.objects.latest('capacidade')
     new_form = TransporteHasHorario(transporte_idtransporte = utl, n_passageiros= 0)
+    h = TransporteHasHorario.objects.all()
     form = TransporteHorarioForm(request.POST, instance = new_form)
     if request.method == "POST":
         if form.is_valid():
@@ -329,10 +322,11 @@ def transporte_update2_view(request, id):
 def transporte_list_view(request):
     hora = TransporteHasHorario.objects.all()
     par = Paragem.objects.all()
-
+    inscricao = TransporteHasInscricao.objects.all()
     context = {
         "hora": hora,
         "par": par,
+        "inscricao": inscricao,
         'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)
     }
     return render(request, "Transporte/transporte_list.html", context)
@@ -340,7 +334,7 @@ def transporte_list_view(request):
 def transporte_detail_view(request, id):
     obj = get_object_or_404(Transporte,idtransporte =id)
     transporte = TransporteHasHorario.objects.get(transporte_idtransporte=id)
-    inscricao = TransporteHasInscricao.objects.get(inscricao_idinscricao=id)
+    inscricao = TransporteHasInscricao.objects.all()
     context = {
         "obj": obj,
         "transporte": transporte,

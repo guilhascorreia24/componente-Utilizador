@@ -29,42 +29,6 @@
               </div>
               </div>
             </div>
- 
-          <div class="column">
-            <div class="field">
-                <label aria-label="breadcrumbs"  class="" id='id_dia_dia_label'>Dia da Tarefa:</label>
-                <div class="control">
-                    <div class="select is-fullwidth" id='id_dia_dia_seta'>
-                        {{form.dia_dia}}
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="column">
-          <div class="field">
-            <label aria-label="breadcrumbs" class="">Hora Ínicio da Tarefa:</label>
-            <div class="control">
-              {{form.hora_inicio}}
-            </div>
-          </div>
-        </div>
-
-        <div class="column">
-          <div class="field">
-            <label aria-label="breadcrumbs"  class="">Atribuir Colaborador:</label>
-            <div class="control is-expanded">
-              <div class="select is-fullwidth">
-                <select name="{{form.colaborador_utilizador_idutilizador.id_for_label}}" id="{{form.colaborador_utilizador_idutilizador.id_for_label}}">
-                  <option value="" selected="">Nenhum Colaborador Atribuido</option>
-                  {% for colab in dispo %}
-                    <option value="{{colab.colaborador_utilizador_idutilizador.pk}}">{{colab.colaborador_utilizador_idutilizador.utilizador_idutilizador.nome}} (disponível dia {{colab.dia_dia}} das {{colab.horario_hora}} às {{colab.horario_hora1}})</option>
-                  {% endfor %}
-                </select>
-              </div>
-            </div>
-          </div>
-        </div>
 
         <hr>
         
@@ -73,13 +37,18 @@
             <label>Atual Atividade do(s) Participante(s):</label>
             <div style="width: 102%;" class="control">
               <div class="select is-fullwidth">
-                {{form.atividade_idatividade}}
+                <select id="id_atividade_idatividade" name="atividade_idatividade">
+                <option hidden value="">Nenhuma Atividade Selecionada</option>
+                {% for a in atividade %}
+                <option value="{{a.pk}}">{{a.titulo}}</option>
+                {% endfor %}
+                </select>
               </div>
             </div>
           </div>
 
           <div style="margin-left: -5%; width: 100%;" class="column">
-            <div style="margin-left: 50%; width: 300%;" class="control">
+            <div style="margin-left: 40%; width: 300%;" class="control">
               <label>Selecionar Sessão:</label>
               <div class="select is-fullwidth">
                 <select id="idsessao" name="idsession">
@@ -88,8 +57,9 @@
               </div>
             </div>
           </div>
+
           <div style="margin-left: 90%;" class="column">
-            <div style="margin-left: -22%; width: 300px;" class="control">
+            <div style="margin-left: -35%; width: 250px;" class="control">
               <label class="">Selecionar Grupo:</label>
               <div class="select is-fullwidth">
                 <select id="grupos" name="grupos">
@@ -103,18 +73,36 @@
         <div style="width: 100%; margin-left: -20%;" class="columns">
           <div style="width: 80%;"class="column is-3">
             <label class="">Próxima Atividade do(s) Participante(s):</label>
-            <div style="width: 95%;" class="control">
+            <div style="width: 105%;" class="control">
               <div class="select is-fullwidth">
-                {{form.campus_levar}}
+                <select id="id_campus_levar" name="campus_levar">
+                  <option hidden value="">Nenhuma Atividade Selecionada</option>
+                  {% for a in atividade %}
+                  <option value="{{a.pk}}">{{a.titulo}}</option>
+                  {% endfor %}
+                  </select>
               </div>
             </div>
           </div>
           <div class="column">
-            <div style=" width: 250%;" class="control">
+            <div style=" width: 250%;margin-left: 20%;" class="control">
               <label style="width: 200%;" class="">Local Destino do(s) Participante(s):</label>
               <div class="select is-fullwidth">
                 <select id="levar" name="levar">
                   <option hidden value="">Selecione Atividade</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr>
+        <div class="column">
+          <div class="field">
+            <label aria-label="breadcrumbs"  class="">Atribuir Colaborador:</label>
+            <div class="control is-expanded">
+              <div class="select is-fullwidth">
+                <select name="{{form.colaborador_utilizador_idutilizador.id_for_label}}" id="{{form.colaborador_utilizador_idutilizador.id_for_label}}">
+                  <option value="" selected="">Nenhum Colaborador Atribuido</option>
                 </select>
               </div>
             </div>
@@ -213,7 +201,6 @@
         $("#grupos").html(data);  // id html form
       }
     });
-
   });
 </script>
 <script>
@@ -230,7 +217,22 @@
         $("#idsessao").html(data);  // replace the contents of the city input with the data that came from the server
       }
     });
-
+  });
+</script> 
+<script>
+  $("#idsessao").change(function () {
+    var atividadeID = $(this).val();  // get the selected country ID from the HTML input
+    $.ajax({                       // initialize an AJAX request
+      url: "{% url 'tarefa_coordenador:ajax_load_colab_guiar' %}",
+      method: 'POST',                  // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+      data: {
+        csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+        'sessao': atividadeID       // add the country id to the GET parameters
+      },
+      success: function (data) {   // `data` is the return of the `load_cities` view function
+        $("#id_colaborador_utilizador_idutilizador").html(data);  // replace the contents of the city input with the data that came from the server
+      }
+    });
   });
 </script> 
 

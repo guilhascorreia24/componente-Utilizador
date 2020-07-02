@@ -22,7 +22,9 @@ class Testviews(unittest.TestCase):
             'telefone':'123456789',
             'password1':'Admin1',
             'password2':'Admin1',
-            'funcao':0 
+            'funcao':0 ,
+            'curso':'0',
+            'departamento':'0'
         })
         self.assertEquals(response.status_code,302)
         Utilizador.objects.filter(email='sabino@hotmail.com').delete()
@@ -44,7 +46,7 @@ class Testviews(unittest.TestCase):
         Utilizador.objects.filter(email='sabino@hotmail.com').delete()
 
     def test_reset(self):
-        #Utilizador.objects.create(nome="Sabino",email="sabino@hotmail.com",telefone="123455789",password="0afb00138d8e73348ec1fe41fd3d3a8fcbd90156b263bfa5791ba0e095f42cfc",validada=0)
+        Utilizador.objects.create(nome="Sabino",email="sabino@hotmail.com",telefone="123455789",password="0afb00138d8e73348ec1fe41fd3d3a8fcbd90156b263bfa5791ba0e095f42cfc",validada=0)
         response=self.client.post(self.recuperacao_password_url,{
             'email':'sabino@hotmail.com'
         })
@@ -54,6 +56,8 @@ class Testviews(unittest.TestCase):
             'email':'sabino@hotmail.com'
         })
         self.assertEquals(response.status_code,200)
+        assert 'reset.html' in (t.name for t in response.templates)
+
     
     def test_change_password(self):
         Utilizador.objects.create(nome="Sabino",email="sabino@hotmail.com",telefone="123455789",password="0afb00138d8e73348ec1fe41fd3d3a8fcbd90156b263bfa5791ba0e095f42cfc",validada=0)
@@ -98,10 +102,11 @@ class Testviews(unittest.TestCase):
     def test_validacoes(self):
         u=Utilizador.objects.create(nome="Sabino",email="sabino@hotmail.com",telefone="123455789",password="0afb00138d8e73348ec1fe41fd3d3a8fcbd90156b263bfa5791ba0e095f42cfc",validada=4)
         a=Administrador.objects.create(pk=u.pk)
+        
         session =self.client.session
         session['user_id']=u.pk
         session.save()
-        validacao_url=reverse('validacoes',args=[1,u.pk])
+        validacao_url=reverse('validacoes',args=[0,u.pk])
         response=self.client.get(validacao_url)
         self.assertEquals(response.status_code,302)
         
@@ -112,12 +117,12 @@ class Testviews(unittest.TestCase):
         u.delete()
 
     def test_user_delete(self):
-        u=Utilizador.objects.create(nome="Sabino",email="sabino@hotmail.com",telefone="123455789",password="0afb00138d8e73348ec1fe41fd3d3a8fcbd90156b263bfa5791ba0e095f42cfc",validada=4)
-        a=Administrador.objects.create(pk=u.pk)
+        u=Utilizador.objects.create(nome="Sabino",email="sabino@hotmail.com",telefone="123455789",password="0afb00138d8e73348ec1fe41fd3d3a8fcbd90156b263bfa5791ba0e095f42cfc",validada=0)
 
         delete_url=reverse('delete',args=[u.pk])
         response=self.client.get(delete_url)
         self.assertEquals(response.status_code,302)
+
 
     def test_profile_edit(self):
         u=Utilizador.objects.create(nome="Sabino",email="sabino@hotmail.com",telefone="123455789",password="0afb00138d8e73348ec1fe41fd3d3a8fcbd90156b263bfa5791ba0e095f42cfc",validada=4)

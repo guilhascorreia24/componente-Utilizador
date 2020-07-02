@@ -17,9 +17,7 @@ class TestForms(SimpleTestCase):
 
         self.assertFalse(form.is_valid())
         self.assertEquals(len(form.errors),2)
-#
-#
-#
+
 #
 #    def test_transportehorario_form_valid_data(self):
 #        form = TransporteHorarioForm (data={

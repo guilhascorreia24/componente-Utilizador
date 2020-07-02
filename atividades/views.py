@@ -4,6 +4,7 @@ from .forms import *
 from blog.models import Atividade, Utilizador, Administrador, Coordenador, ProfessorUniversitario, Espaco, Departamento, \
     UnidadeOrganica, Sessao, Horario, Campus, Dia, HorarioHasDia, Sala, Anfiteatro, Arlivre, Menu, CoordenadorHasDepartamento
 from Notification.views import noti_not_checked
+from Notification.views import vagas
 from Notification import views as noti_views
 
 
@@ -28,23 +29,30 @@ def home_view(request):
 
 # --------------------------------Atividades:
 def all_valid(request):
-    errors = []
+    errors = ["","","","","","",""]
     if not request.POST.get('titulo'):
-        errors.append("Campo Titulo vazio")
+        errors[0]="Campo vazio"
     if not request.POST.get('descricao'):
-        errors.append("Campo Descrição vazio")
+        errors[1]="Campo vazio"
     if not request.POST.get('publico_alvo'):
-        errors.append("Campo Publico Alvo vazio")
+        errors[2]="Campo vazio"
     if not request.POST.get('tema'):
-        errors.append("Campo Tematica vazio")
-    if not request.POST.get('capacidade'):
-        errors.append("Campo Número de Participantes vazio")
+        errors[3]="Campo vazio"
     if not request.POST.get('duracao'):
-        errors.append("Campo Duração vazio")
+        errors[4]="Campo vazio"
     if not request.POST.get('nrcolaboradores'):
-        errors.append("Campo Número de colaboradores vazio")
+        errors[5]="Campo vazio"
+    if not request.POST.get('capacidade'):
+        errors[6]="Campo vazio"
 
     return errors
+
+def number_of(erros):
+    result = 0
+    for x in erros:
+        if x:
+            result+=1
+    return result
 
 
 def atividade_create_view(request):
@@ -52,7 +60,7 @@ def atividade_create_view(request):
     professor = get_object_or_404(ProfessorUniversitario, utilizador_idutilizador=request.session["user_id"])
     if request.method == "POST":
         erros = all_valid(request)
-        if len(erros) == 0:
+        if number_of(erros) == 0:
             new = Atividade(titulo=request.POST.get('titulo'), capacidade=request.POST.get('capacidade'),
                             publico_alvo=request.POST.get('publico_alvo'),
                             duracao=request.POST.get('duracao'),
@@ -93,8 +101,10 @@ def editar_atividade_view(request, idActivity):
             sessao.append(sess.horario_has_dia_id_dia_hora)
     if request.method == "POST":
         erros = all_valid(request)
-        if len(erros) == 0:
+        if number_of(erros) == 0:
             atividade.titulo = request.POST.get('titulo')
+            if atividade.capacidade != request.POST.get('capacidade'):
+                vagas(request,atividade.idatividade,"Mudança no numero de vagas atividade"+atividade.titulo,"Novo numero de vagas: "+request.POST.get('capacidade'))
             atividade.capacidade = request.POST.get('capacidade')
             atividade.duracao = request.POST.get('duracao')
             atividade.validada = 2
@@ -122,37 +132,7 @@ def editar_atividade_view(request, idActivity):
 
 def all_activities_view(request):
     atividades = Atividade.objects.all().filter(validada=1)
-    campus_filter = ""
-    uo_filter = ""
-    departamento_filter = ""
-    tema_filter = ""
-    titulo_filter = ""
-    if request.method == "POST":
-        if request.POST.get("unidade_organica"):
-            atividades = atividades.filter(unidade_organica_iduo=request.POST.get("unidade_organica"))
-            uo_filter = get_object_or_404(UnidadeOrganica, iduo=request.POST.get("unidade_organica")).iduo
-        if request.POST.get("departamento"):
-            atividades = atividades.filter(departamento_iddepartamento=request.POST.get("departamento"))
-            departamento_filter = get_object_or_404(Departamento, iddepartamento=request.POST.get("departamento")).iddepartamento
-        if request.POST.get("temaAtividade"):
-            atividades = atividades.filter(tematica__icontains=request.POST.get("temaAtividade"))
-            tema_filter = request.POST.get("temaAtividade")
-        if request.POST.get("nomeAtividade"):
-            atividades = atividades.filter(titulo__icontains=request.POST.get("nomeAtividade"))
-            titulo_filter = request.POST.get("nomeAtividade")
-        if request.POST.get("campus"):
-            campus_atividade = []
-            for atv in atividades:
-                if atv.unidade_organica_iduo.campus_idcampus == get_object_or_404(Campus, idcampus=request.POST.get("campus")):
-                    campus_atividade.append(atv)
-            atividades = campus_atividade
-            campus_filter = get_object_or_404(Campus, idcampus=request.POST.get("campus")).idcampus
     context = {
-        "campus_filter": campus_filter,
-        "uo_filter": uo_filter,
-        "departamento_filter": departamento_filter,
-        "tema_filter": tema_filter,
-        "titulo_filter": titulo_filter,
         "campus": Campus.objects.all(),
         "uo": UnidadeOrganica.objects.all(),
         "departamentos": Departamento.objects.all(),
@@ -164,38 +144,11 @@ def all_activities_view(request):
 
 
 def coordinator_activities_view(request):
-    departamento_filter = ""
-    tema_filter = ""
-    titulo_filter = ""
-    estado_filter = ""
     unidade_organica = get_object_or_404(Coordenador,
                                          utilizador_idutilizador=request.session["user_id"]).unidade_organica_iduo.iduo
     atividades = Atividade.objects.all().filter(unidade_organica_iduo=unidade_organica)
-    if request.method == "POST":
-        if request.POST.get("departamento"):
-            atividades = atividades.filter(departamento_iddepartamento=request.POST.get("departamento"))
-            departamento_filter = get_object_or_404(Departamento,
-                                                    iddepartamento=request.POST.get("departamento")).iddepartamento
-        if request.POST.get("estado"):
-            validada = int(request.POST.get("estado"))
-            if validada == 0:
-                options = [0, 2]
-                atividades = atividades.filter(validada__in=options)
-            else:
-                atividades = atividades.filter(validada=validada)
-            estado_filter = request.POST.get("estado")
-        if request.POST.get("temaAtividade"):
-            atividades = atividades.filter(tematica__icontains=request.POST.get("temaAtividade"))
-            tema_filter = request.POST.get("temaAtividade")
-        if request.POST.get("nomeAtividade"):
-            atividades = atividades.filter(titulo__icontains=request.POST.get("nomeAtividade"))
-            titulo_filter = request.POST.get("nomeAtividade")
     context = {
-        "departamento_filter": departamento_filter,
-        "tema_filter": tema_filter,
-        "titulo_filter": titulo_filter,
-        "estado_filter": estado_filter,
-        "departamentos": Departamento.objects.all(),
+        "departamentos": Departamento.objects.filter(unidade_organica_iduo=unidade_organica),
         "list": atividades,
         "account": return_account_type(request.session["user_id"]),
         'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)
@@ -257,7 +210,7 @@ def create_edit_session_view(request, idActivity):
     dia = Dia.objects.all()
     hora = Horario.objects.all()
     message = ""
-    if request.method == "POST" and request.POST.get("hora") and request.POST.get("hora"):
+    if request.method == "POST" and request.POST.get("dia") and request.POST.get("hora"):
         horario = get_object_or_404(HorarioHasDia, dia_dia=request.POST.get("dia"), horario_hora=request.POST.get("hora"))
         if not Sessao.objects.all().filter(atividade_idatividade=idActivity, horario_has_dia_id_dia_hora=horario):
             atividade = get_object_or_404(Atividade, idatividade=idActivity)
@@ -281,6 +234,34 @@ def create_edit_session_view(request, idActivity):
     }
     return render(request, "atividades/criar_editar_sessao.html", context)
 
+
+def create_edit_session_formulario_view(request, idActivity):
+    dia = Dia.objects.all()
+    hora = Horario.objects.all()
+    message = ""
+    if request.method == "POST" and request.POST.get("dia") and request.POST.get("hora"):
+        horario = get_object_or_404(HorarioHasDia, dia_dia=request.POST.get("dia"), horario_hora=request.POST.get("hora"))
+        if not Sessao.objects.all().filter(atividade_idatividade=idActivity, horario_has_dia_id_dia_hora=horario):
+            atividade = get_object_or_404(Atividade, idatividade=idActivity)
+            newSession = Sessao(nrinscritos=0, capacidade=atividade.capacidade,
+                                atividade_idatividade=get_object_or_404(Atividade, idatividade=idActivity),
+                                horario_has_dia_id_dia_hora=horario)
+            newSession.save()
+            atividade.validada = 2
+            atividade.save()
+        else:
+            message = "Já existe sessão no horário escolhido"
+    sessao = Sessao.objects.all().filter(atividade_idatividade=idActivity).order_by('horario_has_dia_id_dia_hora')
+    context = {
+        "list": sessao,
+        "horario": hora,
+        "dia": dia,
+        "activity": get_object_or_404(Atividade, idatividade=idActivity),
+        "messageError": message,
+        "account": return_account_type(request.session["user_id"]),
+        'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)
+    }
+    return render(request, "atividades/criar_editar_sessao_formulario.html", context)
 
 # --------------------------------Espaço:
 
@@ -346,14 +327,14 @@ def editar_local_view(request, idActivity):
             if account == 'coordinator':
                 return redirect("atividades:consultar_atividades_coodernador")
             elif account == 'professor':
-                return redirect("../../editar_sessao/" + str(idActivity))
-        elif request.POST.get('semSala') and account == 'coordinator':
-            return redirect("atividades:consultar_atividades_coodernador")
-        elif request.POST.get('semSala') and account == 'professor':
+                return redirect("../../editar_sesao/" + str(idActivity))
+        elif request.POST.get('semSala'):
+            atividade.espaco_idespaco = None
+            atividade.save()
             uo = get_object_or_404(ProfessorUniversitario, utilizador_idutilizador=request.session["user_id"]).departamento_iddepartamento.unidade_organica_iduo
             for x in get_list_or_404(Coordenador, unidade_organica_iduo=uo):
                 noti_views.new_noti(request, x.utilizador_idutilizador.idutilizador, "Especificações de sala e material", request.POST.get("infoSala"))
-            return redirect("../../editar_sessao/" + str(idActivity))
+            return redirect("../../editar_sesao/" + str(idActivity))
         elif request.POST.get('tipoSala') == '1':
             fields = 1
             for edificio in get_list_or_404(Espaco, campus_idcampus=atividade.unidade_organica_iduo.campus_idcampus):
@@ -378,6 +359,11 @@ def editar_local_view(request, idActivity):
             if Arlivre.objects.exists():
                 for local in get_list_or_404(Arlivre):
                     espaco.append(get_object_or_404(Espaco, idespaco=local.espaco_idespaco.idespaco))
+        elif atividade.espaco_idespaco:
+            if account == 'coordinator':
+                return redirect("atividades:consultar_atividades_coodernador")
+            elif account == 'professor':
+                return redirect("../../editar_sesao/" + str(idActivity))
     context = {
         "activity": atividade,
         "espacos": espaco,
@@ -391,14 +377,6 @@ def editar_local_view(request, idActivity):
 
 
 # --------------------------------Outros:
-
-def show_image(request, image):
-    mapa = get_object_or_404(Espaco, idespaco=image).img
-    context = {
-        "image": mapa
-    }
-    return render(request, "atividades/show_image.html", context)
-
 
 def return_account_type(userId):
     if ProfessorUniversitario.objects.filter(utilizador_idutilizador=userId).exists():
@@ -481,22 +459,6 @@ def apagar_departamento_view(request, idDepartamento):
     if not(CoordenadorHasDepartamento.objects.filter(departamento_iddepartamento=idDepartamento).exists() and Atividade.objects.filter(departamento_iddepartamento=idDepartamento).exists() and ProfessorUniversitario.objects.filter(departamento_iddepartamento=idDepartamento).exists()) :
         departamento.delete()
     return redirect("atividades:criar_departamento")
-
-
-# --------------------------------Extras:
-
-
-def login_view(request):
-    if request.method == "POST":
-        request.session["user_id"] = get_object_or_404(Utilizador, username=request.POST.get('username')).idutilizador
-        return redirect("atividades:home_page")
-    return render(request, "atividades/login.html")
-
-
-def logout_view(request):
-    del request.session["user_id"]
-    return redirect("atividades:login")
-
 
 # --------------------------------Paragens:
 

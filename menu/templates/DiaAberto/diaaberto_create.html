@@ -26,6 +26,7 @@
         <div style="padding: 1rem 2vw 1rem">
             <form method="POST" class="post-form"> {% csrf_token %}
                 <div class="b-steps">
+                    {{ form.non_field_errors }}
                     <section class="step-content">
                         <div class="step-item">
                             <div style="padding: 1rem 2vw 0px;">
@@ -34,32 +35,34 @@
                                     Dia Aberto </h2>
                                 <div class="columns">
                                     <div class="column">
+                                        
                                         <div class="field">
-                                            <label class="label">Ano</label>
+                                            <label for="{{form.ano.id_for_label}}">Ano</label>
                                             <div class="control is-clearfix">
                                                 {{form.ano}}
+                                                <span class="help is-danger">{{form.errors.ano}}</span>
                                             </div>
                                         </div>
-                                        {{form.errors.ano}}
                                     </div>
                                    
                                     <div class="column">
                                         <div class="field">
-                                            <label class="label">Pagina Web do Dia Aberto</label>
+                                            <label for="{{ form.enderecopaginaweb.id_for_label}}">Página Web do Dia Aberto</label>
                                             <div class="control is-clearfix">
                                                 {{form.enderecopaginaweb}}
+                                                <span class="help is-danger">{{form.errors.enderecopaginaweb}}
                                                 </span>
                                                 <!---->
                                             </div>
                                             <!---->
                                         </div>
                                     </div>
-                                    {{form.errors.enderecopaginaweb}}
                                     <div class="column">
                                         <div class="field">
-                                            <label class="label">Email da Universidade do Algarve</label>
+                                            <label for="{{ form.emaildiaaberto.id_for_label}}">Email da Universidade do Algarve</label>
                                             <div class="control is-clearfix">
                                                 {{form.emaildiaaberto}}
+                                                <span class="help is-danger">{{form.errors.emaildiaaberto}}
                                                 </span>
                                                 <!---->
                                             </div>
@@ -67,9 +70,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                {{form.errors.emaildiaaberto}}
                                 <div class="field">
-                                    <label class="label">Descrição</label>
+                                    <label for="{{form.descricao.id_for_label}}">Descrição</label>
                                     <div class="control is-clearfix">
                                         <textarea style="margin-top: 0px; margin-bottom: 0px; height: 30%;" maxlength="300" class="textarea" id={{form.descricao}}></textarea>
                                     </div>
@@ -85,10 +87,11 @@
                                 <div class="columns">
                                     <div class="column">
                                         <div class="field">
-                                            <label class="label">Incio para Propor Atividades por parte dos
+                                            <label for="{{ form.datapropostaatividadeinicio.id_for_label}}">Inicio para Propor Atividades por parte dos
                                                 Docentes</label>
                                             <div class="control is-clearfix">
                                                 {{form.datapropostaatividadeinicio}}
+                                                <span class="help is-danger">{{form.errors.datapropostaatividadeinicio}}</span>
                                                 <!---->
                                                 <!---->
                                                 <!---->
@@ -96,20 +99,21 @@
                                             <!---->
                                         </div>
                                     </div>
-                                    {{form.errors.datapropostaatividadeinicio}}
+                                
                                     <div class="column">
                                         <div class="field">
-                                            <label class="label">Fim para Propor Atividades por parte dos
+                                            <label for="{{ form.datapropostaatividadesfim.id_for_label}}">Fim para Propor Atividades por parte dos
                                                 Docentes</label>
                                             <div class="control is-clearfix">
                                                 {{form.datapropostaatividadesfim}}
+                                                <span class="help is-danger">{{form.errors.datapropostaatividadesfim}}</span>
                                                 </span>
                                                 <!---->
                                             </div>
                                             <!---->
                                         </div>
                                     </div>
-                                    {{form.errors.datapropostaatividadesfim}}
+                                   
                                 </div>
                             </div>
                             <div style="padding: 1rem 2vw 0px;">
@@ -119,9 +123,10 @@
                                 <div class="columns">
                                     <div class="column">
                                         <div class="field">
-                                            <label class="label">Incio da Inscrição para Dia Aberto</label>
+                                            <label for="{{ form.datainscricaonasatividadesinicio.id_for_label}}">Inicio da Inscrição para Dia Aberto</label>
                                             <div class="control is-clearfix">
                                                 {{form.datainscricaonasatividadesinicio}}
+                                                <span class="help is-danger">{{form.errors.datainscricaonasatividadesinicio}}</span>
                                                 <!---->
                                                 <!---->
                                                 <!---->
@@ -129,12 +134,12 @@
                                             <!---->
                                         </div>
                                     </div>
-                                    {{form.errors.datainscricaonasatividadesinicio}}
                                     <div class="column">
                                         <div class="field">
-                                            <label class="label">Fim da Inscrição para Dia Aberto</label>
+                                            <label for="{{ form.datainscricaonasatividadesfim.id_for_label}}">Fim da Inscrição para Dia Aberto</label>
                                             <div class="control is-clearfix">
                                                 {{form.datainscricaonasatividadesfim}}
+                                                <span class="help is-danger">{{form.errors.datainscricaonasatividadesfim}}
                                                 </span>
                                                 <!---->
                                             </div>
@@ -150,18 +155,20 @@
                                 <div class="columns">
                                     <div class="column">
                                         <div class="field">
-                                            <label class="label">Incio do Dia Aberto</label>
+                                            <label for="{{ form.datadiaabertoinicio.id_for_label}}">Inicio do Dia Aberto</label>
                                             <div class="control is-clearfix">
                                                 {{form.datadiaabertoinicio}}</div>
+                                                <span class="help is-danger">{{form.errors.datadiaabertoinicio}}</span>
                                             <!---->
                                         </div>
                                     </div>
-                                    {{form.errors.datadiaabertoinicio}}
+                                    
                                     <div class="column">
                                         <div class="field">
-                                            <label class="label">Fim do Dia Aberto</label>
+                                            <label for="{{ form.datadiaabertofim.id_for_label}}">Fim do Dia Aberto</label>
                                             <div class="control is-clearfix">
                                                 {{form.datadiaabertofim}}
+                                                <span class="help is-danger">{{form.errors.datadiaabertofim}}
                                                 </span>
                                                 <!---->
                                             </div>
@@ -177,9 +184,10 @@
                                 <div class="columns">
                                     <div class="column">
                                         <div class="field">
-                                            <label class="label">Preço do aluno</label>
+                                            <label for="{{ form.preco_almoco_estudante.id_for_label}}">Preço do aluno</label>
                                             <div class="control is-clearfix">
                                                 {{form.preco_almoco_estudante}}
+                                                <span class="help is-danger">{{form.errors.preco_almoco_estudante}}</span>
                                                 <!---->
                                                 <!---->
                                                 <!---->
@@ -187,16 +195,17 @@
                                             <!---->
                                         </div>
                                     </div>
-                                    {{form.errors.preco_almoco_estudante}}
+                                    
                                     <div class="column">
                                         <div class="field">
-                                            <label class="label">Preço do professor</label>
+                                            <label for="{{ form.preco_almoco_professor.id_for_label}}">Preço do professor</label>
                                             <div class="control is-clearfix">
                                                 {{form.preco_almoco_professor}}
+                                                <span class="help is-danger">{{form.errors.preco_almoco_professor}}</span>
                                             </div>
                                         </div>
                                     </div>
-                                    {{form.errors.preco_almoco_professor}}
+                            
                                 </div>
                                 </div>
                                 <div style="padding: 1rem 2vw 0px;">
@@ -206,17 +215,17 @@
                                         <div class="columns">
                                         <div class="column">
                                             <div class="field">
-                                                <label class="label">Hora Abertura</label>
+                                                <label for="">Hora Abertura</label>
                                                  <div class="control is-clearfix">
-                                                    <input type="time" name="h_incio" class="input" required="" id="h_incio" value={{hora_inicio}}>
+                                                    <input type="time" name="h_incio" class="input" required="" id="h_incio">
                                                    </div>
                                                  </div>
                                                </div>
                                                <div class="column">
                                                 <div class="field">
-                                                    <label class="label">Hora Fecho</label>
+                                                    <label for="">Hora Fecho</label>
                                                      <div class="control is-clearfix">
-                                                        <input type="time" name="h_fim" class="input" required="" id="h_fim" value={{hora_fim}}>
+                                                        <input type="time" name="h_fim" class="input" required="" id="h_fim">
                                                        </div>
                                                      </div>
                                                    </div>
@@ -229,11 +238,30 @@
                                     <span>Cancelar</span>
                                 </a>
                             </div>
-                            <div class="level-right">
-                                <input href="{% url "menu:diaaberto_list" %}" 
-                                class="button is-large is-success is-outlined is-link" type='submit'
-                                    value='Submeter'>
+                            <div style="margin-left: 50%;" class="column"> 
+                                <button type="button" class="button is-large is-success is-outlined" data-toggle="modal" data-target="#exampleModal" data-backdrop="false">
+                                  <span>Submeter</span>
                                 </button>
+                                </div>
+                                <div class="dialog modal" id="exampleModal">
+                                    <div class="modal-background"></div>
+                                    <br><br><br><br><br><br><br><br><br><br><br><br>
+                                    <div class="modal-card animation" style="max-width:20%">
+                                        <!---->
+                                        <section class="modal-card-body is-titleless">
+                                            <div class="media">
+                                                <!---->
+                                                <div class="media-content">
+                                                    <p>Tem a certeza que quer prosseguir?</p>
+                                                    <!---->
+                                                </div>
+                                            </div>
+                                        </section>
+                                        <footer class="modal-card-foot"><button class="button" data-dismiss="modal">
+                                                Cancelar
+                                            </button> <button class="button is-success" type="submit">
+                                                Confirmar
+                                            </button></footer>
                             </div>
                         </div>
                     </div>
@@ -242,8 +270,14 @@
         </div>
     </div>
 </div>
+</div>
 
 <style>
+    .errorlist
+    {
+        color: red;
+        
+    }
     .label {
         font-weight: normal;
     }

@@ -39,7 +39,6 @@
                             {% endfor %}
                             <tr>
                                 <td>
-                                    <form method="POST">
                                        {% if account == 'professor' %}
                                        <a href="{% url 'atividades:consultar_minhas_atividades'%}">
                                        {% elif account == 'coordinator' %}
@@ -51,7 +50,6 @@
                                                 <i class="mdi mdi-arrow-left-drop-circle mdi-24px"></i>
                                             </span>
                                         </a>
-                                    </form>
                                 </td>
                                 <td></td>
                                 <td></td>
@@ -72,7 +70,7 @@
                             </tr>
                     </thead>
                 </table>
-                {% if account == 'coordinator' and activity.validada == 0 or activity.validada == 2 %}
+                {% if account == 'coordinator' and activity.validada == 0 or account == 'coordinator' and activity.validada == 2%}
                 <div class="column is-8 is-offset-2">
                     <div class="level">
                         <div class="level-left"><button type="button" class="button is-large is-danger is-outlined"
@@ -145,6 +143,6 @@
                 </div>
             </div>
                 {% endif %}
-
+            </div>
 
 {% endblock content %}
