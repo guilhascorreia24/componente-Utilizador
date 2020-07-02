@@ -70,6 +70,7 @@ def diaaberto_update(request, id):
             if horario.horario_hora.pk>hora_fim:
                 hora_fim=HorarioHasDia.objects.filter(dia_dia=horario.dia_dia).reverse()[0].horario_hora.pk
     if form.is_valid():
+        #DiaAberto.objects.filter(ano=id).delete()
         form.save()
         print(form.cleaned_data)
         #Horario.objects.all().delete()
@@ -443,7 +444,8 @@ def transporte_grupo_view(request, id):
     if request.method == "POST":
         if form.is_valid():
             #t= Transporte.objects.get(idtransporte=request.POST['transporte_idtransporte'])
-            #trans = TransporteHasHorario.objects.get(transporte_idtransporte = t, id_transporte_has_horario = request.POST['horario'])
+            #tra =TransporteHasHorario.objects.get(id_transporte_has_horario = request.POST['horario'])
+            #trans = TransporteHasHorario.objects.get(transporte_idtransporte = t, id_transporte_has_horario = tra)
             #inscricao = TransporteHasInscricao.objects.filter(horario = trans)
             #if len(inscricao)>0:
             #    form.inscricao= 'Este grupo já está associado a este transporte'
