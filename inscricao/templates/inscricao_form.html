@@ -1,7 +1,7 @@
 {% extends "base_template.html" %} {% load static %} {% load ins_form_tags %}
 {% block steps %}
 <li><a href="/" class="router-link-active">Início</a></li>
-<li><a href="{% url "inscricao:register" %}" class="">Inscrição Coletiva</a></li>
+<li><a href="{% url "inscricao:register" ano=ano %}" class="">Inscrição Coletiva</a></li>
 {% endblock %}
 
 {% block content %}

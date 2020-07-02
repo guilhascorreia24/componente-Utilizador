@@ -58,6 +58,12 @@ def inscricao_delete(request,inscricao):
     return render(request,"not_for-u.html",{'context' : context , 'message' : "Não têm permissao para apagar a inscrição"})
 
 def inscricao_alterar(request,inscricao):
+
+    store = models.InscricaoHasSessao.objects.select_related('sessao_idsessao','sessao_idsessao__horario_has_dia_id_dia_hora').filter(inscricao_idinscricao=inscricao)
+    if(len(store)<1):
+        return render(request,"not_for-u.html",{'context' : context , 'message' : "Inscrição não existe"})
+
+    ano = str(store[0].sessao_idsessao.horario_has_dia_id_dia_hora.dia_dia)
     try:
         insc = models.InscricaoColetiva.objects.get(inscricao_idinscricao=inscricao)
     except:
@@ -67,9 +73,9 @@ def inscricao_alterar(request,inscricao):
             context={'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)}
             return render(request,"not_for-u.html",{'context' : context , 'message' : "Não existe Inscrição"})
         
-        return inscricao_individual_form(request,insc)
+        return inscricao_individual_form(request,ano.insc)
 
-    return inscricao_form(request,insc)
+    return inscricao_form(request,ano,insc)
 
 #Precisa de ser inscricao individual ou coletiva
 def delete_inscricao(inscricao):
@@ -83,7 +89,7 @@ def delete_inscricao(inscricao):
 
 #type 1 individual
 #type 0 coletivo
-def form(request,_type,inscricao=None,user=None):
+def form(request,_type,ano,inscricao=None,user=None):
     user = userValidation.getLoggedUser(request)
     context={'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)}
 
@@ -123,13 +129,13 @@ def form(request,_type,inscricao=None,user=None):
             else:
                 campus = models.Campus.objects.all()
                 sessoes = list_sessao()
-                return render(request,'inscricao_form.html',{'form': form, 'atividades_sessao' : sessoes, 'campus':campus, 'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
+                return render(request,'inscricao_form.html',{'form': form, 'atividades_sessao' : sessoes, "ano":ano, 'campus':campus, 'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
         
         else:
             campus = models.Campus.objects.all()
             form = forms.CustomForm(inscricao=inscricao)
             sessoes = list_sessao()
-            return render(request,'inscricao_form.html',{'form': form, 'atividades_sessao' : sessoes,'campus':campus, 'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
+            return render(request,'inscricao_form.html',{'form': form, "ano":ano, 'atividades_sessao' : sessoes,'campus':campus, 'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
 
     elif(_type == 1):
         if request.method == 'POST':
@@ -145,23 +151,23 @@ def form(request,_type,inscricao=None,user=None):
             else:
                 campus = models.Campus.objects.all()
                 sessoes = list_sessao()
-                return render(request,'inscricao_individual_form.html',{'form': form, 'atividades_sessao' : sessoes, 'campus':campus,  'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
+                return render(request,'inscricao_individual_form.html',{'form': form, "ano":ano, 'atividades_sessao' : sessoes, 'campus':campus,  'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
         
         else:
             campus = models.Campus.objects.all()
             form = forms.FormIndividual(inscricao=inscricao)
             sessoes = list_sessao()
-            return render(request,'inscricao_individual_form.html',{'form': form, 'atividades_sessao' : sessoes,'campus':campus,  'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
+            return render(request,'inscricao_individual_form.html',{'form': form, "ano":ano, 'atividades_sessao' : sessoes,'campus':campus,  'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
     
     else:
         return render(request,"not_for-u.html",{'context' : context , 'message' : "Erro desconhecido"})
 
-def inscricao_form(request,inscricao=None):
-    var = form(request,0,inscricao=inscricao)
+def inscricao_form(request,ano,inscricao=None):
+    var = form(request,0,inscricao=inscricao,ano=ano)
     return var
 
-def inscricao_individual_form(request,inscricao=None):
-    return form(request,1,inscricao=inscricao)
+def inscricao_individual_form(request,ano,inscricao=None):
+    return form(request,1,inscricao=inscricao,ano=ano)
 
 def create_inscricao_allowed(user):
     date = datetime.date.today()
@@ -284,7 +290,11 @@ def consultar_inscricao(request):
         args = {'inscricao':insc}
 
     (result_coletivo,result_individual) = get_inscricoes(**args)
+    dias = models.Dia.objects.all()
+    result_dias = list()
+    for dia in dias:
+        if dia.pk.year == datetime.date.today().year:
+            result_dias.append(dia)
 
-
-    return render(request,'consultar_participante.html',{'user_type':user._type,'inscricoes_coletivas':result_coletivo,'inscricoes_individuais':result_individual,  'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
+    return render(request,'consultar_participante.html',{'user_type':user._type,'dias':result_dias,'inscricoes_coletivas':result_coletivo,'inscricoes_individuais':result_individual,  'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
     
