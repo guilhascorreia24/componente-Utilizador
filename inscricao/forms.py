@@ -354,6 +354,22 @@ class CustomForm:
             for _sessao in sessoes_store:
                 _sessao.errors['nr_inscritos'] = ["Existem demasiadas inscrições para a mesma hora"]
 
+        n_max = self.inscricao_coletiva.cleaned_data['nparticipantes']
+        passageiros = 0
+        for transporte in self.transportes:
+            passageiros += transporte.cleaned_data['n_passageiros']
+
+        if(n_max < passageiros):
+            self.inscricao_coletiva.errors['nparticipantes']= ["Numero de acompanhantes é inferior ao numero de transportes"]
+            value = False
+        
+        almocos = 0
+        for almoco in self.almoco.prato:
+            almocos += almoco.cleaned_data['nralmocos']
+
+        if(n_max < almocos):
+            self.inscricao_coletiva.errors['nparticipantes']= ["Numero de acompanhantes é inferior ao numero de almoços"]
+            value = False
 
             
         return value
@@ -462,6 +478,24 @@ class FormIndividual:
             if last_hora == curr_hora:
                 sessao.errors['nr_inscritos'] = ["Não é possivel inscrever em sessões á mesma hora"]
                 value = False
+        
+        n_max = self.inscricao_individual.cleaned_data['nracompanhantes'] + 1
+        passageiros = 0
+        for transporte in self.transportes:
+            passageiros += transporte.cleaned_data['n_passageiros']
+
+        if(n_max < passageiros):
+            self.inscricao_individual.errors['nracompanhantes']= ["Numero de acompanhantes é inferior ao numero de transportes"]
+            value = False
+        
+        almocos = 0
+        for almoco in self.almoco.prato:
+            almocos += almoco.cleaned_data['nralmocos']
+
+        if(n_max < almocos):
+            self.inscricao_individual.errors['nracompanhantes']= ["Numero de acompanhantes é inferior ao numero de almoços"]
+            value = False
+
         
         
         return value

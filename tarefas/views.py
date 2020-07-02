@@ -28,10 +28,6 @@ def consultar_tarefas(request):
             for disps in form:
                 disps.save_user(colaborador)
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 9714d4dc967c4213ddbd90e6048599d6dfb2b43d
             if form.is_valid():
               
                 form.save()
