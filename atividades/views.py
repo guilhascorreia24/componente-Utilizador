@@ -4,6 +4,7 @@ from .forms import *
 from blog.models import Atividade, Utilizador, Administrador, Coordenador, ProfessorUniversitario, Espaco, Departamento, \
     UnidadeOrganica, Sessao, Horario, Campus, Dia, HorarioHasDia, Sala, Anfiteatro, Arlivre, Menu, CoordenadorHasDepartamento
 from Notification.views import noti_not_checked
+from Notification.views import vagas
 from Notification import views as noti_views
 
 
@@ -102,6 +103,8 @@ def editar_atividade_view(request, idActivity):
         erros = all_valid(request)
         if number_of(erros) == 0:
             atividade.titulo = request.POST.get('titulo')
+            if atividade.capacidade != request.POST.get('capacidade'):
+                vagas(request,atividade.idatividade,"Mudança no numero de vagas atividade"+atividade.titulo,"Novo numero de vagas: "+request.POST.get('capacidade'))
             atividade.capacidade = request.POST.get('capacidade')
             atividade.duracao = request.POST.get('duracao')
             atividade.validada = 2
