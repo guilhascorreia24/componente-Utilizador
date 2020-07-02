@@ -56,13 +56,13 @@ def diaaberto_create(request):
 
 
 def diaaberto_update(request, id):
-    
     obj = get_object_or_404(DiaAberto, ano=id)
     form = DiaAbertoForm(request.POST or None, instance=obj)
     pk_url_kwarg = 'ano'
     hora_inicio=Horario.objects.all()[0].pk
     hora_fim=Horario.objects.all().order_by('-pk')[0].pk
     print(hora_inicio)
+    print(form)
     horarios=HorarioHasDia.objects.all()
     for horario in horarios:
         if horario.dia_dia.pk.year==id:
@@ -72,6 +72,7 @@ def diaaberto_update(request, id):
                 hora_fim=HorarioHasDia.objects.filter(dia_dia=horario.dia_dia).reverse()[0].horario_hora.pk
     if form.is_valid():
         form.save()
+        print(form.cleaned_data)
         #Horario.objects.all().delete()
         inicio = form.cleaned_data['datadiaabertoinicio']
         final = form.cleaned_data['datadiaabertofim']
@@ -133,12 +134,13 @@ def diaaberto_details(request, id):
 def diaaberto_delete(request, id):
     obj = get_object_or_404(DiaAberto, ano=id)
     if DiaAberto.objects.filter(ano=id).exists():
+        Utilizador.objects.filter(dia_aberto_ano=id).update(dia_aberto_ano=None)
+        obj.delete()
         notis=Notificacao.objects.all()
         dias=Dia.objects.all()
         for dia in dias:
             if dia.pk.year==id:
                 dia.delete()
-        obj.delete()
         messages.success(request, f'Configurações do Dia Aberto eliminado com Sucesso!')
         noti_views.new_noti(request,request.session['user_id'],'Submissao das Configurações do Dia Aberto','Configurações do Dia Aberto eliminado com Sucesso!')
         return redirect('menu:diaaberto_list')
@@ -158,7 +160,8 @@ def menu_create_view(request):
 
 
 def prato_create_view(request):
-    form = PratoForm(request.POST or None)
+    new_form = Prato(nralmocos=0)
+    form = PratoForm(request.POST or None, instance=new_form)
     if form.is_valid():
         form.save()
         messages.success(request, f'Prato Criado com Sucesso!')

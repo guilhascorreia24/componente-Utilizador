@@ -26,6 +26,7 @@
       <div style="padding: 1rem 2vw 1rem">
         <form method="POST" class="post-form"> {% csrf_token %}
             <div class="b-steps">
+                {{ form.non_field_errors }}
                 <section class="step-content">
                     <div class="step-item">
                         <div style="padding: 1rem 2vw 0px;">
@@ -33,17 +34,19 @@
         <div class="columns">
         <div class="column">
           <div class="field">
-              <label class="label">Identificação</label>
+              <label for="{{form.identificacao.id_for_label}}">Identificação</label>
                <div class="control is-clearfix">
                    {{form.identificacao}}
+                   <span class="help is-danger">{{form.errors.identificacao}}</span>
                   </span> <!----></div> <!---->
                   </div>
               </div>
                <div class="column">
                    <div class="field">
-                       <label class="label">Capacidade:</label>
+                       <label for="{{form.capacidade.id_for_label}}">Capacidade:</label>
                         <div class="control is-clearfix">
                            {{form.capacidade}}
+                           <span class="help is-danger">{{form.errors.capacidade}}</span>
                           </div>
                         </div>
                       </div>

@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from Notification import templates
-from .models import Notificacao, Departamento, Utilizador, DjangoSession, Participante, ProfessorUniversitario, Administrador, Coordenador, Colaborador, UtilizadorHasNotificacao, UnidadeOrganica
+from .models import *
 from .forms import *
 from django.http import HttpResponse
 from django.contrib.auth.models import User
@@ -203,18 +203,6 @@ def get_my_lists(request,list):
         list.append(str('Docentes'+"."+uos.sigla+""))
         list.append(str('Coordenadores'+"."+uos.sigla+""))
         list.append(str('Colaboradores'+"."+uos.sigla+""))
-    if me.validada==3:
-        me=ProfessorUniversitario.objects.get(utilizador_idutilizador=me)
-        uos=me.departamento_iddepartamento.unidade_organica_iduo
-        coords=Coordenador.objects.all()
-        colabs=Colaborador.objects.all()
-        list.append(str('Coordenadores'+"."+uos.sigla+""))
-    if me.validada==1:
-        me=Colaborador.objects.get(utilizador_idutilizador=me)
-        uos=me.curso_idcurso.unidade_organica_iduo
-        coords=Coordenador.objects.all()
-        dus=ProfessorUniversitario.objects.all()
-        list.append(str('Coordenadores'+"."+uos.sigla+""))
 
     return list
 
@@ -236,3 +224,23 @@ def joins(uos,x,list):
         print(str(x+uo.sigla+""))
         if not str(x+uo.sigla+"") in list:
             list.append(str(x+"."+uo.sigla+""))
+
+def vagas(request,atividade_id,assunto,texto):
+    sessoes=Sessoes.objects.filter(atividade_idatividade=atividade_id)
+    users=[]
+    for sessao in sessoes:
+        inscricoes_sess=InscricaoHasSessao.objects.filter(sessao_idsessao=sessao.pk)
+        for insc in inscricoes_sess:
+            if InscricaoIndividual.objects.filter(pk=insc.pk).exists():
+                parts=InscricaoIndividual.objects.filter(pk=insc.pk)
+                for part in parts:
+                    if not(part.participante_utilizador_idutilizador in users):
+                        users.append(part.participante_utilizador_idutilizador)
+            if InscricaoColetiva.objects.filter(pk=insc.pk).exists():
+                parts=InscricaoColetiva.objects.filter(pk=insc.pk)
+                for part in parts:
+                    if not(part.participante_utilizador in users):
+                        users.append(part.participante_utilizador_idutilizador)
+    for user in users:
+        new_noti(request,user.pk,assunto,texto)
+

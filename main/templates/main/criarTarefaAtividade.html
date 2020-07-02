@@ -35,7 +35,12 @@
                 <label class="">Selecionar Atividade:</label>
                 <div class="control">
                   <div class="select is-fullwidth">
-                    {{form.atividade_idatividade}}
+                    <select id="id_atividade_idatividade" name="atividade_idatividade">
+                      <option hidden value="">Nenhuma Atividade Selecionada</option>
+                      {% for a in atividade %}
+                      <option value="{{a.pk}}">{{a.titulo}}</option>
+                      {% endfor %}
+                      </select>
                   </div>
                 </div>
               </div>
