@@ -114,7 +114,7 @@ def checknot(request):
     for noti in nots:
         if noti.notificacao.utilizadorrecebe==me_id:
             print(notis)
-        if noti.notificacao.utilizadorrecebe==me_id and not(has_noti(notis,noti)):
+        if noti.notificacao.utilizadorrecebe==me_id and noti.utilizador_idutilizador==Utilizador.objects.get(pk=me_id) and not(has_noti(notis,noti)):
             if Utilizador.objects.filter(pk=noti.notificacao.idutilizadorenvia).exists():
                 noti.emissor=Utilizador.objects.get(pk=noti.notificacao.idutilizadorenvia).email
             else:
@@ -129,8 +129,10 @@ def deletenot(request):
     if request.method == 'POST':
         pressed = request.POST.getlist('noti')
         for press in pressed:
-            #print("eliminadas:"+str(signing.loads(press))) 
-            UtilizadorHasNotificacao.objects.filter(pk=press).delete()
+            print("eliminadas:"+str(press)) 
+            print("pp"+str(request.session['user_id']))
+            noti=UtilizadorHasNotificacao.objects.get(pk=press).notificacao
+            UtilizadorHasNotificacao.objects.filter(notificacao=noti, utilizador_idutilizador=Utilizador.objects.get(pk=request.session['user_id'])).delete()
         messages.success(request, 'Notificação/Notificações eliminada(s)')
          
 def enviados(request):
