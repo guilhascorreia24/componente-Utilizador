@@ -214,8 +214,8 @@ def get_inscricoes(**kwargs):
             .values('nralmocos',campus=F('prato_idprato__menu_idmenu__campus_idcampus__nome'),menu=F('prato_idprato__menu_idmenu__menu'),tipo=F('prato_idprato__tipo'),descricao=F('prato_idprato__descricao'))\
             .order_by('prato_idprato__menu_idmenu__campus_idcampus__nome','prato_idprato__tipo')
         
-        row['transportes'] = models.TransporteHasInscricao.objects.select_related('paragem','horario').filter(inscricao_idinscricao=query_coletiva[i].inscricao_idinscricao)\
-            .values(partida_paragem=F('horario__origem'),chegada_paragem=F('horario__destino'),passageiros=F('n_passageiros'),hora=F('horario__horario_has_dia_id_dia_hora'))
+        row['transportes'] = models.TransporteHasInscricao.objects.select_related('paragem','horario','horario__horario_has_dia_id_dia_hora').filter(inscricao_idinscricao=query_coletiva[i].inscricao_idinscricao)\
+            .values(partida_paragem=F('horario__origem'),chegada_paragem=F('horario__destino'),passageiros=F('n_passageiros'),hora=F('horario__horario_has_dia_id_dia_hora__horario_hora'))
 
         row['responsaveis'] = models.Responsaveis.objects.filter(idinscricao=query_coletiva[i].inscricao_idinscricao)\
             .values('nome','telefone','email')

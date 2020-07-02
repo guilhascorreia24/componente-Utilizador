@@ -39,7 +39,7 @@
                      <div class="control">
                       <div class="select is-fullwidth">
                         {{form.origem}}
-                        <span class="help is-danger">{{form.errors.origem}}</span>
+                        <!--<span class="help is-danger">{{form.errors.origem}}</span>-->
               </div>
             </div>
           </div>
@@ -50,7 +50,7 @@
                 <div class="control">
                   <div class="select is-fullwidth">
                      {{form.destino}}
-                     <span class="help is-danger">{{form.errors.destino}}</span>
+                     <!--<span class="help is-danger">{{form.errors.destino}}</span>-->
                     </div> 
                     </div>
                   </div>
@@ -67,7 +67,8 @@
                                <div class="control">
                                   <div class="select is-fullwidth">
                                     {{form.horario_has_dia_id_dia_hora}}
-                                    <span class="help is-danger">{{form.errors.horario_has_dia_id_dia_hora}}</span>
+                                    <span class="help is-danger">{{form.trans}}</span>
+
                                   </div>
                           
                         </div>
@@ -83,7 +84,7 @@
           <div class="column is-8 is-offset-2">
               <div class="level">
               <div class="level-left">
-              <a  href="{% url 'menu:transporte-list' %}" class="button is-outlined" type="button">
+              <a  href="{% url 'menu:transporte-criar'  %}" class="button is-outlined" type="button">
               <span>Cancelar</span>
         </a>
         </div>
