@@ -225,7 +225,8 @@
                                 <td data-label="Ações">
                                     {% if user_type == 0 or user_type == 4 %}
                                     <a role="button" class="no_underline"
-                                        href={% url 'inscricao:delete' inscricao=inscricao.inscricao.idinscricao  %}>
+                                    data-toggle="modal"
+                                    data-target="#{{ forloop.counter }}_0">
                                         <span class="icon has-text-danger"> <i
                                                 class="mdi mdi-close-box mdi-24px"></i></button></span>
                                     </a>
@@ -269,7 +270,8 @@
                                 <td data-label="Ações">
                                     {% if user_type == 0 or user_type == 4 %}
                                     <a role="button" class="no_underline"
-                                        href={% url 'inscricao:delete' inscricao=inscricao.inscricao.idinscricao  %}>
+                                    data-toggle="modal"
+                                    data-target="#{{ forloop.counter }}_1">
                                         <span class="icon has-text-danger"> <i
                                                 class="mdi mdi-close-box mdi-24px"></i></button></span>
                                     </a>
@@ -602,6 +604,28 @@
         </div>
     </div>
 </div>
+<div class="dialog modal" id="{{ forloop.counter }}_0">
+    <div class="modal-background"></div>
+    <br><br><br><br><br><br><br><br><br><br><br><br>
+    <div class="modal-card animation" style="max-width:360px">
+        <!---->
+        <section class="modal-card-body is-titleless">
+            <div class="media">
+                <!---->
+                <div class="media-content">
+                    <p>Tem a certeza que quer eliminar o inscrição?</p>
+                    <!---->
+                </div>
+            </div>
+        </section>
+        <footer class="modal-card-foot"><button class="button" data-dismiss="modal">
+                Cancelar
+            </button><a href="{% url 'inscricao:delete' inscricao=inscricao.inscricao.idinscricao  %}" style="text-decoration: none;"> <button
+                    class="button is-success" type="submit">
+                    Confirmar
+                </button></a></footer>
+    </div>
+</div>
 {% endfor %}
 <!--END BOTAO-->
 
@@ -851,8 +875,29 @@
         </div>
     </div>
 </div>
+<div class="dialog modal" id="{{ forloop.counter }}_1">
+    <div class="modal-background"></div>
+    <br><br><br><br><br><br><br><br><br><br><br><br>
+    <div class="modal-card animation" style="max-width:360px">
+        <!---->
+        <section class="modal-card-body is-titleless">
+            <div class="media">
+                <!---->
+                <div class="media-content">
+                    <p>Tem a certeza que quer eliminar o inscrição?</p>
+                    <!---->
+                </div>
+            </div>
+        </section>
+        <footer class="modal-card-foot"><button class="button" data-dismiss="modal">
+                Cancelar
+            </button><a href="{% url 'inscricao:delete' inscricao=inscricao.inscricao.idinscricao  %}" style="text-decoration: none;"> <button
+                    class="button is-success" type="submit">
+                    Confirmar
+                </button></a></footer>
+    </div>
+</div>
 {% endfor %}
-
 
 <script>
     var table = 0;

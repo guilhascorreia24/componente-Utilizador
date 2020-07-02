@@ -42,31 +42,35 @@ def criar_tarefa_atividade(request):
 
 def load_grupo(request):
 	ses = request.POST.get('sessao')
-	print(ses)
 	hassessao =  InscricaoHasSessao.objects.filter(sessao_idsessao=ses )
-	print(hassessao)
 	inscricao = Inscricao.objects.filter(idinscricao__in = hassessao)
-	print(inscricao)
 	grupos = InscricaoColetiva.objects.filter(inscricao_idinscricao__in = inscricao)
-	print(grupos)
 	return render(request=request,
 				  template_name="main/grupo_dropdown.html",
 				  context={'grupos':grupos,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
 
 def load_colab_guiar(request):
+	user_coord = Utilizador.objects.get(idutilizador = request.session["user_id"])
+	coord_user = Coordenador.objects.get(utilizador_idutilizador = user_coord)
 	sessao = Sessao.objects.get(idsessao = request.POST.get('sessao'))
 	horario = HorarioHasDia.objects.get(id_dia_hora = sessao.horario_has_dia_id_dia_hora.pk)
 	dia = Dia.objects.get(dia = horario.dia_dia.pk)
-	colab = Disponibilidade.objects.filter(dia_dia = dia).exclude(tipo_de_tarefa="Ajudar Docente")
+	curso =  Curso.objects.filter(unidade_organica_iduo = coord_user.unidade_organica_iduo)
+	c = Colaborador.objects.filter(curso_idcurso__in = curso)
+	colab = Disponibilidade.objects.filter(colaborador_utilizador_idutilizador__in = c, dia_dia = dia).exclude(tipo_de_tarefa="Ajudar Docente")
 	return render(request=request,
 				  template_name="main/colab_dropdown.html",
 				  context={'colab':colab,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
 
 def load_colab_ajudar(request):
+	user_coord = Utilizador.objects.get(idutilizador = request.session["user_id"])
+	coord_user = Coordenador.objects.get(utilizador_idutilizador = user_coord)
 	sessao = Sessao.objects.get(idsessao = request.POST.get('sessao'))
 	horario = HorarioHasDia.objects.get(id_dia_hora = sessao.horario_has_dia_id_dia_hora.pk)
 	dia = Dia.objects.get(dia = horario.dia_dia.pk)
-	colab = Disponibilidade.objects.filter(dia_dia = dia).exclude(tipo_de_tarefa="Guiar Grupo")
+	curso =  Curso.objects.filter(unidade_organica_iduo = coord_user.unidade_organica_iduo)
+	c = Colaborador.objects.filter(curso_idcurso__in = curso)
+	colab = Disponibilidade.objects.filter(colaborador_utilizador_idutilizador__in = c, dia_dia = dia).exclude(tipo_de_tarefa="Guiar Grupo")
 	return render(request=request,
 				  template_name="main/colab_dropdown.html",
 				  context={'colab':colab,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})

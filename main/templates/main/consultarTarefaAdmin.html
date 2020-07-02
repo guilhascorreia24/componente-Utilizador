@@ -107,11 +107,10 @@
                                 <tr scope="row"><td>{{i.nome}}</td>
                                 {% if i.colaborador_utilizador_idutilizador == NULL %}
                                     <td class=""> --------------- </td>
-                                    <td class=""> --------------- </td>
                                 {% else %}
                                     <td class="">{{i.colaborador_utilizador_idutilizador.utilizador_idutilizador.nome}}</td>
-                                    <td class="">{{i.colaborador_utilizador_idutilizador.curso_idcurso.unidade_organica_iduo.sigla}}</td>
                                 {% endif %}
+                                    <td class="">{{i.coordenador_utilizador_idutilizador.unidade_organica_iduo.sigla}}</td>
                                 {% if i.sessao_idsessao == NULL %}
                                     <td class=""> --------------- </td>
                                     <td class="">{{i.dia_dia.dia | date:"d/m/Y"}}</td>
@@ -133,7 +132,7 @@
                                 <td style="text-align: center;" >
                                     <a data-toggle="modal" data-target="#{{ forloop.counter }}">
                                          <span class="icon is-small icon has-text-success">
-                                             <i class="mdi mdi-account-search mdi-24px "></i>
+                                             <i class="mdi mdi-magnify mdi-24px "></i>
                                          </span>
                                      </a>
                                 </td>
