@@ -100,20 +100,31 @@ def editar_atividade_view(request, idActivity):
         for sess in get_list_or_404(Sessao, atividade_idatividade=idActivity):
             sessao.append(sess.horario_has_dia_id_dia_hora)
     if request.method == "POST":
+        notification =""
         erros = all_valid(request)
         if number_of(erros) == 0:
+            if atividade.titulo != request.POST.get('titulo'):
+                notification += "Novo titulo: " + request.POST.get('titulo') +"\n"
             atividade.titulo = request.POST.get('titulo')
             if atividade.capacidade != request.POST.get('capacidade'):
-                vagas(request,atividade.idatividade,"numero de vagas na atividade "+atividade.titulo+" alterado","Novo numero de vagas: "+request.POST.get('capacidade'))
+                notification += "Novo numero de vagas: " + request.POST.get('capacidade') +"\n"
             atividade.capacidade = request.POST.get('capacidade')
+            if atividade.duracao != request.POST.get('duracao'):
+                notification += "Nova duração: " + request.POST.get('duracao') +"\n"
             atividade.duracao = request.POST.get('duracao')
             atividade.validada = 2
             atividade.iddepartamento = request.POST.get('iddepartamento')
             atividade.publico_alvo = request.POST.get('publico_alvo')
+            if atividade.descricao != request.POST.get('descricao'):
+                notification += "Nova descrição: " + request.POST.get('descricao') +"\n"
             atividade.descricao = request.POST.get('descricao')
+            if atividade.tematica != request.POST.get('tema'):
+                notification += "Novo tema: " + request.POST.get('tema') +"\n"
             atividade.tematica = request.POST.get('tema')
             atividade.nrcolaborador = request.POST.get('nrcolaboradores')
             atividade.save()
+            # Notificação de alterar atividade->coord,colab,part
+            vagas(request, atividade.idatividade, "Mudança na atividade " + atividade.titulo, notification)
             return redirect("../../editar_local/"+str(idActivity))
     context = {
         "erros": erros,
@@ -322,6 +333,10 @@ def editar_local_view(request, idActivity):
     fields = 0
     if request.method == "POST":
         if request.POST.get('espaco'):
+            if atividade.espaco_idespaco != request.POST.get('espaco'):
+                notification = "Novo local: "+get_object_or_404(Espaco, idespaco=request.POST.get('espaco')).nome
+                # Notificação de vagas-> part
+                vagas(request, atividade.idatividade, "Mudança na local da atividade " + atividade.titulo, notification)
             atividade.espaco_idespaco = get_object_or_404(Espaco, idespaco=request.POST.get('espaco'))
             atividade.save()
             if account == 'coordinator':
