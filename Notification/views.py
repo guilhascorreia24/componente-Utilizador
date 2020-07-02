@@ -241,7 +241,18 @@ def vagas(request,atividade_id,assunto,texto):
                 for part in parts:
                     if not(part.participante_utilizador_idutilizador in users):
                         users.append(part.participante_utilizador_idutilizador)
+        tarefas=Tarefa.objects.filter(sessao_idsessao=sessao.pk)
+        for tarefa in tarefas:
+            users.append(tarefa.colaborador_utilizador_idutilizador)
+        uo_id=ProfessorUniversitario.objects.get(pk=request.session['user_id']).departamento_iddepartamento.unidade_organica_iduo
+        coords=Coordenador.objects.filter(unidade_organica_iduo=uo_id)
+        for coord in coords:
+            if not(coord in users):
+                users.append(coord)
+    print(users)
     for user in users:
-        noti=Notificacao.objects.create(descricao=texto,utilizadorrecebe=user.pk,idutilizadorenvia=-1,criadoem=datetime.now(),assunto=assunto)
+        noti=Notificacao.objects.create(descricao=texto,utilizadorrecebe=user.pk,idutilizadorenvia=request.session['user_id'],criadoem=datetime.now(),assunto=assunto)
         UtilizadorHasNotificacao.objects.create(utilizador_idutilizador=Utilizador.objects.get(pk=user.pk),notificacao=noti,estado=0)
+    
+    
 
