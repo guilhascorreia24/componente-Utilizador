@@ -1,6 +1,7 @@
 from django.forms import *
 from django import forms
 from .models import *
+from django.core.exceptions import ObjectDoesNotExist, ValidationError
 
 ##### Dia Aberto #####
 
@@ -52,6 +53,7 @@ class TransportForm(ModelForm):
 
 class TransporteHorarioForm(ModelForm):
     horario_has_dia_id_dia_hora = forms.ModelChoiceField(queryset=HorarioHasDia.objects.all().order_by('horario_hora'))
+
 
     class Meta:
         model = TransporteHasHorario
