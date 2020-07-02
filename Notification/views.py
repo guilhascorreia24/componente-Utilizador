@@ -127,7 +127,6 @@ def checknot(request):
 
 def deletenot(request):
     if request.method == 'POST':
-        print(request.POST.getlist('noti'))
         pressed = request.POST.getlist('noti')
         for press in pressed:
             #print("eliminadas:"+str(signing.loads(press))) 
