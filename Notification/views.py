@@ -12,7 +12,6 @@ from django.db.models import CharField, Value,IntegerField, DateTimeField
 from datetime import datetime
 from django.db.models.functions import Cast
 from Notification.models import Curso
-from atividades import Sessoes
 
 def createnot(request):
     list=[]
