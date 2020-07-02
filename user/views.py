@@ -329,13 +329,13 @@ def delete_user(request,id):
     else:
         stri="Impossivel de eliminar o utilizador"
         if prof.exists() and (Atividade.objects.filter(professor_universitario_utilizador_idutilizador=id).exists()):
-            messages.success(request,f'{stri}, tem Atividades associadas')
+            messages.success(request,f'{stri}, tem Atividade(s) associada(s)')
         elif part.exists() and ( InscricaoColetiva.objects.filter(participante_utilizador_idutilizador=id).exists() or  InscricaoIndividual.objects.filter(participante_utilizador_idutilizador=id).exists()):
-            messages.success(request,f'{stri}, tem inscrição associadas')
+            messages.success(request,f'{stri}, tem inscrição associada(s)')
         elif (coord.exists()  and  Tarefa.objects.filter(coordenador_utilizador_idutilizador=id).exists()):
-            messages.success(request,f'{stri}, tem Tarefa associadas')
+            messages.success(request,f'{stri}, tem Tarefa(s) associada(s)')
         elif colab.exists() and  Tarefa.objects.filter(colaborador_utilizador_idutilizador=id).exists():
-            messages.success(request,f'{stri}, tem Tarefa associadas')
+            messages.success(request,f'{stri}, tem Tarefa(s) associada(s)')
     return redirect("profile_list")
 
 #--------------------------------------alterar user---------------------------------------------
