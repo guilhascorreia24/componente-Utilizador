@@ -30,19 +30,19 @@ def home_view(request):
 def all_valid(request):
     errors = ["","","","","","",""]
     if not request.POST.get('titulo'):
-        errors[0]="Campo Titulo vazio"
+        errors[0]="Campo vazio"
     if not request.POST.get('descricao'):
-        errors[1]="Campo Descrição vazio"
+        errors[1]="Campo vazio"
     if not request.POST.get('publico_alvo'):
-        errors[2]="Campo Publico Alvo vazio"
+        errors[2]="Campo vazio"
     if not request.POST.get('tema'):
-        errors[3]="Campo Tematica vazio"
+        errors[3]="Campo vazio"
     if not request.POST.get('duracao'):
-        errors[4]="Campo Duração vazio"
+        errors[4]="Campo vazio"
     if not request.POST.get('nrcolaboradores'):
-        errors[5]="Campo Número de colaboradores vazio"
+        errors[5]="Campo vazio"
     if not request.POST.get('capacidade'):
-        errors[6]="Campo Número de Participantes vazio"
+        errors[6]="Campo vazio"
 
     return errors
 
@@ -324,8 +324,10 @@ def editar_local_view(request, idActivity):
             if account == 'coordinator':
                 return redirect("atividades:consultar_atividades_coodernador")
             elif account == 'professor':
-                return redirect("../../criar_editar_sesao/" + str(idActivity))
+                return redirect("../../editar_sesao/" + str(idActivity))
         elif request.POST.get('semSala'):
+            atividade.espaco_idespaco = None
+            atividade.save()
             uo = get_object_or_404(ProfessorUniversitario, utilizador_idutilizador=request.session["user_id"]).departamento_iddepartamento.unidade_organica_iduo
             for x in get_list_or_404(Coordenador, unidade_organica_iduo=uo):
                 noti_views.new_noti(request, x.utilizador_idutilizador.idutilizador, "Especificações de sala e material", request.POST.get("infoSala"))
