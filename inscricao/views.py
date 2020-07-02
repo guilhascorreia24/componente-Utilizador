@@ -283,13 +283,16 @@ def consultar_inscricao(request):
     if user._type == userValidation.ADMINISTRADOR:
         args = {}
 
-    if user._type == userValidation.COORDENADOR:
+    elif user._type == userValidation.COORDENADOR:
         sessao = {'sessao_idsessao__atividade_idatividade__unidade_organica_iduo':user.unidade_organica_iduo.pk}
         args = {'sessao':sessao}
     
-    if user._type == userValidation.PARTICIPANTE:
+    elif user._type == userValidation.PARTICIPANTE:
         insc={'participante_utilizador_idutilizador':user.pk}
         args = {'inscricao':insc}
+    else:
+        context={'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)}
+        return render(request,"not_for-u.html",{'context' : context , 'message' : "Não está logado"})
 
     (result_coletivo,result_individual) = get_inscricoes(**args)
     dias = models.Dia.objects.all()
