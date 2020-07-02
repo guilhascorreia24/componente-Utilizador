@@ -482,7 +482,7 @@
                                             {{ transporte.passageiros }}
                                         </td>
                                         <td data-label="Hora" class="">
-                                            {{ transporte.hora }}
+                                            {{ transporte.hora|date:"H:i" }}
                                         </td>
                                     </tr>
                                     {% endfor %}
@@ -805,7 +805,7 @@
                                             {{ transporte.passageiros }}
                                         </td>
                                         <td data-label="Hora" class="">
-                                            {{ transporte.hora }}
+                                            {{ transporte.hora|date:"H:i"  }}
                                         </td>
                                     </tr>
                                     {% endfor %}
