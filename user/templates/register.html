@@ -380,19 +380,31 @@
             document.getElementById('hidden_div2').style.display = 'block';
             document.getElementById('hidden_div3').style.display = 'none';
             document.getElementById('hidden_div').style.display = 'block';
+            document.getElementById("{{form.UO.id_for_label}}").value=0;
+            document.getElementById("{{form.curso.id_for_label}}").value=0;
+            document.getElementById("{{form.departamento.id_for_label}}").value=0;
         } else if (that.value == 2) {
             document.getElementById('hidden_div').style.display = 'none';
             document.getElementById('hidden_div3').style.display = 'none';
             document.getElementById('hidden_div2').style.display = 'block';
+            document.getElementById("{{form.UO.id_for_label}}").value=0;
+            document.getElementById("{{form.curso.id_for_label}}").value=0;
+            document.getElementById("{{form.departamento.id_for_label}}").value=0;
         } else if (that.value == 3) {
             document.getElementById('hidden_div').style.display = 'none';
             document.getElementById('hidden_div2').style.display = 'block';
             document.getElementById('hidden_div3').style.display = 'block';
+            document.getElementById("{{form.UO.id_for_label}}").value=0;
+            document.getElementById("{{form.curso.id_for_label}}").value=0;
+            document.getElementById("{{form.departamento.id_for_label}}").value=0;
         }
         else {
             document.getElementById('hidden_div').style.display = 'none';
             document.getElementById('hidden_div2').style.display = 'none';
             document.getElementById('hidden_div3').style.display = 'none';
+            document.getElementById("{{form.UO.id_for_label}}").value=0;
+            document.getElementById("{{form.curso.id_for_label}}").value=0;
+            document.getElementById("{{form.departamento.id_for_label}}").value=0;
         }
     }    
     </script>

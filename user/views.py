@@ -111,8 +111,8 @@ def type_user(data,user_id,request):
     elif data['funcao']=='4':
         if user_id is not None:
             admin=Administrador(pk=user_id)
-            #if len(Administrador.objects.all())==0:
-             #   Utilizador.objects.filter(pk=user_id).update(validada=4)
+            if len(Administrador.objects.all())==0:
+                Utilizador.objects.filter(pk=user_id).update(validada=4)
             admin.save()
         else:
             t=4
@@ -249,7 +249,6 @@ def login_request(request):
         tentatives=int(request.POST['tentatives'])
         #print(request.POST['email'])
         #print(request.POST['password'])
-        #print(tentatives)
         if request.POST['email'] != '' and request.POST['password'] != '':
             #print(signing.dumps(request.POST['password']))
             if Utilizador.objects.filter(email=request.POST['email'], password=hashlib.sha256(request.POST['password'].encode('utf-8')).hexdigest()).exists():
@@ -268,18 +267,25 @@ def login_request(request):
                     return r
                 else:
                     tentatives-=1
+                    if tentatives<0:
+                        tentatives=5
                     messages.error(request, f"Sua conta ainda não está validada")
             else:
                 tentatives-=1
+                if tentatives<0:
+                    tentatives=5
                 messages.error(request, f"Username e/ou palavra-passe incorreto(s). Tem mais {tentatives} tentativas")
         else:
             tentatives-=1
+            if tentatives<0:
+                tentatives=5
             messages.error(request, f"Username e/ou palavra-passe incorreto(s). Tem mais {tentatives} tentativas")
     else:
         tentatives=5
         form = AuthenticationForm()
     if tentatives<0:
         tentatives=5
+    print(tentatives)
     return render(request=request, template_name="login.html", context={"form": form,"tentatives":tentatives,'p':2})
 
 
@@ -365,6 +371,8 @@ def modify_user(request,id):
             print("1")
             noti_views.new_noti(request,t.pk,'Alteração de dados no perfil','Foram feitas alterações nos dados do seu perfil. Por favor consulte as alterações.')
             messages.success(request, f"Utilizador alterado com sucesso")
+            if id==request.session['user_id']:
+                return redirect('blog:blog-home')
             return redirect('profile_list')
         else:
             error=False
@@ -612,13 +620,13 @@ def validacoes(request,acao,id):
         recepient=user.email
         from_user=Utilizador.objects.get(pk=request.session['user_id']).email
         subject="Validação da conta"
-        message=str("A sua conta foi aceite. Faça login no seguinte link: "+request.build_absolute_uri().split("register")[0]+"login/")
+        message=str("A sua conta foi aceite. Faça login no seguinte link: "+request.build_absolute_uri().split("validacoes")[0]+"login/")
         send_mail(subject,message,'diaabertoworking@gmail.com',[recepient])
         messages.success(request,f'Utilizador {user.nome} validado com sucesso.')
     else:
         recepient=user.email
         subject="Validação da conta"
-        message=str("A sua conta nao foi aceite. Crie uma nova conta"+request.build_absolute_uri().split("validacoes")[0])
+        message=str("A sua conta nao foi aceite. Crie uma nova conta "+request.build_absolute_uri().split("validacoes")[0])
         send_mail(subject,message,'a61098@ualg.pt',[recepient])
         messages.success(request,f'Email enviado com sucesso')
         user.delete()

@@ -9,6 +9,7 @@ from django.utils import timezone
 from django.contrib import messages
 from Notification import views as noti_views
 from django.db.models import CharField, Value, TimeField
+from django.db.models import Q
 ###### Dia Aberto ##############
 def index(request):
     queryset = DiaAberto.objects.all() # list of objects
@@ -98,18 +99,19 @@ def diaaberto_update(request, id):
 def diaaberto_list(request):
     d = DiaAberto.objects.all() # list of objects
     dia = DiaAberto.objects.order_by('-ano').annotate(hora_inicio=Value(datetime.time(23,59),TimeField()),hora_fim=Value(datetime.time(23,59),TimeField()))
-    hora_inicio=Horario.objects.all()[0]
-    hora_fim=Horario.objects.all().order_by('-pk')[0]
-    horarios=HorarioHasDia.objects.all()
-    for de in dia:
-        de.hora_inicio=Horario.objects.all()[0].pk
-        de.hora_fim=Horario.objects.all().order_by('-pk')[0].pk
-        for horario in horarios:
-            if horario.dia_dia.pk.year==de.ano:
-                if horario.horario_hora.pk<de.hora_inicio:
-                    de.hora_inicio=HorarioHasDia.objects.filter(dia_dia=horario.dia_dia)[0].horario_hora.pk
-                if horario.horario_hora.pk>de.hora_fim:
-                    de.hora_fim=HorarioHasDia.objects.filter(dia_dia=horario.dia_dia).reverse()[0].horario_hora.pk
+    if len(Horario.objects.all())>0:
+        hora_inicio=Horario.objects.all()[0]
+        hora_fim=Horario.objects.all().order_by('-pk')[0]
+        horarios=HorarioHasDia.objects.all()
+        for de in dia:
+            de.hora_inicio=Horario.objects.all()[0].pk
+            de.hora_fim=Horario.objects.all().order_by('-pk')[0].pk
+            for horario in horarios:
+                if horario.dia_dia.pk.year==de.ano:
+                    if horario.horario_hora.pk<de.hora_inicio:
+                        de.hora_inicio=HorarioHasDia.objects.filter(dia_dia=horario.dia_dia)[0].horario_hora.pk
+                    if horario.horario_hora.pk>de.hora_fim:
+                        de.hora_fim=HorarioHasDia.objects.filter(dia_dia=horario.dia_dia).reverse()[0].horario_hora.pk
     context = {
         "diaaberto_list": dia,
         "d": d,
@@ -159,6 +161,26 @@ def prato_create_view(request):
     new_form = Prato(nralmocos=0)
     form = PratoForm(request.POST or None, instance=new_form)
     if form.is_valid():
+        menu = Menu.objects.get(idmenu = request.POST['menu_idmenu'])
+        prato = Prato.objects.filter(menu_idmenu=menu)
+        if len(prato)>2:
+            form.prato= 'Este Menu já tem 3 pratos associados'
+            #form.prato1 = 'Ja tem um prato deste tipo associado'
+            context = {
+                'form': form,'o':True,
+                'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)
+                  }
+            return render(request, "Menu/prato_create.html", context)
+        #prato1 = Prato.objects.get(menu_idmenu=menu, tipo = request.GET['Carne'])
+        #prato2 = Prato.objects.get(menu_idmenu=menu, tipo = request.GET('Peixe'))
+        #prato3 = Prato.objects.get(menu_idmenu=menu, tipo = request.GET('Vegetariano'))
+        #if len(prato1)>0:
+        #    form.prato1 = 'Ja tem um prato deste tipo associado'
+        #    context = {
+        #        'form': form,'o':True,
+        #        'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)
+        #          }
+        #    return render(request, "Menu/prato_create.html", context)
         form.save()
         messages.success(request, f'Prato Criado com Sucesso!')
         return redirect("menu:menu_list")
@@ -281,7 +303,7 @@ def horario_create_view(request):
             new_horario.horario_has_dia_id_dia_hora = hor
             trans =TransporteHasHorario.objects.filter(origem=org, destino=dest, horario_has_dia_id_dia_hora=hor)
             if len(trans)>0:
-                form.trans= 'Este horario já está definido'
+                form.trans= 'Este horario já está definido para este percurso'
                 context = {
                     'form': form,
                     'utl' : utl,'o':True,
@@ -319,6 +341,19 @@ def transporte_update2_view(request, id):
     print(obj)
     form = TransporteHorarioForm(request.POST or None, instance=obj)
     if form.is_valid():
+        org = Paragem.objects.get(paragem = request.POST['origem'])
+        dest = Paragem.objects.get(paragem = request.POST['destino'])
+        hor = HorarioHasDia.objects.get(id_dia_hora = request.POST['horario_has_dia_id_dia_hora'])
+        trans1 =TransporteHasHorario.objects.filter(origem=org, destino=dest, horario_has_dia_id_dia_hora=hor)
+        if len(trans1)>0:
+            form.trans1= 'Este horario já está definido para este percurso ou não não alterou nada'
+            context = {
+                'form': form,
+                'hora': hora,
+                'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)
+            }
+            print(form.errors)
+            return render(request, "Transporte/horario_create.html", context)
         print("aaaaaaaaaaaaaaaaaaaa")
         form.save()
         messages.success(request, f'Transporte Editado com Sucesso!')
@@ -383,6 +418,16 @@ def horariotransporte_create_view(request):
     dia = Dia.objects.all()
     form = HorarioForm(request.POST or None)
     if form.is_valid():
+        hora = Horario.objects.get(hora = request.POST['horario_hora'])
+        dia = Dia.objects.get(dia = request.POST['dia_dia'])
+        horas = HorarioHasDia.objects.filter(dia_dia=dia ,horario_hora=hora)
+        if len(horas)>0:
+            form.horas= 'Este horario já está definido'
+            context = {
+                'form': form,'o':True,
+                'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)
+            }
+            return render(request, "Transporte/horariotrans_create.html", context)
         form.save()
         messages.success(request, f'Horário do Transporte Criado com Sucesso')
         return redirect("menu:transporte-list")
@@ -397,6 +442,16 @@ def transporte_grupo_view(request, id):
     form = InscricaoForm(request.POST or None)
     if request.method == "POST":
         if form.is_valid():
+            #t= Transporte.objects.get(idtransporte=request.POST['transporte_idtransporte'])
+            #trans = TransporteHasHorario.objects.get(transporte_idtransporte = t, id_transporte_has_horario = request.POST['horario'])
+            #inscricao = TransporteHasInscricao.objects.filter(horario = trans)
+            #if len(inscricao)>0:
+            #    form.inscricao= 'Este grupo já está associado a este transporte'
+            #    context = {
+            #        'form': form,
+            #        'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)
+            #    }
+            #    return render(request, "Transporte/grupos_ass.html", context)
             form.save(id)
             print("aaaaaaaaaaaaaaaaaaa")
             messages.success(request, f'Transporte associado com Sucesso!')

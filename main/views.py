@@ -16,8 +16,7 @@ def criar_tarefa(request):
 def criar_tarefa_atividade(request):
 	user_coord = Utilizador.objects.get(idutilizador = request.session["user_id"])
 	coord_user = Coordenador.objects.get(utilizador_idutilizador = user_coord)
-	print(coord_user.unidade_organica_iduo)
-	atividade = Atividade.objects.filter(unidade_organica_iduo= coord_user.unidade_organica_iduo)
+	atividade = Atividade.objects.filter(unidade_organica_iduo = coord_user.unidade_organica_iduo)
 	form = TarefasFormAtividade(request.POST)
 	if request.method == "POST":
 		if form.is_valid():
@@ -30,7 +29,7 @@ def criar_tarefa_atividade(request):
 				colaborador_user = Colaborador.objects.get(utilizador_idutilizador = user)	#Vamos buscar o colaborador associado aquele objeto utilizador
 				new_tarefa.colaborador_utilizador_idutilizador = colaborador_user	#Enviamos esse colaborador para a nova tarefa
 				new_tarefa.save()
-				noti_views.new_noti(request,colaborador_user.pk,'Tarefa','Foi atribuido uma Nova Tarefa')
+				noti_views.new_noti(request,colaborador_user.pk,'Tarefa ' + '"' + new_tarefa.nome + '"','Foi atribuido uma Nova Tarefa ' + '"' + new_tarefa.nome + '"')
 			else:
 				new_tarefa.save()
 			messages.success(request, f'Tarefa Criada com Sucesso!')
@@ -116,7 +115,7 @@ def criar_tarefa_grupo(request):
 			new_tarefa.dia_dia = Dia.objects.get(dia= Sessao.objects.get(idsessao=request.POST['idsession']).horario_has_dia_id_dia_hora.dia_dia.dia)
 			new_tarefa.save()
 			if request.POST['id_colaborador_utilizador_idutilizador'] != '':
-				noti_views.new_noti(request,colaborador_user.pk,'Tarefa','Foi atribuido uma Nova Tarefa')
+				noti_views.new_noti(request,colaborador_user.pk,'Tarefa ' + '"' + new_tarefa.nome + '"','Foi atribuido uma Nova Tarefa '+ '"' + new_tarefa.nome + '"')
 			messages.success(request, f'Tarefa Criada com Sucesso!')
 			return redirect("tarefa_coordenador:consultar_tarefa")
 	
@@ -193,10 +192,7 @@ def editar_tarefa(request, pk):
 			form = TarefasFormGroup(request.POST, instance = tarefa)
 			if form.is_valid():
 				tarefa.nome= request.POST["nome"]
-				if request.POST['id_colaborador_utilizador_idutilizador'] != '':
-					tarefa.colaborador_utilizador_idutilizador = Colaborador.objects.get(utilizador_idutilizador = Utilizador.objects.get(idutilizador= request.POST["id_colaborador_utilizador_idutilizador"]))
-				else:
-					tarefa.colaborador_utilizador_idutilizador = None
+				tarefa.concluida = 0
 				ativid = Atividade.objects.get(idatividade = request.POST['atividade_idatividade'])
 				tarefa.buscar = Espaco.objects.get(idespaco = ativid.espaco_idespaco.idespaco)
 				tarefa.levar = Espaco.objects.get(idespaco = request.POST['levar'])
@@ -208,8 +204,12 @@ def editar_tarefa(request, pk):
 				total = inicio_s + duracao
 				tarefa.hora_inicio = time.strftime('%H:%M:%S', time.gmtime(total))
 				tarefa.dia_dia = Dia.objects.get(dia= Sessao.objects.get(idsessao=request.POST['idsession']).horario_has_dia_id_dia_hora.dia_dia.dia)
+				if request.POST['id_colaborador_utilizador_idutilizador'] != '':
+					tarefa.colaborador_utilizador_idutilizador = Colaborador.objects.get(utilizador_idutilizador = Utilizador.objects.get(idutilizador= request.POST["id_colaborador_utilizador_idutilizador"]))
+					noti_views.new_noti(request,c.pk,'Tarefa Editada ' + '"' + tarefa.nome + '"','Foi editado a Tarefa ' + '"' + tarefa.nome + '"')
+				else:
+					tarefa.colaborador_utilizador_idutilizador = None
 				tarefa.save()
-				form.save()
 				messages.success(request, f'Tarefa Editada com Sucesso!')
 				return redirect("tarefa_coordenador:consultar_tarefa")
 	else:
@@ -220,16 +220,17 @@ def editar_tarefa(request, pk):
 		if request.method == "POST":
 			form = TarefasFormAtividade(request.POST, instance = tarefa)
 			if form.is_valid():
-				new_tarefa = form.save(commit = False)
-				new_tarefa.nome= request.POST["nome"]
-				new_tarefa.sessao_idsessao = Sessao.objects.get(idsessao = request.POST["idsession"])
+				tarefa = form.save(commit = False)
+				tarefa.concluida = 0
+				tarefa.nome= request.POST["nome"]
+				tarefa.sessao_idsessao = Sessao.objects.get(idsessao = request.POST["idsession"])
 				if request.POST['id_colaborador_utilizador_idutilizador'] != '':
 					c = Colaborador.objects.get(utilizador_idutilizador = Utilizador.objects.get(idutilizador= request.POST["id_colaborador_utilizador_idutilizador"]))
-					new_tarefa.colaborador_utilizador_idutilizador = c
-					noti_views.new_noti(request,c.pk,'Tarefa','Foi atribuido uma Nova Tarefa')
+					tarefa.colaborador_utilizador_idutilizador = c
+					noti_views.new_noti(request,c.pk,'Tarefa Editada ' + '"' + tarefa.nome + '"','Foi editado a Tarefa ' + '"' + tarefa.nome + '"')
 				else:
-					new_tarefa.colaborador_utilizador_idutilizador = None
-				new_tarefa.save()
+					tarefa.colaborador_utilizador_idutilizador = None
+				tarefa.save()
 				messages.success(request, f'Tarefa Editada com Sucesso!')
 				return redirect("tarefa_coordenador:consultar_tarefa")
 	return render(request = request,

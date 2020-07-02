@@ -1,7 +1,7 @@
 {% extends 'base_template.html' %}
 {% block steps %}
 <li><a href="{% url 'blog:blog-home' %}">Início</a></li>
-<li><a href="{% url 'menu:transporte-list' %}">Consultar Menus</a></li>
+<li><a href="{% url 'menu:transporte-list' %}">Consultar Transportes</a></li>
 {% if o %}
 <li class="is-active"><a href="" aria-current="page">Criar Transporte</a></li>
 {% else %}
@@ -68,6 +68,7 @@
                                   <div class="select is-fullwidth">
                                     {{form.horario_has_dia_id_dia_hora}}
                                     <span class="help is-danger">{{form.trans}}</span>
+                                    <span class="help is-danger">{{form.trans1}}</span>
 
                                   </div>
                           
