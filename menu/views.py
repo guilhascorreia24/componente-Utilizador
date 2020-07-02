@@ -262,6 +262,7 @@ def transporte_create_view(request):
 def horario_create_view(request):
     hora = HorarioHasDia.objects.all()
     utl = Transporte.objects.latest('idtransporte')
+    #utl2 = Transporte.objects.latest('capacidade')
     new_form = TransporteHasHorario(transporte_idtransporte = utl, n_passageiros= 0)
     h = TransporteHasHorario.objects.all()
     form = TransporteHorarioForm(request.POST, instance = new_form)
@@ -321,10 +322,11 @@ def transporte_update2_view(request, id):
 def transporte_list_view(request):
     hora = TransporteHasHorario.objects.all()
     par = Paragem.objects.all()
-
+    inscricao = TransporteHasInscricao.objects.all()
     context = {
         "hora": hora,
         "par": par,
+        "inscricao": inscricao,
         'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)
     }
     return render(request, "Transporte/transporte_list.html", context)
@@ -332,7 +334,7 @@ def transporte_list_view(request):
 def transporte_detail_view(request, id):
     obj = get_object_or_404(Transporte,idtransporte =id)
     transporte = TransporteHasHorario.objects.get(transporte_idtransporte=id)
-    inscricao = TransporteHasInscricao.objects.get(inscricao_idinscricao=id)
+    inscricao = TransporteHasInscricao.objects.all()
     context = {
         "obj": obj,
         "transporte": transporte,
