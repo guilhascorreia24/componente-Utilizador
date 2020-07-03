@@ -229,11 +229,11 @@ def register(request):
                 error2 = "Passwords nao coincidem"
             if password_check(request.POST['password1']) != True:
                 error1 = password_check(request.POST['password1']) 
-            if data['UO']=='0':
+            if data['UO']=='0' and (data['funcao']=='3' or data['funcao']=='2' or data['funcao']=='1'):
                 error5='Preencha este campo'
-            if data['curso']=='0' or not(vefy(data)):
+            if data['curso']=='0' and data['funcao']=='1' or not(vefy(data)):
                 error6='Campo mal preenchido/ Não preenchido'
-            if data['departamento']=='0' or not(vefy(data)):
+            if data['departamento']=='0' and data['funcao']=='3' or not(vefy(data)):
                 error7='Campo mal preenchido/ Não preenchido'
             return render(request, 'register.html', {'me':me,"func":user(request),'form': form,'cursos':cursos,'UOs':UOs,'deps':deps,'error1': error, 'error2': error1, 'error3': error2, 'error4': error3,'error5':type_user(data,None,request),'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request),'p':1,'error5':error5,'error6':error6,'error7':error7})
     form = UserRegisterForm()

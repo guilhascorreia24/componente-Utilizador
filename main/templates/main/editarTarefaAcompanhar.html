@@ -80,7 +80,7 @@
                     <div class="select is-fullwidth">
                       <select id="id_campus_levar" name="campus_levar">
                         <option hidden value="">Selecione Atividade para mudar o destino</option>
-                        {% for a in ati %}
+                        {% for a in ati_levar %}
                         <option value="{{a.pk}}">{{a.titulo}}</option>
                         {% endfor %}
                         </select>
