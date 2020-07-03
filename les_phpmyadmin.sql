@@ -1074,7 +1074,7 @@ CREATE TABLE `transporte_has_horario` (
 --
 
 INSERT INTO `transporte_has_horario` (`transporte_idtransporte`, `id_transporte_has_horario`, `origem`, `destino`, `horario_has_dia_id_dia_hora`, `n_passageiros`) VALUES
-(3, 1, 'Terminal', 'Penha', 64, 24);
+(3, 1, 'Terminal', 'Penha', 95, 24);
 
 -- --------------------------------------------------------
 

@@ -323,6 +323,9 @@ class CustomForm:
         if len(self.sessao)<1:
             self.sessao.min_sessao = SESSAO_MIN_ERROR
             return False
+        
+        if(value == False):
+            return False
 
         sorted_sessoes = sorted(self.sessao,key=lambda x: x.instance.sessao_idsessao.horario_has_dia_id_dia_hora.horario_hora.hora)
         last_hora = 0
@@ -466,6 +469,9 @@ class FormIndividual:
         if len(self.sessao)<1:
             self.sessao.min_sessao = SESSAO_MIN_ERROR
             value = False
+        
+        if(value == False):
+            return False
 
         sorted_sessoes = sorted(self.sessao,key=lambda x: x.instance.sessao_idsessao.horario_has_dia_id_dia_hora.horario_hora.hora)
         last_hora = 0
