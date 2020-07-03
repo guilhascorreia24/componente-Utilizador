@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, HttpResponse
 from django.contrib import messages
+from django.conf import settings
 from .forms import UserRegisterForm, AuthenticationForm, ModifyForm, PasswordChangeForm, EmailSender, DeleteUser
 from django.core.mail import message, send_mail
 from django.core import signing
@@ -586,7 +587,7 @@ def reset(request):
             p=Utilizador.objects.get(email=recepient).idutilizador
             id = encrypt(p)
             message = str("Para recuperar a sua palavra-passe re-introduza uma palavra-passe nova, no seguinte link: "+request.build_absolute_uri(id))
-            send_mail(subject, message, 'diabertoworking@gmail.com', [recepient])
+            send_mail(subject, message, settings.EMAIL_HOST_USER, [recepient])
             messages.success(request, f'Verifique o seu email')
             return render(request, 'reset.html', {'form': sub})
         else:
@@ -618,13 +619,13 @@ def validacoes(request,acao,id):
         from_user=Utilizador.objects.get(pk=request.session['user_id']).email
         subject="Validação da conta"
         message=str("A sua conta foi aceite. Faça login no seguinte link: "+request.build_absolute_uri().split("validacoes")[0]+"login/")
-        send_mail(subject,message,'diaabertoworking@gmail.com',[recepient])
+        send_mail(subject,message,settings.EMAIL_HOST_USER,[recepient])
         messages.success(request,f'Utilizador {user.nome} validado com sucesso.')
     else:
         recepient=user.email
         subject="Validação da conta"
         message=str("A sua conta nao foi aceite. Crie uma nova conta "+request.build_absolute_uri().split("validacoes")[0])
-        send_mail(subject,message,'a61098@ualg.pt',[recepient])
+        send_mail(subject,message,settings.EMAIL_HOST_USER,[recepient])
         messages.success(request,f'Email enviado com sucesso')
         user.delete()
     return redirect('profile_list')
