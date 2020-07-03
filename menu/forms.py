@@ -33,7 +33,7 @@ class DiaAbertoForm(ModelForm):
         widgets = {
             'emaildiaaberto' : EmailInput(attrs={'class': 'input'}),
             'enderecopaginaweb': URLInput(attrs={'class': 'input',  'value': 'http://'}),
-            'preco_almoco_estudante': NumberInput(attrs={'class': 'input', 'value': '2.80', 'step': '0.01','min':0},),
+            'preco_almoco_estudante': NumberInput(attrs={'class': 'input', 'value': '2.80', 'step': '0.01','min':0}),
             'preco_almoco_professor': NumberInput(attrs={'class': 'input', 'value': '4.20', 'step': '0.01','min':0}),
         }
 
