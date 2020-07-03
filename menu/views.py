@@ -10,6 +10,7 @@ from django.contrib import messages
 from Notification import views as noti_views
 from django.db.models import CharField, Value, TimeField
 from django.db.models import Q
+from django.contrib.auth.models import UserManager
 ###### Dia Aberto ##############
 def index(request):
     queryset = DiaAberto.objects.all() # list of objects
@@ -55,6 +56,7 @@ def diaaberto_create(request):
 
 
 def diaaberto_update(request, id):
+    h = HorarioHasDia.objects.all()
     obj = get_object_or_404(DiaAberto, ano=id)
     form = DiaAbertoForm(request.POST or None, instance=obj)
     pk_url_kwarg = 'ano'
@@ -63,6 +65,7 @@ def diaaberto_update(request, id):
     print(hora_inicio)
     print(form)
     horarios=HorarioHasDia.objects.all()
+    sessao = Sessao.objects.all()
     for horario in horarios:
         if horario.dia_dia.pk.year==id:
             if horario.horario_hora.pk<hora_inicio:
@@ -70,9 +73,17 @@ def diaaberto_update(request, id):
             if horario.horario_hora.pk>hora_fim:
                 hora_fim=HorarioHasDia.objects.filter(dia_dia=horario.dia_dia).reverse()[0].horario_hora.pk
     if form.is_valid():
-        #DiaAberto.objects.filter(ano=id).delete()
+        for sea in sessao:
+            if sea.horario_has_dia_id_dia_hora.dia_dia.pk.year==id:
+                form.horar= 'Este Ano não pode ser alterado tem atividades associadas'
+                context = {
+                    'form': form,
+                    'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)
+                }
+                return render(request, "DiaAberto/diaaberto_create.html", context)
+        Utilizador.objects.filter(dia_aberto_ano=id).update(dia_aberto_ano=None)
+        DiaAberto.objects.filter(ano=id).delete()
         form.save()
-        print(form.cleaned_data)
         #Horario.objects.all().delete()
         inicio = form.cleaned_data['datadiaabertoinicio']
         final = form.cleaned_data['datadiaabertofim']
