@@ -21,6 +21,7 @@
 <div class="ctr">
   <div style="padding: 2vw">
       <form method="POST" id="personForm"> {% csrf_token %}
+        {{form.errors}}
           <div class="column">
               <div class="field">
                    <label aria-label="breadcrumbs" class="">Nome Tarefa:</label>
@@ -77,7 +78,7 @@
               <div class="select is-fullwidth">
                 <select id="id_campus_levar" name="campus_levar">
                   <option hidden value="">Nenhuma Atividade Selecionada</option>
-                  {% for a in atividade %}
+                  {% for a in ati %}
                   <option value="{{a.pk}}">{{a.titulo}}</option>
                   {% endfor %}
                   </select>
@@ -123,6 +124,8 @@
                 <span>Submeter</span>
               </button>
               </div>
+              </div>
+            </div>
 
               <div class="dialog modal" id="exampleModal">
                 <div class="modal-background"></div>

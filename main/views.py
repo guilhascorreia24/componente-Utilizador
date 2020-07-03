@@ -41,7 +41,7 @@ def criar_tarefa_atividade(request):
 
 def load_grupo(request):
 	ses = request.POST.get('sessao')
-	hassessao =  InscricaoHasSessao.objects.filter(sessao_idsessao=ses )
+	hassessao =  InscricaoHasSessao.objects.filter(sessao_idsessao=ses)
 	inscricao = Inscricao.objects.filter(idinscricao__in = hassessao)
 	grupos = InscricaoColetiva.objects.filter(inscricao_idinscricao__in = inscricao)
 	return render(request=request,
@@ -90,8 +90,8 @@ def criar_tarefa_grupo(request):
 	user2 = Utilizador.objects.get(idutilizador = request.session["user_id"])
 	coord_user = Coordenador.objects.get(utilizador_idutilizador = user2)
 	new_form = Tarefa(concluida = 0, coordenador_utilizador_idutilizador = coord_user)
-	print(coord_user.unidade_organica_iduo)
 	atividade = Atividade.objects.filter(unidade_organica_iduo = coord_user.unidade_organica_iduo)
+	ati = Atividade.objects.filter(unidade_organica_iduo = coord_user.unidade_organica_iduo)
 	form = TarefasFormGroup(request.POST, instance = new_form)
 	# dispos = disponibilidades("Guiar Grupo")
 	if request.method == "POST":
@@ -121,7 +121,7 @@ def criar_tarefa_grupo(request):
 	
 	return render(request=request,
 				  template_name="main/criarTarefaAcompanhar.html",
-				  context={'atividade':atividade,'form':form,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
+				  context={'ati':ati,'atividade':atividade,'form':form,'i':len(noti_not_checked(request)),'not_checked':noti_not_checked(request)})
 
 def load_cities(request):
 	atividade = request.POST.get('atividade_idatividade')
