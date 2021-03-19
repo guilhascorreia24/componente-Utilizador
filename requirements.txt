@@ -14,7 +14,7 @@ django-filter==2.1.0
 django-filters==0.2.1
 django-pyvows==0.6.2
 django-tinymce4-lite==1.7.5
-djangorestframework==3.11.0
+djangorestframework==3.11.2
 djangorestframework-filters==0.11.1
 filelock==3.0.12
 gevent==1.5.0
